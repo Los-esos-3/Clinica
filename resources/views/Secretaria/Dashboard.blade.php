@@ -1,4 +1,13 @@
 <x-app-layout>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Document</title>
+    </head>
+    <body>
     <div class="flex h-screen">
         <!-- Main Content / Calendario -->
         <div id="main-content" class="flex-1 bg-white transition-all duration-300">
@@ -86,7 +95,7 @@
                 @endif
 
                 <!-- Settings Dropdown -->
-                <div class="ms-3 relative">
+                <div class="pr-2 relative">
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
@@ -259,4 +268,7 @@
             calendar.render();
         });
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
+    </body>
+    </html>
 </x-app-layout>
