@@ -1,17 +1,10 @@
 <x-app-layout>  
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>Document</title>
-    </head>
-    <body>
-    <div class="flex h-screen">
+    <div class="flex">
         <!-- Main Content / Calendario -->
         <div id="main-content" class="flex-1 bg-white transition-all duration-300">
+            
               <!-- Primary Navigation Menu -->
+
     <div class="bg-gray-400 max-w-full">
         <div class="flex justify-between h-16">
             <div class="flex">
@@ -239,35 +232,70 @@
         </div>
     </div>
 
-            <!-- Calendario -->
-            <div id="calendar-container" class="p-6">
-                <div id="calendar"></div>
+    <div class="flex items-center justify-between bg-gray-300 p-8 mb-4 border">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            {{ __('Pacientes') }}
+        </h2>
+        <a href="{{ route('Pacientes.create') }}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+            Agregar Paciente
+        </a>
+    </div>
+            
+        </div>
+    </div>
+     <!-- Vista Crud de pacientes -->
+     <div class="py-12">
+        <div class="mx-auto max-w-80% sm:px-6 lg:px-8">
+            <div class="overflow-hidden shadow-md sm:rounded-lg">
+                <div class="bg-white border-b border-gray-200 dark:bg-gray-300 dark:border-gray-600">
+                    <div class="overflow-x-auto"> <!-- Permite el desplazamiento horizontal -->
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50 dark:bg-gray-400">
+                                <tr>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Nombre del Paciente</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Número de Teléfono</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Fecha de Nacimiento</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Edad</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Dirección</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Género</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Estado Civil</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Fecha de Registro</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Tipo de Sangre</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Ocupación</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600">
+                                @foreach ($pacientes as $paciente)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->nombre }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->telefono }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->fecha_nacimiento }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->edad }}</td>
+                                        <td class="px-6 py-4 break-words whitespace-normal">{{ $paciente->direccion }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->genero }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->estado_civil }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->fecha_registro }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->tipo_sangre }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->ocupacion }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <a href="{{ route('pacientes.edit', $paciente->id) }}" class="px-4 py-2 text-sm font-bold text-white bg-green-500 border border-green-700 rounded hover:bg-green-700">Editar</a>
+                                            <form action="{{ route('pacientes.destroy', $paciente->id) }}" method="POST" class="inline-block">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="px-4 py-2 text-sm font-bold text-white bg-red-500 border border-red-700 rounded hover:bg-red-700">Borrar</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        // Script para el botón de hamburguesa y para mover el calendario
-        document.addEventListener('DOMContentLoaded', function() {
-            var sidebar = document.getElementById('sidebar');
-            var mainContent = document.getElementById('main-content');
-            var toggleButton = document.getElementById('menu-toggle');
-
-            toggleButton.addEventListener('click', function() {
-                sidebar.classList.toggle('-translate-x-full');
-                mainContent.classList.toggle('lg:ml-64');
-            });
-
-            // FullCalendar initialization
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                events: '/appointments', // Usar la ruta que provee las citas
-            });
-            calendar.render();
-        });
-    </script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
-    </body>
-    </html>
 </x-app-layout>
