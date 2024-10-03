@@ -1,71 +1,74 @@
-<x-guest-layout>
-    <div class="flex justify-between items-center">
-        <div class="w-1/2 p-6">
-            <div class="pb-5">
-                <x-authentication-card-logo />
-            </div>
-            <h2 class="text-xl font-semibold mb-4">¡Únete a nuestra comunidad!</h2>
-            <p class="text-gray-600">Regístrate para disfrutar de nuestros servicios y beneficios.</p>
-        </div>
+<x-guest-layout>>
+        <x-slot name="logo">
+            <x-authentication-card-logo />
+        </x-slot>
 
-        <div class="w-1/2 p-6">
-            <x-authentication-card class="bg-white"> <!-- Cambiar el fondo aquí -->
-                <x-slot name="logo">
-                </x-slot>
+        <!-- Validation Errors -->
+        <x-validation-errors class="mb-4" />
 
-                <x-validation-errors class="mb-4" />
-
-                <form method="POST" action="{{ route('register') }}">
-                    @csrf
-
-                    <div>
-                        <x-label for="name" value="{{ __('Name') }}" />
-                        <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-label for="email" value="{{ __('Email') }}" />
-                        <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-label for="password" value="{{ __('Password') }}" />
-                        <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-                    </div>
-
-                    <div class="mt-4">
-                        <x-label for="password_confirmation" value="{{ __('Confirm Password') }}" />
-                        <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required autocomplete="new-password" />
-                    </div>
-
-                    @if (Laravel\Jetstream\Jetstream::hasTermsAndPrivacyPolicyFeature())
-                        <div class="mt-4">
-                            <x-label for="terms">
-                                <div class="flex items-center">
-                                    <x-checkbox name="terms" id="terms" required />
-
-                                    <div class="ms-2">
-                                        {!! __('I agree to the :terms_of_service and :privacy_policy', [
-                                            'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Terms of Service').'</a>',
-                                            'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">'.__('Privacy Policy').'</a>',
-                                        ]) !!}
-                                    </div>
-                                </div>
-                            </x-label>
+        <div class="container px-4 py-8 mx-auto">
+            <div class="flex flex-col items-center justify-center md:flex-row">
+                <div class="w-full px-4 py-8 bg-white rounded-lg shadow-md md:w-2/3">
+                    <div class="flex">
+                        <!-- Left Panel -->
+                        <div class="w-1/2 p-4 bg-blue-500 rounded-l-lg">
+                            <h2 class="mb-4 text-2xl font-bold text-center text-white">¡Cuidamos tu salud desde la comodidad de tu hogar!</h2>
+                            <p class="text-white">En nuestra clínica, tu bienestar es nuestra prioridad. Accede a consultas médicas desde la seguridad y comodidad de tu casa, sin largas esperas ni traslados innecesarios.</p>
+                            <hr class="my-2 border-white">
+                            <p class="font-bold text-white">Consulta a nuestros especialistas por videollamada y obtén orientación médica personalizada, ¡totalmente gratuita!</p>
+                            <hr class="my-2 border-white">
+                            <p class="text-white">¿Necesitas una segunda opinión? Solo regístrate nuevamente para acceder a nuestras consultas médicas cuando lo necesites.</p>
+                            <hr class="my-2 border-white">
+                            <p class="text-white">Consulta nuestro <a href="#" class="text-white underline">Aviso de Privacidad</a> para saber más sobre cómo protegemos tu información.</p>
                         </div>
-                    @endif
 
-                    <div class="flex items-center justify-end mt-4">
-                        <a href="{{ route('login') }}" class="ms-4 px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            {{ __('Log In') }}
-                        </a>
-
-                        <x-button class="ms-4">
-                            {{ __('Register') }}
-                        </x-button>
+                        <!-- Right Panel -->
+                        <div class="w-1/2 p-4 bg-white rounded-r-lg">
+                            <h2 class="mb-4 text-2xl font-bold text-center">Registro</h2>
+                            <form method="POST" action="{{ route('register') }}">
+                                @csrf
+                                <div class="mb-4">
+                                    <x-label for="name" value="Nombre" />
+                                    <x-input id="name" class="block w-full mt-1" type="text" name="name" placeholder="Nombre" :value="old('name')" required autofocus />
+                                </div>
+                                <div class="mb-4">
+                                    <x-label for="email" value="Correo electrónico" />
+                                    <x-input id="email" class="block w-full mt-1" type="email" name="email" placeholder="Correo electrónico" :value="old('email')" required />
+                                </div>
+                                <div class="mb-4">
+                                    <x-label for="password" value="Contraseña" />
+                                    <x-input id="password" class="block w-full mt-1" type="password" name="password" placeholder="Contraseña" required autocomplete="new-password" />
+                                </div>
+                                <div class="mb-4">
+                                    <x-label for="password_confirmation" value="Confirmar contraseña" />
+                                    <x-input id="password_confirmation" class="block w-full mt-1" type="password" name="password_confirmation" placeholder="Confirmar contraseña" required />
+                                </div>
+                                <div class="mb-4">
+                                    <x-label for="phone" value="Teléfono" />
+                                    <x-input id="phone" class="block w-full mt-1" type="tel" name="phone" placeholder="Teléfono" required />
+                                </div>
+                                <div class="mb-4">
+                                    <x-label for="birthdate" value="Fecha de nacimiento" />
+                                    <x-input id="birthdate" class="block w-full mt-1" type="date" name="birthdate" required />
+                                </div>
+                                <div class="mb-4">
+                                    <x-label for="gender" value="Género" />
+                                    <select id="gender" name="gender" class="block w-full mt-1 border rounded-md">
+                                        <option value="" disabled selected>Seleccione su género</option>
+                                        <option value="male">Masculino</option>
+                                        <option value="female">Femenino</option>
+                                        <option value="other">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="flex items-center justify-center">
+                                    <x-button class="bg-blue-500 hover:bg-blue-700">
+                                        Registrar
+                                    </x-button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                </form>
-            </x-authentication-card>
+                </div>
+            </div>
         </div>
-    </div>
 </x-guest-layout>

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('genero');
             $table->string('estado_civil');
             $table->date('fecha_registro');
+            $table->time('hora_registro');
             $table->string('tipo_sangre');
             $table->string('ocupacion')->nullable();
             $table->timestamps(); 

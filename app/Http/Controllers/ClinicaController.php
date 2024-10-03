@@ -35,9 +35,9 @@ class ClinicaController extends Controller
             'ocupacion' => 'nullable|string|max:100',
         ]);
 
-        // Crear un nuevo paciente
         Paciente::create(array_merge($request->all(), [
-            'fecha_registro' => now() // Establecer la fecha de registro como la fecha actual
+            'fecha_registro' => now(), // Establecer 'fecha_registro' al valor actual
+            'hora_registro' => now()->format('H:i:s'), // Establecer 'hora_registro'
         ]));
 
         return redirect()->route('Pacientes.PacientesView'); // Redirigir a la lista de pacientes

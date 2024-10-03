@@ -17,6 +17,7 @@ class Paciente extends Model
         'genero',
         'estado_civil',
         'fecha_registro',
+        'hora_registro',
         'tipo_sangre',
         'ocupacion',
     ];

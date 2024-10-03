@@ -231,15 +231,6 @@
             </div>
         </div>
     </div>
-
-    <div class="flex items-center justify-between bg-gray-300 p-8 mb-4 border">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
-            {{ __('Pacientes') }}
-        </h2>
-        <a href="{{ route('Pacientes.create') }}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-            Agregar Paciente
-        </a>
-    </div>
             
         </div>
     </div>
@@ -279,12 +270,9 @@
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->tipo_sangre }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->ocupacion }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <a href="{{ route('pacientes.edit', $paciente->id) }}" class="px-4 py-2 text-sm font-bold text-white bg-green-500 border border-green-700 rounded hover:bg-green-700">Editar</a>
-                                            <form action="{{ route('pacientes.destroy', $paciente->id) }}" method="POST" class="inline-block">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="px-4 py-2 text-sm font-bold text-white bg-red-500 border border-red-700 rounded hover:bg-red-700">Borrar</button>
-                                            </form>
+                                            <button class="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-700" onclick="toggleModal('modal-id-{{ $paciente->id }}')">
+                                                Ver
+                                            </button>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -296,6 +284,49 @@
         </div>
     </div>
 
+    <div id="modal-id-{{ $paciente->id }}" class="fixed  inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="flex flex-col w-full max-w-5xl bg-white rounded-lg shadow-lg">
+            <div class="flex">
+                <!-- Sección de datos del paciente -->
+                <div class="w-1/2 p-6 border-r">
+                    <h2 class="text-xl font-bold mb-4">Datos del Paciente</h2>
+                    <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                    <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                    <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
+                    <p><strong>Edad:</strong> {{ $paciente->edad }}</p>
+                    <p><strong>Dirección:</strong> {{ $paciente->direccion }}</p>
+                    <p><strong>Género:</strong> {{ $paciente->genero }}</p>
+                    <p><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
+                </div>
+    
+                <!-- Sección de expediente -->
+                <div class="w-1/2 p-6">
+                    <h2 class="text-xl font-bold mb-4">Expediente</h2>
+                    <p><strong>Fecha de Registro:</strong> {{ $paciente->fecha_registro }}</p>
+                    <p><strong>Hora de Registro</strong>{{ $paciente->hora_registro }}</p>
+                    <p><strong>Tipo de Sangre:</strong> {{ $paciente->tipo_sangre }}</p>
+                    <p><strong>Ocupación:</strong> {{ $paciente->ocupacion }}</p>
+                    <!-- Aquí puedes añadir más información del expediente -->
+                </div>
+            </div>
+    
+            <!-- Botón para cerrar el modal -->
+            <div class="flex justify-center p-4 border-t">
+                <button class="text-white bg-red-600 px-4 py-2 rounded" onclick="toggleModal('modal-id-{{ $paciente->id }}')">Cerrar</button>
+            </div>
+        </div>
+    </div>
+    
+<script>
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.classList.toggle('hidden');
+    }
+</script>
+
+
+
+    
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
 </x-app-layout>
