@@ -1,67 +1,83 @@
-<x-guest-layout>
-    <div class="flex justify-between items-center">
-        <div class="w-1/2 p-6">
-            <x-authentication-card>
-                <x-slot name="logo">
-                  
-                </x-slot>
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Iniciar Sesión</title>
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+
+    <!-- Styles -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <style>
+        /* Hacer el logo circular */
+        .rounded-logo {
+            border-radius: 50%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+    <div class="w-full max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="md:flex">
+            <!-- Sección informativa -->
+            <div class="w-full md:w-1/2 bg-blue-500 p-8 text-white flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-center mb-4">¡Bienvenido de nuevo!</h2>
+                <p class="text-center">Accede a tu cuenta para continuar disfrutando de nuestros servicios de salud desde la comodidad de tu hogar.</p>
+                <hr class="my-4 border-white">
+                <p class="text-center">Consulta nuestro <a href="#" class="underline">Aviso de Privacidad</a> para saber más sobre cómo protegemos tu información.</p>
+            </div>
+
+            <!-- Formulario de inicio de sesión -->
+            <div class="w-full md:w-1/2 bg-white p-8 flex flex-col justify-center">
+                <div class="flex justify-center mb-4">
+                    <!-- Logo circular -->
+                    <img src="{{ asset('images/KAIZEN (1).png') }}" alt="Kaizen Clínica de Salud Logo" class="h-20 w-20 rounded-logo">
+                </div>
+                <h2 class="text-2xl font-bold text-center mb-6">Iniciar Sesión</h2>
+
+                <!-- Mostrar errores de validación -->
                 <x-validation-errors class="mb-4" />
 
-                @session('status')
+                @if (session('status'))
                     <div class="mb-4 font-medium text-sm text-green-600">
-                        {{ $value }}
+                        {{ session('status') }}
                     </div>
-                @endsession
+                @endif
 
                 <form method="POST" action="{{ route('login') }}">
                     @csrf
 
-                    <div>
-                        <x-label for="email" value="{{ __('Email') }}" />
-                        <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
+                    <div class="mb-4">
+                        <input type="email" id="email" name="email" placeholder="Correo electrónico" class="w-full px-4 py-2 text-gray-700 bg-gray-100 border rounded focus:outline-none focus:border-blue-500" required autofocus autocomplete="username">
                     </div>
 
-                    <div class="mt-4">
-                        <x-label for="password" value="{{ __('Password') }}" />
-                        <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                    <div class="mb-4">
+                        <input type="password" id="password" name="password" placeholder="Contraseña" class="w-full px-4 py-2 text-gray-700 bg-gray-100 border rounded focus:outline-none focus:border-blue-500" required autocomplete="current-password">
                     </div>
 
-                    <div class="block mt-4">
+                    <div class="flex items-center justify-between mb-4">
                         <label for="remember_me" class="flex items-center">
-                            <x-checkbox id="remember_me" name="remember" />
-                            <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                            <input type="checkbox" id="remember_me" name="remember" class="mr-2">
+                            <span class="text-sm text-gray-600">Recordarme</span>
                         </label>
-                    </div>
 
-                    <div class="flex items-center justify-between mt-4">
                         @if (Route::has('password.request'))
-                            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                                {{ __('Forgot your password?') }}
-                            </a>
+                            <a href="{{ route('password.request') }}" class="text-sm text-blue-500 hover:underline">¿Olvidaste tu contraseña?</a>
                         @endif
                     </div>
 
-                    <div class="flex items-center justify-end mt-4">
-                        <a href="{{ route('register') }}" class="ms-4 px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-500 focus:bg-indigo-500 active:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                            {{ __('REGISTER') }}
-                        </a>
-
-                        <x-button class="ms-4">
-                            {{ __('Log in') }}
-                        </x-button>
+                    <!-- Botones de Iniciar Sesión y Registrarse -->
+                    <div class="flex items-center justify-between space-x-4">
+                        <button type="submit" class="w-full py-3 text-white bg-blue-500 hover:bg-blue-600 rounded font-bold">Iniciar Sesión</button>
+                        <a href="{{ route('register') }}" class="w-full py-3 text-center text-white bg-green-500 hover:bg-green-600 rounded font-bold">Registrarse</a>
                     </div>
                 </form>
-            </x-authentication-card>
-        </div>
-
-        <div class="w-1/2 p-6">
-            <div class="pb-5">
-                <x-authentication-card-logo />
             </div>
-            
-            <h2 class="text-xl font-semibold mb-4">Clinica PrinstonPlace</h2>
-            <p class="text-gray-600">Preocupados por tu salud</p>
         </div>
     </div>
-</x-guest-layout>
+</body>
+</html>

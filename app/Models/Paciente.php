@@ -21,4 +21,9 @@ class Paciente extends Model
         'tipo_sangre',
         'ocupacion',
     ];
+
+    public function expedientes()
+    {
+        return $this->hasMany(Expediente::class);
+    }
 }

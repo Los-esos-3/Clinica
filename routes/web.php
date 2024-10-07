@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClinicaController;
+use App\Http\Controllers\ExpedientesController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -8,6 +9,7 @@ use App\Models\User;
 Route::get('/', function () {
     return view('welcome');
 });
+
 
 Route::get('/dashboard', [ClinicaController::class, 'index'])->name('dashboard');
 
@@ -30,6 +32,13 @@ Route::put('/pacientes/{id}', [ClinicaController::class, 'update'])->name('Pacie
 
 
 
+Route::get(uri: '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
+
+Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes');
+
+Route::get('/Expedientes/create/{paciente}', [ExpedientesController::class, 'create'])->name('Expedientes.create');
+
+Route::post('/Expedientes', [ExpedientesController::class, 'store'])->name('Expedientes.store');
 
 
 

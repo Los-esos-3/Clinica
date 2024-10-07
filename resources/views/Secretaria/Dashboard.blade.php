@@ -35,6 +35,12 @@
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ route('Expedientes') }}">
+                       <label class="text-xl">Expedientes</label>
+                    </x-nav-link>
+                </div>    
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')">
                        <label class="text-xl">Ingresos</label>
                     </x-nav-link>

@@ -18,24 +18,52 @@
             padding: 0;
         }
 
-        header {
-    background: linear-gradient(to right, #a7d3e0, #003366); /* De celeste a azul marino */
+header {
+    background: linear-gradient(to right, #a7d3e0, #003366);
     color: #fff;
-    padding: 10px 20px;
+    padding: 10px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
 }
 
+.header-title {
+    font-family: 'Arial', sans-serif;
+    font-weight: 400;
+    color: #fff;
+    text-align: left;
+    margin-left: 20px;
+}
+
+.header-title .kaiser {
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    display: block;
+}
+
+.header-title .subtext {
+    font-size: 20px;
+    font-style: italic;
+    color:  #fff;
+    margin-top: 5px;
+    display: block;
+}
 header nav ul {
     list-style-type: none;
     padding: 0;
+    margin: 0;
     display: flex;
-    justify-content: center; /* Centrar elementos en el header */
     align-items: center;
-    gap: 60px; /* Espaciado entre elementos */
+    gap: 40px;
 }
 
 header nav ul li {
-    border-radius: 25px;
-    overflow: hidden;
+    position: relative;
 }
 
 header nav ul li a {
@@ -43,52 +71,117 @@ header nav ul li a {
     text-decoration: none;
     padding: 10px 15px;
     display: inline-block;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease; /* Transiciones más suaves */
+    border-radius: 20px;
 }
 
 header nav ul li a:hover {
     background-color: #88c8de;
     transform: scale(1.05);
 }
+
+header nav ul li svg {
+    cursor: pointer;
+    margin-right: 15px;
+    transition: transform 0.3s ease;
+}
+
+header nav ul li svg:hover {
+    transform: scale(1.2);
+}
+
 #auth-links {
-    position: absolute; /* Para que aparezca sobre el nav */
-    background: #a7d3e0; /* Color de fondo */
-    border-radius: 10px; /* Bordes redondeados */
-    padding: 10px; /* Espaciado interno */
-    margin-top: 5px; /* Margen superior para que no esté pegado al icono */
-    display: none; /* Inicialmente oculto */
-    z-index: 10; /* Asegura que el cuadro esté por encima de otros elementos */
+    position: absolute;
+    top: 45px;
+    right: 0;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 15px;
+    display: none;
+    z-index: 10;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 #auth-links a {
-    color: #003366; /* Color de texto */
+    color: #003366;
     text-decoration: none;
-    display: block; /* Para que cada enlace ocupe toda la línea */
+    display: block;
     margin: 5px 0;
     padding: 10px 15px;
-    border-radius: 20px; /* Bordes redondeados */
-    transition: background-color 0.3s, color 0.3s; /* Transición suave para el hover */
+    border-radius: 20px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 #auth-links a:hover {
-    background-color: #88c8de; /* Color de fondo al pasar el mouse */
-    color: #003366; /* Color del texto al pasar el mouse */
+    background-color: #88c8de;
+    color: #003366;
+}
+
+#auth-links.show {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    header .header-logo {
+        margin-bottom: 15px;
+    }
+
+    #auth-links {
+        right: auto;
+        left: 50%;
+        transform: translateX(-50%);
+    }
 }
 
 
-        .content {
-            padding: 40px 20px;
-            text-align: center;
-        }
+.content {
+    background-image: url('images/doctores.jpg');
+    background-size: cover
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.content h1 {
+    font-size: 3rem;
+    margin: 0 0 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.content p {
+    font-size: 1.5rem;
+    max-width: 800px;
+    text-align: center;
+}
 
         footer {
-            background-color: #003366; /* Azul marino */
+            background-color: #003366;
             color: #fff;
-            padding: 10px 20px; /* Espacio reducido para compactar */
-            display: flex; /* Cambiado a flexbox */
-            flex-wrap: wrap; /* Permitir que los elementos se ajusten */
-            justify-content: space-between; /* Espacio uniforme entre elementos */
-            align-items: center; /* Centrar verticalmente */
+            padding: 10px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .footer-container {
@@ -96,19 +189,19 @@ header nav ul li a:hover {
             justify-content: space-between;
             max-width: 1200px;
             margin: 0 auto;
-            flex-wrap: wrap; /* Permitir que los elementos se ajusten */
-            width: 100%; /* Ancho completo */
+            flex-wrap: wrap;
+            width: 100%;
         }
 
         .footer-column {
             width: 30%;
-            margin: 0; /* Eliminado el margen para compactar */
-            text-align: left; /* Alinear texto a la izquierda */
+            margin: 0;
+            text-align: left;
         }
 
         .footer-column h4 {
             margin-top: 0;
-            border-bottom: 2px solid #88c8de; /* Línea inferior */
+            border-bottom: 2px solid #88c8de;
             padding-bottom: 5px;
         }
 
@@ -133,17 +226,17 @@ header nav ul li a:hover {
         }
 
         .footer-copyright {
-            background-color: #002244; /* Un tono más oscuro de azul marino */
+            background-color: #002244;
             padding: 10px;
             text-align: center;
             clear: both;
-            width: 100%; /* Ancho completo */
+            width: 100%;
         }
 
         .footer-opening-hours {
             display: flex;
-            justify-content: space-between; /* Espaciado entre los días */
-            align-items: center; /* Centrar verticalmente */
+            justify-content: space-between;
+            align-items: center;
             width: 100%;
             margin: 20px 0;
         }
@@ -153,37 +246,166 @@ header nav ul li a:hover {
         }
 
         .footer-opening-hours p {
-            margin: 0 10px; /* Espacio entre horarios */
+            margin: 0 10px;
         }
         .footer-column li {
-    margin-bottom: 30px; /* Aumenta el espacio entre cada li */
+    margin-bottom: 30px;
 }
+
+
+.hero {
+    background-color: #f9f9f9;
+    padding: 60px 0;
+}
+
+.hero .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 50%;
+}
+
+.hero-text h2 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.features-list {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+}
+
+.features-list li {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.features-list li .icon-check {
+    font-size: 18px;
+    color: #00aaff;
+}
+
+.hero-images {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.image-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.middle-image {
+  justify-content: center;
+}
+
+.hero-images img {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+    .features {
+        background-color: #ffffff;
+        padding: 40px 0;
+    }
+
+    .features .container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+        max-width: 1100px;
+        margin: 0 auto;
+        gap: 20px;
+    }
+    .feature {
+        display: flex;
+        align-items: center;
+        background-color: #f0f0f0;
+        padding: 15px;
+        border-radius: 8px;
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease; /* Transiciones más suaves */
+    }
+
+    .feature-content {
+        flex: 1;
+        padding-right: 15px;
+    }
+
+    .feature-title {
+        color: #333;
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .feature img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+    }
+    .feature:hover {
+        background: linear-gradient(135deg, #a7d3e0 0%, #003366 100%);
+        color: #ffffff;
+        transform: scale(1.02);
+    }
 
     </style>
 </head>
 <body>
     <header>
+        <div class="header-title">
+            <span class="kaiser">KAISER</span>
+            <span class="subtext">Clínica de Salud</span>
+        </div>
         <nav>
             <ul>
-                <li>
-                </li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Categorías</a></li>
+
+                <li><a href="#">Farmacia</a></li>
                 <li><a href="#">Contáctenos</a></li>
                 @if (Route::has('login'))
                 <li>
                     @auth
                         <a href="{{ url('/dashboard') }}">Dashboard</a>
                     @else
-                        <a href="#" id="toggle-auth-links"> <!-- Cambiado a un enlace vacío para controlar el clic -->
+                        <a href="#" id="toggle-auth-links">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
                                 <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/>
                             </svg>
                         </a>
-                        <div id="auth-links" style="display: none;"> <!-- Contenedor oculto inicialmente -->
+                        <div id="auth-links" style="display: none;">
                             <a href="{{ route('login') }}">Log in</a>
                             @if (Route::has('register'))
-                                <a href="{{ route('register') }}">Register</a>
+                                <a href="{{ route('register') }}">Registro</a>
                             @endif
                         </div>
                     @endauth
@@ -197,6 +419,68 @@ header nav ul li a:hover {
         <h1>Bienvenido a nuestro sitio</h1>
         <p>Explora nuestras funcionalidades y descubre lo que tenemos para ofrecerte.</p>
     </div>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h2>Innovamos en Cuidados de Salud para Ti</h2>
+                    <p>Ofrecemos soluciones personalizadas que se adaptan a tus necesidades. Nuestra misión es proporcionar un servicio de salud de alta calidad, asegurando tu bienestar en todo momento.</p>
+                        <ul class="features-list">
+                            <li></i class="icon-check"> Tecnología de última generación</li>
+                            <li><i class="icon-check"></i> Tratamientos sin dolor</li>
+                            <li><i class="icon-check"></i> Especialistas capacitados</li>
+                        </ul>
+                </div>
+                <div class="hero-images">
+                    <div class="image-column">
+                        <img src="images/enfermeraayudando.jpg" alt="Enfermera Ayudando" />
+                        <img src="images/doctorayudando.jpg" alt="Doctor Ayudando" />
+                    </div>
+                    <div class="image-column middle-image">
+                        <img src="images/doctorexplicando.jpg" alt="Doctor Explicando" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <section class="features">
+        <div class="container">
+            <div class="feature">
+                <div class="feature-content">
+                    <h3 class="feature-title">Trabajo Médico Dedicado</h3>
+                    <p>Nuestro equipo de profesionales se dedica a brindarte la mejor atención médica posible.</p>
+                </div>
+                <img src="images/icons8-grupo-50.png" alt="Icono de Trabajo Médico">
+            </div>
+            <div class="feature">
+                <div class="feature-content">
+                    <h3 class="feature-title">Servicios de Cuidado</h3>
+                    <p>Te ofrecemos una gama de servicios de cuidado para garantizar tu salud y bienestar.</p>
+                </div>
+                <img src="images/icons8-cuidado-50.png" alt="Icono de Expertos en Salud">
+            </div>
+            <div class="feature">
+                <div class="feature-content">
+                    <h3 class="feature-title">Expertos en Salud</h3>
+                    <p>Contamos con un equipo de expertos listos para ofrecerte asesoramiento y tratamiento.</p>
+                </div>
+                <img src="images/icons8-bata-de-laboratorio-médicos-50.png" alt="">
+            </div>
+            <div class="feature">
+                <div class="feature-content">
+                    <h3 class="feature-title">Atención Médica de Calidad</h3>
+                    <p>Estamos comprometidos con brindarte atención médica de alta calidad y a la vanguardia.</p>
+                </div>
+                <img src="images/icons8-24-7-signo-abierto-64.png" alt="">
+            </div>
+        </div>
+    </section>
+
+
 
     <footer>
         <div class="footer-container">
@@ -219,12 +503,23 @@ header nav ul li a:hover {
                 <ul>
 
                     <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/></svg>
-                        Pedro José Méndez, Industrial, 87350 Heroica Matamoros, Tamps.
+                        <a href="https://www.google.com.mx/maps/place/Kaizen+Business+Training/@25.8694126,-97.5038464,19z/data=!4m6!3m5!1s0x866feb74305d47a3:0x5ceb7d0b261d15d7!8m2!3d25.8694124!4d-97.5033911!16s%2Fg%2F11jzkyh2cx?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
+                              <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                              <path d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"/>
+                            </svg>
+                            Pedro José Méndez, Industrial, 87350 Heroica Matamoros, Tamps.
+                          </a>
                     </li>
                     <li>
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/></svg>         8683-671279
-                    </li>
+                        <a href="https://wa.me/8683671279">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
+                            <!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.-->
+                            <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
+                          </svg>
+                          8683-671279
+                        </a>
+                      </li>
                     <li>
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;"><!--!Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z"/></svg>
                        esaprtano.gamer04@gmail.com
