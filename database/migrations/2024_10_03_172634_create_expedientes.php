@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('expedientes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('paciente_id')->constrained()->onDelete('cascade'); // Relación con pacientes
+            $table->unsignedBigInteger('paciente_id');
             $table->string('doctor');
             $table->string('especialidad');
             $table->string('diagnostico');

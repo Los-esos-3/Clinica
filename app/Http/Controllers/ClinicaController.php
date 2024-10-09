@@ -13,6 +13,7 @@ class ClinicaController extends Controller
     public function PacientesView(){
         
         $pacientes = Paciente::all();
+        $pacientes = Paciente::with(relations: 'expediente')->get();
         return view('Pacientes.PacientesIndex', compact('pacientes'));
 
     }
@@ -34,13 +35,19 @@ class ClinicaController extends Controller
             'tipo_sangre' => 'nullable|string|max:10',
             'ocupacion' => 'nullable|string|max:100',
         ]);
-
-        Paciente::create(array_merge($request->all(), [
-            'fecha_registro' => now(), // Establecer 'fecha_registro' al valor actual
-            'hora_registro' => now()->format('H:i:s'), // Establecer 'hora_registro'
-        ]));
-
-        return redirect()->route('Pacientes.PacientesView'); // Redirigir a la lista de pacientes
+    
+        // Crear el paciente solo si no se ha registrado antes
+        $pacienteData = $request->all();
+    
+        // Comprobar si 'fecha_registro' y 'hora_registro' ya están definidas
+        if (empty($pacienteData['fecha_registro']) && empty($pacienteData['hora_registro'])) {
+            $pacienteData['fecha_registro'] = now()->format('Y-m-d'); // Establecer 'fecha_registro' al valor actual
+            $pacienteData['hora_registro'] = now()->format('H:i:s');
+        }
+    
+        Paciente::create($pacienteData); // Crear el paciente
+    
+        return redirect()->route('Pacientes.PacientesView');
     }
 
     public function edit($id)

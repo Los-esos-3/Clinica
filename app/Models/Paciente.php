@@ -22,8 +22,8 @@ class Paciente extends Model
         'ocupacion',
     ];
 
-    public function expedientes()
+    public function expediente()
     {
-        return $this->hasMany(Expediente::class);
+        return $this->hasOne(Expediente::class);
     }
 }

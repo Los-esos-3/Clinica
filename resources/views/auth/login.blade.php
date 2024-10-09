@@ -20,30 +20,39 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center h-screen">
-    <div class="w-full max-w-4xl mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="w-full max-w-4xl mx-auto overflow-hidden bg-white rounded-lg shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+            <!-- X para cerrar -->
+            <a href="{{ route('welcome') }}" class="text-lg text-gray-600 hover:text-gray-900">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" class="inline-block">
+                    <path d="M177.5 414c-8.8 3.8-19 2-26-4.6l-144-136C2.7 268.9 0 262.6 0 256s2.7-12.9 7.5-17.4l144-136c7-6.6 17.2-8.4 26-4.6s14.5 12.5 14.5 22l0 72 288 0c17.7 0 32 14.3 32 32l0 64c0 17.7-14.3 32-32 32l-288 0 0 72c0 9.6-5.7 18.2-14.5 22z"/>
+                </svg>
+            </a>
+
+        </div>
         <div class="md:flex">
             <!-- Sección informativa -->
-            <div class="w-full md:w-1/2 bg-blue-500 p-8 text-white flex flex-col justify-center">
-                <h2 class="text-3xl font-bold text-center mb-4">¡Bienvenido de nuevo!</h2>
+            <div class="flex flex-col justify-center w-full p-8 text-white bg-blue-500 md:w-1/2">
+                <h2 class="mb-4 text-3xl font-bold text-center">¡Bienvenido de nuevo!</h2>
                 <p class="text-center">Accede a tu cuenta para continuar disfrutando de nuestros servicios de salud desde la comodidad de tu hogar.</p>
                 <hr class="my-4 border-white">
                 <p class="text-center">Consulta nuestro <a href="#" class="underline">Aviso de Privacidad</a> para saber más sobre cómo protegemos tu información.</p>
             </div>
 
             <!-- Formulario de inicio de sesión -->
-            <div class="w-full md:w-1/2 bg-white p-8 flex flex-col justify-center">
+            <div class="flex flex-col justify-center w-full p-8 bg-white md:w-1/2">
                 <div class="flex justify-center mb-4">
                     <!-- Logo circular -->
-                    <img src="{{ asset('images/KAIZEN (1).png') }}" alt="Kaizen Clínica de Salud Logo" class="h-20 w-20 rounded-logo">
+                    <img src="{{ asset('images/KAIZEN.png  ') }}" alt="Kaizen Clínica de Salud Logo" class="w-20 h-20 rounded-logo">
                 </div>
-                <h2 class="text-2xl font-bold text-center mb-6">Iniciar Sesión</h2>
+                <h2 class="mb-6 text-2xl font-bold text-center">Iniciar Sesión</h2>
 
                 <!-- Mostrar errores de validación -->
                 <x-validation-errors class="mb-4" />
 
                 @if (session('status'))
-                    <div class="mb-4 font-medium text-sm text-green-600">
+                    <div class="mb-4 text-sm font-medium text-green-600">
                         {{ session('status') }}
                     </div>
                 @endif
@@ -72,8 +81,9 @@
 
                     <!-- Botones de Iniciar Sesión y Registrarse -->
                     <div class="flex items-center justify-between space-x-4">
-                        <button type="submit" class="w-full py-3 text-white bg-blue-500 hover:bg-blue-600 rounded font-bold">Iniciar Sesión</button>
-                        <a href="{{ route('register') }}" class="w-full py-3 text-center text-white bg-green-500 hover:bg-green-600 rounded font-bold">Registrarse</a>
+                        <a href="{{ route('register') }}" class="w-full py-3 font-bold text-center text-white bg-green-500 rounded hover:bg-green-600">Registrarse</a>
+                        <button type="submit" class="w-full py-3 font-bold text-white bg-blue-500 rounded hover:bg-blue-600">Iniciar Sesión</button>
+
                     </div>
                 </form>
             </div>

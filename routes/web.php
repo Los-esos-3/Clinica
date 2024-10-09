@@ -2,15 +2,16 @@
 
 use App\Http\Controllers\ClinicaController;
 use App\Http\Controllers\ExpedientesController;
+use App\Http\Controllers\ExpedienteController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
-
+/**  */
 Route::get('/dashboard', [ClinicaController::class, 'index'])->name('dashboard');
 
 Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
@@ -32,22 +33,39 @@ Route::put('/pacientes/{id}', [ClinicaController::class, 'update'])->name('Pacie
 
 
 
+
+
 Route::get(uri: '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
 
 Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes');
 
-Route::get('/Expedientes/create/{paciente}', [ExpedientesController::class, 'create'])->name('Expedientes.create');
+Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
 
-Route::post('/Expedientes', [ExpedientesController::class, 'store'])->name('Expedientes.store');
-
-
+Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes');
 
 
 
+Route::get('/Expedientes/create', [ExpedientesController::class, 'create'])->name('Expedientes.create');
+
+Route::post('/Expedientes/create', [ExpedientesController::class, 'store'])->name('Expedientes.store');
+
+Route::get('/Expediente/{id}/edit', [ExpedientesController::class, 'edit'])->name('Expedientes.edit');
+
+Route::delete('/Expedientes/{id}', [ExpedientesController::class, 'destroy'])->name('Expedientes.destroy');
+
+Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name('Expedientes.update');
 
 
 
 
+
+
+Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
+
+
+Route::get('/contactenos', function () {
+    return view('contactenos'); 
+});
 
 Route::middleware([
     'auth:sanctum',

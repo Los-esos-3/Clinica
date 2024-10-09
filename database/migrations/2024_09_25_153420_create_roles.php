@@ -14,12 +14,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-     $role1 = Role::create(['name'=>'Admin']);
-     $role2 = Role::create(['name'=>'Doctor']);
-     $role3 = Role::create(['name'=>'Secretaria']);
+       // Roles a crear
+       $roles = ['Admin', 'Doctor', 'Secretaria'];
+
+     foreach ($roles as $roleName) {
+        // Verifica si el rol ya existe antes de crearlo
+        if (!Role::where('name', $roleName)->exists()) {
+            Role::create(['name' => $roleName]);
+        }
+    }
 
      $user = user::find(1);
-     $user->assignRole($role1);
+     $user->assignRole($roles);
     }
 
     /**
