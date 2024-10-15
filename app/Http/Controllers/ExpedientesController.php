@@ -5,14 +5,17 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Paciente;
 use App\Models\Expediente;
-
+use Illuminate\Support\Facades\Log; 
+use Carbon\Carbon;
 
     class ExpedientesController extends Controller
-{
+{ 
     public function index()
     {
         $expedientes = Expediente::with('paciente')->get();
-        return view('Expedientes.ExpedientesIndex', compact('expedientes'));
+        $pacientes = Paciente::all();
+        $pacientes = Paciente::with(relations: 'expediente')->get();
+        return view('Expedientes.ExpedientesIndex', compact('expedientes','pacientes'));
     }
 
 
@@ -34,6 +37,7 @@ use App\Models\Expediente;
             'familiar_a_cargo' => 'nullable|string',
             'numero_familiar' => 'nullable|string',
             'proxima_cita' => 'nullable|date',
+            'hora_proxima_cita' => 'nullable|date_format:H:i', // Añade esta línea
             'fecha_registro' => 'required|date',
         ]);
 
@@ -58,6 +62,7 @@ use App\Models\Expediente;
             'familiar' => 'nullable|string|max:255',
             'familiarnumero' => 'nullable|string|max:20',
             'proximacita' => 'nullable|date',
+            'hora_proxima_cita' => 'nullable|date_format:H:i', // Añade esta línea
         ]);
 
         $expediente = Expediente::findOrFail($id);
@@ -76,19 +81,23 @@ use App\Models\Expediente;
 
     public function getCitas()
     {
-        $citas = Expediente::whereNotNull('proximacita')
-            ->select('proximacita as start', 'paciente_id', 'doctor')
-            ->with('paciente')
-            ->get()
-            ->map(function ($cita) {
-                return [
-                    'title' => $cita->paciente->nombre,
-                    'start' => $cita->start,
-                    'doctor' => $cita->doctor,
-                    'allDay' => true,
-                ];
-            });
+        $citas = Expediente::whereNotNull('proxima_cita')
+            ->select('proxima_cita', 'hora_proxima_cita', 'paciente_id', 'doctor')
+            ->with('paciente:id,nombre')
+            ->get();
 
-        return response()->json($citas);
+        $formattedCitas = $citas->map(function ($expediente) {
+            $fechaHora = Carbon::parse($expediente->proxima_cita . ' ' . $expediente->hora_proxima_cita);
+            return [
+                'title' => $expediente->paciente->nombre . ' - Dr. ' . $expediente->doctor,
+                'start' => $fechaHora->format('Y-m-d\TH:i:s'),
+                'allDay' => false,
+                'extendedProps' => [
+                    'horaFormateada' => $fechaHora->format('h:i A')
+                ]
+            ];
+        });
+
+        return response()->json($formattedCitas);
     }
 }

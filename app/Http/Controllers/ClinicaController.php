@@ -10,13 +10,12 @@ use App\Models\Paciente;
 class ClinicaController extends Controller  
 {
     use HasRoles;
-    public function PacientesView(){
-        
-        $pacientes = Paciente::all();
-        $pacientes = Paciente::with(relations: 'expediente')->get();
+    public function PacientesView()
+    {
+        $pacientes = Paciente::with('expediente')->get();
         return view('Pacientes.PacientesIndex', compact('pacientes'));
-
     }
+
     public function create()
     {
         return view('pacientes.create'); // Retornar la vista para crear un nuevo paciente

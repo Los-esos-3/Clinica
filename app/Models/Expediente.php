@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class Expediente extends Model
 {
@@ -18,6 +19,7 @@ class Expediente extends Model
         'familiar_a_cargo',
         'numero_familiar',
         'proxima_cita',
+        'hora_proxima_cita', // Añade esta línea
         'fecha_registro',
     ];
 
@@ -25,5 +27,12 @@ class Expediente extends Model
     {
         return $this->belongsTo(Paciente::class);
     }
-    
+
+    public function getHoraProximaCitaFormateadaAttribute()
+    {
+        if ($this->hora_proxima_cita) {
+            return Carbon::parse($this->hora_proxima_cita)->format('h:i A');
+        }
+        return null;
+    }
 }

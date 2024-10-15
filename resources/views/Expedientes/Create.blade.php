@@ -63,6 +63,11 @@
                         </div>
 
                         <div class="mb-4">
+                            <label for="hora_proxima_cita" class="block text-sm font-medium text-gray-700">Hora de Próxima Cita</label>
+                            <input type="time" name="hora_proxima_cita" id="hora_proxima_cita" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+
+                        <div class="mb-4">
                             <label for="fecha_registro" class="block text-sm font-medium text-gray-700">Fecha de Registro</label>
                             <input type="date" name="fecha_registro" id="fecha_registro" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                         </div>

@@ -21,7 +21,8 @@ return new class extends Migration
             $table->text('antecedentes')->nullable();
             $table->string('familiar')->nullable();
             $table->string('familiarnumero')->nullable();
-            $table->date('proximacita')->nullable();
+            $table->date('proxima_cita')->nullable();
+            $table->time('hora_proxima_cita')->nullable(); // Añade esta línea
             $table->timestamps();
         });
     }

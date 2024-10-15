@@ -6,6 +6,15 @@ use App\Http\Controllers\ExpedienteController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Http\Middleware\CheckUserRole;
+use App\Http\Controllers\IngresoController;
+Route::middleware(['auth', CheckUserRole::class])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+
+    // ... otras rutas que requieran autenticación y rol ...
+});
 
 Route::get('/', function () {
     return view('welcome');
@@ -24,9 +33,9 @@ Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pac
 
 Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
 
-Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('pacientes.edit');
+Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('Pacientes.edit');
 
-Route::delete('/pacientes/{id}', [ClinicaController::class, 'destroy'])->name('pacientes.destroy');
+Route::delete('/pacientes/{id}', [ClinicaController::class, 'destroy'])->name('Pacientes.destroy');
 
 Route::put('/pacientes/{id}', [ClinicaController::class, 'update'])->name('Pacientes.update');
 
@@ -41,8 +50,8 @@ Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Exped
 
 Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
 
-Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes');
 
+    
 
 
 Route::get('/Expedientes/create', [ExpedientesController::class, 'create'])->name('Expedientes.create');
@@ -62,7 +71,6 @@ Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name(
 
 Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
 
-
 Route::get('/contactenos', function () {
     return view('contactenos'); 
 });
@@ -76,3 +84,5 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::resource('ingresos', IngresoController::class);

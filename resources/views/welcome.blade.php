@@ -382,6 +382,26 @@ header nav ul li svg:hover {
     color: #ffffff;
     transform: scale(1.02);
 }
+.user-avatar {
+                            display: inline-block;
+                            cursor: pointer;
+                        }
+
+                        .user-dropdown {
+                            position: absolute;
+                            background-color: white;
+                            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+                            padding: 10px;
+                            border-radius: 5px;
+                            top: 50px;
+                            right: 0;
+                        }
+
+                        .user-dropdown span {
+                            display: block;
+                            margin-bottom: 10px;
+                        }
+
 
     </style>
 </head>
@@ -393,31 +413,61 @@ header nav ul li svg:hover {
         </div>
         <nav>
             <ul>
-
                 <li><a href="#">Farmacia</a></li>
                 <li><a href="{{ url('/contactenos') }}">Contáctenos</a></li>
+
                 @if (Route::has('login'))
-                <li>
                     @auth
-                        <a href="{{ url('/dashboard') }}">Dashboard</a>
+                    <li>
+                        <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Dashboard</a> <!-- Ajustar margen aquí -->
+
+                        <div class="user-avatar" onclick="toggleUserMenu()">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22">
+                                <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/>
+                            </svg>
+                        </div>
+
+                        <!-- Menú desplegable para cerrar sesión -->
+                        <div id="user-dropdown" class="user-dropdown" style="display: none;">
+                            <span style="color: black; text-align: center; display: block;">{{ Auth::user()->name }}</span>
+                            <div style="height: 1px; background-color: black; margin: 8px 0;"></div> <!-- Línea personalizada -->
+
+                            <a href="{{ route('logout') }}"
+           onclick="event.preventDefault();
+           document.getElementById('logout-form').submit();"
+           style="color: black; text-align: center; display: block; margin: 0; padding: 8px 0;"> <!-- Ajustar color y centrado -->
+           Salir de la cuenta
+        </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
                     @else
+                    <li>
+                        <!-- Ícono de usuario desplegable antes de "Log in" -->
                         <a href="#" id="toggle-auth-links">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
                                 <path d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z"/>
                             </svg>
                         </a>
+
+                        <!-- Enlaces de autenticación que se muestran/ocultan -->
                         <div id="auth-links" style="display: none;">
                             <a href="{{ route('login') }}">Log in</a>
+
                             @if (Route::has('register'))
                                 <a href="{{ route('register') }}">Registro</a>
                             @endif
                         </div>
+                    </li>
                     @endauth
-                </li>
                 @endif
-             </ul>
+            </ul>
         </nav>
     </header>
+
+
 
     <div class="content">
         <h1>Bienvenido a nuestro sitio</h1>
@@ -549,6 +599,23 @@ header nav ul li svg:hover {
             authLinks.style.display = 'block'; // Mostrar enlaces
         } else {
             authLinks.style.display = 'none'; // Ocultar enlaces
+        }
+    });
+</script>
+
+<script>
+    function toggleUserMenu() {
+        var dropdown = document.getElementById('user-dropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Cerrar el menú al hacer clic fuera
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('user-dropdown');
+        var avatar = document.querySelector('.user-avatar');
+
+        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.style.display = 'none';
         }
     });
 </script>
