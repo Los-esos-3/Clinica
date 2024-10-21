@@ -146,7 +146,7 @@ header nav ul li svg:hover {
 
 
 .content {
-    background-image: url('images/doctores.jpg');
+    background-image: url('images/DeWatermark.ai_1729538709666.png');
     background-size: cover
     background-position: center;
     background-repeat: no-repeat;
@@ -546,8 +546,8 @@ header nav ul li svg:hover {
 
 
     <div class="content">
-        <h1>Bienvenido a nuestro sitio</h1>
-        <p>Explora nuestras funcionalidades y descubre lo que tenemos para ofrecerte.</p>
+        <h1>Bienvenido Kaiser Clinica de Salud</h1>
+        <p>Ciencia y cuidado medicina de calidad para un futuro saludable.</p>
     </div>
 
     <section class="hero">
