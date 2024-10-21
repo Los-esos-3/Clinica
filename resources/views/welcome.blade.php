@@ -147,7 +147,7 @@ header nav ul li svg:hover {
 
 .content {
     background-image: url('images/DeWatermark.ai_1729538709666.png');
-    background-size: cover
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     height: 100vh;
