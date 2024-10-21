@@ -31,6 +31,10 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         ->middleware('check.role');
 });
 
+Route::get('/Farmacia', function () {
+    return view('Farmacia');
+})->name('Farmacia');
+
 Route::get('/', function () {
     return view('welcome');
 })->name('welcome');

@@ -485,7 +485,7 @@ header nav ul li svg:hover {
         </div>
         <nav>
             <ul>
-                <li><a href="{{url('/farmacia')}}">Farmacia</a></li>
+                <li><a href="{{url('/Farmacia')}}">Farmacia</a></li>
                 <li><a href="{{ url('/contactenos') }}">Contáctenos</a></li>
 
                 @if (Route::has('login'))
