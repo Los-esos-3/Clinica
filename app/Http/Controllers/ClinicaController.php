@@ -16,6 +16,12 @@ class ClinicaController extends Controller
         return view('Pacientes.PacientesIndex', compact('pacientes'));
     }
 
+    public function index()
+    {
+        $pacientes = Paciente::with('expediente')->get();
+        return view('Pacientes.PacientesIndex', compact('pacientes'));
+    }
+
     public function create()
     {
         return view('pacientes.create'); // Retornar la vista para crear un nuevo paciente

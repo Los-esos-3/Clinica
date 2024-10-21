@@ -37,3 +37,4 @@ return new class extends Migration
         Role::where('name', 'Secretaria')->delete();
     }
 };
+

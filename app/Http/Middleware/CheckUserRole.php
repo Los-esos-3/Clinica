@@ -4,16 +4,22 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserRole
 {
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check() && Auth::user()->roles->isEmpty()) {
+        if ($request->user() && $request->user()->roles->isNotEmpty()) {
+            // Si el usuario tiene roles y no está en el dashboard, permite continuar
+            if (!$request->is('dashboard')) {
+                return $next($request);
+            }
+        } else {
+            // Si el usuario no tiene roles, redirige al welcome
             return redirect()->route('welcome');
         }
-
+        
         return $next($request);
     }
 }

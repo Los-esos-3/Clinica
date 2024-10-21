@@ -11,8 +11,6 @@ use App\Http\Middleware\CheckUserRole;
 
 class RouteServiceProvider extends ServiceProvider
 {
-    public const HOME = '/dashboard';
-
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {
@@ -23,9 +21,12 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
 
-            Route::middleware(['api', 'auth', CheckUserRole::class])
+            Route::middleware('api')
                 ->prefix('api')
                 ->group(base_path('routes/api.php'));
+
+            // Registra tu middleware personalizado
+            Route::aliasMiddleware('check.role', CheckUserRole::class);
         });
     }
 }

@@ -4,9 +4,10 @@
         
         /* Estilos para la navegación */
         .nav {
-            background-color: #333;
+            background-color: rgb(55, 65, 81,1) !important;
             color: white;
             padding: 1rem;
+            display: block;
         }
         .nav-container {
             display: flex;
@@ -32,7 +33,7 @@
             display: inline-block;
         }
         .dropbtn {
-            background-color: #333;
+            background-color: rgb(173, 173, 173);
             color: white;
             padding: 10px;
             font-size: 16px;
@@ -62,10 +63,12 @@
     </style>
     <nav class="nav">
         <div class="nav-container">
+            <div>
+                @include('components.application-logo')
+            </div>
             <div class="nav-links">
                 <a href="{{ route('dashboard') }}">Calendario</a>
-                <a href="{{ route('Pacientes') }}">Pacientes</a>
-                <a href="{{ route('Expedientes.index') }}">Expedientes</a>
+                <a href="{{ route('Pacientes') }}">Expedientes</a>
                 <a href="{{ route('ingresos.index') }}">Ingresos</a>
             </div>
             <div class="dropdown">

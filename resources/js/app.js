@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', function() {
         },
         eventDidMount: function(info) {
             info.el.style.height = 'auto';
-            info.el.style.minHeight = '2em'; // Aumentado para acomodar el contenido adicional
+            info.el.style.minHeight = '2em'; 
         }
     });
 

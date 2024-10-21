@@ -78,4 +78,6 @@ return [
 
     'profile_photo_disk' => 'public',
 
+    'home' => '/check-role',
+
 ];

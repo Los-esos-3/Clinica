@@ -8,12 +8,27 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\IngresoController;
-Route::middleware(['auth', CheckUserRole::class])->group(function () {
+use App\Http\Controllers\RoleController;
+
+Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+    Route::get('/check-role', function () {
+        if (Auth::user()->roles->isNotEmpty()) {
+            return redirect()->route('dashboard');
+        }
+        return redirect()->route('welcome');
+    })->name('check.role');
+
+    Route::get('/welcome', function () {
+        return view('welcome');
+    })->name('welcome');
+
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // ... otras rutas que requieran autenticación y rol ...
+    Route::get('/pacientes', [ClinicaController::class, 'PacientesView'])
+        ->name('clinica.pacientes')
+        ->middleware('check.role');
 });
 
 Route::get('/', function () {
@@ -21,7 +36,6 @@ Route::get('/', function () {
 })->name('welcome');
 
 /**  */
-Route::get('/dashboard', [ClinicaController::class, 'index'])->name('dashboard');
 
 Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
 
@@ -75,14 +89,16 @@ Route::get('/contactenos', function () {
     return view('contactenos'); 
 });
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-});
 
 Route::resource('ingresos', IngresoController::class);
+
+Route::get('/roles', [RoleController::class, 'index'])->middleware(['auth', 'role:Admin']);
+
+Route::middleware(['auth', 'role:Admin'])->group(function () {
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
+    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
+});
+
+Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');

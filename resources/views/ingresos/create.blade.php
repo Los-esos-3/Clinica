@@ -30,7 +30,11 @@
 
             <div class="mb-4">
                 <label for="paciente_id" class="block text-sm font-medium text-gray-700">Paciente:</label>
-                <input type="numb" class="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200">
+                <select name="paciente_id" id="paciente_id" required class="block w-full p-2 mt-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-200">
+                    @foreach ($pacientes as $paciente)
+                        <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
+                    @endforeach
+                </select>
             </div>
 
             <div class="mb-4">

@@ -15,9 +15,11 @@
             background-color: #f9f9f9;
         }
         .nav {
-            background-color: #333;
+            background-color: rgb(55, 65, 81,1) !important;
             color: white;
             padding: 1rem;
+            display: block;
+            
         }
         .nav-container {
             display: flex;
@@ -43,7 +45,8 @@
             display: inline-block;
         }
         .dropbtn {
-            background-color: #333;
+            background-color: rgb(175, 175, 175);
+            border-radius: 8px !important;
             color: white;
             padding: 10px;
             font-size: 16px;
@@ -126,7 +129,6 @@
             <div class="nav-container">
                 <div class="nav-links">
                     <a href="{{ route('dashboard') }}">Calendario</a>
-                    <a href="{{ route('Pacientes') }}">Pacientes</a>
                     <a href="{{ route('Pacientes') }}">Expedientes</a>
                     <a href="{{ route('ingresos.index') }}">Ingresos</a>
                 </div>
