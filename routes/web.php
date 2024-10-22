@@ -58,15 +58,16 @@ Route::delete('/pacientes/{id}', [ClinicaController::class, 'destroy'])->name('P
 Route::put('/pacientes/{id}', [ClinicaController::class, 'update'])->name('Pacientes.update');
 
 
+ 
+Route::resource('Expedientes', controller: IngresoController::class);
 
-
-
+Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes');
 
 Route::get(uri: '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
 
-Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes');
+Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes');
 
-Route::get('/Expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
+Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes.index');
 
 
     
@@ -84,7 +85,7 @@ Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name(
 
 
 
-
+Route::get('/ExpedientesAdmin',action: [ExpedientesController::class,'admin'])->name('Expedientes.admin');
 
 
 Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
@@ -95,6 +96,10 @@ Route::get('/contactenos', function () {
 
 
 Route::resource('ingresos', IngresoController::class);
+Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
+
+
+
 
 Route::get('/roles', [RoleController::class, 'index'])->middleware(['auth', 'role:Admin']);
 
