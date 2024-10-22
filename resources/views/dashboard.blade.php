@@ -5,7 +5,7 @@
                 <div class="bg-white overflow-hidden shadow-xl rounded-lg">
                     <div class="p-4 sm:p-6">
                         <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
-                        
+                   
                         <div x-data="{ activeTab: 'doctor' }">
                             <!-- Pestañas -->
                             <div class="mb-4 border-b border-gray-200">
@@ -75,3 +75,4 @@
     });
 </script>
 @endpush
+
