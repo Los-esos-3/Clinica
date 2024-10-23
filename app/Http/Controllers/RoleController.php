@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use App\Models\User;
+use App\Http\Requests; // Asegúrate de importar las solicitudes necesarias
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests; // Importa el trait
 
 class RoleController extends Controller
 {
+    use AuthorizesRequests; // Usa el trait
+
     public function index()
     {
-        $roles = Role::with('permissions')->get();
-        $permissions = Permission::all();
-        $users = User::with('roles')->get();
-        return view('roles.index', compact('roles', 'permissions', 'users'));
+        $this->authorize('ver roles'); // Verifica el permiso
+        $roles = Role::all();
+        return view('roles.index', compact('roles'));
     }
 
     public function store(Request $request)

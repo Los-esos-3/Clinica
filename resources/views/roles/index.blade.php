@@ -14,9 +14,11 @@
 
                 <!-- Gestión de Roles -->
                 <h3 class="text-lg font-semibold mb-4">Gestión de Roles</h3>
-                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createRoleModal">
-                    Crear Nuevo Rol
-                </button>
+                @can('crear roles')
+                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#createRoleModal">
+                        Crear Nuevo Rol
+                    </button>
+                @endcan
 
                 <table class="table mb-8">
                     <thead>

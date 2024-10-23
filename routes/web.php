@@ -114,3 +114,15 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');
 
 Route::resource('users', UserController::class);
+
+Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function () {
+    Route::get('/pacientes', [ClinicaController::class, 'index'])->name('Pacientes');
+});
+
+Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
+    Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
+});
+
+Route::group(['middleware' => ['auth', 'permission:ver ingresos']], function () {
+    Route::get('/ingresos', [IngresoController::class, 'index'])->name('ingresos.index');
+});

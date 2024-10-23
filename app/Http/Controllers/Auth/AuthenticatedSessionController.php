@@ -24,11 +24,12 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        // Asumiendo que se está utilizando el paquete Spatie\Permission
-       
-        
+        if ($user->roles->isEmpty()) {
+            // Usuario sin roles, redirigir a welcome
+            return redirect()->route('welcome');
+        }
         // Usuario con roles, redirigir al dashboard
-        return redirect()->intended(route('welcome'));
+        return redirect()->intended(route('dashboard'));
     }
 
     public function destroy(Request $request)
