@@ -39,7 +39,6 @@
                             <!-- <h2 class="text-2xl font-semibold mb-4">Gestión de Pacientes</h2> --> 
                         </div>
                         
->>>>>>> 6b8a05b424d7caf21085bc473ced657fe2831e7f
                         <div x-data="{ activeTab: 'doctor' }">
                             <!-- Pestañas -->
                             <div class="mb-4 border-b border-gray-200">
