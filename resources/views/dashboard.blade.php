@@ -4,6 +4,8 @@
             <div class="max-w-full mx-auto">
                 <div class="bg-white overflow-hidden shadow-xl rounded-lg">
                     <div class="p-4 sm:p-6">
+                        <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
+                   
                         <div class="flex justify-items-center justify-center">
                             <ul class="flex">
                                 <li>
@@ -37,6 +39,7 @@
                             <!-- <h2 class="text-2xl font-semibold mb-4">Gestión de Pacientes</h2> --> 
                         </div>
                         
+>>>>>>> 6b8a05b424d7caf21085bc473ced657fe2831e7f
                         <div x-data="{ activeTab: 'doctor' }">
                             <!-- Pestañas -->
                             <div class="mb-4 border-b border-gray-200">
@@ -106,3 +109,4 @@
     });
 </script>
 @endpush
+
