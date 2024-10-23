@@ -6,6 +6,48 @@
                     <div class="p-4 sm:p-6">
                         <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
                    
+                        <div class="flex justify-items-center justify-center">
+                            <ul class="flex">
+                                <li>
+                                    <a href="{{ route('welcome') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        WELCOME
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('dashboard') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        DASHBOARD
+                                    </a>
+                                </li>
+                                
+                                <li class="ml-1">
+                                    <a href="{{route('Pacientes')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        PACIENTES
+                                    </a>
+                                </li>
+
+                                <li class="ml-1">
+                                    <a href="{{route('Expedientes.admin')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        EXPEDIENTES
+                                    </a>
+                                </li>
+
+                                <li class="ml-1">
+                                    <a href="{{route('ingresos.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        INGRESOS
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('roles.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        ROLES
+                                    </a>
+                                </li>
+                            </ul>
+
+
+
+                            <!-- <h2 class="text-2xl font-semibold mb-4">Gestión de Pacientes</h2> --> 
+                        </div>
+                        
                         <div x-data="{ activeTab: 'doctor' }">
                             <!-- Pestañas -->
                             <div class="mb-4 border-b border-gray-200">

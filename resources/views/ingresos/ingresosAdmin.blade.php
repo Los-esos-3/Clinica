@@ -16,7 +16,6 @@
             background-color: rgb(55, 65, 81,1) !important;
             color: white;
             padding: 1rem;
-            display: block;
         }
         .nav-container {
             display: flex;
@@ -120,8 +119,37 @@
         .btn-agregar:hover {
             background-color: #0056b3;
         }
+        
     </style>
 </head>
+<div class="container">
+    <div class="p-6">
+        <div class="flex justify-center">
+            <ul class="flex">
+                <li>
+                    <a href="dashboard.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950 active">
+                        DASHBOARD
+                    </a>
+                </li>
+                <li class="ml-1">
+                    <a href="pacientes.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        PACIENTES
+                    </a>
+                </li>
+                <li class="ml-1">
+                    <a href="expedientes.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        EXPEDIENTES
+                    </a>
+                </li>
+                <li class="ml-1">
+                    <a href="ingresos.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        INGRESOS
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
 <body>
     <nav class="nav">
         <div class="nav-container">

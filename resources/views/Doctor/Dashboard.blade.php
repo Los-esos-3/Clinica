@@ -138,6 +138,9 @@
     <body>
         <nav class="nav">
             <div class="nav-container">
+                <div>
+                    <x-application-logo />
+                </div>
                 <div class="nav-links">
                     <a href="{{ route('dashboard') }}">Calendario</a>
                     <a href="{{ route('Pacientes') }}">Expedientes</a>

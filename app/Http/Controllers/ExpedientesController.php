@@ -18,6 +18,14 @@ use Carbon\Carbon;
         return view('Expedientes.ExpedientesIndex', compact('expedientes','pacientes'));
     }
 
+    public function admin()
+    {
+        $expedientes = Expediente::with('paciente')->get();
+        $pacientes = Paciente::all();
+        $pacientes = Paciente::with(relations: 'expediente')->get();
+        return view('Expedientes.ExpedienteIndexAdmin', compact('expedientes','pacientes'));
+    }
+
 
     public function create()
     {

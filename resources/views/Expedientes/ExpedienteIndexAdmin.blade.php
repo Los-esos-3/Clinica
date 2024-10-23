@@ -1,0 +1,1 @@
+<x-expediente-index-admin-component :expedientes="$expedientes" />
