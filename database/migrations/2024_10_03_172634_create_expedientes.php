@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('diagnostico');
             $table->string('tratamiento');
             $table->text('antecedentes')->nullable();
-            $table->string('familiar')->nullable();
+            $table->string('familiar_a_cargo')->nullable();
             $table->string('familiarnumero')->nullable();
             $table->date('proxima_cita')->nullable();
             $table->time('hora_proxima_cita')->nullable(); // Añade esta línea

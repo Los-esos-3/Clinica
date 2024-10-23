@@ -7,6 +7,11 @@
                         <div class="flex justify-items-center justify-center">
                             <ul class="flex">
                                 <li>
+                                    <a href="{{ route('welcome') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        WELCOME
+                                    </a>
+                                </li>
+                                <li>
                                     <a href="{{ route('dashboard') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                         DASHBOARD
                                     </a>
@@ -29,7 +34,11 @@
                                         INGRESOS
                                     </a>
                                 </li>
-
+                                <li>
+                                    <a href="{{ route('roles.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        ROLES
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     
