@@ -5,7 +5,6 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
-use Spatie\Permission\Models\Permission;
 
 return new class extends Migration
 {
@@ -14,18 +13,29 @@ return new class extends Migration
      */
     public function up(): void
     {
-       // Roles a crear
-       $roles = ['Admin', 'Doctor', 'Secretaria'];
+        // Roles a crear
+        $roles = ['Admin', 'Doctor', 'Secretaria'];
 
-     foreach ($roles as $roleName) {
-        // Verifica si el rol ya existe antes de crearlo
-        if (!Role::where('name', $roleName)->exists()) {
-            Role::create(['name' => $roleName]);
+        foreach ($roles as $roleName) {
+            // Verifica si el rol ya existe antes de crearlo
+            if (!Role::where('name', $roleName)->exists()) {
+                Role::create(['name' => $roleName]);
+            }
         }
-    }
 
-     $user = user::find(1);
-     $user->assignRole($roles);
+        // Asegúrate de que el usuario exista
+        $user = User::find(1);
+        if (!$user) {
+            // Si no existe, crea un nuevo usuario
+            $user = User::create([
+                'name' => 'Default User',
+                'email' => 'default@example.com',
+                'password' => bcrypt('password'), // Cambia la contraseña según sea necesario
+            ]);
+        }
+
+        // Asigna los roles al usuario
+        $user->assignRole($roles);
     }
 
     /**
@@ -37,4 +47,5 @@ return new class extends Migration
         Role::where('name', 'Secretaria')->delete();
     }
 };
+
 

@@ -79,7 +79,7 @@
             <h1 class="text-2xl font-bold">Lista de Expedientes</h1>
             <a href="{{ route('Expedientes.create') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Agregar Expediente</a>
         </div>
-        <div class="bg-white shadow-md rounded overflow-hidden">
+        <div class="bg-white shadow-md rounded overflow-auto">
             <table class="min-w-full">
                 <thead class="bg-gray-200">
                     <tr>

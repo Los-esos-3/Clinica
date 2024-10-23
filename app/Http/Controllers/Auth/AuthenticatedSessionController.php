@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -27,9 +28,8 @@ class AuthenticatedSessionController extends Controller
             // Usuario sin roles, redirigir a welcome
             return redirect()->route('welcome');
         }
-
         // Usuario con roles, redirigir al dashboard
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(route('dashboard'));
     }
 
     public function destroy(Request $request)

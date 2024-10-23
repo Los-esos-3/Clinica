@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/check-role', function () {
@@ -111,3 +112,17 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 });
 
 Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');
+
+Route::resource('users', UserController::class);
+
+Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function () {
+    Route::get('/pacientes', [ClinicaController::class, 'index'])->name('Pacientes');
+});
+
+Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
+    Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
+});
+
+Route::group(['middleware' => ['auth', 'permission:ver ingresos']], function () {
+    Route::get('/ingresos', [IngresoController::class, 'index'])->name('ingresos.index');
+});
