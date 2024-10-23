@@ -474,8 +474,155 @@ header nav ul li svg:hover {
     opacity: 1;
   }
 }
+.modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
 
-    </style>
+    .modal-content {
+        background: linear-gradient(135deg, #a7d3e0, #003366);
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        padding: 2em;
+        border-radius: 25px;
+        width: 90%;
+        max-width: 400px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: .4s ease-in-out;
+    }
+
+    .close {
+        color: #fff;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-content h2 {
+        text-align: center;
+        margin: 0.5em 0 1.5em;
+        color: #fff;
+        font-size: 1.5em;
+    }
+
+    .field {
+        display: flex;
+        align-items: center;
+        gap: 0.5em;
+        border-radius: 25px;
+        padding: 0.6em;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        margin-bottom: 1em;
+    }
+
+    .input-icon {
+        height: 1.3em;
+        width: 1.3em;
+        fill: #666;
+    }
+
+    .input-field {
+        background: none;
+        border: none;
+        outline: none;
+        width: 100%;
+        color: #333;
+        font-size: 1em;
+    }
+
+    .input-field::placeholder {
+        color: #999;
+    }
+    .input-field:-webkit-autofill,
+    .input-field:-webkit-autofill:hover, 
+    .input-field:-webkit-autofill:focus {
+        -webkit-box-shadow: 0 0 0px 1000px white inset;
+        -webkit-text-fill-color: #333;
+    }
+    .btn {
+        display: flex;
+        flex-direction: column;
+        gap: 1em;
+        margin-top: 2em;
+    }
+
+    .button1, .button2 {
+        padding: 0.7em 1.5em;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        transition: .3s ease-in-out;
+        cursor: pointer;
+        font-size: 1em;
+        width: 100%;
+    }
+
+    .button1 {
+        background-color: #003366;
+        color: white;
+    }
+
+    .button1:hover {
+        background-color: #004080;
+    }
+
+    .button2 {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .button2:hover {
+        background-color: #45a049;
+    }
+
+    .button3 {
+        width: 100%;
+        margin-top: 1em;
+        padding: 0.7em;
+        border-radius: 25px;
+        border: none;
+        outline: none;
+        transition: .3s ease-in-out;
+        background-color: transparent;
+        color: white;
+        cursor: pointer;
+        font-size: 1em;
+        text-decoration: underline;
+    }
+
+    .button3:hover {
+        color: #ccc;
+    }
+
+    body.modal-open {
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+    }
+
+    .modal {
+        overflow-y: auto;
+        max-height: 100vh;
+    }
+</style>
 </head>
 <body>
     <header>
@@ -610,7 +757,32 @@ header nav ul li svg:hover {
         </div>
     </section>
 
-
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Iniciar Sesión</h2>
+            <form action="{{ route('login') }}" method="POST" class="form">
+                @csrf
+                <div class="field">
+                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z"></path>
+                    </svg>
+                    <input type="email" id="email" name="email" class="input-field" placeholder="Correo electrónico" required>
+                </div>
+                <div class="field">
+                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"></path>
+                    </svg>
+                    <input type="password" id="password" name="password" class="input-field" placeholder="Contraseña" required>
+                </div>
+                <div class="btn">
+                    <button type="submit" class="button1">Iniciar Sesión</button>
+                    <button type="button" onclick="window.location.href='{{ route('register') }}'" class="button2">Registrarse</button>
+                </div>
+                <button type="button" class="button3">Olvidé mi contraseña</button>
+            </form>
+        </div>
+    </div>
 
     <footer>
         <div class="footer-container">
@@ -660,33 +832,22 @@ header nav ul li svg:hover {
                     <a href="#" class="socialContainer containerOne">
                       <svg class="socialSvg instagramSvg" viewBox="0 0 16 16">
                         <path
-                          d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"
+                          d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.916 3.916 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.926 3.926 0 0 0-.923-1.417A3.911 3.911 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0h.003zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599.28.28.453.546.598.92.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.47 2.47 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.738.034-1.024.044-2.515.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z"
                         ></path>
                       </svg>
                     </a>
                   
                     <a href="#" class="socialContainer containerTwo">
                       <svg
-                        class="socialSvg tiktokSvg largeIcon"
-                        viewBox="0 0 48 48"
-                        version="1.1"
+                        class="socialSvg mapsSvg largeIcon"
                         xmlns="http://www.w3.org/2000/svg"
-                        xmlns:xlink="http://www.w3.org/1999/xlink"
+                        viewBox="0 0 24 24"
+                        fill="white"
+                        width="48"
+                        height="48"
                       >
-                        <title>Tiktok</title>
-                        <g
-                          id="Icon/Social/tiktok-white"
-                          stroke="none"
-                          stroke-width="1"
-                          fill="none"
-                          fill-rule="evenodd"
-                        >
-                          <path
-                            d="M38.0766847,15.8542954 C36.0693906,15.7935177 34.2504839,14.8341149 32.8791434,13.5466056 C32.1316475,12.8317108 31.540171,11.9694126 31.1415066,11.0151329 C30.7426093,10.0603874 30.5453728,9.03391952 30.5619062,8 L24.9731521,8 L24.9731521,28.8295196 C24.9731521,32.3434487 22.8773693,34.4182737 20.2765028,34.4182737 C19.6505623,34.4320127 19.0283477,34.3209362 18.4461858,34.0908659 C17.8640239,33.8612612 17.3337909,33.5175528 16.8862248,33.0797671 C16.4386588,32.6422142 16.0833071,32.1196657 15.8404292,31.5426268 C15.5977841,30.9658208 15.4727358,30.3459348 15.4727358,29.7202272 C15.4727358,29.0940539 15.5977841,28.4746337 15.8404292,27.8978277 C16.0833071,27.3207888 16.4386588,26.7980074 16.8862248,26.3604545 C17.3337909,25.9229017 17.8640239,25.5791933 18.4461858,25.3491229 C19.0283477,25.1192854 19.6505623,25.0084418 20.2765028,25.0219479 C20.7939283,25.0263724 21.3069293,25.1167239 21.794781,25.2902081 L21.794781,19.5985278 C21.2957518,19.4900128 20.7869423,19.436221 20.2765028,19.4380839 C18.2431278,19.4392483 16.2560928,20.0426009 14.5659604,21.1729264 C12.875828,22.303019 11.5587449,23.9090873 10.7814424,25.7878401 C10.003907,27.666593 9.80084889,29.7339663 10.1981162,31.7275214 C10.5953834,33.7217752 11.5748126,35.5530237 13.0129853,36.9904978 C14.4509252,38.4277391 16.2828722,39.4064696 18.277126,39.8028054 C20.2711469,40.1991413 22.3382874,39.9951517 24.2163416,39.2169177 C26.0948616,38.4384508 27.7002312,37.1209021 28.8296253,35.4300711 C29.9592522,33.7397058 30.5619062,31.7522051 30.5619062,29.7188301 L30.5619062,18.8324027 C32.7275484,20.3418321 35.3149087,21.0404263 38.0766847,21.0867664 L38.0766847,15.8542954 Z"
-                            id="Fill-1"
-                            fill="#FFFFFF"
-                          ></path>
-                        </g>
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                        <path d="M0 0h24v24H0z" fill="none"/>
                       </svg>
                     </a>
                   
@@ -718,7 +879,6 @@ header nav ul li svg:hover {
                         </svg>
                       </div>
                     </a>
-                  
                     <a href="#" class="socialContainer containerFour">
                       <svg class="socialSvg whatsappSvg" viewBox="0 0 16 16">
                         <path
@@ -767,5 +927,46 @@ header nav ul li svg:hover {
         if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
             dropdown.style.display = 'none';
         }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var modal = document.getElementById('loginModal');
+        var span = document.getElementsByClassName("close")[0];
+        var body = document.body;
+
+        // Verificar si el usuario está autenticado
+        @auth
+            // Si el usuario está autenticado, no mostrar el modal
+            modal.style.display = "none";
+        @else
+            // Si el usuario no está autenticado, mostrar el modal
+            modal.style.display = "block";
+            body.classList.add('modal-open');
+
+            span.onclick = function() {
+                modal.style.display = "none";
+                body.classList.remove('modal-open');
+            }
+
+            // Prevenir que el modal se cierre al hacer clic fuera de él
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    event.stopPropagation();
+                }
+            }
+
+            modal.querySelector('.modal-content').onclick = function(event) {
+                event.stopPropagation();
+            }
+
+            // Manejar el envío del formulario de inicio de sesión
+            var loginForm = document.querySelector('#loginModal form');
+            loginForm.addEventListener('submit', function(event) {
+                // No prevenimos el envío del formulario aquí
+                // El formulario se enviará normalmente al servidor
+            });
+        @endauth
     });
 </script>

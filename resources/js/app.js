@@ -65,4 +65,17 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Calendario configurado, intentando renderizar');
     calendar.render();
     console.log('Calendario renderizado');
+
+    // Añadir estilos personalizados después de renderizar el calendario
+    var style = document.createElement('style');
+    style.textContent = `
+        .fc-day-today {
+            background-color: inherit !important;
+        }
+        .fc .fc-daygrid-day-number,
+        .fc .fc-col-header-cell-cushion {
+            color: black !important;
+        }
+    `;
+    document.head.appendChild(style);
 });
