@@ -7,6 +7,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -23,13 +24,11 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        if ($user->roles->isEmpty()) {
-            // Usuario sin roles, redirigir a welcome
-            return redirect()->route('welcome');
-        }
-
+        // Asumiendo que se está utilizando el paquete Spatie\Permission
+       
+        
         // Usuario con roles, redirigir al dashboard
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(route('welcome'));
     }
 
     public function destroy(Request $request)

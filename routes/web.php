@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/check-role', function () {
@@ -111,3 +112,5 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 });
 
 Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');
+
+Route::resource('users', UserController::class);

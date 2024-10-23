@@ -16,6 +16,7 @@
             background-color: rgb(55, 65, 81,1) !important;
             color: white;
             padding: 1rem;
+            display: block;
         }
         .nav-container {
             display: flex;
