@@ -7,6 +7,38 @@
     <title>Lista de Expedientes</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
+<div class="bg-white overflow-hidden shadow-xl rounded-lg">
+    <div class="p-4 sm:p-6">
+        <div class="flex justify-items-center justify-center">
+            <ul class="flex">
+                <li>
+                    <a href="{{ route('dashboard') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        DASHBOARD
+                    </a>
+                </li>
+                
+                <li class="ml-1">
+                    <a href="{{route('Pacientes')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        PACIENTES
+                    </a>
+                </li>
+
+                <li class="ml-1">
+                    <a href="{{route('Expedientes.admin')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        EXPEDIENTES
+                    </a>
+                </li>
+
+                <li class="ml-1">
+                    <a href="{{route('ingresos.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        INGRESOS
+                    </a>
+                </li>
+            </ul>
+        </div>
+        </div>
+    </div>
+</div>
 <body class="bg-gray-100 font-sans">
     <nav class="bg-gray-700 text-white p-4">
         <div class="container mx-auto flex justify-between items-center"> 
@@ -20,7 +52,7 @@
                 <a href="{{ route('ingresos.index') }}" class="hover:underline">Ingresos</a>
             </div>
             <div class="relative">
-                <button class="bg-gray-400 rounded px-4 py-2">{{ Auth::user()->name }}</button>
+                <button class="bg-gray-600 rounded px-4 py-2">{{ Auth::user()->name }}</button>
                 <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
                     <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Perfil</a>
                     <form method="POST" action="{{ route('logout') }}" class="block">
