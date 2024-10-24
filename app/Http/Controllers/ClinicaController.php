@@ -6,10 +6,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Paciente;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ClinicaController extends Controller  
 {
     use HasRoles;
+    use AuthorizesRequests;
     public function PacientesView()
     {
         $pacientes = Paciente::with('expediente')->get();
@@ -29,6 +31,8 @@ class ClinicaController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('crear pacientes');
+        
         $request->validate([
             'nombre' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:20',
@@ -52,7 +56,7 @@ class ClinicaController extends Controller
     
         Paciente::create($pacienteData); // Crear el paciente
     
-        return redirect()->route('Pacientes.PacientesView');
+        return redirect()->route('Pacientes');
     }
 
     public function edit($id)
@@ -86,6 +90,6 @@ class ClinicaController extends Controller
         $paciente = Paciente::findOrFail($id);
         $paciente->delete();
 
-        return redirect()->route('Pacientes.PacientesView');
+        return redirect()->route('Pacientes');
     }
 }

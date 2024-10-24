@@ -40,7 +40,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{{ route('roles.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                    <a  class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                         ROLES
                     </a>
                 </li>

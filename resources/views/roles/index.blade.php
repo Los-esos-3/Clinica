@@ -55,7 +55,7 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th>Usuario</th>
+                            <th>Nombre</th>
                             <th>Roles Actuales</th>
                             <th>Asignar Roles</th>
                         </tr>
