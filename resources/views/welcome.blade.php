@@ -829,7 +829,6 @@ header nav ul li svg:hover {
                     </li>
                 </ul>
                 <div class="card">
-<<<<<<< HEAD
                     <a href="#" class="socialContainer containerOne">
                         <svg class="socialSvg instagramSvg" viewBox="0 0 16 16">
                           <path
@@ -863,8 +862,6 @@ header nav ul li svg:hover {
                         </svg>
                       </a>
                   
-=======
->>>>>>> bfc03e254109712a5c6762e1ab02828689e36fc7
                     <a href="#" class="socialContainer containerThree">
                       <div>
                         <svg
