@@ -5,7 +5,6 @@
                 <div class="bg-white overflow-hidden shadow-xl rounded-lg">
                     <div class="p-4 sm:p-6">
                         <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
-                   
                         <div class="flex justify-items-center justify-center">
                             <ul class="flex">
                                 <li>
@@ -37,7 +36,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{ route('roles.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                    <a  class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                         ROLES
                                     </a>
                                 </li>

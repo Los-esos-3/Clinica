@@ -15,6 +15,7 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         // Crear permisos
+        Permission::create(['name'=>'ver dashboard']);
         Permission::create(['name' => 'ver pacientes']);
         Permission::create(['name' => 'crear pacientes']);
         Permission::create(['name' => 'editar pacientes']);
@@ -28,14 +29,17 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'editar ingresos']);
         Permission::create(['name' => 'eliminar ingresos']);
 
-        // Crear roles y asignar permisos
-        $rolDoctor = Role::create(['name' => 'doctor']);
-        $rolDoctor->givePermissionTo(['ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes']);
-
-        $rolSecretaria = Role::create(['name' => 'secretaria']);
-        $rolSecretaria->givePermissionTo(['ver pacientes', 'crear pacientes', 'editar pacientes', 'ver expedientes', 'ver ingresos']);
-
-        $rolAdmin = Role::create(['name' => 'admin']);
+        // Crear roles y asignar permisos 
+        $rolAdmin = Role::create(['name' => 'Admin']);
         $rolAdmin->givePermissionTo(Permission::all());
+
+        $rolDoctor = Role::create(['name' => 'Doctor']);
+        $rolDoctor->givePermissionTo(['ver dashboard','ver pacientes', 'ver expedientes', 'ver ingresos']);
+
+        $rolSecretaria = Role::create(['name' => 'Secretaria']);
+        $rolSecretaria->givePermissionTo(['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
+
+        $rolUsuario = Role::create(['name'=> 'Usuario']);
+       
     }
 }

@@ -67,7 +67,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->familiar_a_cargo }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->numero_familiar }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->proxima_cita }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->hora_cita }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->hora_proxima_cita}}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->created_at }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->fecha_registro }}</td>
                             <td class="px-6 py-4 whitespace-nowrap flex space-x-2">
