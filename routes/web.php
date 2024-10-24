@@ -17,7 +17,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             return redirect()->route('dashboard');
         }
         return redirect()->route('welcome');
-    })->name('check.role');
+            })->name('check.role');
 
     Route::get('/welcome', function () {
         return view('welcome');

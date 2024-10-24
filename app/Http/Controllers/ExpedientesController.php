@@ -48,6 +48,7 @@ use Carbon\Carbon;
             'hora_proxima_cita' => 'nullable|date_format:H:i', // Añade esta línea
             'fecha_registro' => 'required|date',
         ]);
+        $validatedData['fecha_registro'] = Carbon::parse($validatedData['fecha_registro'])->format('Y-m-d');
 
         Expediente::create($request->all());
 
@@ -67,8 +68,8 @@ use Carbon\Carbon;
             'diagnostico' => 'required|string',
             'tratamiento' => 'required|string',
             'antecedentes' => 'nullable|string',
-            'familiar' => 'nullable|string|max:255',
-            'familiarnumero' => 'nullable|string|max:20',
+            'familiar_a_cargo' => 'nullable|string|max:255',
+            'numero_familiar' => 'nullable|string|max:20',
             'proximacita' => 'nullable|date',
             'hora_proxima_cita' => 'nullable|date_format:H:i', // Añade esta línea
         ]);
