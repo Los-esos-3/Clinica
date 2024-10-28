@@ -105,6 +105,8 @@ Route::group(['middleware' => ['auth','permission:ver dashboard']], function(){
    Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 });
 
+Route::resource('users', RoleController::class);
+
 Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
     Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
 });
