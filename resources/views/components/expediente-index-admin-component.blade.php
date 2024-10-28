@@ -30,7 +30,7 @@
 
                 <li class="ml-1">
                     <a href="{{route('Expedientes.admin')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                        EXPEDIENTES
+                        VISiTAS
                     </a>
                 </li>
 
@@ -58,7 +58,7 @@
             <div class="flex space-x-4">
                 <a href="{{ route('dashboard') }}" class="hover:underline">Calendario</a>
                 <a href="{{ route('Pacientes') }}" class="hover:underline">Pacientes</a>
-                <a href="{{ route('Expedientes.index') }}" class="hover:underline">Expedientes</a>
+                <a href="{{ route('Expedientes.index') }}" class="hover:underline">Visitas</a>
                 <a href="{{ route('ingresos.index') }}" class="hover:underline">Ingresos</a>
             </div>
             <div class="relative">
