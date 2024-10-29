@@ -10,6 +10,7 @@ use App\Http\Middleware\CheckUserRole;
 use App\Http\Controllers\IngresoController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\EmpresaController;
 
 //Redireccion para usuarios sin rol
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -120,3 +121,8 @@ Route::get('roles', [RoleController::class, 'index']);
 });
 
 Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
+
+
+Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('PacientesView');
+
+Route::resource('empresas', EmpresaController::class);
