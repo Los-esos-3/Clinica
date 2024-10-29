@@ -210,12 +210,12 @@
                             
                             <!-- Email -->
                             <div class="flex items-center space-x-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
-                                <div class="bg-indigo-100 p-3 rounded-full">
+                                <div class="bg-indigo-100 p-3 rounded-full flex-shrink-0">
                                     <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                     </svg>
                                 </div>
-                                <span class="text-gray-700 font-medium">{{ $empresa->email }}</span>
+                                <span class="text-gray-700 font-medium break-all">{{ $empresa->email }}</span>
                             </div>
                         </div>
                         

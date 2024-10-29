@@ -34,10 +34,11 @@ header {
     color: #fff;
     text-align: left;
     margin-left: 20px;
+    transition: transform 0.3s ease;
 }
 
 .header-title .kaiser {
-    font-size: 36px;
+    font-size: 28px;
     font-weight: bold;
     color: #fff;
     text-transform: uppercase;
@@ -46,13 +47,6 @@ header {
     display: block;
 }
 
-.header-title .subtext {
-    font-size: 20px;
-    font-style: italic;
-    color:  #fff;
-    margin-top: 5px;
-    display: block;
-}
 header nav ul {
     list-style-type: none;
     padding: 0;
@@ -146,7 +140,7 @@ header nav ul li svg:hover {
 
 
 .content {
-    background-image: url('images/DeWatermark.ai_1729538709666.png');
+    background-image: url('images/nuevaimagen.jpg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -626,9 +620,13 @@ header nav ul li svg:hover {
 </head>
 <body>
     <header>
+        @php
+            $empresa = \App\Models\Empresa::first();
+            $nombreEmpresa = $empresa ? $empresa->nombre : 'KAISER';
+        @endphp
+        
         <div class="header-title">
-            <span class="kaiser">KAISER</span>
-            <span class="subtext">Clínica de Salud</span>
+            <span class="kaiser">{{ $nombreEmpresa }}</span>
         </div>
         <nav>
             <ul>
@@ -693,7 +691,12 @@ header nav ul li svg:hover {
 
 
     <div class="content">
-        <h1>Bienvenido Kaiser Clinica de Salud</h1>
+        @php
+            $empresa = \App\Models\Empresa::first();
+            $nombreEmpresa = $empresa ? $empresa->nombre : 'Kaiser Clinica de Salud';
+        @endphp
+        
+        <h1>Bienvenido a {{ $nombreEmpresa }}</h1>
         <p>Ciencia y cuidado medicina de calidad para un futuro saludable.</p>
     </div>
 
@@ -792,16 +795,21 @@ header nav ul li svg:hover {
             </div>
             <div class="footer-column">
                 <h4>Horario de atención</h4>
-                <p>Lunes: 9:00 AM - 5:00 PM</p>
-                <p>Martes: 9:00 AM - 5:00 PM</p>
-                <p>Miércoles: 9:00 AM - 5:00 PM</p>
-                <p>Jueves: 9:00 AM - 5:00 PM</p>
-                <p>Viernes: 9:00 AM - 5:00 PM</p>
-                <p>Sábados: 10:00 AM - 3:00 PM</p>
-                <p>Domingos: Cerrado</p>
+                @php
+                    $empresa = \App\Models\Empresa::first();
+                @endphp
+                
+                @if($empresa && $empresa->horario)
+                    <p>{{ $empresa->horario }}</p>
+                @else
+                    <p>Horario no disponible</p>
+                @endif
             </div>
             <div class="footer-column">
                 <h4>Contáctenos</h4>
+                @php
+                    $empresa = \App\Models\Empresa::first();
+                @endphp
                 <ul>
                     <li>
                         <a href="https://www.google.com.mx/maps/place/Kaizen+Business+Training/@25.8694126,-97.5038464,19z/data=!4m6!3m5!1s0x866feb74305d47a3:0x5ceb7d0b261d15d7!8m2!3d25.8694124!4d-97.5033911!16s%2Fg%2F11jzkyh2cx?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D" target="_blank">
@@ -812,20 +820,28 @@ header nav ul li svg:hover {
                         </a>
                     </li>
                     <li>
-                        <a href="https://wa.me/8683671279" target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
-                                <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
-                            </svg>
-                            8683-671279
-                        </a>
+                        @if($empresa && $empresa->telefono)
+                            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $empresa->telefono) }}" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
+                                    <path d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z"/>
+                                </svg>
+                                {{ $empresa->telefono }}
+                            </a>
+                        @else
+                            <span>Teléfono no disponible</span>
+                        @endif
                     </li>
                     <li>
-                        <a href="https://mail.google.com/mail/u/0/#inbox?compose=new&to=esaprtano.gamer04@gmail.com" target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
-                                <path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z"/>
-                            </svg>
-                            espartano.gamer04@gmail.com
-                        </a>
+                        @if($empresa && $empresa->email)
+                            <a href="mailto:{{ $empresa->email }}" target="_blank">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22" height="22" style="vertical-align: middle; margin-right: 8px;">
+                                    <path d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z"/>
+                                </svg>
+                                {{ $empresa->email }}
+                            </a>
+                        @else
+                            <span>Correo no disponible</span>
+                        @endif
                     </li>
                 </ul>
                 <div class="card">
