@@ -19,7 +19,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
             return redirect()->route('dashboard');
         }
         return redirect()->route('welcome');
-            })->name('check.role');
+            })->name('welcome');
 
     Route::get('/welcome', function () {
         return view('welcome');
@@ -53,6 +53,7 @@ Route::get('/contactenos', function () {
 Route::middleware(['auth', 'role:Secretaria'])->group(function () {
 
 });
+
 Route::resource('ingresos', IngresoController::class);
 Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
 Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
@@ -83,7 +84,7 @@ Route::middleware(['auth', 'role:Doctor'])->group(function () {
  Route::resource('Pacientes', controller: ClinicaController::class);
 //Rutas de Admin
 Route::middleware(['auth', 'role:Admin'])->group(function () {
-    
+    route::get('roles',[RoleController::class, 'index'])->name('roles');
 });
 
 Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('PacientesView');
@@ -97,27 +98,29 @@ Route::resource('ingresos', IngresoController::class);
     Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
     Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');
+
+
+
+//Middleware para permisos
 Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function () {
     Route::get('/pacientes', [ClinicaController::class, 'index'])->name('Pacientes');
 });
 
 Route::group(['middleware' => ['auth','permission:ver dashboard']], function(){
    return view('dashboard');
-   Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
 });
-
 Route::resource('users', RoleController::class);
 
 Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
     Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
 });
 
-Route::group(['middleware' => ['auth', 'permission:ver ingresos']], function () {
+Route::group(['middleware' => ['auth','permission:ver ingresos']], function () {
     Route::get('/ingresos', [IngresoController::class, 'index'])->name('ingresos.index');
 });
 
 Route::group(['middleware'=> ['auth', 'permission:ver roles']], function(){
-Route::get('roles', [RoleController::class, 'index']);
+Route::get('roles', [RoleController::class, 'index'])->name('roles');
 });
 
 Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
