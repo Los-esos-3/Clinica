@@ -83,107 +83,90 @@
             </div>
         </div>
     </nav>
+    <div class="flex items-center justify-between bg-gray-300 p-8 mb-4 border">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            {{ __('Pacientes') }}
+        </h2>
+        
+        <form {{-- action="{{ route('Pacientes.index') }}" method="GET" --}} class="flex items-center mb-4">
+            <input type="text" name="search" placeholder="Buscar Paciente..." class="border rounded-l px-4 py-2" style="width: 300px;">
+            <button type="submit" class="bg-blue-500 text-white rounded-r px-4 py-2">Buscar</button>
+        </form>
+
+        <a href="{{route('Pacientes.create')}}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+            <button>
+            Agregar Paciente
+        </button>
+    </a>
+    </div>
     <!-- Vista Crud de pacientes -->
     <div class="py-12">
         <div class="mx-auto max-w-80% sm:px-6 lg:px-8">
             <div class="overflow-hidden shadow-md sm:rounded-lg">
                 <div class="bg-white border-b border-gray-200 dark:bg-gray-300 dark:border-gray-600">
-                    <div class="overflow-x-auto"> <!-- Permite el desplazamiento horizontal -->
+                    <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50 dark:bg-gray-400">
                                 <tr>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Nombre del Paciente</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Número de Teléfono</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Fecha de Nacimiento</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Edad</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Dirección</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Género</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Estado Civil</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Fecha de Registro</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Tipo de Sangre</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Ocupación</th>
-                                    <th
-                                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">
-                                        Acciones</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Datos del Paciente</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Expediente</th>
+                                    <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600">
                                 @foreach ($pacientes as $paciente)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->nombre }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->telefono }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->fecha_nacimiento }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->edad }}</td>
-                                        <td class="px-6 py-4 break-words whitespace-normal">{{ $paciente->direccion }}
+                                        <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                                            <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                                            <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                                            <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->genero }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->estado_civil }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->fecha_registro }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->tipo_sangre }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->ocupacion }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">
-                                            <button
-                                                class="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-700"
-                                                onclick="toggleModal('modal-id-{{ $paciente->id }}')">
-                                                Ver
-                                            </button>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                                            @if($paciente->expediente)
+                                                <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor }}</p>
+                                                <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
+                                            @else
+                                                <p class="text-red-500">No hay expediente disponible.</p>
+                                            @endif
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
+                                            <div class="flex gap-2">
+                                                <div class="flex gap-2">
+                                                    <x-action-buttons 
+                                                    :editRoute="route('Pacientes.edit', $paciente->id)" 
+                                                    :deleteRoute="route('Pacientes.destroy', $paciente->id)" 
+                                                />
+                                                </div>
+                                                <button class="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-700" onclick="toggleModal('modal-id-{{ $paciente->id }}')">Ver Más</button>
+                                            </div>
                                         </td>
                                     </tr>
 
                                     <!-- Modal para cada paciente -->
-                                    <div id="modal-id-{{ $paciente->id }}"
-                                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                                        <div class="flex flex-col w-4/5 max-w-5xl bg-white rounded-lg shadow-lg">
-                                            <div class="flex p-8">
+                                    <div id="modal-id-{{ $paciente->id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                        <div class="w-3/4 max-w-2xl bg-white rounded-lg shadow-lg">
+                                            <div class="flex p-4">
                                                 <!-- Sección de datos del paciente -->
-                                                <div class="w-1/2">
-                                                    <h2 class="text-2xl font-bold mb-6">Datos del Paciente</h2>
-                                                    <p class="mb-4"><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
-                                                    <p class="mb-4"><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
-                                                    <p class="mb-4"><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
-                                                    <p class="mb-4"><strong>Edad:</strong> {{ $paciente->edad }}</p>
-                                                    <p class="mb-4"><strong>Dirección:</strong> {{ $paciente->direccion }}</p>
-                                                    <p class="mb-4"><strong>Género:</strong> {{ $paciente->genero }}</p>
-                                                    <p class="mb-4"><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
+                                                <div class="w-1/2 pr-2 border-r">
+                                                    <h2 class="text-xl font-bold mb-4">Datos del Paciente</h2>
+                                                    <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                                                    <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                                                    <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
+                                                    <p><strong>Edad:</strong> {{ $paciente->edad }}</p>
+                                                    <p><strong>Dirección:</strong> {{ $paciente->direccion }}</p>
+                                                    <p><strong>Género:</strong> {{ $paciente->genero }}</p>
+                                                    <p><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
                                                 </div>
 
-                                                <!-- Línea divisoria vertical -->
-                                                <div class="border-r border-gray-300"></div>
-
                                                 <!-- Sección de expediente -->
-                                                <div class="w-1/2 pl-8">
-                                                    <h2 class="text-2xl font-bold mb-6">Expediente de {{ $paciente->nombre }}</h2>
+                                                <div class="w-1/2 pl-2">
+                                                    <h2 class="text-xl font-bold mb-4">Expediente de {{ $paciente->nombre }}</h2>
                                                     @if($paciente->expediente)
-                                                        <p class="mb-4"><strong>Doctor:</strong> {{ $paciente->expediente->doctor }}</p>
-                                                        <p class="mb-4"><strong>Especialidad:</strong> {{ $paciente->expediente->especialidad }}</p>
-                                                        <p class="mb-4"><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
-                                                        <p class="mb-4"><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
-                                                        <p class="mb-4"><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
-                                                        <p class="mb-4"><strong>Familiar a cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
-                                                        <p class="mb-4"><strong>Número del familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
-                                                        <p class="mb-4"><strong>Próxima cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
-                                                        <p class="mb-4"><strong>Hora de la cita:</strong> {{ \Carbon\Carbon::parse($paciente->expediente->hora_proxima_cita)->format('h:i A') }}</p>
-                                                        <p class="mb-4"><strong>Fecha de registro:</strong> {{ $paciente->expediente->fecha_registro }}</p>
+                                                        <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor }}</p>
+                                                        <p><strong>Especialidad:</strong> {{ $paciente->expediente->especialidad }}</p>
+                                                        <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
+                                                        <p><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
+                                                        <p><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
                                                     @else
                                                         <p class="text-red-500">No se encontró un expediente para este paciente.</p>
                                                     @endif
@@ -191,11 +174,9 @@
                                             </div>
                                             <!-- Botón para cerrar el modal -->
                                             <div class="flex justify-center p-4 bg-gray-100 rounded-b-lg">
-                                                <button class="px-6 py-3 text-white bg-red-600 rounded hover:bg-red-700"
-                                                    onclick="toggleModal('modal-id-{{ $paciente->id }}')">Cerrar</button>
+                                                <button class="px-6 py-2 text-white bg-red-600 rounded hover:bg-red-700" onclick="toggleModal('modal-id-{{ $paciente->id }}')">Cerrar</button>
                                             </div>
                                         </div>
-                                    </div>
                                     </div>
                                 @endforeach
                             </tbody>

@@ -134,7 +134,7 @@
             <a href="{{ route('Expedientes.create') }}" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Agregar Expediente</a>
         </div>
         <div class="bg-white shadow-md rounded overflow-auto">
-            <table class="min-w-full">
+            <table class="min-w-full">  
                 <thead class="bg-gray-200">
                     <tr>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Paciente</th>

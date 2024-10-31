@@ -82,3 +82,19 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Obtener la fecha actual
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0'); // Día
+        const month = String(today.getMonth() + 1).padStart(2, '0'); // Mes (0-11)
+        const year = today.getFullYear(); // Año
+
+        // Formatear la fecha en YYYY-MM-DD
+        const formattedDate = `${year}-${month}-${day}`;
+
+        // Asignar la fecha al campo de fecha
+        document.getElementById('fecha_registro').value = formattedDate;
+    });
+</script>
