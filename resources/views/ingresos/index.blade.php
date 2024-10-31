@@ -16,7 +16,11 @@
                                         DASHBOARD
                                     </a>
                                 </li>
-                                
+                                <li>
+                                    <a href="{{ route('doctores.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        DOCTORES
+                                    </a>
+                                </li>
                                 <li class="ml-1">
                                     <a href="{{route('Pacientes')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                         PACIENTES
@@ -37,6 +41,11 @@
                                 <li>
                                     <a  class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                         ROLES
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('empresas.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        EMPRESA
                                     </a>
                                 </li>
                             </ul>

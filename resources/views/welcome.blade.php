@@ -630,7 +630,6 @@ header nav ul li svg:hover {
         </div>
         <nav>
             <ul>
-                <li><a href="{{url('/Farmacia')}}">Farmacia</a></li>
                 <li><a href="{{ url('/contactenos') }}">Contáctenos</a></li>
 
                 @if (Route::has('login'))
@@ -693,7 +692,7 @@ header nav ul li svg:hover {
     <div class="content">
         @php
             $empresa = \App\Models\Empresa::first();
-            $nombreEmpresa = $empresa ? $empresa->nombre : 'Kaiser Clinica de Salud';
+            $nombreEmpresa = $empresa ? $empresa->nombre : 'Kaiser';
         @endphp
         
         <h1>Bienvenido a {{ $nombreEmpresa }}</h1>
