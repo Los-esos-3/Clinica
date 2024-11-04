@@ -33,7 +33,7 @@ class DoctoresController extends Controller
             'telefono' => 'required|string|max:15',
             'email' => 'required|email|unique:doctores',
             'domicilio' => 'required|string',
-            'nacionalidad' => 'required|string',
+            'nacionalidad' => 'required|string' ,
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'especialidad_medica' => 'required|string',
             'universidad' => 'required|string',
@@ -61,7 +61,15 @@ class DoctoresController extends Controller
             ->with('success', 'Doctor registrado exitosamente.');
     }
 
-    public function edit(Doctores $doctor)
+    public function edit($id)
+   {
+       $doctor = Doctores::find($id);
+       if (!$doctor) {
+           return redirect()->route('doctores.index')->with('error', 'Doctor no encontrado.');
+       }
+       return view('doctores.edit', compact('doctor'));
+   }    
+    public function destroy($id)
     {
         return view('doctores.edit', compact('doctor'));
     }
@@ -104,11 +112,5 @@ class DoctoresController extends Controller
         return redirect()->route('doctores.index')
             ->with('success', 'Información del doctor actualizada exitosamente.');
     }
-
-    public function destroy($id)
-    {
-        $doctor = Doctores::findOrFail($id);
-        $doctor->delete();
-        return redirect()->route('doctores.index');
-    }
+    
 }
