@@ -84,11 +84,11 @@
         </div>
     </nav>
     <div class="flex items-center justify-between bg-gray-300 p-2 mb-6 border">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+        <h2 class="text-xl pt-1.5 font-semibold leading-tight text-gray-800" >
             {{ __('Pacientes') }}
         </h2>
         
-        <form {{-- action="{{ route('Expedientes.index') }}" method="GET" --}}  class="flex items-center mb-4">
+        <form {{-- action="{{ route('Expedientes.index') }}" method="GET" --}}  class="flex items-center mb-1">
             <input type="text" name="search" placeholder="Buscar Paciente..." class="border rounded-l px-4 py-2" style="width: 300px;">
             <button type="submit" class="bg-blue-500 text-white rounded-r px-4 py-2">Buscar</button>
         </form>
