@@ -83,7 +83,7 @@
             </div>
         </div>
     </nav>
-    <div class="flex items-center justify-between bg-gray-300 p-8 mb-4 border">
+    <div class="flex items-center justify-between bg-gray-300 p-2 mb-6 border">
         <h2 class="text-xl font-semibold leading-tight text-gray-800">
             {{ __('Pacientes') }}
         </h2>
