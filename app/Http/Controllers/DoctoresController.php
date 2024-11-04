@@ -105,33 +105,10 @@ class DoctoresController extends Controller
             ->with('success', 'Información del doctor actualizada exitosamente.');
     }
 
-    public function destroy(Doctores $doctor)
+    public function destroy($id)
     {
-        try {
-            // Primero verificamos que el doctor existe
-            if (!$doctor) {
-                return redirect()->route('doctores.index')
-                    ->with('error', 'Doctor no encontrado.');
-            }
-
-            // Eliminamos la foto si existe
-            if ($doctor->foto_perfil) {
-                Storage::disk('public')->delete($doctor->foto_perfil);
-            }
-            
-            // Eliminamos el doctor
-            if ($doctor->delete()) {
-                return redirect()->route('doctores.index')
-                    ->with('success', 'Doctor eliminado exitosamente.');
-            }
-            
-            return redirect()->route('doctores.index')
-                ->with('error', 'No se pudo eliminar el doctor.');
-                
-        } catch (\Exception $e) {
-            \Log::error('Error al eliminar doctor: ' . $e->getMessage());
-            return redirect()->route('doctores.index')
-                ->with('error', 'Error al eliminar el doctor: ' . $e->getMessage());
-        }
+        $doctor = Doctores::findOrFail($id);
+        $doctor->delete();
+        return redirect()->route('doctores.index');
     }
 }

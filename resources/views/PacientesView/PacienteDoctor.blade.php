@@ -167,6 +167,11 @@
                                                         <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
                                                         <p><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
                                                         <p><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
+                                                        <p><strong>Familiar a cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
+                                                        <p><strong>Número de familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
+                                                        <p><strong>Próxima cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
+                                                        <p><strong>Hora de la próxima cita:</strong> {{ $paciente->expediente->hora_proxima_cita }}</p>
+                                                        <p><strong>Fecha de registro:</strong> {{ $paciente->expediente->fecha_registro }}</p>
                                                     @else
                                                         <p class="text-red-500">No se encontró un expediente para este paciente.</p>
                                                     @endif
