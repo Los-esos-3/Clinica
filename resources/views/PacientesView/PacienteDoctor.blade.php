@@ -88,7 +88,7 @@
             {{ __('Pacientes') }}
         </h2>
         
-        <form {{-- action="{{ route('Pacientes.index') }}" method="GET" --}} class="flex items-center mb-4">
+        <form {{-- action="{{ route('Expedientes.index') }}" method="GET" --}}  class="flex items-center mb-4">
             <input type="text" name="search" placeholder="Buscar Paciente..." class="border rounded-l px-4 py-2" style="width: 300px;">
             <button type="submit" class="bg-blue-500 text-white rounded-r px-4 py-2">Buscar</button>
         </form>
@@ -127,6 +127,9 @@
                                                 <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
                                             @else
                                                 <p class="text-red-500">No hay expediente disponible.</p>
+                                                <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}" class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                                    Agregar uno
+                                                </a>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
@@ -156,6 +159,9 @@
                                                     <p><strong>Dirección:</strong> {{ $paciente->direccion }}</p>
                                                     <p><strong>Género:</strong> {{ $paciente->genero }}</p>
                                                     <p><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
+                                                    <p><strong>Tipo de sangre:</strong> {{ $paciente->tipo_sangre }}</p>
+                                                    <p><strong>ocupacion:</strong> {{ $paciente->ocupacion }}</p>
+
                                                 </div>
 
                                                 <!-- Sección de expediente -->
@@ -167,8 +173,14 @@
                                                         <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
                                                         <p><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
                                                         <p><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
+                                                        <p><strong>Familiar a Cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
+                                                        <p><strong>Número Familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
+                                                        <p><strong>Próxima Cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
+                                                        <p><strong>Hora Próxima Cita:</strong> {{ $paciente->expediente->hora_proxima_cita }}</p>
+                                                        <p><strong>Fecha de Registro:</strong> {{ $paciente->expediente->fecha_registro }}</p>
                                                     @else
                                                         <p class="text-red-500">No se encontró un expediente para este paciente.</p>
+                                                      
                                                     @endif
                                                 </div>
                                             </div>

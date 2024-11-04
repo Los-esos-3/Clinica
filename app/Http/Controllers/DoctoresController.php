@@ -33,7 +33,7 @@ class DoctoresController extends Controller
             'telefono' => 'required|string|max:15',
             'email' => 'required|email|unique:doctores',
             'domicilio' => 'required|string',
-            'nacionalidad' => 'required|string',
+            'nacionalidad' => 'required|string' ,
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'especialidad_medica' => 'required|string',
             'universidad' => 'required|string',
@@ -61,77 +61,60 @@ class DoctoresController extends Controller
             ->with('success', 'Doctor registrado exitosamente.');
     }
 
-    public function edit(Doctores $doctor)
+    public function edit($id)
+   {
+       $doctor = Doctores::find($id);
+       if (!$doctor) {
+           return redirect()->route('doctores.index')->with('error', 'Doctor no encontrado.');
+       }
+       return view('doctores.edit', compact('doctor'));
+   }    
+
+   public function update(Request $request, Doctores $doctor)
+   {
+       $validated = $request->validate([
+           'nombre_completo' => 'required|string|max:255',
+           'fecha_nacimiento' => 'required|date',
+           'genero' => 'required|in:Masculino,Femenino,Otro',
+           'telefono' => 'required|string|max:15',
+           'email' => 'required|email|unique:doctores,email,' . $doctor->id,
+           'domicilio' => 'required|string',
+           'nacionalidad' => 'required|string',
+           'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+           'especialidad_medica' => 'required|string',
+           'universidad' => 'required|string',
+           'titulo' => 'required|string',
+           'año_graduacion' => 'required|digits:4',
+           'años_experiencia' => 'required|integer',
+           'hospitales_previos' => 'nullable|string',
+           'idiomas' => 'required|string',
+           'contacto_emergencia_nombre' => 'required|string',
+           'contacto_emergencia_relacion' => 'required|string',
+           'contacto_emergencia_telefono' => 'required|string',
+           'area_departamento' => 'required|string'
+       ]);
+   
+       if ($request->hasFile('foto_perfil')) {
+           // Eliminar foto anterior si existe
+           if ($doctor->foto_perfil) {
+               Storage::disk('public')->delete($doctor->foto_perfil);
+           }
+           $path = $request->file('foto_perfil')->store('doctores', 'public');
+           $validated['foto_perfil'] = $path;
+       }
+   
+       $doctor->update($validated);
+   
+       return redirect()->route('doctores.index')
+           ->with('success', 'Información del doctor actualizada exitosamente.');
+   }
+
+    public function destroy($id)
     {
-        return view('doctores.edit', compact('doctor'));
+        $doctor = Doctores::findOrFail($id);
+        $doctor->delete();
+    
+        return redirect()->route('doctores.index')->with('success', 'Doctor eliminado correctamente');
     }
-
-    public function update(Request $request, Doctores $doctor)
-    {
-        $validated = $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'fecha_nacimiento' => 'required|date',
-            'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'required|string|max:15',
-            'email' => 'required|email|unique:doctores,email,' . $doctor->id,
-            'domicilio' => 'required|string',
-            'nacionalidad' => 'required|string',
-            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'especialidad_medica' => 'required|string',
-            'universidad' => 'required|string',
-            'titulo' => 'required|string',
-            'año_graduacion' => 'required|digits:4',
-            'años_experiencia' => 'required|integer',
-            'hospitales_previos' => 'nullable|string',
-            'idiomas' => 'required|string',
-            'contacto_emergencia_nombre' => 'required|string',
-            'contacto_emergencia_relacion' => 'required|string',
-            'contacto_emergencia_telefono' => 'required|string',
-            'area_departamento' => 'required|string'
-        ]);
-
-        if ($request->hasFile('foto_perfil')) {
-            // Eliminar foto anterior si existe
-            if ($doctor->foto_perfil) {
-                Storage::disk('public')->delete($doctor->foto_perfil);
-            }
-            $path = $request->file('foto_perfil')->store('doctores', 'public');
-            $validated['foto_perfil'] = $path;
-        }
-
-        $doctor->update($validated);
-
-        return redirect()->route('doctores.index')
-            ->with('success', 'Información del doctor actualizada exitosamente.');
-    }
-
-    public function destroy(Doctores $doctor)
-    {
-        try {
-            // Primero verificamos que el doctor existe
-            if (!$doctor) {
-                return redirect()->route('doctores.index')
-                    ->with('error', 'Doctor no encontrado.');
-            }
-
-            // Eliminamos la foto si existe
-            if ($doctor->foto_perfil) {
-                Storage::disk('public')->delete($doctor->foto_perfil);
-            }
-            
-            // Eliminamos el doctor
-            if ($doctor->delete()) {
-                return redirect()->route('doctores.index')
-                    ->with('success', 'Doctor eliminado exitosamente.');
-            }
-            
-            return redirect()->route('doctores.index')
-                ->with('error', 'No se pudo eliminar el doctor.');
-                
-        } catch (\Exception $e) {
-            \Log::error('Error al eliminar doctor: ' . $e->getMessage());
-            return redirect()->route('doctores.index')
-                ->with('error', 'Error al eliminar el doctor: ' . $e->getMessage());
-        }
-    }
+    
 }
