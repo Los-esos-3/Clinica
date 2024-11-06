@@ -57,26 +57,22 @@ class DoctoresController extends Controller
 
         Doctores::create($validated);
 
-        return view('doctores.index');
+        return redirect()->route('doctores.index')
+            ->with('success', 'Doctor registrado exitosamente.');
     }
 
     public function edit($id)
-   {
-       $doctor = Doctores::find($id);
-       if (!$doctor) {
-           return redirect()->route('doctores.index')->with('error', 'Doctor no encontrado.');
-       }
-       return view('doctores.edit', compact('doctor'));
-   }    
-    public function destroy($id)
     {
         $doctor = Doctores::find($id);
-        $doctor->delete();
-        return view('doctores.index');
-    }
+        if (!$doctor) {
+            return redirect()->route('doctores.index')->with('error', 'Doctor no encontrado.');
+        }
+        return view('doctores.edit', compact('doctor'));
+    }    
 
-    public function update(Request $request, Doctores $doctor)
+    public function update(Request $request, $id)
     {
+        $doctor = Doctores::findOrFail($id);
         $validated = $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
@@ -112,6 +108,14 @@ class DoctoresController extends Controller
 
         return redirect()->route('doctores.index')
             ->with('success', 'Información del doctor actualizada exitosamente.');
+    }
+
+    public function destroy($id)
+    {
+        $doctor = Doctores::findOrFail($id);
+        $doctor->delete();
+    
+        return redirect()->route('doctores.index')->with('success', 'Doctor eliminado correctamente');
     }
     
 }
