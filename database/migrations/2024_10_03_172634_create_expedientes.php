@@ -14,17 +14,20 @@ return new class extends Migration
         Schema::create('expedientes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('paciente_id');
-            $table->string('doctor');
-            $table->string('especialidad');
+            $table->unsignedBigInteger('doctor_id');
+            $table->string('especialidad'); 
             $table->string('diagnostico');
             $table->string('tratamiento');
             $table->text('antecedentes')->nullable();
             $table->string('familiar_a_cargo')->nullable();
             $table->string('numero_familiar')->nullable();
-                $table->date('proxima_cita')->nullable();
+            $table->date('proxima_cita')->nullable();
             $table->time('hora_proxima_cita')->nullable();
-            $table->date('fecha_registro'); // Asegúrate de que esta línea esté presente
+            $table->date('fecha_registro');
             $table->timestamps();
+
+            $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('cascade');
+            $table->foreign('doctor_id')->references('id')->on('doctores')->onDelete('cascade');
         });
     }
 
