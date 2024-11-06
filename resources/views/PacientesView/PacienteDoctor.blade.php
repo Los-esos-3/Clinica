@@ -83,12 +83,12 @@
             </div>
         </div>
     </nav>
-    <div class="flex items-center justify-between bg-gray-300 p-8 mb-4 border">
-        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+    <div class="flex items-center justify-between bg-gray-300 p-2 mb-6 border">
+        <h2 class="text-xl pt-1.5 font-semibold leading-tight text-gray-800" >
             {{ __('Pacientes') }}
         </h2>
         
-        <form {{-- action="{{ route('Expedientes.index') }}" method="GET" --}}  class="flex items-center mb-4">
+        <form {{-- action="{{ route('Expedientes.index') }}" method="GET" --}}  class="flex items-center mb-1">
             <input type="text" name="search" placeholder="Buscar Paciente..." class="border rounded-l px-4 py-2" style="width: 300px;">
             <button type="submit" class="bg-blue-500 text-white rounded-r px-4 py-2">Buscar</button>
         </form>
@@ -173,6 +173,11 @@
                                                         <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
                                                         <p><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
                                                         <p><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
+                                                        <p><strong>Familiar a cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
+                                                        <p><strong>Número de familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
+                                                        <p><strong>Próxima cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
+                                                        <p><strong>Hora de la próxima cita:</strong> {{ $paciente->expediente->hora_proxima_cita }}</p>
+                                                        <p><strong>Fecha de registro:</strong> {{ $paciente->expediente->fecha_registro }}</p>
                                                         <p><strong>Familiar a Cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
                                                         <p><strong>Número Familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
                                                         <p><strong>Próxima Cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
