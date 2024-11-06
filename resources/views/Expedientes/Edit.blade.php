@@ -14,13 +14,20 @@
                         @method('PUT')
 
                         <div class="mb-4">
-                            <label for="doctor" class="block text-sm font-medium text-gray-700">Doctor</label>
-                            <input type="text" name="doctor" id="doctor" value="{{ $expediente->doctor }}" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                            <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor</label>
+                            <select name="doctor_id" id="doctor_id" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                                <option value="">Seleccione un doctor</option>
+                                @foreach ($doctores as $doctor)
+                                    <option value="{{ $doctor->id }}" data-especialidad="{{ $doctor->especialidad }}" {{ $doctor->id == $expediente->doctor_id ? 'selected' : '' }}>
+                                        {{ $doctor->nombre }} - {{ $doctor->especialidad }}
+                                    </option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <div class="mb-4">
                             <label for="especialidad" class="block text-sm font-medium text-gray-700">Especialidad</label>
-                            <input type="text" name="especialidad" id="especialidad" value="{{ $expediente->especialidad }}" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <input type="text" name="especialidad" id="especialidad" value="{{ $expediente->especialidad_medica }}" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" readonly>
                         </div>
 
                         <div class="mb-4">
@@ -73,3 +80,21 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const doctorSelect = document.getElementById('doctor_id');
+        const especialidadInput = document.getElementById('especialidad');
+
+        // Rellenar el campo de especialidad al cargar la página
+        const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+        const especialidad = selectedOption.getAttribute('data-especialidad');
+        especialidadInput.value = especialidad; // Rellena el campo de especialidad
+
+        doctorSelect.addEventListener('change', function() {
+            const selectedOption = doctorSelect.options[doctorSelect.selectedIndex];
+            const especialidad = selectedOption.getAttribute('data-especialidad');
+            especialidadInput.value = especialidad; // Rellena el campo de especialidad
+        });
+    });
+</script>

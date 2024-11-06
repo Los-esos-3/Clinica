@@ -16,7 +16,7 @@
             .nav {
                 background-color: rgb(55, 65, 81,1) !important;
                 color: white;
-                padding: 1rem;
+                padding: 0.25rem;
                 display: block;
                 
             }
@@ -29,7 +29,7 @@
             }
             .nav-links {
                 display: flex;
-                gap: 1rem;
+                gap: 0.25rem;
             }
             .nav-links a {
                 color: white;

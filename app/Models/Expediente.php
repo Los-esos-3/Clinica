@@ -11,7 +11,7 @@ class Expediente extends Model
     use HasFactory;
     protected $fillable = [
         'paciente_id',
-        'doctor',
+        'doctor_id',
         'especialidad',
         'diagnostico',
         'tratamiento',
@@ -19,13 +19,18 @@ class Expediente extends Model
         'familiar_a_cargo',
         'numero_familiar',
         'proxima_cita',
-        'hora_proxima_cita', // Añade esta línea
+        'hora_proxima_cita', 
         'fecha_registro',
     ];
 
     public function paciente()
     {
         return $this->belongsTo(Paciente::class);
+    }
+
+    public function doctor()
+    {
+        return $this->belongsTo(Doctores::class, 'doctor_id');
     }
 
     public function getHoraProximaCitaFormateadaAttribute()
