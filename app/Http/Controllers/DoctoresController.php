@@ -57,8 +57,7 @@ class DoctoresController extends Controller
 
         Doctores::create($validated);
 
-        return redirect()->route('doctores.index')
-            ->with('success', 'Doctor registrado exitosamente.');
+        return view('doctores.index');
     }
 
     public function edit($id)
@@ -71,7 +70,9 @@ class DoctoresController extends Controller
    }    
     public function destroy($id)
     {
-        return view('doctores.edit', compact('doctor'));
+        $doctor = Doctores::find($id);
+        $doctor->delete();
+        return view('doctores.index');
     }
 
     public function update(Request $request, Doctores $doctor)
