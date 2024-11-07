@@ -132,3 +132,5 @@ Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pac
 Route::resource('empresas', EmpresaController::class);
 
 Route::resource('doctores', DoctoresController::class);
+
+Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
