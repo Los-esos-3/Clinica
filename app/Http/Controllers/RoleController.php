@@ -15,7 +15,7 @@ class RoleController extends Controller
 
     public function index()
     {
-        $this->authorize('ver roles'); // Verifica el permiso
+         // Verifica el permiso
         $roles = Role::all();
         $users = User::all(); // Obtén todos los usuarios
         $permissions = Permission::all(); //Obtener los permisos

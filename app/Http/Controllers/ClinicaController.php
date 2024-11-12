@@ -25,7 +25,7 @@ class ClinicaController extends Controller
         // Verificar si no se encontraron pacientes
         $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
 
-            return view('PacientesView.PacienteDoctor', compact('pacientes', 'noResultsMessage'));
+            return view('Pacientes.PacientesIndex', compact('pacientes', 'noResultsMessage'));
         }
 
     public function index()

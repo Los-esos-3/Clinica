@@ -85,9 +85,9 @@ Route::middleware(['auth', 'role:Doctor'])->group(function () {
  Route::resource('Pacientes', controller: ClinicaController::class);
 //Rutas de Admin
 Route::middleware(['auth', 'role:Admin'])->group(function () {
-    route::get('roles',[RoleController::class, 'index'])->name('roles');
+ 
 });
-
+   route::get('roles',[RoleController::class, 'index'])->name('roles');
 Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('PacientesView');
 
 Route::resource('ingresos', IngresoController::class);
@@ -121,9 +121,9 @@ Route::group(['middleware' => ['auth','permission:ver ingresos']], function () {
 });
 
 Route::group(['middleware'=> ['auth', 'permission:ver roles']], function(){
-Route::get('roles', [RoleController::class, 'index'])->name('roles');
-});
 
+});
+Route::get('roles', [RoleController::class, 'index'])->name('roles');
 Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
 
 
