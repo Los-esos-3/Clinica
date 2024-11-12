@@ -6,6 +6,8 @@
 
     <title>Laravel</title>
 
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
@@ -139,21 +141,6 @@ header nav ul li svg:hover {
 }
 
 
-.content {
-    background-image: url('images/nuevaimagen.jpg');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-    padding: 20px;
-    box-sizing: border-box;
-}
 
 .content h1 {
     font-size: 3rem;
@@ -260,9 +247,9 @@ header nav ul li svg:hover {
 
 .hero-content {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: row-reverse; /* Invierte el orden de los elementos */
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    justify-content: space-between; /* Espacia los elementos */
 }
 
 .hero-text {
@@ -272,23 +259,24 @@ header nav ul li svg:hover {
 
 .hero-text h2 {
     font-size: 36px;
-    color: #333;
+    color: #0A1B43;
     margin-bottom: 20px;
 }
 
 .hero-text p {
     font-size: 16px;
-    color: #555;
+    color: #3E5485;
     margin-bottom: 20px;
 }
 .hero-images {
     display: flex;
-    justify-content: space-between;
-    gap: 15px;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 10px; /* Espacio entre las imágenes */
 }
 .hero-images img {
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px #3a4f7c(0, 0, 0, 0.1);
     max-width: 100%;
     height: auto;
 }
@@ -320,7 +308,7 @@ header nav ul li svg:hover {
     gap: 20px;
 }
 .middle-image {
-  justify-content: center;
+    margin-top: 15px;
 }
 
     .features {
@@ -616,6 +604,86 @@ header nav ul li svg:hover {
         overflow-y: auto;
         max-height: 100vh;
     }
+    
+    .content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 25px;
+  gap: 20px;
+  margin-top: 0; /* Reduce el margen superior del contenedor */
+}
+
+.content-text h1 {
+  flex: 2; /* Hace que el texto ocupe más espacio */
+  text-align: left;
+  font-family: 'Lato', sans-serif; /* Tipografía moderna */
+  font-size: 2 rem; /* Tamaño del texto reducido */
+  line-height: 1.4; /* Espaciado entre líneas */
+  color: #0A1B43; /* Color del texto */
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  margin-top: 0; /* Reduce o elimina el margen superior */
+  padding: 20px; /* Espaciado interno */
+}
+.content-text h2 {
+  flex: 2; /* Hace que el texto ocupe más espacio */
+  text-align: left;
+  font-family: 'Lato', sans-serif; /* Tipografía moderna */
+  font-size: 1.3rem; /* Tamaño del texto reducido */
+  line-height: 1.4; /* Espaciado entre líneas */
+  color: #3E5485; /* Color del texto */
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  padding: 10px; /* Espaciado interno reducido */
+}
+
+.content-img {
+  flex: 1; /* Ajusta el espacio de la imagen */
+  display: flex;
+  justify-content: flex-end;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: row-reverse; /* Invierte el orden de los elementos */
+    align-items: center; /* Alinea los elementos verticalmente al centro */
+    justify-content: space-between; /* Espacia los elementos */
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 50%;
+}
+
+.hero-text h2 {
+    font-size: 36px;
+    color: #0A1B43;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 16px;
+    color: #3E5485;
+    margin-bottom: 20px;
+}
+.hero-images {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    gap: 10px; /* Espacio entre las imágenes */
+}
+.hero-images img {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px #3a4f7c(0, 0, 0, 0.1);
+    max-width: 100%;
+    height: auto;
+}
+.image-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
 </style>
 </head>
 <body>
@@ -690,39 +758,59 @@ header nav ul li svg:hover {
 
 
     <div class="content">
-        @php
-            $empresa = \App\Models\Empresa::first();
-            $nombreEmpresa = $empresa ? $empresa->nombre : 'Kaiser';
-        @endphp
-        
-        <h1>Bienvenido a {{ $nombreEmpresa }}</h1>
-        <p>Ciencia y cuidado medicina de calidad para un futuro saludable.</p>
-    </div>
+        <div class="content-text">
+          <h1>Bienvenido a nuestro software de expedientes médicos.</h1>
+          <h2>Optimiza la gestión de tus expedientes médicos con un software diseñado para simplificar procesos y mejorar la atención desde cualquier lugar.</h2>
+        </div>
+      
+        <div class="content-img">
+          <img src="{{ asset('images/Doctorviendolaptop.jpg') }}" alt="Doctor viendo una computadora" style="width: 550px; height: auto;">
+        </div>
+      </div>
+      
 
-    <section class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h2>Innovamos en Cuidados de Salud para Ti</h2>
-                    <p>Ofrecemos soluciones personalizadas que se adaptan a tus necesidades. Nuestra misión es proporcionar un servicio de salud de alta calidad, asegurando tu bienestar en todo momento.</p>
-                        <ul class="features-list">
-                            <li></i class="icon-check"> Tecnología de última generación</li>
-                            <li><i class="icon-check"></i> Tratamientos sin dolor</li>
-                            <li><i class="icon-check"></i> Especialistas capacitados</li>
-                        </ul>
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2 style="text-align: center">Innovamos en Nuestros expedientes clinicos</h2>
+                <p>Transforma la forma en que gestionas tus expedientes clínicos con nuestra solución digital avanzada. Simplificamos tus procesos, mejoramos la accesibilidad y garantizamos un manejo seguro y eficiente de la información médica, todo desde una plataforma centralizada..</p>
+                <ul class="features-list">
+                    <li><i class="icon-check"></i> Tecnología de última generación</li>
+                    <li><i class="icon-check"></i> Expedientes rapidos</li>
+                    <li><i class="icon-check"></i> Especialistas capacitados en nuestro cistema</li>
+                </ul>
+            </div>
+            <div class="hero-images">
+                <div class="image-column">
+                    <img src="images/Doctorarubia.jpg" alt="Doctora de pelo rubio" />
                 </div>
-                <div class="hero-images">
-                    <div class="image-column">
-                        <img src="images/enfermeraayudando.jpg" alt="Enfermera Ayudando" />
-                        <img src="images/doctorayudando.jpg" alt="Doctor Ayudando" />
-                    </div>
-                    <div class="image-column middle-image">
-                        <img src="images/doctorexplicando.jpg" alt="Doctor Explicando" />
-                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h2>Pasarás menos tiempo usando el Expediente Clínico Electrónico</h2>
+                <p>Kaizen Software es un sistema de gestión de expedientes clínicos que combina todas las funcionalidades esenciales con la potencia de la tecnología moderna. Es intuitivo, accesible desde cualquier dispositivo con conexión a internet y permite la creación, el envío y el intercambio de expedientes de manera eficiente. Con Kaizen Software, dedica más tiempo a tus pacientes y menos tiempo a la administración, facilitando el trabajo en equipo y la comunicación con tus compañeros o pacientes..</p>
+                <ul class="features-list">
+                </ul>
+            </div>
+            <div class="hero-images">
+                <div class="image-column">
+                    <img src="images/Chicadenaranja.jpg" alt="naranjachica" />
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 
 
 
@@ -737,10 +825,11 @@ header nav ul li svg:hover {
             </div>
             <div class="feature">
                 <div class="feature-content">
-                    <h3 class="feature-title">Servicios de Cuidado</h3>
-                    <p>Te ofrecemos una gama de servicios de cuidado para garantizar tu salud y bienestar.</p>
+                    <h3 class="feature-title">Servicios de Seguridad</h3>
+                    <p>Te ofrecemos una gama de servicios de segurdidad para tu infromacion.</p>
                 </div>
-                <img src="images/icons8-cuidado-50.png" alt="Icono de Expertos en Salud">
+                <img src="images/icons8-cuidado-50.png" alt="Icono de Computadora">
+
             </div>
             <div class="feature">
                 <div class="feature-content">
@@ -751,8 +840,8 @@ header nav ul li svg:hover {
             </div>
             <div class="feature">
                 <div class="feature-content">
-                    <h3 class="feature-title">Atención Médica de Calidad</h3>
-                    <p>Estamos comprometidos con brindarte atención médica de alta calidad y a la vanguardia.</p>
+                    <h3 class="feature-title">Atención ala Calidad</h3>
+                    <p>Estamos comprometidos con brindarte atención a cualquier problema que ocurra en nuestro Software.</p>
                 </div>
                 <img src="images/icons8-24-7-signo-abierto-64.png" alt="">
             </div>
