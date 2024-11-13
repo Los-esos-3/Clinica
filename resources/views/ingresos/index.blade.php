@@ -26,13 +26,6 @@
                                         PACIENTES
                                     </a>
                                 </li>
-
-                                <li class="ml-1">
-                                    <a href="{{route('Expedientes.admin')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                        EXPEDIENTES
-                                    </a>
-                                </li>
-
                                 <li class="ml-1">
                                     <a href="{{route('ingresos.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                         INGRESOS

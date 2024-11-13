@@ -1,4 +1,5 @@
-<style>
+<x-app-layout>
+    <style>
     /* ... (estilos existentes) ... */
     
     /* Estilos para la navegación */
@@ -182,76 +183,117 @@
 
  
 
- <div class="flex items-center justify-between bg-gray-300 p-8 mb-4 border">
+ <div class="flex items-center justify-between bg-gray-300 p-4 mb-2 border">
     <h2 class="text-xl font-semibold leading-tight text-gray-800">
         {{ __('Pacientes') }}
     </h2>
-
-    <a href="{{route('Pacientes.create')}}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+    <div class="flex items-center ml-2">
+        <div class="relative flex">
+            <input type="text" id="search" placeholder="Buscar paciente" class="border rounded-l px-2 py-1" style="width: 250px;" oninput="filterPatients()">
+            <button type="button" class="bg-blue-500 text-white rounded-r px-2 py-1 hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
+                    <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+    <a href="{{route('Pacientes.create')}}" class="px-2 py-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
         <button>
         Agregar Paciente
     </button>
 </a>
 </div>
 
-
- <div class="py-12">
-    <div class="mx-auto max-w-80% sm:px-6 lg:px-8">
-        <div class="overflow-hidden shadow-md sm:rounded-lg">
-            <div class="bg-white border-b border-gray-200 dark:bg-gray-300 dark:border-gray-600">
-                <div class="overflow-x-auto"> <!-- Permite el desplazamiento horizontal -->
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50 dark:bg-gray-400">
-                            <tr>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Nombre del Paciente</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Número de Teléfono</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Fecha de Nacimiento</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Edad</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Dirección</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Género</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Estado Civil</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Fecha de Registro</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Tipo de Sangre</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Ocupación</th>
-                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase dark:text-gray-800">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600">
-                            @foreach ($pacientes as $paciente)
-                                <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->nombre }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->telefono }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->fecha_nacimiento }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->edad }}</td>
-                                    <td class="px-6 py-4 break-words whitespace-normal">{{ $paciente->direccion }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->genero }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->estado_civil }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->fecha_registro }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->tipo_sangre }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $paciente->ocupacion }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="flex gap-2">
-                                            <x-action-buttons 
-                                            :editRoute="route('Pacientes.edit', $paciente->id)" 
-                                            :deleteRoute="route('Pacientes.destroy', $paciente->id)" 
-                                        />
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200" id="patientsTable">
+        <thead class="bg-gray-50 dark:bg-gray-400">
+            <tr>
+                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Datos del Paciente</th>
+                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Expediente</th>
+                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Acciones</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600">
+            @foreach ($pacientes as $paciente)
+                <tr class="patient-row">
+                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                        <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                        <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                        <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                        @if($paciente->expediente)
+                            <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
+                            <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
+                        @else
+                            <p class="text-red-500">No hay expediente disponible.</p>
+                            <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}" class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                Agregar uno
+                            </a>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
+                        <div class="flex gap-2">
+                            <div class="flex gap-2">
+                                <x-action-buttons 
+                                :editRoute="route('Pacientes.edit', $paciente->id)" 
+                                :deleteRoute="route('Pacientes.destroy', $paciente->id)" 
+                            />
+                            </div>
+                            <button class="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-700" onclick="toggleModal('modal-id-{{ $paciente->id }}')">Ver Más</button>
+                        </div>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 
+<script>
+    function filterPatients() {
+        const searchInput = document.getElementById('search').value.toLowerCase();
+        const patientRows = document.querySelectorAll('.patient-row');
 
+        patientRows.forEach(row => {
+            const patientName = row.querySelector('td').textContent.toLowerCase();
+            if (patientName.includes(searchInput)) {
+                row.style.display = ''; // Mostrar fila
+            } else {
+                row.style.display = 'none'; // Ocultar fila
+            }
+        });
+    }
+</script>
+
+<script>
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.classList.toggle('hidden');
+        }
+    }
+</script>
+
+<script>
+    // Javascript para manejar la primera apertura de los modales
+    document.addEventListener('DOMContentLoaded', function() {
+        const modals = document.querySelectorAll('[id^="modal-id-"]');
+        modals.forEach(modal => {
+            modal.addEventListener('show.bs.modal', function() {
+                if (this.getAttribute('data-first-open') === 'true') {
+                    // Solo ejecuta esto la primera vez
+                    // Aquí podrías realizar la lógica para guardar la hora, si es necesario
+
+                    this.setAttribute('data-first-open', 'false'); // Cambiar a false
+                }
+            });
+        });
+    });
+</script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
-
+</x-app-layout>
 
 
 

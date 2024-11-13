@@ -88,12 +88,18 @@
             {{ __('Pacientes') }}
         </h2>
         
-        <form {{-- action="{{ route('Expedientes.index') }}" method="GET" --}}  class="flex items-center mb-1">
-            <input type="text" name="search" placeholder="Buscar Paciente..." class="border rounded-l px-4 py-2" style="width: 300px;">
-            <button type="submit" class="bg-blue-500 text-white rounded-r px-4 py-2">Buscar</button>
-        </form>
+         <div class="flex items-center ml-4">
+            <div class="relative flex">
+                <input type="text" id="search" placeholder="Buscar paciente" class="border rounded-l px-4 py-2" style="width: 300px;" oninput="filterPatients()">
+                <button type="button" class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
+                        <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
+                    </svg>
+                </button>
+            </div>
+        </div> 
 
-        <a href="{{route('Pacientes.create')}}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+        <a href="{{route('pacientes.create')}}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
             <button>
             Agregar Paciente
         </button>
@@ -113,9 +119,9 @@
                                     <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600">
+                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600" id="patientsTable">
                                 @foreach ($pacientes as $paciente)
-                                    <tr>
+                                    <tr class="patient-row">
                                         <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
                                             <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
                                             <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
@@ -123,8 +129,9 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
                                             @if($paciente->expediente)
-                                                <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor }}</p>
+                                                <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
                                                 <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
+                                                <p><strong>Tratamiento:</strong> {{$paciente->expediente->tratamiento}}</p>
                                             @else
                                                 <p class="text-red-500">No hay expediente disponible.</p>
                                                 <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}" class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
@@ -160,24 +167,18 @@
                                                     <p><strong>Género:</strong> {{ $paciente->genero }}</p>
                                                     <p><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
                                                     <p><strong>Tipo de sangre:</strong> {{ $paciente->tipo_sangre }}</p>
-                                                    <p><strong>ocupacion:</strong> {{ $paciente->ocupacion }}</p>
-
+                                                    <p><strong>Ocupación:</strong> {{ $paciente->ocupacion }}</p>
                                                 </div>
 
                                                 <!-- Sección de expediente -->
                                                 <div class="w-1/2 pl-2">
                                                     <h2 class="text-xl font-bold mb-4">Expediente de {{ $paciente->nombre }}</h2>
                                                     @if($paciente->expediente)
-                                                        <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor }}</p>
+                                                        <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
                                                         <p><strong>Especialidad:</strong> {{ $paciente->expediente->especialidad }}</p>
                                                         <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
                                                         <p><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
                                                         <p><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
-                                                        <p><strong>Familiar a cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
-                                                        <p><strong>Número de familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
-                                                        <p><strong>Próxima cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
-                                                        <p><strong>Hora de la próxima cita:</strong> {{ $paciente->expediente->hora_proxima_cita }}</p>
-                                                        <p><strong>Fecha de registro:</strong> {{ $paciente->expediente->fecha_registro }}</p>
                                                         <p><strong>Familiar a Cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
                                                         <p><strong>Número Familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
                                                         <p><strong>Próxima Cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
@@ -185,7 +186,6 @@
                                                         <p><strong>Fecha de Registro:</strong> {{ $paciente->expediente->fecha_registro }}</p>
                                                     @else
                                                         <p class="text-red-500">No se encontró un expediente para este paciente.</p>
-                                                      
                                                     @endif
                                                 </div>
                                             </div>
@@ -211,26 +211,21 @@
                 modal.classList.toggle('hidden');
             }
         }
-    </script>
 
-    <script>
-        // Javascript para manejar la primera apertura de los modales
-        document.addEventListener('DOMContentLoaded', function() {
-            const modals = document.querySelectorAll('[id^="modal-id-"]');
-            modals.forEach(modal => {
-                modal.addEventListener('show.bs.modal', function() {
-                    if (this.getAttribute('data-first-open') === 'true') {
-                        // Solo ejecuta esto la primera vez
-                        // Aquí podrías realizar la lógica para guardar la hora, si es necesario
+        function filterPatients() {
+            const searchInput = document.getElementById('patientSearch').value.toLowerCase();
+            const patientRows = document.querySelectorAll('.patient-row');
 
-                        this.setAttribute('data-first-open', 'false'); // Cambiar a false
-                    }
-                });
+            patientRows.forEach(row => {
+                const patientName = row.querySelector('td').textContent.toLowerCase();
+                if (patientName.includes(searchInput)) {
+                    row.style.display = ''; // Mostrar fila
+                } else {
+                    row.style.display = 'none'; // Ocultar fila
+                }
             });
-        });
+        }
     </script>
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
 </x-app-layout>

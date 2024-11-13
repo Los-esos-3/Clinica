@@ -12,11 +12,21 @@ class ClinicaController extends Controller
 {
     use HasRoles;
     use AuthorizesRequests;
-    public function PacientesView()
+    public function PacientesView(Request $request)
     {
-        $pacientes = Paciente::with('expediente')->get();
-        return view('Pacientes.PacientesIndex', compact('pacientes'));
-    }
+        $query = $request->input('search');
+        
+        if ($query) {
+            $pacientes = Paciente::where('nombre', 'LIKE', "%{$query}%")->with('expediente')->get();
+        } else {
+            $pacientes = Paciente::with('expediente')->get();
+        }
+
+        // Verificar si no se encontraron pacientes
+        $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
+
+            return view('Pacientes.PacientesIndex', compact('pacientes', 'noResultsMessage'));
+        }
 
     public function index()
     {

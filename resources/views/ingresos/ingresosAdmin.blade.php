@@ -143,11 +143,6 @@
                     </a>
                 </li>
                 <li class="ml-1">
-                    <a href="expedientes.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                        EXPEDIENTES
-                    </a>
-                </li>
-                <li class="ml-1">
                     <a href="ingresos.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                         INGRESOS
                     </a>
@@ -171,7 +166,7 @@
             <div class="nav-links">
                 <a href="{{ route('dashboard') }}">Calendario</a>
                 <a href="{{ route('Pacientes') }}">Pacientes</a>
-                <a href="{{ route('Expedientes.index') }}">Expedientes</a>
+                <a href="{{ route('Expedientes.index') }}">Visitas</a>
                 <a href="{{ route('ingresos.index') }}">Ingresos</a>
             </div>
             <div class="dropdown">
