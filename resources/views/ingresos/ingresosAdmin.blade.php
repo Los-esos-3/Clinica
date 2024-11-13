@@ -166,7 +166,7 @@
             <div class="nav-links">
                 <a href="{{ route('dashboard') }}">Calendario</a>
                 <a href="{{ route('Pacientes') }}">Pacientes</a>
-                <a href="{{ route('Expedientes.index') }}">Expedientes</a>
+                <a href="{{ route('Expedientes.index') }}">Visitas</a>
                 <a href="{{ route('ingresos.index') }}">Ingresos</a>
             </div>
             <div class="dropdown">
