@@ -88,16 +88,16 @@
             {{ __('Pacientes') }}
         </h2>
         
-        <form action="{{ route('Pacientes.PacientesView') }}" method="GET" class="flex items-center ml-4">
+         <div class="flex items-center ml-4">
             <div class="relative flex">
-                <input type="text" name="search" placeholder="Buscar paciente" class="border rounded-l px-4 py-2" style="width: 300px;">
-                <button type="submit" class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                <input type="text" id="search" placeholder="Buscar paciente" class="border rounded-l px-4 py-2" style="width: 300px;" oninput="filterPatients()">
+                <button type="button" class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
                         <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
                     </svg>
                 </button>
             </div>
-        </form>
+        </div> 
 
         <a href="{{route('Pacientes.create')}}" class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
             <button>
@@ -119,9 +119,9 @@
                                     <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600">
+                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600" id="patientsTable">
                                 @foreach ($pacientes as $paciente)
-                                    <tr>
+                                    <tr class="patient-row">
                                         <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
                                             <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
                                             <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
@@ -210,26 +210,21 @@
                 modal.classList.toggle('hidden');
             }
         }
-    </script>
 
-    <script>
-        // Javascript para manejar la primera apertura de los modales
-        document.addEventListener('DOMContentLoaded', function() {
-            const modals = document.querySelectorAll('[id^="modal-id-"]');
-            modals.forEach(modal => {
-                modal.addEventListener('show.bs.modal', function() {
-                    if (this.getAttribute('data-first-open') === 'true') {
-                        // Solo ejecuta esto la primera vez
-                        // Aquí podrías realizar la lógica para guardar la hora, si es necesario
+        function filterPatients() {
+            const searchInput = document.getElementById('patientSearch').value.toLowerCase();
+            const patientRows = document.querySelectorAll('.patient-row');
 
-                        this.setAttribute('data-first-open', 'false'); // Cambiar a false
-                    }
-                });
+            patientRows.forEach(row => {
+                const patientName = row.querySelector('td').textContent.toLowerCase();
+                if (patientName.includes(searchInput)) {
+                    row.style.display = ''; // Mostrar fila
+                } else {
+                    row.style.display = 'none'; // Ocultar fila
+                }
             });
-        });
+        }
     </script>
-
-
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
 </x-app-layout>
