@@ -28,18 +28,23 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'crear ingresos']);
         Permission::create(['name' => 'editar ingresos']);
         Permission::create(['name' => 'eliminar ingresos']);
+        
+        // Permisos para roles
+        Permission::create(['name' => 'ver roles']);
+        Permission::create(['name' => 'crear roles']);
+        Permission::create(['name' => 'editar roles']);
+        Permission::create(['name' => 'eliminar roles']);
 
         // Crear roles y asignar permisos 
-        $rolAdmin = Role::create(attributes: ['name' => 'Admin']);
-        $rolAdmin->givePermissionTo(permissions: Permission::all());
+        $rolAdmin = Role::create(['name' => 'Admin']);
+        $rolAdmin->givePermissionTo(Permission::all());
 
-        $rolDoctor = Role::create(attributes: ['name' => 'Doctor']);
-        $rolDoctor->givePermissionTo(permissions: ['ver dashboard','ver pacientes', 'ver expedientes', 'ver ingresos']);
+        $rolDoctor = Role::create(['name' => 'Doctor']);
+        $rolDoctor->givePermissionTo(['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
 
-        $rolSecretaria = Role::create(attributes: ['name' => 'Secretaria']);
-        $rolSecretaria->givePermissionTo(permissions: ['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
+        $rolSecretaria = Role::create(['name' => 'Secretaria']);
+        $rolSecretaria->givePermissionTo(['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
 
-        $rolUsuario = Role::create(attributes: ['name'=> 'Usuario']);
-       
+        $rolUsuario = Role::create(['name'=> 'Usuario']);
     }
 }

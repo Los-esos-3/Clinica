@@ -17,6 +17,7 @@ class RoleController extends Controller
     {
         $this->authorize('ver roles'); // Verifica el permiso
         $roles = Role::all();
+        $roles = Role::all();
         $users = User::all(); // Obtén todos los usuarios
         $permissions = Permission::all(); //Obtener los permisos
         return view('roles.index', compact('roles', 'users', 'permissions')); // Pasa ambas variables a la vista
@@ -32,7 +33,7 @@ class RoleController extends Controller
         $role = Role::create(['name' => $request->name]);
         $role->syncPermissions($request->permissions); // Asigna los permisos
 
-        return redirect()->route('roles.index')->with('success', 'Rol creado exitosamente.');
+        return view('roles.index')->with('success', 'Rol creado exitosamente.');
     }
 
     public function update(Request $request, Role $role)
@@ -54,7 +55,7 @@ class RoleController extends Controller
         return redirect()->route('roles.index')->with('success', 'Rol eliminado exitosamente.');
     }
 
-    public function assignRole(Request $request, User $user)
+    public function assignRole(Request $request, User $user, Role $role)
     {
         $request->validate([
             'roles' => 'required|array'
@@ -62,7 +63,7 @@ class RoleController extends Controller
 
         $user->syncRoles($request->roles);
 
-        return redirect()->route('roles.index')->with('success', 'Roles asignados exitosamente.');
+        return view('roles.index')->with('success', 'Roles asignados exitosamente.');
     }
 
     public function create()

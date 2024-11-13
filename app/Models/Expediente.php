@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
+use Spatie\Permission\Traits\HasRoles;
 
 class Expediente extends Model
 {
+
+    use HasRoles;
     use HasFactory;
     protected $fillable = [
         'paciente_id',
