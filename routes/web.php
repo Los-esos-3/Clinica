@@ -46,6 +46,9 @@ Route::get('/contactenos', function () {
 //Fin
 
 
+
+
+
 //Rutas para secretaria
 Route::middleware(['auth', 'role:Secretaria'])->group(function () {
 Route::resource('ingresos', IngresoController::class);
@@ -78,33 +81,10 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
     Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('Pacientes.edit');
     Route::delete('/pacientes/{id}', [ClinicaController::class, 'destroy'])->name('Pacientes.destroy');
+    Route::get('/Expedientes',[ExpedientesController::class, 'admin'])->name('Expedientes.admin');
     Route::put('/pacientes/{id}', [ClinicaController::class, 'update'])->name('Pacientes.update');
     Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes');
     Route::get(uri: '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
-    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes');
-    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes.index');
-    Route::get('/Expedientes/create', [ExpedientesController::class, 'create'])->name('Expedientes.create');
-    Route::post('/Expedientes/create', [ExpedientesController::class, 'store'])->name('Expedientes.store');
-    Route::get('/Expediente/{id}/edit', [ExpedientesController::class, 'edit'])->name('Expedientes.edit');
-    Route::delete('/Expedientes/{id}', [ExpedientesController::class, 'destroy'])->name('Expedientes.destroy');
-    Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name('Expedientes.update');
-});
-//fin de las rutas de admin
-
- //Rutas De Doctor
-Route::middleware(['auth', 'role:Doctor'])->group(function () {
-    Route::resource('ingresos', IngresoController::class);
-    Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
-    Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
-    Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
-    Route::get('/Pacientes/create', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
-    Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
-    Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
-    Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('Pacientes.edit');
-    Route::delete('/pacientes/{id}', [ClinicaController::class, 'destroy'])->name('Pacientes.destroy');
-    Route::put('/pacientes/{id}', [ClinicaController::class, 'update'])->name('Pacientes.update');
-    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes');
-    Route::get( '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
     Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes');
     Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes.index');
     Route::get('/Expedientes/create', [ExpedientesController::class, 'create'])->name('Expedientes.create');
@@ -118,38 +98,57 @@ Route::middleware(['auth', 'role:Doctor'])->group(function () {
     Route::put('/doctores/{id}', [DoctoresController::class, 'update'])->name('doctores.update');
     Route::delete('/doctores/{id}', [DoctoresController::class, 'destroy'])->name('doctores.destroy');
 });
+//fin de las rutas de admin
+
+
+ //Rutas De Doctor
+Route::middleware(['auth', 'role:Doctor'])->group(function () {
+    Route::resource('ingresos', IngresoController::class);
+    Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
+ 
+    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes');
+    Route::get( '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
+    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes');
+    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes.index');
+    Route::get('/Expedientes/create', [ExpedientesController::class, 'create'])->name('Expedientes.create');
+    Route::post('/Expedientes/create', [ExpedientesController::class, 'store'])->name('Expedientes.store');
+    Route::get('/Expediente/{id}/edit', [ExpedientesController::class, 'edit'])->name('Expedientes.edit');
+    Route::delete('/Expedientes/{id}', [ExpedientesController::class, 'destroy'])->name('Expedientes.destroy');
+    Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name('Expedientes.update');
+});
 //fin de las rutas del doctor
 
-   Route::resource('ingresos', IngresoController::class);
-    Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
- Route::resource('Pacientes', controller: ClinicaController::class);
+Route::group(['middleware'=>['auth', 'permission: ver empresas']],function(){
+ Route::resource('empresas', EmpresaController::class);
+});
 
-Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('PacientesView');
-
-Route::resource('ingresos', IngresoController::class);
-    Route::resource('pacientes', ClinicaController::class);
-    Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
-    Route::get('/ExpedientesAdmin',action: [ExpedientesController::class,'admin'])->name('Expedientes.admin');
-    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
-    Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
-    Route::put('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
-    Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.destroy');
-    Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');
-
-
+Route::group(['middleware'=>['auth','permission: ver doctores']],function(){
+  Route::resource('doctores',DoctoresController::class);
+});
 
 //Middleware para permisos
 Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function () {
-    Route::get('/pacientes', [ClinicaController::class, 'index'])->name('Pacientes');
+    Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
+    Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
+    Route::get('/Pacientes/create', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
+    Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
+    Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
+    Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('Pacientes.edit');
+    Route::delete('/pacientes/{id}', [ClinicaController::class, 'destroy'])->name('Pacientes.destroy');
+    Route::put('/pacientes/{id}', [ClinicaController::class, 'update'])->name('Pacientes.update');
 });
 
 Route::group(['middleware' => ['auth','permission:ver dashboard']], function(){
    return view('dashboard');
 });
-Route::resource('users', RoleController::class);
+
 
 Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
     Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
+});
+
+Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
+    Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.admin');
 });
 
 Route::group(['middleware' => ['auth','permission:ver ingresos']], function () {
@@ -157,16 +156,13 @@ Route::group(['middleware' => ['auth','permission:ver ingresos']], function () {
 });
 
 Route::group(['middleware'=> ['auth', 'permission:ver roles']], function(){
-Route::get('roles', [RoleController::class, 'index'])->name('roles');
+Route::resource('roles', RoleController::class);
 });
 
-Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
 
-
-Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('PacientesView');
-
-Route::resource('empresas', EmpresaController::class);
-
+Route::group(['middleware'=>['auth', 'permission:ver doctores']],function(){
 Route::resource('doctores', DoctoresController::class);
+});
 
-Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
+
+Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);

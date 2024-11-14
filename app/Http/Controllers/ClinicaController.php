@@ -66,7 +66,7 @@ class ClinicaController extends Controller
     
         Paciente::create($pacienteData); // Crear el paciente
     
-        return redirect()->route('Pacientes');
+        return redirect()->route('Pacientes.PacientesView');
     }
 
     public function edit($id)
@@ -100,6 +100,6 @@ class ClinicaController extends Controller
         $paciente = Paciente::findOrFail($id);
         $paciente->delete();
 
-        return redirect()->route('Pacientes');
+        return redirect()->route('Pacientes.PacienteView');
     }
 }

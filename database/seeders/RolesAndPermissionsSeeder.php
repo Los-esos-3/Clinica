@@ -59,7 +59,7 @@ class RolesAndPermissionsSeeder extends Seeder
         $rolAdmin->givePermissionTo(Permission::all());
 
         $rolDoctor = Role::create(['name' => 'Doctor']);
-        $rolDoctor->givePermissionTo(['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
+        $rolDoctor->givePermissionTo(['ver dashboard', 'ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes', 'crear expedientes', 'editar expedientes', 'eliminar expedientes', 'ver ingresos', 'crear ingresos']);
 
         $rolSecretaria = Role::create(['name' => 'Secretaria']);
         $rolSecretaria->givePermissionTo(['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
