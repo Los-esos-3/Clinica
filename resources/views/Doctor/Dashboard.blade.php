@@ -26,10 +26,11 @@
                 align-items: center;
                 max-width: 1200px;
                 margin: 0 auto;
-            }
+                padding: 1rem;
+            }   
             .nav-links {
                 display: flex;
-                gap: 0.25rem;
+                gap: 2rem;
             }
             .nav-links a {
                 color: white;
