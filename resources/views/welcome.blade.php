@@ -533,7 +533,7 @@ header nav ul li svg:hover {
         color: #999;
     }
     .input-field:-webkit-autofill,
-    .input-field:-webkit-autofill:hover, 
+    .input-field:-webkit-autofill:hover,
     .input-field:-webkit-autofill:focus {
         -webkit-box-shadow: 0 0 0px 1000px white inset;
         -webkit-text-fill-color: #333;
@@ -604,7 +604,7 @@ header nav ul li svg:hover {
         overflow-y: auto;
         max-height: 100vh;
     }
-    
+
     .content {
   display: flex;
   align-items: center;
@@ -692,7 +692,7 @@ header nav ul li svg:hover {
             $empresa = \App\Models\Empresa::first();
             $nombreEmpresa = $empresa ? $empresa->nombre : 'KAISER';
         @endphp
-        
+
         <div class="header-title">
             <span class="kaiser">{{ $nombreEmpresa }}</span>
         </div>
@@ -762,12 +762,12 @@ header nav ul li svg:hover {
           <h1>Bienvenido a nuestro software de expedientes médicos.</h1>
           <h2>Optimiza la gestión de tus expedientes médicos con un software diseñado para simplificar procesos y mejorar la atención desde cualquier lugar.</h2>
         </div>
-      
+
         <div class="content-img">
           <img src="{{ asset('images/Doctorviendolaptop.jpg') }}" alt="Doctor viendo una computadora" style="width: 550px; height: auto;">
         </div>
       </div>
-      
+
 
 <section class="hero">
     <div class="container">
@@ -778,7 +778,7 @@ header nav ul li svg:hover {
                 <ul class="features-list">
                     <li><i class="icon-check"></i> Tecnología de última generación</li>
                     <li><i class="icon-check"></i> Expedientes rapidos</li>
-                    <li><i class="icon-check"></i> Especialistas capacitados en nuestro cistema</li>
+                    <li><i class="icon-check"></i> Especialistas capacitados en nuestro sistema</li>
                 </ul>
             </div>
             <div class="hero-images">
@@ -813,35 +813,33 @@ header nav ul li svg:hover {
 </section>
 
 
-
     <section class="features">
         <div class="container">
             <div class="feature">
                 <div class="feature-content">
-                    <h3 class="feature-title">Trabajo Médico Dedicado</h3>
-                    <p>Nuestro equipo de profesionales se dedica a brindarte la mejor atención médica posible.</p>
+                    <h3 class="feature-title">Gestión Eficiente de Expedientes</h3>
+                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.</p>
                 </div>
-                <img src="images/icons8-grupo-50.png" alt="Icono de Trabajo Médico">
+                <img src="images/icons8-grupo-50.png" alt="Icono de Gestión de Expedientes">
             </div>
             <div class="feature">
                 <div class="feature-content">
-                    <h3 class="feature-title">Servicios de Seguridad</h3>
-                    <p>Te ofrecemos una gama de servicios de segurdidad para tu infromacion.</p>
+                    <h3 class="feature-title">Seguridad de Datos Médicos</h3>
+                    <p>Protege la información sensible de tus pacientes con nuestras avanzadas medidas de seguridad.</p>
                 </div>
-                <img src="images/icons8-cuidado-50.png" alt="Icono de Computadora">
-
+                <img src="images/icons8-cuidado-50.png" alt="Icono de Seguridad de Datos">
             </div>
-            <div class="feature">
+            <div class="feature">   
                 <div class="feature-content">
-                    <h3 class="feature-title">Expertos en Salud</h3>
-                    <p>Contamos con un equipo de expertos listos para ofrecerte asesoramiento y tratamiento.</p>
+                    <h3 class="feature-title">Asesoría Médica Especializada</h3>
+                    <p>Accede a un equipo de expertos que te brindan apoyo y asesoría en el uso del sistema.</p>
                 </div>
                 <img src="images/icons8-bata-de-laboratorio-médicos-50.png" alt="">
             </div>
             <div class="feature">
                 <div class="feature-content">
-                    <h3 class="feature-title">Atención ala Calidad</h3>
-                    <p>Estamos comprometidos con brindarte atención a cualquier problema que ocurra en nuestro Software.</p>
+                    <h3 class="feature-title">Atención Personalizada</h3>
+                    <p>Recibe soporte técnico y atención a cualquier inconveniente que surja en el uso del software.</p>
                 </div>
                 <img src="images/icons8-24-7-signo-abierto-64.png" alt="">
             </div>
@@ -879,14 +877,14 @@ header nav ul li svg:hover {
         <div class="footer-container">
             <div class="footer-column">
                 <h4>Acerca de nosotros</h4>
-                <p>En nuestra clínica dental, ofrecemos atención personalizada y profesional, respaldada por años de experiencia. Nuestro equipo de expertos se dedica a cuidar tu salud bucal con tratamientos innovadores en un ambiente seguro y acogedor. Tu sonrisa es nuestra prioridad.</p>
+                <p>Bienvenido a la sección de gestión de expedientes médicos. Aquí podrás registrar, organizar y acceder de manera eficiente a la información clínica de tus pacientes. Nuestro sistema está diseñado para facilitar tu trabajo y garantizar la seguridad y confidencialidad de los datos, ayudándote a ofrecer una atención de calidad.</p>
             </div>
             <div class="footer-column">
                 <h4>Horario de atención</h4>
                 @php
                     $empresa = \App\Models\Empresa::first();
                 @endphp
-                
+
                 @if($empresa && $empresa->horario)
                     <p>{{ $empresa->horario }}</p>
                 @else
@@ -940,7 +938,7 @@ header nav ul li svg:hover {
                           ></path>
                         </svg>
                       </a>
-                  
+
                     <a href="#" class="socialContainer containerTwo">
                         <svg
                           class="socialSvg tiktokSvg largeIcon"
@@ -965,7 +963,7 @@ header nav ul li svg:hover {
                           </g>
                         </svg>
                       </a>
-                  
+
                     <a href="#" class="socialContainer containerThree">
                       <div>
                         <svg
@@ -1002,9 +1000,9 @@ header nav ul li svg:hover {
                       </svg>
                     </a>
                   </div>
-                  
+
             </div>
-          
+
             </div>
 
 
