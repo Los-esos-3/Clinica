@@ -24,11 +24,20 @@ class ExpedientesController extends Controller
         return view('Expedientes.ExpedienteIndexAdmin', compact('expedientes'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
         $pacientes = Paciente::all(); 
         $doctores = Doctores::all();
-        return view('Expedientes.Create', compact('pacientes', 'doctores'));
+        $especialidad = null;
+
+        if ($request->has('doctor_id')) {
+            $doctor = Doctores::find($request->doctor_id);
+            if ($doctor) {
+                $especialidad = $doctor->especialidad_medica;
+            }
+        }
+
+        return view('Expedientes.Create', compact('pacientes', 'doctores', 'especialidad'));
     }
 
     public function store(Request $request)
@@ -50,7 +59,7 @@ class ExpedientesController extends Controller
         $validatedData['fecha_registro'] = Carbon::parse($validatedData['fecha_registro'])->format('Y-m-d');
         Expediente::create($validatedData);
 
-        return redirect()->route('Expedientes.index')->with('success', 'Expediente creado con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente creado con éxito.');
     }
 
     public function show($id)

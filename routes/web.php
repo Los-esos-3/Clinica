@@ -52,6 +52,7 @@ Route::get('/contactenos', function () {
 //Rutas para secretaria
 Route::middleware(['auth', 'role:Secretaria'])->group(function () {
 Route::resource('ingresos', IngresoController::class);
+Route::get('/Expedientes',[ExpedientesController::class, 'admin'])->name('Expedientes.admin');
 Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
 Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
 Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
@@ -104,27 +105,14 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
  //Rutas De Doctor
 Route::middleware(['auth', 'role:Doctor'])->group(function () {
     Route::resource('ingresos', IngresoController::class);
+    Route::get('/Expedientes',[ExpedientesController::class, 'admin'])->name('Expedientes.admin');
     Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
- 
-    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes');
-    Route::get( '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
-    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes');
-    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes.index');
-    Route::get('/Expedientes/create', [ExpedientesController::class, 'create'])->name('Expedientes.create');
-    Route::post('/Expedientes/create', [ExpedientesController::class, 'store'])->name('Expedientes.store');
-    Route::get('/Expediente/{id}/edit', [ExpedientesController::class, 'edit'])->name('Expedientes.edit');
-    Route::delete('/Expedientes/{id}', [ExpedientesController::class, 'destroy'])->name('Expedientes.destroy');
-    Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name('Expedientes.update');
+  
 });
 //fin de las rutas del doctor
 
-Route::group(['middleware'=>['auth', 'permission: ver empresas']],function(){
- Route::resource('empresas', EmpresaController::class);
-});
 
-Route::group(['middleware'=>['auth','permission: ver doctores']],function(){
-  Route::resource('doctores',DoctoresController::class);
-});
+
 
 //Middleware para permisos
 Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function () {
@@ -141,22 +129,36 @@ Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function ()
 Route::group(['middleware' => ['auth','permission:ver dashboard']], function(){
    return view('dashboard');
 });
-
-
-Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
-    Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.index');
-});
+Route::get('/Expedientes',[ExpedientesController::class, 'admin'])->name('Expedientes.admin');
 
 Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
-    Route::get('/expedientes', [ExpedientesController::class, 'index'])->name('Expedientes.admin');
+    Route::get('/Expedientes',[ExpedientesController::class, 'admin'])->name('Expedientes.admin');
+    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes');
+    Route::get( '/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes.index');
+    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes');
+    Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name('Expedientes.index');
+    Route::get('/Expedientes/create', [ExpedientesController::class, 'create'])->name('Expedientes.create');
+    Route::post('/Expedientes/create', [ExpedientesController::class, 'store'])->name('Expedientes.store');
+    Route::get('/Expediente/{id}/edit', [ExpedientesController::class, 'edit'])->name('Expedientes.edit');
+    Route::delete('/Expedientes/{id}', [ExpedientesController::class, 'destroy'])->name('Expedientes.destroy');
+    Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name('Expedientes.update');
 });
+
 
 Route::group(['middleware' => ['auth','permission:ver ingresos']], function () {
     Route::get('/ingresos', [IngresoController::class, 'index'])->name('ingresos.index');
 });
+Route::group(['middleware'=>['auth', 'permission:ver empresas']],function(){
+    Route::resource('empresas', EmpresaController::class);
+});
 
+   Route::group(['middleware'=>['auth','permission: ver doctores']],function(){
+    Route::resource('doctores',DoctoresController::class);
+  });
+  
 Route::group(['middleware'=> ['auth', 'permission:ver roles']], function(){
 Route::resource('roles', RoleController::class);
+Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');
 });
 
 

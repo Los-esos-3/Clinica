@@ -111,7 +111,7 @@
             </div>
             <div class="flex space-x-4">
                 <a href="{{ route('dashboard') }}" class="hover:underline">Calendario</a>
-                <a href="{{ route('Pacientes') }}" class="hover:underline">Pacientes</a>
+                <a href="{{ route('Pacientes.PacientesView') }}" class="hover:underline">Pacientes</a>
                 <a href="{{ route('Expedientes.index') }}" class="hover:underline">Visitas</a>
                 <a href="{{ route('ingresos.index') }}" class="hover:underline">Ingresos</a>
             </div>

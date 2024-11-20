@@ -61,75 +61,75 @@
     .dropdown:hover .dropdown-content {
         display: block;
     }
-    .editBtn {
-        width: 40px;  
-        height: 40px; 
-        border-radius: 12px; /
-        border: none;
-        background-color: rgb(34, 197, 94); /* Color verde */
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.123);
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s;
-    }
-    .editBtn::before {
-        content: "";
-        width: 200%;
-        height: 200%;
-        background-color: rgb(22, 163, 74); /* Verde más oscuro para el hover */
-        position: absolute;
-        z-index: 1;
-        transform: scale(0);
-        transition: all 0.3s;
-        border-radius: 50%;
-        filter: blur(10px);
-    }
-    .editBtn:hover::before {
-        transform: scale(1);
-    }
-    .editBtn:hover {
-        box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.336);
-    }
-    .editBtn svg {
-        height: 17px;
-        fill: white;
-        z-index: 3;
-        transition: all 0.2s;
-        transform-origin: bottom;
-    }
-    .editBtn:hover svg {
-        transform: rotate(-15deg) translateX(5px);
-    }
-    .editBtn::after {
-        content: "";
-        width: 25px;
-        height: 1.5px;
-        position: absolute;
-        bottom: 19px;
-        left: -5px;
-        background-color: white;
-        border-radius: 2px;
-        z-index: 2;
-        transform: scaleX(0);
-        transform-origin: left;
-        transition: transform 0.5s ease-out;
-    }
-    .editBtn:hover::after {
-        transform: scaleX(1);
-        left: 0px;
-        transform-origin: right;
-    }
+    .editBtn { 
+            width: 55px;   
+            height: 50px; 
+            border-radius: 12px; 
+            border: none; 
+            background-color: rgb(34, 197, 94); 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.123); 
+            cursor: pointer; 
+            position: relative; 
+            overflow: hidden; 
+            transition: all 0.3s; 
+        } 
+        .editBtn::before { 
+            content: ""; 
+            width: 200%; 
+            height: 200%; 
+            background-color: rgb(22, 163, 74); 
+            position: absolute; 
+            z-index: 1; 
+            transform: scale(0); 
+            transition: all 0.3s; 
+            border-radius: 50%; 
+            filter: blur(10px); 
+        } 
+        .editBtn:hover::before { 
+            transform: scale(1); 
+        } 
+        .editBtn:hover { 
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.336); 
+        } 
+        .editBtn svg { 
+            height: 17px; 
+            fill: white; 
+            z-index: 3; 
+            transition: all 0.2s; 
+            transform-origin: bottom; 
+        } 
+        .editBtn:hover svg { 
+            transform: rotate(-15deg) translateX(5px); 
+        } 
+        .editBtn::after { 
+            content: ""; 
+            width: 25px; 
+            height: 1.5px; 
+            position: absolute; 
+            bottom: 19px; 
+            left: -5px; 
+            background-color: white; 
+            border-radius: 2px; 
+            z-index: 2; 
+            transform: scaleX(0); 
+            transform-origin: left; 
+            transition: transform 0.5s ease-out; 
+        } 
+        .editBtn:hover::after { 
+            transform: scaleX(1); 
+            left: 0px; 
+            transform-origin: right; 
+        }
     .bin-button {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 55px;
   border-radius: 15px;
   background-color: rgb(255, 95, 95);
   cursor: pointer;
@@ -163,8 +163,7 @@
             </div>
         <div class="nav-links">
             <a href="{{ route('dashboard') }}">Calendario</a>
-            <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
-            <a href="{{ route('Expedientes.index') }}">Visitas</a>
+            <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>  
             <a href="{{ route('ingresos.index') }}">Ingresos</a>
         </div>
         <div class="dropdown">
@@ -204,51 +203,103 @@
 </a>
 </div>
 
-<div class="overflow-x-auto">
-    <table class="min-w-full divide-y divide-gray-200" id="patientsTable">
-        <thead class="bg-gray-50 dark:bg-gray-400">
-            <tr>
-                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Datos del Paciente</th>
-                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Expediente</th>
-                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600">
-            @foreach ($pacientes as $paciente)
-                <tr class="patient-row">
-                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
-                        <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
-                        <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
-                        <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
-                        @if($paciente->expediente)
-                            <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
-                            <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
-                        @else
-                            <p class="text-red-500">No hay expediente disponible.</p>
-                            <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}" class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                Agregar uno
-                            </a>
-                        @endif
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
-                        <div class="flex gap-2">
-                            <div class="flex gap-2">
-                                <x-action-buttons 
-                                :editRoute="route('Pacientes.edit', $paciente->id)" 
-                                :deleteRoute="route('Pacientes.destroy', $paciente->id)" 
-                            />
-                            </div>
-                            <button class="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-700" onclick="toggleModal('modal-id-{{ $paciente->id }}')">Ver Más</button>
-                        </div>
-                    </td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</div>
+<div class="py-12">
+    <div class="mx-auto max-w-80% sm:px-6 lg:px-8">
+        <div class="overflow-hidden shadow-md sm:rounded-lg">
+            <div class="bg-white border-b border-gray-200 dark:bg-gray-300 dark:border-gray-600">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50 dark:bg-gray-400">
+                            <tr>
+                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Datos del Paciente</th>
+                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Expediente</th>
+                                <th class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600" id="patientsTable">
+                            @foreach ($pacientes as $paciente)
+                                <tr class="patient-row">
+                                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                                        <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                                        <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                                        <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                                        @if($paciente->expediente)
+                                            <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
+                                            <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
+                                            <p><strong>Tratamiento:</strong> {{$paciente->expediente->tratamiento}}</p>
+                                        @else
+                                            <p class="text-red-500">No hay expediente disponible.</p>
+                                            <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}" class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                                Agregar uno
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
+                                        <div class="flex gap-2">
+                                            <div class="flex gap-2">
+                                                <x-action-buttons 
+                                                :editRoute="route('Pacientes.edit', $paciente->id)" 
+                                                :deleteRoute="route('Pacientes.destroy', $paciente->id)" 
+                                            />
+                                            </div>
+                                            <button class="px-4 py-2 text-sm font-bold text-white bg-blue-500 rounded hover:bg-blue-700" onclick="toggleModal('modal-id-{{ $paciente->id }}')">Ver Más</button>
+                                        </div>
+                                    </td>
+                                </tr>
 
+                                <!-- Modal para cada paciente -->
+                                <div id="modal-id-{{ $paciente->id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                    <div class="w-3/4 max-w-2xl bg-white rounded-lg shadow-lg">
+                                        <div class="flex p-4">
+                                            <!-- Sección de datos del paciente -->
+                                            <div class="w-1/2 pr-2 border-r">
+                                                <h2 class="text-xl font-bold mb-4">Datos del Paciente</h2>
+                                                <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                                                <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                                                <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
+                                                <p><strong>Edad:</strong> {{ $paciente->edad }}</p>
+                                                <p><strong>Dirección:</strong> {{ $paciente->direccion }}</p>
+                                                <p><strong>Género:</strong> {{ $paciente->genero }}</p>
+                                                <p><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
+                                                <p><strong>Tipo de sangre:</strong> {{ $paciente->tipo_sangre }}</p>
+                                                <p><strong>Ocupación:</strong> {{ $paciente->ocupacion }}</p>
+                                            </div>
+
+                                            <!-- Sección de expediente -->
+                                            <div class="w-1/2 pl-2">
+                                                <h2 class="text-xl font-bold mb-4">Expediente de {{ $paciente->nombre }}</h2>
+                                                @if($paciente->expediente)
+                                                    <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
+                                                    <p><strong>Especialidad:</strong> {{ $paciente->expediente->especialidad }}</p>
+                                                    <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
+                                                    <p><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
+                                                    <p><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
+                                                    <p><strong>Familiar a Cargo:</strong> {{ $paciente->expediente->familiar_a_cargo }}</p>
+                                                    <p><strong>Número Familiar:</strong> {{ $paciente->expediente->numero_familiar }}</p>
+                                                    <p><strong>Próxima Cita:</strong> {{ $paciente->expediente->proxima_cita }}</p>
+                                                    <p><strong>Hora Próxima Cita:</strong> {{ $paciente->expediente->hora_proxima_cita }}</p>
+                                                    <p><strong>Fecha de Registro:</strong> {{ $paciente->expediente->fecha_registro }}</p>
+                                                @else
+                                                    <p class="text-red-500">No se encontró un expediente para este paciente.</p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                        <!-- Botón para cerrar el modal -->
+                                        <div class="flex justify-center p-4 bg-gray-100 rounded-b-lg">
+                                            <button class="px-6 py-2 text-white bg-red-600 rounded hover:bg-red-700" onclick="toggleModal('modal-id-{{ $paciente->id }}')">Cerrar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>  
 <script>
     function filterPatients() {
         const searchInput = document.getElementById('search').value.toLowerCase();

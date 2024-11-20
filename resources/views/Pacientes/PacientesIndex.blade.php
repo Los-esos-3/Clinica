@@ -28,12 +28,12 @@
                                         </a>
                                     </li>
                                     <li class="ml-1">
-                                        <a href="{{route('Pacientes')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        <a href="{{route('Pacientes.PacientesView')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                             PACIENTES
                                         </a>
                                     </li>
                                     <li class="ml-1">
-                                        <a href="{{route('Expedientes.admin')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        <a  class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                             VISITAS
                                         </a>
                                     </li>
