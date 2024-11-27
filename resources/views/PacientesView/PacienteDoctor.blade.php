@@ -232,6 +232,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
                                             <div class="flex gap-2">
                                                 <div class="flex gap-2">
+<<<<<<< HEAD
                                                     <a href="{{ route('Pacientes.edit', $paciente->id) }}"
                                                         class="editBtn transform hover:scale-110 transition-transform duration-200">
                                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -280,6 +281,35 @@
                                                                     stroke-linecap="round"></path>
                                                                 <path d="M21 6V29" stroke="white" stroke-width="4"
                                                                     stroke-linecap="round"></path>
+=======
+                                                    <a href="{{ route('Pacientes.edit', $paciente->id) }}" 
+                                                        class="editBtn transform hover:scale-110 transition-transform duration-200">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.199z"/>
+                                    </svg>
+                                </a>
+                                                    <form action="{{ route('Pacientes.destroy', $paciente->id) }}" method="POST" class="inline" onsubmit="return false;">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600" 
+                                                                onclick="toggleModal('modal-delete-{{ $paciente->id }}'); event.preventDefault(); document.getElementById('form-delete-{{ $paciente->id }}').setAttribute('data-id', '{{ $paciente->id }}');">
+                                                            <svg viewBox="0 0 1.625 1.625" class="absolute -top-5 fill-white delay-100 group-hover:top-4 group-hover:animate-[spin_1.4s] group-hover:duration-1000" height="12" width="12">
+                                                                <path d="M.471 1.024v-.52a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099h-.39c-.107 0-.195 0-.195-.195"></path>
+                                                                <path d="M1.219.601h-.163A.1.1 0 0 1 .959.504V.341A.033.033 0 0 0 .926.309h-.26a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099v-.39a.033.033 0 0 0-.032-.033"></path>
+                                                                <path d="m1.245.465-.15-.15a.02.02 0 0 0-.016-.006.023.023 0 0 0-.023.022v.108c0 .036.029.065.065.065h.107a.023.023 0 0 0 .023-.023.02.02 0 0 0-.007-.016"></path>
+                                                            </svg>
+                                                            <svg width="14" fill="none" viewBox="0 0 39 7" class="origin-right duration-500 group-hover:rotate-90">
+                                                                <line stroke-width="4" stroke="white" y2="5" x2="39" y1="5"></line>
+                                                                <line stroke-width="3" stroke="white" y2="1.5" x2="26.0357" y1="1.5" x1="12"></line>
+                                                            </svg>
+                                                            <svg width="14" fill="none" viewBox="0 0 33 39" class="mt-1">
+                                                                <mask fill="white" id="path-1-inside-1_8_19">
+                                                                    <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
+                                                                </mask>
+                                                                <path mask="url(#path-1-inside-1_8_19)" fill="white" d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"></path>
+                                                                <path d="M12 6L12 29" stroke="white" stroke-width="4" stroke-linecap="round"></path>
+                                                                <path d="M21 6V29" stroke="white" stroke-width="4" stroke-linecap="round"></path>
+>>>>>>> d5681627150a341a4e83df1702309c3e988ee767
                                                             </svg>
                                                         </button>
                                                     </form>
@@ -352,6 +382,28 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- Modal de confirmación -->
+                                    <div id="modal-delete-{{ $paciente->id }}" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                        <div class="w-1/3 bg-white rounded-lg shadow-lg">
+                                            <div class="p-4">
+                                                <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+                                                <p>¿Estás seguro de que deseas eliminar a {{ $paciente->nombre }}?</p>
+                                            </div>
+                                            <div class="flex justify-end p-4">
+                                                <button class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700" 
+                                                        onclick="document.getElementById('form-delete-{{ $paciente->id }}').submit();">Eliminar</button>
+                                                <button class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 ml-2" 
+                                                        onclick="toggleModal('modal-delete-{{ $paciente->id }}')">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Formulario de eliminación -->
+                                    <form id="form-delete-{{ $paciente->id }}" action="{{ route('Pacientes.destroy', $paciente->id) }}" method="POST" class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
                                 @endforeach
                             </tbody>
                         </table>
