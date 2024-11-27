@@ -281,7 +281,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
                                                 <!-- Botón de eliminar existente -->
                                                 <form action="{{ route('Pacientes.destroy', $paciente->id) }}"
                                                     method="POST" class="inline" onsubmit="return false;">
@@ -444,7 +443,7 @@
         function filterPatients() {
             const searchInput = document.getElementById('search').value.toLowerCase();
             const patientRows = document.querySelectorAll('.patient-row');
-
+            
             patientRows.forEach(row => {
                 const patientName = row.querySelector('td').textContent.toLowerCase();
                 if (patientName.includes(searchInput)) {
