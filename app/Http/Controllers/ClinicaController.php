@@ -100,6 +100,6 @@ class ClinicaController extends Controller
         $paciente = Paciente::findOrFail($id);
         $paciente->delete();
 
-        return redirect()->route('Pacientes.PacienteView');
+        return redirect()->route('Pacientes.PacientesView');
     }
 }

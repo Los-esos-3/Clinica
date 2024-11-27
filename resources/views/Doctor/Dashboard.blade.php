@@ -6,6 +6,7 @@
         <title>Dashboard del Doctor</title>
         <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.css' rel='stylesheet' />
         <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js'></script>
+        <script src="{{ asset('js/app.js') }}"></script>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -162,7 +163,7 @@
 
         <div class="container">
             <div id="calendar-container" class="p-6">
-                <div id="calendar"></div>
+                <div id="calendar1"></div>
             </div>
         </div>
 
