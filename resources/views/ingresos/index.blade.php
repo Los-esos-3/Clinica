@@ -22,7 +22,7 @@
                                     </a>
                                 </li>
                                 <li class="ml-1">
-                                    <a href="{{route('Pacientes')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                    <a href="{{route('Pacientes.PacientesView')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                         PACIENTES
                                     </a>
                                 </li>

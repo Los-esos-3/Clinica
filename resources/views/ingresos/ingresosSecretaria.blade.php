@@ -130,8 +130,7 @@
             </div>
             <div class="nav-links">
                 <a href="{{ route('dashboard') }}">Calendario</a>
-                <a href="{{ route('Pacientes') }}">Pacientes</a>
-                <a href="{{ route('Expedientes.index') }}">Visitas</a>
+                <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
                 <a href="{{ route('ingresos.index') }}">Ingresos</a>
             </div>
             <div class="dropdown">

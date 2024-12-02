@@ -12,6 +12,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\DoctoresController;
+use App\Http\Controllers\CitaController;
 
 //Redireccion para usuarios sin rol
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -51,9 +52,7 @@ Route::get('/contactenos', function () {
 
 //Rutas para secretaria
 Route::middleware(['auth', 'role:Secretaria'])->group(function () {
-Route::resource('ingresos', IngresoController::class);
 Route::get('/Expedientes',[ExpedientesController::class, 'admin'])->name('Expedientes.admin');
-Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
 Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
 Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
 Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
@@ -75,7 +74,6 @@ Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name(
 //Rutas de Admin
 Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::resource('ingresos', IngresoController::class);
-    Route::get('ingresos', [IngresoController::class , 'index'])->name('ingresos.index');
     Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
     Route::get('/Pacientes/create', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
     Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
@@ -146,7 +144,7 @@ Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function 
 
 
 Route::group(['middleware' => ['auth','permission:ver ingresos']], function () {
-    Route::get('/ingresos', [IngresoController::class, 'index'])->name('ingresos.index');
+    Route::resource('ingresos', IngresoController::class);
 });
 Route::group(['middleware'=>['auth', 'permission:ver empresas']],function(){
     Route::resource('empresas', EmpresaController::class);
@@ -167,4 +165,11 @@ Route::resource('doctores', DoctoresController::class);
 });
 
 
-Route::get('/get-citas', [ExpedientesController::class, 'getCitas']);
+//Route::get('/get-citas', [CitaController::class, 'getCitas']);
+
+
+Route::get('/citas', [CitaController::class, 'index']); // Obtener todas las citas
+Route::post('/citas', [CitaController::class, 'store']); // Crear una nueva cita
+Route::get('/citas/{id}', [CitaController::class, 'show']); // Mostrar una cita específica
+Route::put('/citas/{id}', [CitaController::class, 'update']); // Actualizar una cita
+Route::delete('/citas/{id}', [CitaController::class, 'destroy']); // Eliminar una cita
