@@ -182,7 +182,7 @@
 
  
 
- <div class="flex items-center justify-between bg-gray-300 p-4 mb-2 border">
+ <div class="flex items-center justify-between bg-gray-300 p-3 border">
     <h2 class="text-xl font-semibold leading-tight text-gray-800">
         {{ __('Pacientes') }}
     </h2>

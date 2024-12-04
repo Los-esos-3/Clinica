@@ -164,7 +164,7 @@
             </div>
         </div>
     </nav>
-    <div class="flex items-center justify-between bg-gray-300 p-2 mb-6 border">
+    <div class="flex items-center justify-between bg-gray-300 p-3 mb-6 border">
         <h2 class="text-xl pt-1.5 font-semibold leading-tight text-gray-800">
             {{ __('Pacientes') }}
         </h2>
