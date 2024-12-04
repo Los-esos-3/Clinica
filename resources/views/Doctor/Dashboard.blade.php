@@ -135,6 +135,24 @@
             .today-soft {
                 background-color: #e6f3ff !important; /* Un azul muy suave */
             }
+            /* Pega aquí los estilos del calendario */
+.fc-event-title, .fc-event-time {
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    font-size: 12px;
+    text-align: left;
+}
+
+.fc-event {
+    padding: 5px;
+}
+
+.fc-event div {
+    display: flex;
+    flex-direction: column;
+}
+
         </style>
     </head>
     <body>
@@ -161,30 +179,16 @@
             </div>
         </nav>
 
-        <div class="container">
-            <div id="calendar-container" class="p-6">
-                <div id="calendar1"></div>
-            </div>
-        </div>
+        <div id="calendar"></div>
 
-        <script>
-            function initializeCalendar() {
-                var calendarEl = document.getElementById('secretaria-calendar');
-                if (calendarEl && !calendarEl.classList.contains('initialized')) {
-                    var calendar = new FullCalendar.Calendar(calendarEl, {
-                        initialView: 'dayGridMonth',
-                        // Otras opciones del calendario
-                    });
-                    calendar.render();
-                    calendarEl.classList.add('initialized');
-                }
-            }   
+        <!-- Incluye los estilos de FullCalendar -->
+        <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.css" rel="stylesheet">
+        <!-- Incluye las dependencias de FullCalendar -->
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/main.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/es.js"></script>
+        <!-- Incluye tu archivo app.js -->
+        <script src="{{ asset('js/app.js') }}"></script>
         
-            document.addEventListener('DOMContentLoaded', function() {
-                if (typeof Alpine !== 'undefined') {
-                    Alpine.start();
-                }
-            });
-        </script>
+
     </body>
 </x-app-layout>

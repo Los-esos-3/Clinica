@@ -7,6 +7,25 @@
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
         <style>
+            /* Estilos del calendario */
+            #calendar-secretaria {
+                width: 100%;
+                height: 700px;
+            }
+
+            .fc-event {
+                background-color: #B0B0B0;
+                color: white;
+                border-radius: 5px;
+                padding: 5px;
+                font-size: 12px;
+            }
+
+            .fc-event-title {
+                font-size: 12px;
+                font-weight: bold;
+            }
+
             .nav {
                 background-color: rgb(55, 65, 81,1) !important;
                 color: white;
@@ -31,47 +50,6 @@
             }
             .nav-links a:hover {
                 text-decoration: underline;
-            }
-            .dropdown {
-                position: relative;
-                display: inline-block;
-            }
-            .dropbtn {
-                background-color: rgb(175, 175, 175);
-                border-radius: 8px !important;
-                color: white;
-                padding: 10px;
-                font-size: 16px;
-                border: none;
-                cursor: pointer;
-            }
-            .dropdown-content {
-                display: none;
-                position: absolute;
-                background-color: #f9f9f9;
-                min-width: 160px;
-                box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-                z-index: 1;
-            }
-            .dropdown-content a {
-                color: black;
-                padding: 12px 16px;
-                text-decoration: none;
-                display: block;
-            }
-            .dropdown-content a:hover {
-                background-color: #f1f1f1;
-            }
-            .dropdown:hover .dropdown-content {
-                display: block;
-            }
-            .Container-img {
-                display: flex;
-                align-items: center;
-            }
-            #calendar1 {
-                width: 100%;
-                height: 800px;
             }
         </style>
     </head>
@@ -99,125 +77,48 @@
             </div>
         </nav>
         
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div id="calendar1" style="height: 800px;"></div>
-                </div>
-            </div>
-        </div>
-        
+        <div id="calendar-secretaria"></div>
+
         <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl1 = document.getElementById('calendar1');
-            var calendar1 = new FullCalendar.Calendar(calendarEl1, {
-                initialView: 'dayGridMonth',
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                height: 'auto',
-                aspectRatio: 1.35,
-                contentHeight: 'auto',
-                events: '/get-citas',
-                locale: 'es',
-                firstDay: 1,
-                dayHeaderFormat: { weekday: 'short' },
-                buttonText: {
-                    today: 'Hoy',
-                    month: 'Mes',
-                    week: 'Semana',
-                    day: 'Día'
-                },
-                views: {
-                    dayGridMonth: {
-                        dayHeaderFormat: { weekday: 'short' }
+            document.addEventListener('DOMContentLoaded', function () {
+                const calendarEl = document.getElementById('calendar-secretaria');
+
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    locale: 'es',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    events: '/expedientes/citas', // Endpoint para obtener las citas
+                    eventContent: function (info) {
+                        const paciente = truncateText(info.event.extendedProps.paciente, 20); // Trunca nombres largos
+                        const doctor = truncateText(info.event.extendedProps.doctor, 20);   // Trunca nombres largos
+
+                        const container = document.createElement('div');
+                        container.innerHTML = `
+                            <div style="line-height: 1.2; font-size: 12px;">
+                                <strong>Paciente:</strong> ${paciente}<br>
+                                <strong>Doctor:</strong> ${doctor}<br>
+                                <strong>Hora:</strong> ${info.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true })}
+                            </div>
+                        `;
+                        return { domNodes: [container] };
+                    },
+                    eventClick: function(info) {
+                        alert('Cita con ' + info.event.extendedProps.paciente + ' a las ' + info.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }));
                     }
-                },
-                eventContent: function(arg) {
-                    var eventElement = document.createElement('div');
-                    eventElement.classList.add('fc-event-main-frame');
+                });
 
-                    var titleElement = document.createElement('div');
-                    titleElement.classList.add('fc-event-title-container');
-
-                    var titleText = document.createElement('div');
-                    titleText.classList.add('fc-event-title', 'fc-sticky');
-
-                    var titleParts = arg.event.title.split(' - Dr. ');
-                    var pacienteName = titleParts[0];
-                    var doctorName = titleParts[1] || '';
-
-                    var pacienteElement = document.createElement('div');
-                    pacienteElement.innerHTML = '<strong>Paciente:</strong> ' + pacienteName;
-                    pacienteElement.style.fontWeight = 'normal';
-
-                    var doctorElement = document.createElement('div');
-                    doctorElement.innerHTML = '<strong>Doctor:</strong> Dr. ' + doctorName;
-                    doctorElement.style.fontSize = '0.9em';
-
-                    var horaElement = document.createElement('div');
-                    horaElement.innerHTML = '<strong>Hora:</strong> ' + (arg.event.extendedProps.horaFormateada || '');
-                    horaElement.style.fontSize = '0.9em';
-
-                    titleText.appendChild(pacienteElement);
-                    titleText.appendChild(doctorElement);
-                    titleText.appendChild(horaElement);
-
-                    titleElement.appendChild(titleText);
-                    eventElement.appendChild(titleElement);
-
-                    return { domNodes: [eventElement] };
-                },
-                eventDidMount: function(info) {
-                    info.el.style.height = 'auto';
-                    info.el.style.minHeight = '2em'; 
-                }
+                calendar.render();
             });
-            calendar1.render();
-
-            var style = document.createElement('style');
-            style.textContent = `
-                .fc-theme-standard .fc-toolbar,
-                .fc-theme-standard .fc-view-harness {
-                    background-color: white;
+            function truncateText(text, maxLength) {
+                if (text.length > maxLength) {
+                    return text.substring(0, maxLength) + '...';
                 }
-                .fc .fc-button-primary {
-                    background-color: #f0f0f0;
-                    border-color: #d0d0d0;
-                    color: black;
-                }
-                .fc .fc-button-primary:hover {
-                    background-color: #e0e0e0;
-                    border-color: #c0c0c0;
-                }
-                .fc .fc-button-primary:not(:disabled).fc-button-active,
-                .fc .fc-button-primary:not(:disabled):active {
-                    background-color: #d0d0d0;
-                    border-color: #b0b0b0;
-                    color: black;
-                }
-                .fc-daygrid-day-number,
-                .fc-col-header-cell-cushion,
-                .fc-daygrid-day-top {
-                    color: black !important;
-                }
-                .fc-day-today {
-                    background-color: #f8f8f8 !important;
-                }
-                .fc-event {
-                    background-color: #f0f0f0;
-                    border-color: #d0d0d0;
-                    color: black;
-                }
-                .fc-event-title,
-                .fc-event-time {
-                    color: black;
-                }
-            `;
-            document.head.appendChild(style);
-        });
+                return text;
+            }
         </script>
     </body>
-</x-app-layout> 
+</x-app-layout>

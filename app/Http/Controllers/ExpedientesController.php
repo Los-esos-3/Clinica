@@ -105,24 +105,25 @@ class ExpedientesController extends Controller
     }
 
     public function getCitas()
-    {
-        $citas = Expediente::whereNotNull('proxima_cita')
-            ->select('proxima_cita', 'hora_proxima_cita', 'paciente_id', 'doctor_id')
-            ->with(['paciente:id,nombre', 'doctor:id,nombre'])
-            ->get();
+{
+    $citas = Expediente::with(['paciente', 'doctor'])
+        ->whereNotNull('proxima_cita')
+        ->get();
 
-        $formattedCitas = $citas->map(function ($expediente) {
-            $fechaHora = Carbon::parse($expediente->proxima_cita . ' ' . $expediente->hora_proxima_cita);
-            return [
-                'title' => $expediente->paciente->nombre . ' - Dr. ' . $expediente->doctor->nombre,
-                'start' => $fechaHora->format('Y-m-d\TH:i:s'),
-                'allDay' => false,
-                'extendedProps' => [
-                    'horaFormateada' => $fechaHora->format('h:i A')
-                ]
-            ];
-        });
+    $formattedCitas = $citas->map(function ($cita) {
+        $hora12 = \Carbon\Carbon::createFromFormat('H:i:s', $cita->hora_proxima_cita)->format('h:i A');
+        return [
+            'title' => '', // El título se manejará en el frontend
+            'start' => $cita->proxima_cita . 'T' . $cita->hora_proxima_cita,
+            'extendedProps' => [
+                'paciente' => $cita->paciente->nombre,
+                'doctor' => $cita->doctor->nombre_completo,
+                'hora' => $hora12,
+            ],
+        ];
+    });
 
-        return response()->json($formattedCitas);
-    }
+    return response()->json($formattedCitas);
+}
+
 }

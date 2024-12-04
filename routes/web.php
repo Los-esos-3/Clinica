@@ -173,3 +173,6 @@ Route::post('/citas', [CitaController::class, 'store']); // Crear una nueva cita
 Route::get('/citas/{id}', [CitaController::class, 'show']); // Mostrar una cita específica
 Route::put('/citas/{id}', [CitaController::class, 'update']); // Actualizar una cita
 Route::delete('/citas/{id}', [CitaController::class, 'destroy']); // Eliminar una cita
+
+Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
+
