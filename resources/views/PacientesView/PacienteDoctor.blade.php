@@ -260,16 +260,10 @@
                                                                     <a href="{{ route('Pacientes.edit', $paciente->id) }}"
                                                                         class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">Editar
                                                                         Paciente</a>
-                                                                    @if ($paciente->expediente)
-                                                                        <!-- Verifica si el expediente existe -->
-                                                                        <a href="{{ route('Expedientes.edit', $paciente->expediente->id) }}"
-                                                                            class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">Editar
-                                                                            Expediente</a>
+                                                                        @if ($paciente->expediente)
+                                                                        <a href="{{ route('Expedientes.edit', $paciente->expediente->id) }}" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">Editar Expediente</a>
                                                                     @else
-                                                                        <button
-                                                                            class="px-4 py-2 text-gray-500 bg-gray-300 rounded cursor-not-allowed"
-                                                                            disabled>Editar Expediente (No
-                                                                            disponible)</button>
+                                                                        <span class="text-gray-500">No hay expediente disponible para editar.</span>
                                                                     @endif
                                                                 </div>
                                                                 <div class="flex justify-end mt-4">
@@ -433,6 +427,8 @@
     </div>
 
     <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Función para alternar la visibilidad del modal
         function toggleModal(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
@@ -440,6 +436,7 @@
             }
         }
 
+        // Función para filtrar pacientes
         function filterPatients() {
             const searchInput = document.getElementById('search').value.toLowerCase();
             const patientRows = document.querySelectorAll('.patient-row');
@@ -453,7 +450,13 @@
                 }
             });
         }
-    </script>
+
+        // Registrar las funciones en el objeto global para que sean accesibles
+        window.toggleModal = toggleModal;
+        window.filterPatients = filterPatients;
+    });
+</script>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
 </x-app-layout>

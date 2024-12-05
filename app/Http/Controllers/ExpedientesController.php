@@ -43,7 +43,6 @@ class ExpedientesController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
             'doctor_id' => 'required|exists:doctores,id',
             'especialidad' => 'required|string',
             'diagnostico' => 'required|string',
@@ -78,7 +77,8 @@ class ExpedientesController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        
+        $validatedData = $request->validate([
             'doctor_id' => 'required|exists:doctores,id',
             'especialidad' => 'required|string|max:255',
             'diagnostico' => 'required|string',
@@ -91,9 +91,10 @@ class ExpedientesController extends Controller
         ]);
 
         $expediente = Expediente::findOrFail($id);
-        $expediente->update($request->all());
+        
+        $expediente->update($validatedData);
 
-        return redirect()->route('Expedientes.index')->with('success', 'Expediente actualizado con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente actualizado con éxito.');
     }
 
     public function destroy($id)

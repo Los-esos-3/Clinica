@@ -176,3 +176,6 @@ Route::delete('/citas/{id}', [CitaController::class, 'destroy']); // Eliminar un
 
 Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 
+Route::get('/pacientes', [PacientesController::class, 'index'])->name('Pacientes.PacientesView');
+
+
