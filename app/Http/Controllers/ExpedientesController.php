@@ -26,8 +26,15 @@ class ExpedientesController extends Controller
 
     public function create(Request $request)
     {
-        $pacientes = Paciente::all(); 
-        $doctores = Doctores::all();
+        if (!$request->has('paciente_id')) {
+            return redirect()->back()->with('error', 'Es necesario seleccionar un paciente primero.');
+        }
+    
+        $paciente = Paciente::find($request->paciente_id); // Busca al paciente por su ID
+    
+        if (!$paciente) {
+            return redirect()->back()->with('error', 'El paciente seleccionado no existe.');
+        }        $doctores = Doctores::all();
         $especialidad = null;
 
         if ($request->has('doctor_id')) {
@@ -37,13 +44,12 @@ class ExpedientesController extends Controller
             }
         }
 
-        return view('Expedientes.Create', compact('pacientes', 'doctores', 'especialidad'));
+        return view('Expedientes.Create', compact('paciente', 'doctores'));
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'paciente_id' => 'required|exists:pacientes,id',
             'doctor_id' => 'required|exists:doctores,id',
             'especialidad' => 'required|string',
             'diagnostico' => 'required|string',
@@ -78,7 +84,8 @@ class ExpedientesController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        
+        $validatedData = $request->validate([
             'doctor_id' => 'required|exists:doctores,id',
             'especialidad' => 'required|string|max:255',
             'diagnostico' => 'required|string',
@@ -91,9 +98,10 @@ class ExpedientesController extends Controller
         ]);
 
         $expediente = Expediente::findOrFail($id);
-        $expediente->update($request->all());
+        
+        $expediente->update($validatedData);
 
-        return redirect()->route('Expedientes.index')->with('success', 'Expediente actualizado con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente actualizado con éxito.');
     }
 
     public function destroy($id)

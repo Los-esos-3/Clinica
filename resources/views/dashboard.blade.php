@@ -4,7 +4,7 @@
             <div class="max-w-full mx-auto">
                 <div class="bg-white overflow-hidden shadow-xl rounded-lg">
                     <div class="p-4 sm:p-6">
-                        <h2 class="text-2xl font-semibold mb-4">Dashboard</h2>
+                        <h2 class="text-2xl font-semibold mb-4">AGENDA</h2>
                         <div class="flex justify-items-center justify-center">
                             <ul class="flex">
                                 <li>
@@ -14,7 +14,7 @@
                                 </li>
                                 <li>
                                     <a href="{{ route('dashboard') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                        DASHBOARD
+                                        INICIO 
                                     </a>
                                 </li>
                                 <li>
@@ -56,30 +56,7 @@
 
                             <!-- <h2 class="text-2xl font-semibold mb-4">Gestión de Pacientes</h2> --> 
                         </div>
-                        
-                        <div x-data="{ activeTab: 'doctor' }">
-                            <!-- Pestañas -->
-                            <div class="mb-4 border-b border-gray-200">
-                                <ul class="flex flex-wrap -mb-px">
-                                    <li class="mr-2">
-                                        <button 
-                                            @click="activeTab = 'doctor'" 
-                                            :class="{'border-blue-500 text-blue-600': activeTab === 'doctor', 'border-transparent text-gray-500': activeTab !== 'doctor'}"
-                                            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300">
-                                            Dashboard Doctor
-                                        </button>
-                                    </li>
-                                    <li class="mr-2">
-                                        <button 
-                                            @click="activeTab = 'secretaria'" 
-                                            :class="{'border-blue-500 text-blue-600': activeTab === 'secretaria', 'border-transparent text-gray-500': activeTab !== 'secretaria'}"
-                                            class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300">
-                                            Dashboard Secretaria
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            
+                     
                             <!-- Contenido de las pestañas -->
                             <div class="mt-4">
                                 <div x-show="activeTab === 'doctor'" x-transition>

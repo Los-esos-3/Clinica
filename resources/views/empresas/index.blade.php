@@ -7,7 +7,7 @@
             <ul class="flex">
                 <li>
                     <a href="{{ route('dashboard') }}" class="inline-block px-4 ml-8 border-b-2 rounded-t-lg no-underline text-zinc-950 hover:text-indigo-600 transition-colors duration-200">
-                        DASHBOARD
+                        INICIO 
                     </a>
                 </li>
             </ul>
