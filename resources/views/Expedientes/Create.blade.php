@@ -55,7 +55,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="familiar_a_cargo" class="block text-sm font-medium text-gray-700">Familiar A cargo</label>
+                            <label for="familiar_a_cargo" class="block text-sm font-medium text-gray-700">Familiar a cargo</label>
                             <input type="text" name="familiar_a_cargo" id="familiar_a_cargo" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         </div>
 

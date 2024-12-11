@@ -233,7 +233,7 @@
                                                 <p class="text-red-500">No hay expediente disponible.</p>
                                                 <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
                                                     class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                                    Agregar uno
+                                                    Agregar expediente
                                                 </a>
                                             @endif
                                         </td>
