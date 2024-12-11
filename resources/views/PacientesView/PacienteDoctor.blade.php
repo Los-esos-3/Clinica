@@ -184,59 +184,59 @@
                 </div>
             </div>
 
-            <a href="{{ route('Pacientes.create') }}"
-                class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                <button>
-                    Agregar Paciente
-                </button>
-            </a>
-        </div>
-        <!-- Vista Crud de pacientes -->
-        <div class="py-12">
-            <div class="mx-auto max-w-80% sm:px-6 lg:px-8">
-                <div class="overflow-hidden shadow-md sm:rounded-lg">
-                    <div class="bg-white border-b border-gray-200 dark:bg-gray-300 dark:border-gray-600">
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-gray-200">
-                                <thead class="bg-gray-50 dark:bg-gray-400">
-                                    <tr>
-                                        <th
-                                            class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">
-                                            Datos del Paciente</th>
-                                        <th
-                                            class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">
-                                            Expediente</th>
-                                        <th
-                                            class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">
-                                            Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600"
-                                    id="patientsTable">
-                                    @foreach ($pacientes as $paciente)
-                                        <tr class="patient-row">
-                                            <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
-                                                <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
-                                                <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
-                                                <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}
-                                                </p>
-                                            </td>
-                                            <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
-                                                @if ($paciente->expediente)
-                                                    <p><strong>Doctor:</strong>
-                                                        {{ $paciente->expediente->doctor->nombre_completo }}</p>
-                                                    <p><strong>Diagnóstico:</strong>
-                                                        {{ $paciente->expediente->diagnostico }}</p>
-                                                    <p><strong>Tratamiento:</strong>
-                                                        {{ $paciente->expediente->tratamiento }}</p>
-                                                @else
-                                                <p class="text-red-500">No hay expediente disponible.</p>
-                                                <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
-                                                    class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                                    Agregar uno
-                                                </a>
-                                                @endif
-                                            </td>
+        <a href="{{ route('Pacientes.create') }}"
+            class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+            <button>
+                Agregar Paciente
+            </button>
+        </a>
+    </div>
+    <!-- Vista Crud de pacientes -->
+    <div class="py-12">
+        <div class="mx-auto max-w-80% sm:px-6 lg:px-8">
+            <div class="overflow-hidden shadow-md sm:rounded-lg">
+                <div class="bg-white border-b border-gray-200 dark:bg-gray-300 dark:border-gray-600">
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50 dark:bg-gray-400">
+                                <tr>
+                                    <th
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">
+                                        Datos del Paciente</th>
+                                    <th
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">
+                                        Expediente</th>
+                                    <th
+                                        class="px-6 py-3 text-xs font-medium tracking-wider text-center text-gray-500 uppercase dark:text-gray-800 border-b-2 border-gray-300">
+                                        Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200 dark:bg-gray-300 dark:divide-gray-600"
+                                id="patientsTable">
+                                @foreach ($pacientes as $paciente)
+                                    <tr class="patient-row">
+                                        <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                                            <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                                            <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                                            <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}
+                                            </p>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+                                            @if ($paciente->expediente)
+                                                <p><strong>Doctor:</strong>
+                                                    {{ $paciente->expediente->doctor->nombre_completo }}</p>
+                                                <p><strong>Diagnóstico:</strong>
+                                                    {{ $paciente->expediente->diagnostico }}</p>
+                                                <p><strong>Tratamiento:</strong>
+                                                    {{ $paciente->expediente->tratamiento }}</p>
+                                            @else
+                                            <p class="text-red-500">No hay expediente disponible.</p>
+                                            <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
+                                                class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                                Agregar uno
+                                            </a>
+                                            @endif
+                                        </td>
 
                                             <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
                                                 <div class="flex gap-2">

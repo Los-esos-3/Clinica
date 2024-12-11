@@ -11,20 +11,6 @@
                 <div class="p-6">
                     <form method="POST" action="{{ route('Expedientes.store') }}">
                         @csrf
-                        
-                        {{-- Mensajes de error --}}
-                        @if ($errors->any())
-                            <div class="mb-4">
-                                <div class="bg-red-500 text-white p-2 rounded">
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            </div>
-                        @endif
-                        
                         <div class="mb-4">
                             <label for="paciente" class="block text-sm font-medium text-gray-700">Nombre del Paciente</label>
                             <input type="text" id="paciente" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" value="{{ $paciente->nombre }}" readonly>
@@ -59,7 +45,7 @@
                         </div>
 
                         <div class="mb-4">
-                            <label for="familiar_a_cargo" class="block text-sm font-medium text-gray-700">Familiar A cargo</label>
+                            <label for="familiar_a_cargo" class="block text-sm font-medium text-gray-700">Familiar a cargo</label>
                             <input type="text" name="familiar_a_cargo" id="familiar_a_cargo" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
                         </div>
 
@@ -92,6 +78,17 @@
             </div>
         </div>
     </div>
+
+    @if ($errors->any())
+    <div class="mb-4">
+        <ul class="text-red-600">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
 </x-app-layout>
 
 <script>

@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\Paciente;
 use App\Models\Expediente;
 use App\Models\Doctores;
-use Illuminate\Support\Facades\Log; 
+use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
 class ExpedientesController extends Controller
-{ 
+{
     public function index()
     {
         // Cargar expedientes con la relación de paciente y doctor
@@ -29,12 +29,13 @@ class ExpedientesController extends Controller
         if (!$request->has('paciente_id')) {
             return redirect()->back()->with('error', 'Es necesario seleccionar un paciente primero.');
         }
-    
+
         $paciente = Paciente::find($request->paciente_id); // Busca al paciente por su ID
-    
+
         if (!$paciente) {
             return redirect()->back()->with('error', 'El paciente seleccionado no existe.');
-        }        $doctores = Doctores::all();
+        }
+        $doctores = Doctores::all();
         $especialidad = null;
 
         if ($request->has('doctor_id')) {
@@ -71,6 +72,14 @@ class ExpedientesController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error al crear el expediente: ' . $e->getMessage());
         }
+        $validatedData['fecha_registro'] = Carbon::parse($validatedData['fecha_registro'])->format('Y-m-d');
+
+        // Asegúrate de que el paciente_id se esté pasando
+        $validatedData['paciente_id'] = $request->paciente_id; // Asegúrate de que este campo esté presente
+
+        Expediente::create($validatedData);
+
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente creado con éxito.');
     }
 
     public function show($id)
@@ -89,7 +98,7 @@ class ExpedientesController extends Controller
 
     public function update(Request $request, $id)
     {
-        
+
         $validatedData = $request->validate([
             'doctor_id' => 'required|exists:doctores,id',
             'diagnostico' => 'required|string',
@@ -102,7 +111,7 @@ class ExpedientesController extends Controller
         ]);
 
         $expediente = Expediente::findOrFail($id);
-        
+
         $expediente->update($validatedData);
 
         return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente actualizado con éxito.');
@@ -117,25 +126,24 @@ class ExpedientesController extends Controller
     }
 
     public function getCitas()
-{
-    $citas = Expediente::with(['paciente', 'doctor'])
-        ->whereNotNull('proxima_cita')
-        ->get();
+    {
+        $citas = Expediente::with(['paciente', 'doctor'])
+            ->whereNotNull('proxima_cita')
+            ->get();
 
-    $formattedCitas = $citas->map(function ($cita) {
-        $hora12 = \Carbon\Carbon::createFromFormat('H:i:s', $cita->hora_proxima_cita)->format('h:i A');
-        return [
-            'title' => '', // El título se manejará en el frontend
-            'start' => $cita->proxima_cita . 'T' . $cita->hora_proxima_cita,
-            'extendedProps' => [
-                'paciente' => $cita->paciente->nombre,
-                'doctor' => $cita->doctor->nombre_completo,
-                'hora' => $hora12,
-            ],
-        ];
-    });
+        $formattedCitas = $citas->map(function ($cita) {
+            $hora12 = \Carbon\Carbon::createFromFormat('H:i:s', $cita->hora_proxima_cita)->format('h:i A');
+            return [
+                'title' => '', // El título se manejará en el frontend
+                'start' => $cita->proxima_cita . 'T' . $cita->hora_proxima_cita,
+                'extendedProps' => [
+                    'paciente' => $cita->paciente->nombre,
+                    'doctor' => $cita->doctor->nombre_completo,
+                    'hora' => $hora12,
+                ],
+            ];
+        });
 
-    return response()->json($formattedCitas);
-}
-
+        return response()->json($formattedCitas);
+    }
 }
