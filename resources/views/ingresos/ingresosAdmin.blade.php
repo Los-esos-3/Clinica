@@ -129,7 +129,7 @@
            
                 <li>
                     <a href="dashboard.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950 active">
-                        DASHBOARD
+                        INICIO
                     </a>
                 </li>
                 <li>

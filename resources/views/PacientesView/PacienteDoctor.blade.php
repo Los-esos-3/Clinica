@@ -230,11 +230,11 @@
                                                 <p><strong>Tratamiento:</strong>
                                                     {{ $paciente->expediente->tratamiento }}</p>
                                             @else
-                                                <p class="text-red-500">No hay expediente disponible.</p>
-                                                <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
-                                                    class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                                    Agregar uno
-                                                </a>
+                                            <p class="text-red-500">No hay expediente disponible.</p>
+                                            <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
+                                                class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                                Agregar uno
+                                            </a>
                                             @endif
                                         </td>
 
@@ -358,8 +358,6 @@
                                                     @if ($paciente->expediente)
                                                         <p><strong>Doctor:</strong>
                                                             {{ $paciente->expediente->doctor->nombre_completo }}</p>
-                                                        <p><strong>Especialidad:</strong>
-                                                            {{ $paciente->expediente->especialidad }}</p>
                                                         <p><strong>Diagnóstico:</strong>
                                                             {{ $paciente->expediente->diagnostico }}</p>
                                                         <p><strong>Tratamiento:</strong>

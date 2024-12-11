@@ -26,8 +26,15 @@ class ExpedientesController extends Controller
 
     public function create(Request $request)
     {
-        $pacientes = Paciente::all(); 
-        $doctores = Doctores::all();
+        if (!$request->has('paciente_id')) {
+            return redirect()->back()->with('error', 'Es necesario seleccionar un paciente primero.');
+        }
+    
+        $paciente = Paciente::find($request->paciente_id); // Busca al paciente por su ID
+    
+        if (!$paciente) {
+            return redirect()->back()->with('error', 'El paciente seleccionado no existe.');
+        }        $doctores = Doctores::all();
         $especialidad = null;
 
         if ($request->has('doctor_id')) {
@@ -37,7 +44,7 @@ class ExpedientesController extends Controller
             }
         }
 
-        return view('Expedientes.Create', compact('pacientes', 'doctores', 'especialidad'));
+        return view('Expedientes.Create', compact('paciente', 'doctores'));
     }
 
     public function store(Request $request)

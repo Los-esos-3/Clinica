@@ -28,17 +28,14 @@
                             <select name="doctor_id" id="doctor_id" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                                 <option value="">Seleccione un doctor</option>
                                 @foreach ($doctores as $doctor)
-                                    <option value="{{ $doctor->id }}" data-especialidad="{{ $doctor->especialidad }}" {{ $doctor->id == $expediente->doctor_id ? 'selected' : '' }}>
-                                        {{ $doctor->nombre_completo }}  {{ $doctor->especialidad }}
+                                    <option value="{{ $doctor->id }}"  {{ $doctor->id == $expediente->doctor_id ? 'selected' : '' }}>
+                                        {{ $doctor->nombre_completo }} 
                                     </option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="mb-4">
-                            <label for="especialidad" class="block text-sm font-medium text-gray-700">Especialidad</label>
-                            <input type="text" name="especialidad" id="especialidad" value="{{ old('especialidad', $expediente->especialidad) }}" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" readonly>
-                        </div>
+            
 
                         <div class="mb-4">
                             <label for="diagnostico" class="block text-sm font-medium text-gray-700">Diagnóstico</label>

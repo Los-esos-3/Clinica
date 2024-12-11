@@ -19,7 +19,7 @@
                                     </li>
                                     <li>
                                         <a href="{{ route('dashboard') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                            DASHBOARD
+                                            INICIO
                                         </a>
                                     </li>
                                     <li>

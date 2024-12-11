@@ -139,7 +139,6 @@
                     <tr>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Paciente</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Doctor</th>
-                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Especialidad</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Diagnóstico</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Tratamiento</th>
                         <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Antecedentes</th>
@@ -156,7 +155,6 @@
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->paciente->nombre }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->doctor }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->especialidad }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->diagnostico }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->tratamiento }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $expediente->antecedentes }}</td>

@@ -272,7 +272,6 @@
                                                 <h2 class="text-xl font-bold mb-4">Expediente de {{ $paciente->nombre }}</h2>
                                                 @if($paciente->expediente)
                                                     <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
-                                                    <p><strong>Especialidad:</strong> {{ $paciente->expediente->especialidad }}</p>
                                                     <p><strong>Diagnóstico:</strong> {{ $paciente->expediente->diagnostico }}</p>
                                                     <p><strong>Tratamiento:</strong> {{ $paciente->expediente->tratamiento }}</p>
                                                     <p><strong>Antecedentes:</strong> {{ $paciente->expediente->antecedentes }}</p>
