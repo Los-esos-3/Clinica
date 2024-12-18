@@ -703,7 +703,7 @@ header nav ul li svg:hover {
                 @if (Route::has('login'))
                     @auth
                     <li>
-                        <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Dashboard</a> <!-- Ajustar margen aquí -->
+                        <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Calendario</a> <!-- Ajustar margen aquí -->
 
                         <div class="user-avatar" onclick="toggleUserMenu()">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22">

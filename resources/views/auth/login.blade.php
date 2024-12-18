@@ -109,7 +109,7 @@
         // Función para habilitar el botón de enviar cuando los campos estén llenos
         function toggleSubmitButton() {
             // Verificar que la contraseña tenga entre 16 y 18 caracteres y el correo esté lleno
-            if (emailInput.value && passwordInput.value.length >= 16 && passwordInput.value.length <= 18) {
+            if (emailInput.value && passwordInput.value.length >= 2 && passwordInput.value.length <= 12) {
                 submitButton.disabled = false;
                 submitButton.classList.remove('bg-gray-500');
                 submitButton.classList.add('bg-blue-500', 'hover:bg-blue-600');

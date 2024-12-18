@@ -85,7 +85,7 @@
         // Función para habilitar el botón "Crear cuenta" cuando la contraseña tiene entre 16 y 18 caracteres
         function toggleSubmitButton() {
             // Verificar que la contraseña tenga entre 16 y 18 caracteres
-            if (passwordInput.value.length >= 16 && passwordInput.value.length <= 18) {
+            if (passwordInput.value.length >= 5 && passwordInput.value.length <= 25) {  
                 submitButton.disabled = false;
                 submitButton.classList.remove('bg-gray-500');
                 submitButton.classList.add('bg-blue-500', 'hover:bg-blue-700');

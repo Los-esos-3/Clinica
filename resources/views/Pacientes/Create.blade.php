@@ -24,12 +24,12 @@
 
                         <div class="mb-4">
                             <label for="fecha_nacimiento" class="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
-                            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <input type="date" name="fecha_nacimiento" id="fecha_nacimiento" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
                         </div>
 
                         <div class="mb-4">
                             <label for="edad" class="block text-sm font-medium text-gray-700">Edad</label>
-                            <input type="number" name="edad" id="edad" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+                            <input type="number" name="edad" id="edad" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" readonly>
                         </div>
 
                         <div class="mb-4">
@@ -88,3 +88,21 @@
         </div>
     </div>
 </x-app-layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const fechaNacimientoInput = document.getElementById('fecha_nacimiento');
+        const edadInput = document.getElementById('edad');
+
+        fechaNacimientoInput.addEventListener('change', function() {
+            const fechaNacimiento = new Date(this.value);
+            const today = new Date();
+            let edad = today.getFullYear() - fechaNacimiento.getFullYear();
+            const mesDiff = today.getMonth() - fechaNacimiento.getMonth();
+            if (mesDiff < 0 || (mesDiff === 0 && today.getDate() < fechaNacimiento.getDate())) {
+                edad--;
+            }
+            edadInput.value = edad;
+        });
+    });
+</script>
