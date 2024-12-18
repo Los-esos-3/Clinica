@@ -41,7 +41,6 @@ class ClinicaController extends Controller
 
     public function store(Request $request)
     {
-        $this->authorize('crear pacientes');
         
         $request->validate([
             'nombre' => 'required|string|max:255',

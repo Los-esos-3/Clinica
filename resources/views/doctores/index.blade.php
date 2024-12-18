@@ -203,7 +203,7 @@
                             @endif
                             <div>
                                 <h3 class="text-lg font-semibold">{{ $doctor->nombre_completo }}</h3>
-                                <p class="text-blue-600">{{ $doctor->especialidad_medica }}</p>
+                                <p class="text-blue-600">{!! $doctor->especialidad_medica ?:'<span class="text-red-500">No proporcionado</span>' !!}</p>
                             </div>
                         </div>
 
@@ -211,17 +211,17 @@
                             <!-- Información Personal -->
                             <div class="info-section">
                                 <h4 class="font-semibold text-gray-700 mb-2">Información Personal</h4>
-                                <p><span class="font-medium">Fecha Nac:</span> {{ $doctor->fecha_nacimiento }}</p>
-                                <p><span class="font-medium">Género:</span> {{ $doctor->genero }}</p>
-                                <p><span class="font-medium">Nacionalidad:</span> {{ $doctor->nacionalidad }}</p>
+                                <p><span class="font-medium">Fecha Nac:</span> {!! $doctor->fecha_nacimiento ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                <p><span class="font-medium">Género:</span> {!! $doctor->genero ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                <p><span class="font-medium">Nacionalidad:</span> {!! $doctor->nacionalidad ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
                             </div>
 
                             <!-- Contacto -->
                             <div class="info-section">
                                 <h4 class="font-semibold text-gray-700 mb-2">Contacto</h4>
-                                <p><span class="font-medium">Tel:</span> {{ $doctor->telefono }}</p>
-                                <p><span class="font-medium">Email:</span> {{ $doctor->email }}</p>
-                                <p><span class="font-medium">Dirección:</span> {{ $doctor->domicilio }}</p>
+                                <p><span class="font-medium">Tel:</span> {!! $doctor->telefono ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                <p><span class="font-medium">Email:</span> {!! $doctor->email ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                <p><span class="font-medium">Dirección:</span> {!! $doctor->domicilio ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
                             </div>
 
                             <!-- Botón Ver Más -->
@@ -236,26 +236,26 @@
                                 <!-- Información Académica -->
                                 <div class="info-section">
                                     <h4 class="font-semibold text-gray-700 mb-2">Información Académica</h4>
-                                    <p><span class="font-medium">Universidad:</span> {{ $doctor->universidad }}</p>
-                                    <p><span class="font-medium">Título:</span> {{ $doctor->titulo }}</p>
-                                    <p><span class="font-medium">Año Graduación:</span> {{ $doctor->año_graduacion }}</p>
+                                    <p><span class="font-medium">Universidad:</span> {!! $doctor->universidad ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                    <p><span class="font-medium">Título:</span> {!! $doctor->titulo ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                    <p><span class="font-medium">Año Graduación:</span> {!! $doctor->año_graduacion ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
                                 </div>
 
                                 <!-- Experiencia -->
                                 <div class="info-section">
                                     <h4 class="font-semibold text-gray-700 mb-2">Experiencia</h4>
-                                    <p><span class="font-medium">Años:</span> {{ $doctor->años_experiencia }}</p>
-                                    <p><span class="font-medium">Hospitales:</span> {{ $doctor->hospitales_previos }}</p>
-                                    <p><span class="font-medium">Idiomas:</span> {{ $doctor->idiomas }}</p>
-                                    <p><span class="font-medium">Área:</span> {{ $doctor->area_departamento }}</p>
+                                    <p><span class="font-medium">Años:</span> {!! $doctor->años_experiencia ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                    <p><span class="font-medium">Hospitales:</span> {!! $doctor->hospitales_previos ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                    <p><span class="font-medium">Idiomas:</span> {!! $doctor->idiomas ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                    <p><span class="font-medium">Área:</span> {!! $doctor->area_departamento ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
                                 </div>
 
                                 <!-- Contacto de Emergencia -->
                                 <div class="info-section">
                                     <h4 class="font-semibold text-gray-700 mb-2">Contacto de Emergencia</h4>
-                                    <p><span class="font-medium">Nombre:</span> {{ $doctor->contacto_emergencia_nombre }}</p>
-                                    <p><span class="font-medium">Relación:</span> {{ $doctor->contacto_emergencia_relacion }}</p>
-                                    <p><span class="font-medium">Teléfono:</span> {{ $doctor->contacto_emergencia_telefono }}</p>
+                                    <p><span class="font-medium">Nombre:</span> {!! $doctor->contacto_emergencia_nombre ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                    <p><span class="font-medium">Relación:</span> {!! $doctor->contacto_emergencia_relacion ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                    <p><span class="font-medium">Teléfono:</span> {!! $doctor->contacto_emergencia_telefono ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
                                 </div>
                             </div>
 

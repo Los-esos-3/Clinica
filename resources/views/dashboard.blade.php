@@ -59,9 +59,7 @@
                      
                             <!-- Contenido de las pestañas -->
                             <div class="mt-4">
-                                <div x-show="activeTab === 'doctor'" x-transition>
-                                    <x-dashboard-doctor-component></x-dashboard-doctor-component>
-                                </div>
+                            
                                 <div x-show="activeTab === 'secretaria'" x-transition @click="initializeCalendar()">
                                     <x-dashboard-secretaria-component></x-dashboard-secretaria-component>
                                 </div>

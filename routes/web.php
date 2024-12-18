@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\DoctoresController;
 use App\Http\Controllers\CitaController;
+use App\Http\Controllers\ConsultaController;
 
 //Redireccion para usuarios sin rol
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -141,6 +142,7 @@ Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function 
     Route::delete('/Expedientes/{id}', [ExpedientesController::class, 'destroy'])->name('Expedientes.destroy');
     Route::put('/Expedientes/{id}', [ExpedientesController::class, 'update'])->name('Expedientes.update');
 });
+Route::resource('consultas', ConsultaController::class);
 
 
 Route::group(['middleware' => ['auth','permission:ver ingresos']], function () {
@@ -176,5 +178,4 @@ Route::delete('/citas/{id}', [CitaController::class, 'destroy']); // Eliminar un
 
 Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 
-Route::get('/pacientes', [PacientesController::class, 'index'])->name('Pacientes.PacientesView');
 
