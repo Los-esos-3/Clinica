@@ -50,28 +50,18 @@ class ExpedientesController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los datos de entrada
         $validatedData = $request->validate([
             'doctor_id' => 'required|exists:doctores,id',
             'diagnostico' => 'required|string',
             'tratamiento' => 'required|string',
             'antecedentes' => 'nullable|string',
-            'familiar_a_cargo' => 'nullable|string|max:255',
-            'numero_familiar' => 'nullable|string|max:20',
+            'familiar_a_cargo' => 'nullable|string',
+            'numero_familiar' => 'nullable|string',
             'proxima_cita' => 'nullable|date',
             'hora_proxima_cita' => 'nullable|date_format:H:i',
             'fecha_registro' => 'required|date',
-            'paciente_id' => 'required|exists:pacientes,id', // Asegúrate de validar el paciente_id
         ]);
 
-        // Intentar crear el expediente y manejar errores
-        try {
-            $validatedData['fecha_registro'] = Carbon::parse($validatedData['fecha_registro'])->format('Y-m-d');
-            Expediente::create($validatedData);
-            return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente creado con éxito.');
-        } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Error al crear el expediente: ' . $e->getMessage());
-        }
         $validatedData['fecha_registro'] = Carbon::parse($validatedData['fecha_registro'])->format('Y-m-d');
 
         // Asegúrate de que el paciente_id se esté pasando

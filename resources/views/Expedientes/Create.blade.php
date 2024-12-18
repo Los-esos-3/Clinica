@@ -11,6 +11,7 @@
                 <div class="p-6">
                     <form method="POST" action="{{ route('Expedientes.store') }}">
                         @csrf
+                        <input type="hidden" name="paciente_id" value="{{ $paciente->id }}">
                         <div class="mb-4">
                             <label for="paciente" class="block text-sm font-medium text-gray-700">Nombre del Paciente</label>
                             <input type="text" id="paciente" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" value="{{ $paciente->nombre }}" readonly>
