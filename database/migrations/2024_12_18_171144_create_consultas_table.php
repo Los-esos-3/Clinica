@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('consultas', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('medico_id');
+            $table->unsignedBigInteger('paciente_id');
             $table->dateTime('fecha_hora');
             $table->text('motivo_consulta');
             $table->text('diagnostico')->nullable();

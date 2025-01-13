@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Consulta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Traits\HasRoles;
@@ -14,6 +15,8 @@ class ClinicaController extends Controller
     use AuthorizesRequests;
     public function PacientesView(Request $request)
     {
+        $paciente = Paciente::with('consultas');
+        
         $query = $request->input('search');
         
         if ($query) {

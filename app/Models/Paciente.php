@@ -29,4 +29,8 @@ class Paciente extends Model
     {
         return $this->hasOne(Expediente::class);
     }
+    public function consultas()
+       {
+           return $this->hasMany(Consulta::class); // Asegúrate de que la relación esté definida correctamente
+       }
 }

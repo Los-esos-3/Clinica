@@ -13,6 +13,7 @@ class Expediente extends Model
     use HasRoles;
     use HasFactory;
     protected $fillable = [
+        'numero_expediente',
         'paciente_id',
         'doctor_id',
         'especialidad',
@@ -23,6 +24,15 @@ class Expediente extends Model
         'numero_familiar',
         'proxima_cita',
         'hora_proxima_cita', 
+        'estado',
+        'alergias',
+        'antecedentes_medicos',
+        'historial_quirurgico',
+        'historial_familiar',
+        'vacunas',
+        'medicamentos',
+        'estudios_previos',
+        'notas_medicas',
         'fecha_registro',
     ];
 
