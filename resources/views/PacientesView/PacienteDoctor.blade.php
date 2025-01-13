@@ -220,68 +220,199 @@
                                             <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
                                             <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}
                                             </p>
-                                                <div class="flex items-center gap-2 justify-center">
-                                                    <form class="flex w-16" action="{{ route('Pacientes.destroy', $paciente->id) }}"
-                                                        method="POST" onsubmit="return false;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button
-                                                            class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600"
-                                                            onclick="toggleModal('modal-delete-{{ $paciente->id }}'); event.preventDefault(); document.getElementById('form-delete-{{ $paciente->id }}').setAttribute('data-id', '{{ $paciente->id }}');">
-                                                            <svg viewBox="0 0 1.625 1.625"
-                                                                class="absolute -top-5 fill-white delay-100 group-hover:top-4 group-hover:animate-[spin_1.4s] group-hover:duration-1000"
-                                                                height="12" width="12">
-                                                                <path
-                                                                    d="M.471 1.024v-.52a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099h-.39c-.107 0-.195 0-.195-.195">
-                                                                </path>
-                                                                <path
-                                                                    d="M1.219.601h-.163A.1.1 0 0 1 .959.504V.341A.033.033 0 0 0 .926.309h-.26a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099v-.39a.033.033 0 0 0-.032-.033">
-                                                                </path>
-                                                                <path
-                                                                    d="m1.245.465-.15-.15a.02.02 0 0 0-.016-.006.023.023 0 0 0-.023.022v.108c0 .036.029.065.065.065h.107a.023.023 0 0 0 .023-.023.02.02 0 0 0-.007-.016">
-                                                                </path>
-                                                            </svg>
-                                                            <svg width="14" fill="none" viewBox="0 0 39 7"
-                                                                class="origin-right duration-500 group-hover:rotate-90">
-                                                                <line stroke-width="4" stroke="white" y2="5"
-                                                                    x2="39" y1="5"></line>
-                                                                <line stroke-width="3" stroke="white" y2="1.5"
-                                                                    x2="26.0357" y1="1.5" x1="12"></line>
-                                                            </svg>
-                                                            <svg width="14" fill="none" viewBox="0 0 33 39"
-                                                                class="mt-1">
-                                                                <mask fill="white" id="path-1-inside-1_8_19">
-                                                                    <path
-                                                                        d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z">
-                                                                    </path>
-                                                                </mask>
-                                                                <path mask="url(#path-1-inside-1_8_19)" fill="white"
-                                                                    d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z">
-                                                                </path>
-                                                                <path d="M12 6L12 29" stroke="white" stroke-width="4"
-                                                                    stroke-linecap="round"></path>
-                                                                <path d="M21 6V29" stroke="white" stroke-width="4"
-                                                                    stroke-linecap="round"></path>
-                                                            </svg>
-                                                        </button>
-                                                    </form>
-                                                    
-                                                    <a href="#" class="editBtn transform hover:scale-110 transition-transform duration-200" onclick="toggleModal('modal-edit-options-{{ $paciente->id }}'); event.preventDefault();">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                            <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.199z" />
-                                                        </svg>
-                                                    </a>
-                                                    
+                                            <div class="flex items-center gap-2 justify-center">
+                                                <form class="flex w-16"
+                                                    action="{{ route('Pacientes.destroy', $paciente->id) }}"
+                                                    method="POST" onsubmit="return false;">
+                                                    @csrf
+                                                    @method('DELETE')
                                                     <button
-                                                        class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-                                                        onclick="toggleModal('modal-id-{{ $paciente->id }}');">
-                                                        Ver Más
+                                                        class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600"
+                                                        onclick="toggleModal('modal-delete-{{ $paciente->id }}'); event.preventDefault(); document.getElementById('form-delete-{{ $paciente->id }}').setAttribute('data-id', '{{ $paciente->id }}');">
+                                                        <svg viewBox="0 0 1.625 1.625"
+                                                            class="absolute -top-5 fill-white delay-100 group-hover:top-4 group-hover:animate-[spin_1.4s] group-hover:duration-1000"
+                                                            height="12" width="12">
+                                                            <path
+                                                                d="M.471 1.024v-.52a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099h-.39c-.107 0-.195 0-.195-.195">
+                                                            </path>
+                                                            <path
+                                                                d="M1.219.601h-.163A.1.1 0 0 1 .959.504V.341A.033.033 0 0 0 .926.309h-.26a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099v-.39a.033.033 0 0 0-.032-.033">
+                                                            </path>
+                                                            <path
+                                                                d="m1.245.465-.15-.15a.02.02 0 0 0-.016-.006.023.023 0 0 0-.023.022v.108c0 .036.029.065.065.065h.107a.023.023 0 0 0 .023-.023.02.02 0 0 0-.007-.016">
+                                                            </path>
+                                                        </svg>
+                                                        <svg width="14" fill="none" viewBox="0 0 39 7"
+                                                            class="origin-right duration-500 group-hover:rotate-90">
+                                                            <line stroke-width="4" stroke="white" y2="5"
+                                                                x2="39" y1="5"></line>
+                                                            <line stroke-width="3" stroke="white" y2="1.5"
+                                                                x2="26.0357" y1="1.5" x1="12"></line>
+                                                        </svg>
+                                                        <svg width="14" fill="none" viewBox="0 0 33 39"
+                                                            class="mt-1">
+                                                            <mask fill="white" id="path-1-inside-1_8_19">
+                                                                <path
+                                                                    d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z">
+                                                                </path>
+                                                            </mask>
+                                                            <path mask="url(#path-1-inside-1_8_19)" fill="white"
+                                                                d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z">
+                                                            </path>
+                                                            <path d="M12 6L12 29" stroke="white" stroke-width="4"
+                                                                stroke-linecap="round"></path>
+                                                            <path d="M21 6V29" stroke="white" stroke-width="4"
+                                                                stroke-linecap="round"></path>
+                                                        </svg>
                                                     </button>
-                                                
+                                                </form>
+
+                                                <a href="#"
+                                                    class="editBtn transform hover:scale-110 transition-transform duration-200"
+                                                    onclick="toggleModal('modal-edit-options-{{ $paciente->id }}'); event.preventDefault();">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path
+                                                            d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.199z" />
+                                                    </svg>
+                                                </a>
+
+                                                <button
+                                                    class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+                                                    onclick="toggleModal('modal-paciente-{{ $paciente->id }}');">
+                                                    Ver Más
+                                                </button>
+
+                                                <!-- Modal para Datos del Paciente -->
+                                                <div id="modal-paciente-{{ $paciente->id }}"
+                                                    class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                                    <div class="w-3/4 max-w-2xl bg-white rounded-lg shadow-lg">
+                                                        <div class="flex p-4">
+                                                            <div class="w-full text-center">
+                                                                <!-- Agrega text-center aquí -->
+                                                                <h2 class="text-xl font-bold mb-4">Datos del Paciente
+                                                                </h2>
+                                                                <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                                                                <p><strong>Teléfono:</strong> {{ $paciente->telefono }}
+                                                                </p>
+                                                                <p><strong>Fecha de Nacimiento:</strong>
+                                                                    {{ $paciente->fecha_nacimiento }}</p>
+                                                                <p><strong>Edad:</strong> {{ $paciente->edad }}</p>
+                                                                <p><strong>Dirección:</strong>
+                                                                    {{ $paciente->direccion }}</p>
+                                                                <p><strong>Género:</strong> {{ $paciente->genero }}</p>
+                                                                <p><strong>Estado Civil:</strong>
+                                                                    {{ $paciente->estado_civil }}</p>
+                                                                <p><strong>Tipo de sangre:</strong>
+                                                                    {{ $paciente->tipo_sangre }}</p>
+                                                                <p><strong>Ocupación:</strong>
+                                                                    {{ $paciente->ocupacion }}</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="flex justify-center p-4 bg-gray-100 rounded-b-lg">
+                                                            <button
+                                                                class="px-6 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                                                                onclick="toggleModal('modal-paciente-{{ $paciente->id }}')">Cerrar</button>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                        
+                                            </div>
+
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap border-b-2 border-r-2 border-gray-300">
+
+                                            @if ($paciente->consultas->isNotEmpty())
+                                                <div class="flex justify-center pb-4">
+                                                    <div class="pagination">
+                                                        <a href="#" class="px-3 py-1 border rounded">«</a>
+                                                        <a href="#" class="px-3 py-1 border rounded">1</a>
+                                                        <a href="#" class="px-3 py-1 border rounded ">2</a>
+                                                        <a href="#" class="px-3 py-1 border rounded">3</a>
+                                                        <a href="#" class="px-3 py-1 border rounded">4</a>
+                                                        <a href="#" class="px-3 py-1 border rounded">»</a>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <p><strong>Última Consulta:</strong>
+                                                        {{ \Carbon\Carbon::parse($paciente->consultas->last()->created_at)->format('Y-m-d') }}
+                                                    </p>
+                                                    <p><strong>Hora de la consulta:</strong>
+                                                        {{ \Carbon\Carbon::parse($paciente->consultas->last()->fecha_hora)->format('H:i') }}
+                                                    </p>
+                                                    <p><strong>Motivo de consulta:</strong>
+                                                        {{ $paciente->consultas->last()->motivo_consulta }}</p>
+                                                </div>
+
+                                            <div class="flex items-center gap-2 justify-center">
+                                                <form class="flex w-16" action="{{ route('Pacientes.destroy', $paciente->id) }}"
+                                                    method="POST" onsubmit="return false;">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button
+                                                        class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600"
+                                                        onclick="toggleModal('modal-delete-{{ $paciente->id }}'); event.preventDefault(); document.getElementById('form-delete-{{ $paciente->id }}').setAttribute('data-id', '{{ $paciente->id }}');">
+                                                        <svg viewBox="0 0 1.625 1.625"
+                                                            class="absolute -top-5 fill-white delay-100 group-hover:top-4 group-hover:animate-[spin_1.4s] group-hover:duration-1000"
+                                                            height="12" width="12">
+                                                            <path
+                                                                d="M.471 1.024v-.52a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099h-.39c-.107 0-.195 0-.195-.195">
+                                                            </path>
+                                                            <path
+                                                                d="M1.219.601h-.163A.1.1 0 0 1 .959.504V.341A.033.033 0 0 0 .926.309h-.26a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099v-.39a.033.033 0 0 0-.032-.033">
+                                                            </path>
+                                                            <path
+                                                                d="m1.245.465-.15-.15a.02.02 0 0 0-.016-.006.023.023 0 0 0-.023.022v.108c0 .036.029.065.065.065h.107a.023.023 0 0 0 .023-.023.02.02 0 0 0-.007-.016">
+                                                            </path>
+                                                        </svg>
+                                                        <svg width="14" fill="none" viewBox="0 0 39 7"
+                                                            class="origin-right duration-500 group-hover:rotate-90">
+                                                            <line stroke-width="4" stroke="white" y2="5"
+                                                                x2="39" y1="5"></line>
+                                                            <line stroke-width="3" stroke="white" y2="1.5"
+                                                                x2="26.0357" y1="1.5" x1="12"></line>
+                                                        </svg>
+                                                        <svg width="14" fill="none" viewBox="0 0 33 39"
+                                                            class="mt-1">
+                                                            <mask fill="white" id="path-1-inside-1_8_19">
+                                                                <path
+                                                                    d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z">
+                                                                </path>
+                                                            </mask>
+                                                            <path mask="url(#path-1-inside-1_8_19)" fill="white"
+                                                                d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z">
+                                                            </path>
+                                                            <path d="M12 6L12 29" stroke="white" stroke-width="4"
+                                                                stroke-linecap="round"></path>
+                                                            <path d="M21 6V29" stroke="white" stroke-width="4"
+                                                                stroke-linecap="round"></path>
+                                                        </svg>
+                                                    </button>
+                                                </form>
+                                                
+                                                <a href="#" class="editBtn transform hover:scale-110 transition-transform duration-200" onclick="toggleModal('modal-edit-options-{{ $paciente->id }}'); event.preventDefault();">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                                                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.199z" />
+                                                    </svg>
+                                                </a>
+                                                
+                                                <button
+                                                    class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
+                                                    onclick="toggleModal('modal-id-{{ $paciente->id }}');">
+                                                    Ver Más
+                                                </button>
+                                            
+                                            </div>
+                                            </div>
+                                            @else
+                                                <p class="text-red-500">No hay expediente disponible.</p>
+                                                <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
+                                                    class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                                    Agregar expediente
+                                                </a>
+                                            @endif
+                                        </td>
+
+                                        <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
                                             @if ($paciente->expediente)
                                             <div class="flex justify-center pb-4">
                                                 <div class="pagination">
@@ -295,9 +426,9 @@
                                             </div>
 
                                             <div>
-                                              <p><strong>Ultima Consulta:</strong><!-- Variable Aqui --></p>
-                                              <p><strong>Hora del consulta:</strong><!-- Variable Aqui --></p>
-                                              <p><strong>Motivo de consulta:</strong><!-- Variable aqui --></p>
+                                                <p><strong>Doctor:</strong>{{ $paciente->expediente->doctor->nombre_completo }}</p>
+                                                <p><strong>Fecha de creacion:</strong><!-- Variable aqui --></p>
+                                                <p><strong>Estado del expediente:</strong><!-- Variable aqui --></p>
                                             </div>
 
                                             <div class="flex items-center gap-2 justify-center">
@@ -361,230 +492,139 @@
                                             </div>
                                             </div>
                                             @else
-                                            <p class="text-red-500">No hay expediente disponible.</p>
-                                            <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
-                                                class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                                Agregar uno
-                                            </a>
+                                                <p class="text-red-500">No hay expediente disponible.</p>
+                                                <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
+                                                    class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                                    Agregar expediente
+                                                </a>
                                             @endif
-                                        </td>
-
-                                        <td class="px-6 py-4 whitespace-nowrap border-b-2 border-gray-300">
-                                            <div class="flex gap-2">
-                                                <div class="flex gap-2">
-                                                    <a href="#"
-                                                        class="editBtn transform hover:scale-110 transition-transform duration-200"
-                                                        onclick="toggleModal('modal-edit-options-{{ $paciente->id }}'); event.preventDefault();">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                                                            <path
-                                                                d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.199z" />
-                                                        </svg>
-                                                    </a>
-                                                    <!-- Modal para opciones de edición -->
-                                                    <div id="modal-edit-options-{{ $paciente->id }}"
-                                                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                                                        <div class="w-1/3 bg-white rounded-lg shadow-lg">
-                                                            <div class="p-4">
-                                                                <h2 class="text-xl font-bold mb-4">Selecciona una opción
-                                                                </h2>
-                                                                <div class="flex justify-between">
-                                                                    <a href="{{ route('Pacientes.edit', $paciente->id) }}"
-                                                                        class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">Editar
-                                                                        Paciente</a>
-                                                                        @if ($paciente->expediente)
-                                                                        <a href="{{ route('Expedientes.edit', $paciente->expediente->id) }}" class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700">Editar Expediente</a>
-                                                                    @else
-                                                                        <span class="text-gray-500">No hay expediente disponible para editar.</span>
-                                                                    @endif
-                                                                </div>
-                                                                <div class="flex justify-end mt-4">
-                                                                    <button type="button"
-                                                                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
-                                                                        onclick="toggleModal('modal-edit-options-{{ $paciente->id }}')">Cancelar</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- Botón de eliminar existente -->
-                                                <form action="{{ route('Pacientes.destroy', $paciente->id) }}"
-                                                    method="POST" class="inline" onsubmit="return false;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button
-                                                        class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600"
-                                                        onclick="toggleModal('modal-delete-{{ $paciente->id }}'); event.preventDefault(); document.getElementById('form-delete-{{ $paciente->id }}').setAttribute('data-id', '{{ $paciente->id }}');">
-                                                        <svg viewBox="0 0 1.625 1.625"
-                                                            class="absolute -top-5 fill-white delay-100 group-hover:top-4 group-hover:animate-[spin_1.4s] group-hover:duration-1000"
-                                                            height="12" width="12">
-                                                            <path
-                                                                d="M.471 1.024v-.52a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099h-.39c-.107 0-.195 0-.195-.195">
-                                                            </path>
-                                                            <path
-                                                                d="M1.219.601h-.163A.1.1 0 0 1 .959.504V.341A.033.033 0 0 0 .926.309h-.26a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099v-.39a.033.033 0 0 0-.032-.033">
-                                                            </path>
-                                                            <path
-                                                                d="m1.245.465-.15-.15a.02.02 0 0 0-.016-.006.023.023 0 0 0-.023.022v.108c0 .036.029.065.065.065h.107a.023.023 0 0 0 .023-.023.02.02 0 0 0-.007-.016">
-                                                            </path>
-                                                        </svg>
-                                                        <svg width="14" fill="none" viewBox="0 0 39 7"
-                                                            class="origin-right duration-500 group-hover:rotate-90">
-                                                            <line stroke-width="4" stroke="white" y2="5"
-                                                                x2="39" y1="5"></line>
-                                                            <line stroke-width="3" stroke="white" y2="1.5"
-                                                                x2="26.0357" y1="1.5" x1="12"></line>
-                                                        </svg>
-                                                        <svg width="14" fill="none" viewBox="0 0 33 39"
-                                                            class="mt-1">
-                                                            <mask fill="white" id="path-1-inside-1_8_19">
-                                                                <path
-                                                                    d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z">
-                                                                </path>
-                                                            </mask>
-                                                            <path mask="url(#path-1-inside-1_8_19)" fill="white"
-                                                                d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z">
-                                                            </path>
-                                                            <path d="M12 6L12 29" stroke="white" stroke-width="4"
-                                                                stroke-linecap="round"></path>
-                                                            <path d="M21 6V29" stroke="white" stroke-width="4"
-                                                                stroke-linecap="round"></path>
-                                                        </svg>
-                                                    </button>
-
-                                                </form>
-                                                <button
-                                                    class="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700"
-                                                    onclick="toggleModal('modal-id-{{ $paciente->id }}');">
-                                                    Ver Más
-                                                </button>
-                                            </div>
                                         </td>
                                     </tr>
 
-                                        <!-- Modal para cada paciente -->
-                                        <div id="modal-id-{{ $paciente->id }}"
-                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                                            <div class="w-3/4 max-w-2xl bg-white rounded-lg shadow-lg">
-                                                <div class="flex p-4">
-                                                    <!-- Sección de datos del paciente -->
-                                                    <div class="w-1/2 pr-2 border-r">
-                                                        <h2 class="text-xl font-bold mb-4">Datos del Paciente</h2>
-                                                        <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
-                                                        <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
-                                                        <p><strong>Fecha de Nacimiento:</strong>
-                                                            {{ $paciente->fecha_nacimiento }}</p>
-                                                        <p><strong>Edad:</strong> {{ $paciente->edad }}</p>
-                                                        <p><strong>Dirección:</strong> {{ $paciente->direccion }}</p>
-                                                        <p><strong>Género:</strong> {{ $paciente->genero }}</p>
-                                                        <p><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
-                                                        <p><strong>Tipo de sangre:</strong> {{ $paciente->tipo_sangre }}
-                                                        </p>
-                                                        <p><strong>Ocupación:</strong> {{ $paciente->ocupacion }}</p>
-                                                    </div>
-
-                                                    <!-- Sección de expediente -->
-                                                    <div class="w-1/2 pl-2">
-                                                        <h2 class="text-xl font-bold mb-4">Expediente de
-                                                            {{ $paciente->nombre }}</h2>
-                                                        @if ($paciente->expediente)
-                                                            <p><strong>Doctor:</strong>
-                                                                {{ $paciente->expediente->doctor->nombre_completo }}</p>
-                                                            <p><strong>Diagnóstico:</strong>
-                                                                {{ $paciente->expediente->diagnostico }}</p>
-                                                            <p><strong>Tratamiento:</strong>
-                                                                {{ $paciente->expediente->tratamiento }}</p>
-                                                            <p><strong>Antecedentes:</strong>
-                                                                {{ $paciente->expediente->antecedentes }}</p>
-                                                            <p><strong>Familiar a Cargo:</strong>
-                                                                {{ $paciente->expediente->familiar_a_cargo }}</p>
-                                                            <p><strong>Número Familiar:</strong>
-                                                                {{ $paciente->expediente->numero_familiar }}</p>
-                                                            <p><strong>Próxima Cita:</strong>
-                                                                {{ $paciente->expediente->proxima_cita }}</p>
-                                                            <p><strong>Hora Próxima Cita:</strong>
-                                                                {{ $paciente->expediente->hora_proxima_cita }}</p>
-                                                            <p><strong>Fecha de Registro:</strong>
-                                                                {{ $paciente->expediente->fecha_registro }}</p>
-                                                        @else
-                                                            <p class="text-red-500">No se encontró un expediente para este
-                                                                paciente.</p>
-                                                        @endif
-                                                    </div>
+                                    <!-- Modal para cada paciente -->
+                                    <div id="modal-id-{{ $paciente->id }}"
+                                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                        <div class="w-3/4 max-w-2xl bg-white rounded-lg shadow-lg">
+                                            <div class="flex p-4">
+                                                <!-- Sección de datos del paciente -->
+                                                <div class="w-1/2 pr-2 border-r">
+                                                    <h2 class="text-xl font-bold mb-4">Datos del Paciente</h2>
+                                                    <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
+                                                    <p><strong>Teléfono:</strong> {{ $paciente->telefono }}</p>
+                                                    <p><strong>Fecha de Nacimiento:</strong>
+                                                        {{ $paciente->fecha_nacimiento }}</p>
+                                                    <p><strong>Edad:</strong> {{ $paciente->edad }}</p>
+                                                    <p><strong>Dirección:</strong> {{ $paciente->direccion }}</p>
+                                                    <p><strong>Género:</strong> {{ $paciente->genero }}</p>
+                                                    <p><strong>Estado Civil:</strong> {{ $paciente->estado_civil }}</p>
+                                                    <p><strong>Tipo de sangre:</strong> {{ $paciente->tipo_sangre }}
+                                                    </p>
+                                                    <p><strong>Ocupación:</strong> {{ $paciente->ocupacion }}</p>
                                                 </div>
-                                                <!-- Botón para cerrar el modal -->
-                                                <div class="flex justify-center p-4 bg-gray-100 rounded-b-lg">
-                                                    <button
-                                                        class="px-6 py-2 text-white bg-red-600 rounded hover:bg-red-700"
-                                                        onclick="toggleModal('modal-id-{{ $paciente->id }}')">Cerrar</button>
+
+                                                <!-- Sección de expediente -->
+                                                <div class="w-1/2 pl-2">
+                                                    <h2 class="text-xl font-bold mb-4">Expediente de
+                                                        {{ $paciente->nombre }}</h2>
+                                                    @if ($paciente->expediente)
+                                                        <p><strong>Doctor:</strong>
+                                                            {{ $paciente->expediente->doctor->nombre_completo }}</p>
+                                                        <p><strong>Diagnóstico:</strong>
+                                                            {{ $paciente->expediente->diagnostico }}</p>
+                                                        <p><strong>Tratamiento:</strong>
+                                                            {{ $paciente->expediente->tratamiento }}</p>
+                                                        <p><strong>Antecedentes:</strong>
+                                                            {{ $paciente->expediente->antecedentes }}</p>
+                                                        <p><strong>Familiar a Cargo:</strong>
+                                                            {{ $paciente->expediente->familiar_a_cargo }}</p>
+                                                        <p><strong>Número Familiar:</strong>
+                                                            {{ $paciente->expediente->numero_familiar }}</p>
+                                                        <p><strong>Próxima Cita:</strong>
+                                                            {{ $paciente->expediente->proxima_cita }}</p>
+                                                        <p><strong>Hora Próxima Cita:</strong>
+                                                            {{ $paciente->expediente->hora_proxima_cita }}</p>
+                                                        <p><strong>Fecha de Registro:</strong>
+                                                            {{ $paciente->expediente->fecha_registro }}</p>
+                                                    @else
+                                                        <p class="text-red-500">No se encontró un expediente para este
+                                                            paciente.</p>
+                                                    @endif
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <!-- Modal de confirmación -->
-                                        <div id="modal-delete-{{ $paciente->id }}"
-                                            class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                                            <div class="w-1/3 bg-white rounded-lg shadow-lg">
-                                                <div class="p-4">
-                                                    <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
-                                                    <p>¿Estás seguro de que deseas eliminar a {{ $paciente->nombre }}?</p>
-                                                </div>
-                                                <div class="flex justify-end p-4">
-                                                    <button
-                                                        class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
-                                                        onclick="document.getElementById('form-delete-{{ $paciente->id }}').submit();">Eliminar</button>
-                                                    <button
-                                                        class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 ml-2"
-                                                        onclick="toggleModal('modal-delete-{{ $paciente->id }}')">Cancelar</button>
-                                                </div>
+                                            <!-- Botón para cerrar el modal -->
+                                            <div class="flex justify-center p-4 bg-gray-100 rounded-b-lg">
+                                                <button
+                                                    class="px-6 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                                                    onclick="toggleModal('modal-id-{{ $paciente->id }}')">Cerrar</button>
                                             </div>
                                         </div>
+                                    </div>
 
-                                        <!-- Formulario de eliminación -->
-                                        <form id="form-delete-{{ $paciente->id }}"
-                                            action="{{ route('Pacientes.destroy', $paciente->id) }}" method="POST"
-                                            class="hidden">
-                                            @csrf
-                                            @method('DELETE')
-                                        </form>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                    <!-- Modal de confirmación -->
+                                    <div id="modal-delete-{{ $paciente->id }}"
+                                        class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                        <div class="w-1/3 bg-white rounded-lg shadow-lg">
+                                            <div class="p-4">
+                                                <h2 class="text-xl font-bold mb-4">Confirmar Eliminación</h2>
+                                                <p>¿Estás seguro de que deseas eliminar a {{ $paciente->nombre }}?</p>
+                                            </div>
+                                            <div class="flex justify-end p-4">
+                                                <button
+                                                    class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
+                                                    onclick="document.getElementById('form-delete-{{ $paciente->id }}').submit();">Eliminar</button>
+                                                <button
+                                                    class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 ml-2"
+                                                    onclick="toggleModal('modal-delete-{{ $paciente->id }}')">Cancelar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Formulario de eliminación -->
+                                    <form id="form-delete-{{ $paciente->id }}"
+                                        action="{{ route('Pacientes.destroy', $paciente->id) }}" method="POST"
+                                        class="hidden">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Función para alternar la visibilidad del modal
-            function toggleModal(modalId) {
-                const modal = document.getElementById(modalId);
-                if (modal) {
-                    modal.classList.toggle('hidden');
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Función para alternar la visibilidad del modal
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.classList.toggle('hidden');
+            }
+        }
+
+        // Función para filtrar pacientes
+        function filterPatients() {
+            const searchInput = document.getElementById('search').value.toLowerCase();
+            const patientRows = document.querySelectorAll('.patient-row');
+            
+            patientRows.forEach(row => {
+                const patientName = row.querySelector('td').textContent.toLowerCase();
+                if (patientName.includes(searchInput)) {
+                    row.style.display = ''; // Mostrar fila
+                } else {
+                    row.style.display = 'none'; // Ocultar fila
                 }
-            }
+            });
+        }
 
-            // Función para filtrar pacientes
-            function filterPatients() {
-                const searchInput = document.getElementById('search').value.toLowerCase();
-                const patientRows = document.querySelectorAll('.patient-row');
-                
-                patientRows.forEach(row => {
-                    const patientName = row.querySelector('td').textContent.toLowerCase();
-                    if (patientName.includes(searchInput)) {
-                        row.style.display = ''; // Mostrar fila
-                    } else {
-                        row.style.display = 'none'; // Ocultar fila
-                    }
-                });
-            }
-
-            // Registrar las funciones en el objeto global para que sean accesibles
-            window.toggleModal = toggleModal;
-            window.filterPatients = filterPatients;
-        });
-    </script>
+        // Registrar las funciones en el objeto global para que sean accesibles
+        window.toggleModal = toggleModal;
+        window.filterPatients = filterPatients;
+    });
+</script>
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>

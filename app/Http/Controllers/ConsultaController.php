@@ -4,25 +4,30 @@ namespace App\Http\Controllers;
 
 use App\Models\Consulta;
 use App\Models\Doctores;
+use App\Models\Paciente;
 use Illuminate\Http\Request;
 
 class ConsultaController extends Controller
 {
     public function index()
     {
-        $consultas = Consulta::with('medico')->get();
+        $consultas = Consulta::with(['paciente', 'doctor'])->get();
+      
         return view('consultas.index', compact('consultas'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $medicos = Doctores::all();
-        return view('consultas.create', compact('medicos'));
+
+        $paciente = Paciente::find($request->paciente_id); // Asegúrate de que estás obteniendo el paciente
+        $medicos = Doctores::all(); // Obtener todos los médicos
+        return view('consultas.create', compact('paciente','medicos'));
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
             'medico_id' => 'required|exists:doctores,id',
             'fecha_hora' => 'required|date',
             'motivo_consulta' => 'required|string',

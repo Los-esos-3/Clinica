@@ -12,6 +12,12 @@
                     <form method="POST" action="{{ route('consultas.store') }}">
                         @csrf
 
+                        <input type="hidden" name="paciente_id" value="{{ $paciente->id }}">
+                        <div class="mb-4">
+                            <label for="paciente" class="block text-sm font-medium text-gray-700">Nombre del Paciente</label>
+                            <input type="text" id="paciente" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" value="{{ $paciente->nombre }}" readonly>
+                        </div>
+
                         <div class="mb-4">
                             <label for="medico_id" class="block text-sm font-medium text-gray-700">Médico</label>
                             <select name="medico_id" id="medico_id" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required>
@@ -24,7 +30,9 @@
 
                         <div class="mb-4">
                             <label for="fecha_hora" class="block text-sm font-medium text-gray-700">Fecha y Hora</label>
-                            <input type="datetime-local" name="fecha_hora" id="fecha_hora" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required>
+                            <input type="datetime-local" name="fecha_hora" id="fecha_hora" 
+                                   class="block w-full p-2 mt-1 border border-gray-400 rounded-md" 
+                                   value="{{ old('fecha_hora', now()->format('Y-m-d\TH:i')) }}" required>
                         </div>
 
                         <div class="mb-4">
