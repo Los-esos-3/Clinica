@@ -26,52 +26,72 @@ class ExpedientesController extends Controller
 
     public function create(Request $request)
     {
+        // Verifica si se ha pasado el ID del paciente
         if (!$request->has('paciente_id')) {
             return redirect()->back()->with('error', 'Es necesario seleccionar un paciente primero.');
         }
-
-        $paciente = Paciente::find($request->paciente_id); // Busca al paciente por su ID
-
+    
+        // Busca al paciente por su ID
+        $paciente = Paciente::find($request->paciente_id);
+    
+        // Verifica si el paciente existe
         if (!$paciente) {
             return redirect()->back()->with('error', 'El paciente seleccionado no existe.');
         }
+    
+        // Obtiene todos los doctores
         $doctores = Doctores::all();
-        $especialidad = null;
-
-        if ($request->has('doctor_id')) {
-            $doctor = Doctores::find($request->doctor_id);
-            if ($doctor) {
-                $especialidad = $doctor->especialidad_medica;
-            }
-        }
-
-        return view('Expedientes.Create', compact('paciente', 'doctores'));
+    
+        // Genera un número de expediente único
+        $numero_expediente = $this->generateUniqueExpedienteNumber();
+    
+        // Pasa las variables a la vista
+        return view('Expedientes.Create', compact('paciente', 'doctores', 'numero_expediente'));
     }
 
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'paciente_id' => 'required|exists:pacientes,id',
             'doctor_id' => 'required|exists:doctores,id',
-            'diagnostico' => 'required|string',
-            'tratamiento' => 'required|string',
+            'especialidad' => 'nullable|string',
+            'diagnostico' => 'nullable|string',
+            'tratamiento' => 'nullable|string',
             'antecedentes' => 'nullable|string',
             'familiar_a_cargo' => 'nullable|string',
             'numero_familiar' => 'nullable|string',
             'proxima_cita' => 'nullable|date',
-            'hora_proxima_cita' => 'nullable|date_format:H:i',
+            'hora_proxima_cita' => 'nullable|time',
+            'estado' => 'required|string',
+            'alergias' => 'nullable|string',
+            'antecedentes_medicos' => 'nullable|string',
+            'historial_quirurgico' => 'nullable|string',
+            'historial_familiar' => 'nullable|string',
+            'vacunas' => 'nullable|string',
+            'medicamentos' => 'nullable|string',
+            'estudios_previos' => 'nullable|string',
+            'notas_medicas' => 'nullable|string',
             'fecha_registro' => 'required|date',
         ]);
+    
 
-        $validatedData['fecha_registro'] = Carbon::parse($validatedData['fecha_registro'])->format('Y-m-d');
+        // Generar un número de expediente único
+        $numero_expediente = $this->generateUniqueExpedienteNumber();
 
-        // Asegúrate de que el paciente_id se esté pasando
-        $validatedData['paciente_id'] = $request->paciente_id; // Asegúrate de que este campo esté presente
+        // Crear el expediente
+        Expediente::create(array_merge($validatedData, ['numero_expediente' => $numero_expediente]));
 
-        Expediente::create($validatedData);
-
-        return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente creado con éxito.');
+        return redirect()->route('Expedientes.index')->with('success', 'Expediente creado con éxito.');
     }
 
+    private function generateUniqueExpedienteNumber()
+    {
+        do {
+            $numero = strtoupper(uniqid()); // Generar un número único
+        } while (Expediente::where('numero_expediente', $numero)->exists());
+
+        return $numero;
+    }
     public function show($id)
     {
         // Obtener el expediente específico junto con el doctor y el paciente
