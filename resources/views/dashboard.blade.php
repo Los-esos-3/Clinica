@@ -22,7 +22,11 @@
                                         DOCTORES
                                     </a>
                                 </li>
-                                
+                                   <li>
+                                    <a href="{{ route('secretarias.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                        SECRETARIAS
+                                    </a>
+                                </li> 
                                 <li class="ml-1">
                                     <a href="{{route('Pacientes.PacientesView')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                         PACIENTES
@@ -61,6 +65,9 @@
                             <div class="mt-4">
                             
                                 <div x-show="activeTab === 'secretaria'" x-transition @click="initializeCalendar()">
+                                    <div class="flex justify-between items-center mb-4">
+                                        <h2 class="text-2xl font-semibold">Calendario</h2>
+                                    </div>
                                     <x-dashboard-secretaria-component></x-dashboard-secretaria-component>
                                 </div>
                             </div>

@@ -14,6 +14,7 @@ use App\Http\Controllers\EmpresaController;
 use App\Http\Controllers\DoctoresController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ConsultaController;
+use App\Http\Controllers\SecretariasController;
 
 //Redireccion para usuarios sin rol
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -178,4 +179,4 @@ Route::delete('/citas/{id}', [CitaController::class, 'destroy']); // Eliminar un
 
 Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 
-
+Route::resource('secretarias', SecretariasController::class);
