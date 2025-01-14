@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Doctores extends Model
+class Doctor extends Model
 {
     use HasFactory;
-
+    
     protected $table = 'doctores';
-
+    
     protected $fillable = [
         'nombre_completo',
         'fecha_nacimiento',

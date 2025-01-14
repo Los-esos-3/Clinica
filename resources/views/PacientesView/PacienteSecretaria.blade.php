@@ -140,6 +140,66 @@
             left: 0px;
             transform-origin: right;
         }
+
+        /* Animación para el dropdown */
+        #dropdown-menu {
+            transition: all 0.2s ease-out;
+            transform-origin: top right;
+        }
+
+        #dropdown-menu:not(.hidden) {
+            animation: dropdownAnimation 0.2s ease-out;
+        }
+
+        @keyframes dropdownAnimation {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Estilos para los items del dropdown */
+        .group {
+            transition: all 0.2s ease;
+        }
+
+        .group:hover svg {
+            transform: scale(1.1);
+        }
+
+        /* Animación para el dropdown del usuario */
+        #user-menu-dropdown {
+            transition: all 0.2s ease-out;
+            transform-origin: top right;
+        }
+
+        #user-menu-dropdown:not(.hidden) {
+            animation: userMenuAnimation 0.2s ease-out;
+        }
+
+        @keyframes userMenuAnimation {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* Estilos para los items del dropdown del usuario */
+        .user-menu-item {
+            transition: all 0.2s ease;
+        }
+
+        .user-menu-item:hover svg {
+            transform: scale(1.1);
+        }
     </style>
     <nav class="nav">
         <div class="nav-container">
@@ -151,15 +211,54 @@
                 <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
                 <a href="{{ route('ingresos.index') }}">Ingresos</a>
             </div>
-            <div class="dropdown">
-                <button class="dropbtn">{{ Auth::user()->name }}</button>
-                <div class="dropdown-content">
-                    <a href="{{ route('profile.show') }}">Perfil</a>
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <a href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); this.closest('form').submit();">Cerrar Sesión</a>
-                    </form>
+            <div class="relative inline-block text-left">
+                <button type="button" 
+                    class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500" 
+                    id="user-menu-button" 
+                    aria-expanded="true" 
+                    aria-haspopup="true">
+                    <span class="mr-2">{{ Auth::user()->name }}</span>
+                    <!-- Icono de flecha -->
+                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <!-- Menú desplegable -->
+                <div id="user-menu-dropdown" 
+                    class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100" 
+                    role="menu" 
+                    aria-orientation="vertical" 
+                    aria-labelledby="user-menu-button">
+                    <div class="py-1" role="none">
+                        <a href="{{ route('profile.show') }}" 
+                            class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" 
+                            role="menuitem">
+                            <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 20 20" 
+                                fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                            Perfil
+                        </a>
+                    </div>
+                    <div class="py-1" role="none">
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit" 
+                                class="group flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" 
+                                role="menuitem">
+                                <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    viewBox="0 0 20 20" 
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                                </svg>
+                                Cerrar Sesión
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -455,6 +554,32 @@
     });
 </script>
 
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
+
+    <script>
+        // Script para manejar el dropdown del usuario
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userMenuDropdown = document.getElementById('user-menu-dropdown');
+        let isUserMenuOpen = false;
+
+        userMenuButton.addEventListener('click', () => {
+            isUserMenuOpen = !isUserMenuOpen;
+            if (isUserMenuOpen) {
+                userMenuDropdown.classList.remove('hidden');
+                userMenuButton.setAttribute('aria-expanded', 'true');
+            } else {
+                userMenuDropdown.classList.add('hidden');
+                userMenuButton.setAttribute('aria-expanded', 'false');
+            }
+        });
+
+        // Cerrar el dropdown cuando se hace clic fuera de él
+        document.addEventListener('click', (event) => {
+            if (!userMenuButton.contains(event.target) && !userMenuDropdown.contains(event.target)) {
+                userMenuDropdown.classList.add('hidden');
+                userMenuButton.setAttribute('aria-expanded', 'false');
+                isUserMenuOpen = false;
+            }
+        });
+    </script>
 </x-app-layout>

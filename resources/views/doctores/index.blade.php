@@ -1,4 +1,34 @@
 <x-app-layout>
+    <div id="deleteModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+                    <svg class="h-6 w-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                </div>
+                <h3 class="text-lg leading-6 font-medium text-gray-900 mt-4">Confirmar eliminación</h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500">
+                        ¿Estás seguro que deseas eliminar al Dr. <span id="deleteDoctorName" class="font-bold"></span>?
+                    </p>
+                </div>
+                <div class="flex justify-center gap-4 mt-4">
+                    <button id="cancelDelete" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                        Cancelar
+                    </button>
+                    <form id="deleteForm" method="POST" class="inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500">
+                            Eliminar
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <style>
         .nav {
             background-color: rgb(55, 65, 81,1) !important;
@@ -268,29 +298,26 @@
                                     </svg>
                                 </a>
                                 
-                                <form action="{{ route('doctores.destroy', $doctor->id) }}" method="POST" class="inline">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600">
-                                        <svg viewBox="0 0 1.625 1.625" class="absolute -top-5 fill-white delay-100 group-hover:top-4 group-hover:animate-[spin_1.4s] group-hover:duration-1000" height="12" width="12">
-                                            <path d="M.471 1.024v-.52a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099h-.39c-.107 0-.195 0-.195-.195"></path>
-                                            <path d="M1.219.601h-.163A.1.1 0 0 1 .959.504V.341A.033.033 0 0 0 .926.309h-.26a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099v-.39a.033.033 0 0 0-.032-.033"></path>
-                                            <path d="m1.245.465-.15-.15a.02.02 0 0 0-.016-.006.023.023 0 0 0-.023.022v.108c0 .036.029.065.065.065h.107a.023.023 0 0 0 .023-.023.02.02 0 0 0-.007-.016"></path>
-                                        </svg>
-                                        <svg width="14" fill="none" viewBox="0 0 39 7" class="origin-right duration-500 group-hover:rotate-90">
-                                            <line stroke-width="4" stroke="white" y2="5" x2="39" y1="5"></line>
-                                            <line stroke-width="3" stroke="white" y2="1.5" x2="26.0357" y1="1.5" x1="12"></line>
-                                        </svg>
-                                        <svg width="14" fill="none" viewBox="0 0 33 39" class="mt-1">
-                                            <mask fill="white" id="path-1-inside-1_8_19">
-                                                <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
-                                            </mask>
-                                            <path mask="url(#path-1-inside-1_8_19)" fill="white" d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"></path>
-                                            <path d="M12 6L12 29" stroke="white" stroke-width="4" stroke-linecap="round"></path>
-                                            <path d="M21 6V29" stroke="white" stroke-width="4" stroke-linecap="round"></path>
-                                        </svg>
-                                    </button>
-                                </form>
+                                <button onclick="showDeleteModal('{{ $doctor->nombre_completo }}', '{{ route('doctores.destroy', $doctor->id) }}')" 
+                                    class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600">
+                                    <svg viewBox="0 0 1.625 1.625" class="absolute -top-5 fill-white delay-100 group-hover:top-4 group-hover:animate-[spin_1.4s] group-hover:duration-1000" height="12" width="12">
+                                        <path d="M.471 1.024v-.52a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099h-.39c-.107 0-.195 0-.195-.195"></path>
+                                        <path d="M1.219.601h-.163A.1.1 0 0 1 .959.504V.341A.033.033 0 0 0 .926.309h-.26a.1.1 0 0 0-.098.098v.618c0 .054.044.098.098.098h.487a.1.1 0 0 0 .098-.099v-.39a.033.033 0 0 0-.032-.033"></path>
+                                        <path d="m1.245.465-.15-.15a.02.02 0 0 0-.016-.006.023.023 0 0 0-.023.022v.108c0 .036.029.065.065.065h.107a.023.023 0 0 0 .023-.023.02.02 0 0 0-.007-.016"></path>
+                                    </svg>
+                                    <svg width="14" fill="none" viewBox="0 0 39 7" class="origin-right duration-500 group-hover:rotate-90">
+                                        <line stroke-width="4" stroke="white" y2="5" x2="39" y1="5"></line>
+                                        <line stroke-width="3" stroke="white" y2="1.5" x2="26.0357" y1="1.5" x1="12"></line>
+                                    </svg>
+                                    <svg width="14" fill="none" viewBox="0 0 33 39" class="mt-1">
+                                        <mask fill="white" id="path-1-inside-1_8_19">
+                                            <path d="M0 0H33V35C33 37.2091 31.2091 39 29 39H4C1.79086 39 0 37.2091 0 35V0Z"></path>
+                                        </mask>
+                                        <path mask="url(#path-1-inside-1_8_19)" fill="white" d="M0 0H33H0ZM37 35C37 39.4183 33.4183 43 29 43H4C-0.418278 43 -4 39.4183 -4 35H4H29H37ZM4 43C-0.418278 43 -4 39.4183 -4 35V0H4V35V43ZM37 0V35C37 39.4183 33.4183 43 29 43V35V0H37Z"></path>
+                                        <path d="M12 6L12 29" stroke="white" stroke-width="4" stroke-linecap="round"></path>
+                                        <path d="M21 6V29" stroke="white" stroke-width="4" stroke-linecap="round"></path>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -312,6 +339,36 @@
                 infoAdicional.classList.add('mostrar');
                 btn.textContent = 'Ver menos información';
                 btn.style.backgroundColor = '#059669';
+            }
+        }
+
+        function showDeleteModal(nombre, deleteUrl) {
+            const modal = document.getElementById('deleteModal');
+            const nameSpan = document.getElementById('deleteDoctorName');
+            const deleteForm = document.getElementById('deleteForm');
+            const cancelButton = document.getElementById('cancelDelete');
+
+            nameSpan.textContent = nombre;
+            deleteForm.action = deleteUrl;
+            modal.classList.remove('hidden');
+
+            // Cerrar modal con el botón cancelar
+            cancelButton.onclick = function() {
+                modal.classList.add('hidden');
+            }
+
+            // Cerrar modal al hacer clic fuera de él
+            modal.onclick = function(e) {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                }
+            }
+
+            // Cerrar modal con la tecla ESC
+            document.onkeydown = function(e) {
+                if (e.key === 'Escape') {
+                    modal.classList.add('hidden');
+                }
             }
         }
     </script>

@@ -129,14 +129,19 @@
            
                 <li>
                     <a href="dashboard.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950 active">
-                        INICIO
+                        BIENVENIDA
                     </a>
                 </li>
-                <li>
+                <li>    
                     <a href="{{ route('doctores.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                         DOCTORES
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('secretarias.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                        SECRETARIAS
+                    </a>
+                </li> 
                 <li class="ml-1">
                     <a href="pacientes.html" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                         PACIENTES

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Secretarias;
+use App\Models\Doctor;
+use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -29,16 +31,16 @@ class SecretariasController extends Controller
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'nullable|string|max:15',
+            'telefono' => 'required|string|max:15',
             'email' => 'required|email|unique:secretarias',
-            'domicilio' => 'nullable|string',
+            'domicilio' => 'required|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'departamento' => 'nullable|string',
+            'departamento' => 'required|string',
             'experiencia_laboral' => 'nullable|string',
-            'contacto_emergencia_nombre' => 'nullable|string',
-            'contacto_emergencia_relacion' => 'nullable|string',
-            'contacto_emergencia_telefono' => 'nullable|string',
+            'contacto_emergencia_nombre' => 'required|string',
+            'contacto_emergencia_relacion' => 'required|string',
+            'contacto_emergencia_telefono' => 'required|string',
             'idiomas' => 'nullable|string',
         ]);
 
@@ -71,16 +73,16 @@ class SecretariasController extends Controller
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'nullable|string|max:15',
+            'telefono' => 'required|string|max:15',
             'email' => 'required|email|unique:secretarias,email,' . $secretaria->id,
-            'domicilio' => 'nullable|string',
+            'domicilio' => 'required|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'departamento' => 'nullable|string',
+            'departamento' => 'required|string',
             'experiencia_laboral' => 'nullable|string',
-            'contacto_emergencia_nombre' => 'nullable|string',
-            'contacto_emergencia_relacion' => 'nullable|string',
-            'contacto_emergencia_telefono' => 'nullable|string',
+            'contacto_emergencia_nombre' => 'required|string',
+            'contacto_emergencia_relacion' => 'required|string',
+            'contacto_emergencia_telefono' => 'required|string',
             'idiomas' => 'nullable|string',
         ]);
 
@@ -105,5 +107,24 @@ class SecretariasController extends Controller
         $secretaria->delete();
     
         return redirect()->route('secretarias.index')->with('success', 'Secretaria eliminada correctamente.');
+    }
+
+    public function dashboard()
+    {
+        try {
+            $doctores = \App\Models\Doctores::all();
+            $pacientes = \App\Models\Paciente::all();
+            
+            return view('Secretaria.Dashboard', [
+                'doctores' => $doctores,
+                'pacientes' => $pacientes
+            ]);
+        } catch (\Exception $e) {
+            \Log::error('Error en dashboard: ' . $e->getMessage());
+            return view('Secretaria.Dashboard', [
+                'doctores' => collect([]),
+                'pacientes' => collect([])
+            ])->with('error', 'Error al cargar los datos');
+        }
     }
 }
