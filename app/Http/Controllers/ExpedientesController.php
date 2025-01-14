@@ -77,11 +77,11 @@ class ExpedientesController extends Controller
 
         // Generar un número de expediente único
         $numero_expediente = $this->generateUniqueExpedienteNumber();
-
+                    
         // Crear el expediente
         Expediente::create(array_merge($validatedData, ['numero_expediente' => $numero_expediente]));
 
-        return redirect()->route('Expedientes.index')->with('success', 'Expediente creado con éxito.');
+        return redirect()->route('Pacientes.Pacientesindex')->with('success', 'Expediente creado con éxito.');
     }
 
     private function generateUniqueExpedienteNumber()

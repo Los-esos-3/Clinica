@@ -30,13 +30,16 @@ class SecretariasController extends Controller
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
             'telefono' => 'nullable|string|max:15',
-            'email' => 'nullable|email|unique:secretarias',
+            'email' => 'required|email|unique:secretarias',
             'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'año_contratacion' => 'nullable|digits:4',
-            'años_experiencia' => 'nullable|integer',
-            'departamento' => 'nullable|string'
+            'departamento' => 'nullable|string',
+            'experiencia_laboral' => 'nullable|string',
+            'contacto_emergencia_nombre' => 'nullable|string',
+            'contacto_emergencia_relacion' => 'nullable|string',
+            'contacto_emergencia_telefono' => 'nullable|string',
+            'idiomas' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto_perfil')) {
@@ -68,14 +71,17 @@ class SecretariasController extends Controller
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'nullable|string|max:15',
             'email' => 'required|email|unique:secretarias,email,' . $secretaria->id,
-            'domicilio' => 'required|string',
+            'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'año_contratacion' => 'required|digits:4',
-            'años_experiencia' => 'required|integer',
-            'departamento' => 'nullable|string'
+            'departamento' => 'nullable|string',
+            'experiencia_laboral' => 'nullable|string',
+            'contacto_emergencia_nombre' => 'nullable|string',
+            'contacto_emergencia_relacion' => 'nullable|string',
+            'contacto_emergencia_telefono' => 'nullable|string',
+            'idiomas' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto_perfil')) {
