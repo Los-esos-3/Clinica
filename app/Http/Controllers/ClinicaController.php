@@ -77,6 +77,12 @@ class ClinicaController extends Controller
         return view('pacientes.edit', compact('paciente')); // Retornar la vista para editar el paciente
     }
 
+    public function show($id)
+{
+    $paciente = Paciente::with('expediente', 'consultas')->findOrFail($id);
+    return view('PacientesView.PacienteDoctor', compact('paciente'));
+}
+
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -100,8 +106,18 @@ class ClinicaController extends Controller
     public function destroy($id)
     {
         $paciente = Paciente::findOrFail($id);
+
+        // Eliminar las consultas relacionadas
+        $paciente->consultas()->delete();
+
+        // Eliminar el expediente relacionado si existe
+        if ($paciente->expediente) {
+            $paciente->expediente->delete();
+        }
+
+        // Eliminar el paciente
         $paciente->delete();
 
-        return redirect()->route('Pacientes.PacientesView');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Paciente y sus datos eliminados correctamente.');
     }
 }

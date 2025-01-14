@@ -42,7 +42,7 @@ class ConsultaController extends Controller
         ]);
 
         Consulta::create($validatedData);
-        return redirect()->route('consultas.index')->with('success', 'Consulta creada con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Consulta creada con éxito.');
     }
 
     public function show($id)
@@ -76,13 +76,13 @@ class ConsultaController extends Controller
 
         $consulta = Consulta::findOrFail($id);
         $consulta->update($validatedData);
-        return redirect()->route('consultas.index')->with('success', 'Consulta actualizada con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Consulta actualizada con éxito.');
     }
 
     public function destroy($id)
     {
         $consulta = Consulta::findOrFail($id);
         $consulta->delete();
-        return redirect()->route('consultas.index')->with('success', 'Consulta eliminada con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Consulta eliminada con éxito.');
     }
 }

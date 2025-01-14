@@ -199,7 +199,7 @@
 
                         <div>
                             <label class="block text-gray-700 text-sm font-bold mb-2">Doctor</label>
-                            <input type="text" name="doctor" 
+                            <select type="text" name="doctor" 
                                 class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
                                 placeholder="Nombre del doctor" required>
                         </div>

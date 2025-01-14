@@ -10,6 +10,7 @@ class AddFieldsToExpedientesTable extends Migration
     {
         Schema::table('expedientes', function (Blueprint $table) {
             $table->string('numero_expediente')->unique();
+            $table->date('fecha_creacion');
             $table->unsignedBigInteger('medico_id');
             $table->string('estado'); // Activo/Inactivo
             $table->text('alergias')->nullable();
