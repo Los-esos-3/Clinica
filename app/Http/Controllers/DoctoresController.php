@@ -26,11 +26,23 @@ class DoctoresController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'nombre_completo' => 'required|string|max:255',
+            'fecha_nacimiento' => 'required|date',
+            'genero' => 'required|string',
+            'telefono' => 'nullable|string|max:15',
+            'email' => 'required|email|unique:doctores,email',
+            'domicilio' => 'nullable|string',
+            'nacionalidad' => 'required|string',
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            // Agrega más validaciones según sea necesario
+        ]);
+
         $validated = $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'nullable|string|max:15',
+            'telefono' => 'required|string|max:10',
             'email' => 'nullable|email|unique:doctores',
             'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string' ,
@@ -77,7 +89,7 @@ class DoctoresController extends Controller
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'required|string|max:15',
+            'telefono' => 'required|string|max:10',
             'email' => 'required|email|unique:doctores,email,' . $doctor->id,
             'domicilio' => 'required|string',
             'nacionalidad' => 'required|string',
