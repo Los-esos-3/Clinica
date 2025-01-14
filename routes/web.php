@@ -180,3 +180,8 @@ Route::delete('/citas/{id}', [CitaController::class, 'destroy']); // Eliminar un
 Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 
 Route::resource('secretarias', SecretariasController::class);
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard'])
+        ->name('secretaria.dashboard');
+});

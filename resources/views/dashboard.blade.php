@@ -9,12 +9,12 @@
                             <ul class="flex">
                                 <li>
                                     <a href="{{ route('welcome') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                        WELCOME
+                                         BIENVENIDA 
                                     </a>
                                 </li>
                                 <li>
                                     <a href="{{ route('dashboard') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                        INICIO 
+                                        INICIO  
                                     </a>
                                 </li>
                                 <li>

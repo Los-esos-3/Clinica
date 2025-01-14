@@ -14,7 +14,7 @@
                                 <ul class="flex">
                                     <li>
                                         <a href="{{ route('welcome') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                            WELCOME
+                                            BIENVENIDA
                                         </a>
                                     </li>
                                     <li>
@@ -27,6 +27,11 @@
                                             DOCTORES
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="{{ route('secretarias.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            SECRETARIAS
+                                        </a>
+                                    </li> 
                                     <li class="ml-1">
                                         <a href="{{route('Pacientes.PacientesView')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                             PACIENTES

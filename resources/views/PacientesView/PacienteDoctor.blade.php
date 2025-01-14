@@ -654,12 +654,38 @@
                 });
             }
 
-            // Registrar las funciones en el objeto global para que sean accesibles
-            window.toggleModal = toggleModal;
-            window.filterPatients = filterPatients;
-        });
-    </script>
+        // Registrar las funciones en el objeto global para que sean accesibles
+        window.toggleModal = toggleModal;
+        window.filterPatients = filterPatients;
+    });
+</script>
 
+    <script>
+    // Script para manejar el dropdown
+    const dropdownButton = document.getElementById('options-menu');
+    const dropdownMenu = document.getElementById('dropdown-menu');
+    let isOpen = false;
+
+    dropdownButton.addEventListener('click', () => {
+        isOpen = !isOpen;
+        if (isOpen) {
+            dropdownMenu.classList.remove('hidden');
+            dropdownButton.setAttribute('aria-expanded', 'true');
+        } else {
+            dropdownMenu.classList.add('hidden');
+            dropdownButton.setAttribute('aria-expanded', 'false');
+        }
+    });
+
+    // Cerrar el dropdown cuando se hace clic fuera de él
+    document.addEventListener('click', (event) => {
+        if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.classList.add('hidden');
+            dropdownButton.setAttribute('aria-expanded', 'false');
+            isOpen = false;
+        }
+    });
+</script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
 </x-app-layout>
