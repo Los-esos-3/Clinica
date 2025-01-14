@@ -81,7 +81,7 @@ class ExpedientesController extends Controller
         // Crear el expediente
         Expediente::create(array_merge($validatedData, ['numero_expediente' => $numero_expediente]));
 
-        return redirect()->route('Expedientes.index')->with('success', 'Expediente creado con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente creado con éxito.');
     }
 
     private function generateUniqueExpedienteNumber()
@@ -132,7 +132,7 @@ class ExpedientesController extends Controller
         $expediente = Expediente::findOrFail($id);
         $expediente->delete();
 
-        return redirect()->route('Expedientes.index')->with('success', 'Expediente eliminado con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente eliminado con éxito.');
     }
 
     public function getCitas()
