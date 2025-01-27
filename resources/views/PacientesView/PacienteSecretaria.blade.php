@@ -148,15 +148,54 @@
                 <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
                 <a href="{{ route('ingresos.index') }}">Ingresos</a>
             </div>
-            <div class="dropdown">
-                <button class="dropbtn">{{ Auth::user()->name }}</button>
-                <div class="dropdown-content">
-                    <a href="{{ route('profile.show') }}">Perfil</a>
+            <div class="relative inline-block text-left">
+                <button type="button" 
+                    class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500" 
+                    id="options-menu" 
+                    aria-expanded="true" 
+                    aria-haspopup="true">
+                    <span class="mr-2">{{ Auth::user()->name }}</span>
+                    <!-- Icono de flecha -->
+                    <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+
+                <!-- Menú desplegable -->
+                <div id="dropdown-menu" 
+                    class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100" 
+                    role="menu" 
+                    aria-orientation="vertical" 
+                    aria-labelledby="options-menu">
+                    <div class="py-1" role="none">
+                        <a href="{{ route('profile.show') }}" 
+                            class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" 
+                            role="menuitem">
+                            <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" 
+                                xmlns="http://www.w3.org/2000/svg" 
+                                viewBox="0 0 20 20" 
+                                fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                            </svg>
+                            Perfil
+                        </a>
+                    </div>
+                    <div class="py-1" role="none">
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf
-                        <a href="{{ route('logout') }}"
-                            onclick="event.preventDefault(); this.closest('form').submit();">Cerrar Sesión</a>
+                            <button type="submit" 
+                                class="group flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" 
+                                role="menuitem">
+                                <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500" 
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    viewBox="0 0 20 20" 
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd" d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z" clip-rule="evenodd" />
+                                </svg>
+                                Cerrar Sesión
+                            </button>
                     </form>
+                    </div>
                 </div>
             </div>
         </div>
@@ -397,16 +436,13 @@
                             </div>
 
                             <div>
-                                <p><strong>Doctor:</strong>{{ $paciente->expediente->doctor->nombre_completo }}</p>
-                                <p><strong>Fecha de creacion:</strong><!-- Variable aqui --></p>
-                                <p><strong>Estado del expediente:</strong><!-- Variable aquí --></p>
+                                <p><strong>Numero de expediente:</strong> {{$paciente->expediente->numero_expediente}}</p>
+                                <p><strong>Fecha de creacion:</strong> {{$paciente->expediente->fecha_registro}}</p>
+                                <p><strong>Estado del expediente:</strong>{{$paciente->expediente->estado}}</p>
                             </div>
 
                             <div class="flex items-center gap-2 justify-center">
-                                <form class="flex w-16" action="{{ route('Expedientes.destroy', $paciente->id) }}" 
-                                    method="POST" onsubmit="return false;">
-                                    @csrf
-                                    @method('DELETE')
+                                <form class="flex w-16" onsubmit="return false;">
                                     <button
                                         class="group relative flex h-[50px] w-[55px] flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-red-800 bg-red-400 hover:bg-red-600"
                                         onclick="toggleModal('modal-borrar-expediente-{{ $paciente->id }}'); event.preventDefault(); document.getElementById('form-delete-{{ $paciente->id }}').setAttribute('data-id', '{{ $paciente->id }}');">
@@ -516,14 +552,23 @@
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="w-3/4 max-w-2xl bg-white rounded-lg shadow-lg">
                     <div class="flex p-4">
+                        @if($paciente->consultas->isNotEmpty())
                         <div class="w-full text-center">
                             <h2 class="text-xl font-bold mb-4">Última Consulta</h2>
-                            @if ($paciente->consultas->isNotEmpty())
-                            <p><strong>Nombre:</strong> {{ $paciente->nombre }}</p>
-                            @else
-                                <p>No hay consultas registradas.</p>
-                            @endif
+                            <p><strong>Nombre del Paciente:</strong> {{ $paciente->nombre }}</p>
+                            <p><strong>Médico:</strong> {{$consulta->doctor->nombre_completo}}</p>
+                            <p><strong>Fecha:</strong> {{ \Carbon\Carbon::parse($consulta->created_at)->format('Y-m-d') }}</p>
+                            <p><strong>Hora:</strong> {{ \Carbon\Carbon::parse($consulta->fecha_hora)->format('H:i') }}</p>
+                            <p><strong>Motivo de consulta:</strong> {{ $consulta->motivo_consulta }}</p>
+                            <p><strong>Diagnóstico:</strong> {{ $consulta->diagnostico }}</p>
+                            <p><strong>Tratamiento:</strong> {{ $consulta->tratamiento }}</p>
+                            <p><strong>Notas adicionales:</strong> {{ $consulta->notas_adicionales }}</p>
                         </div>
+                        @else
+                            <div>
+                                <label>No hay Consultas disponibles</label>
+                            </div>
+                        @endif
                     </div>
                     <div class="flex justify-center p-4 bg-gray-100 rounded-b-lg">
                         <button
@@ -540,9 +585,18 @@
                         <div class="w-full text-center">
                             <h2 class="text-xl font-bold mb-4">Datos del Expediente</h2>
                             @if ($paciente->expediente)
-                                <p><strong>Doctor:</strong> {{ $paciente->expediente->doctor->nombre_completo }}</p>
-                                <p><strong>Fecha de creación:</strong> <!-- Variable aquí --></p>
-                                <p><strong>Estado del expediente:</strong> <!-- Variable aquí --></p>
+                                <p><Strong>Numero de expediente:</Strong> {{$paciente->expediente->numero_expediente}}</p>
+                                <p><strong>Nombre del paciente:</strong> {{$paciente->expediente->paciente->nombre}}</p>
+                                <p><strong>Fecha de registro:</strong> {{$paciente->expediente->fecha_registro}}</p>
+                                <p><Strong>Estado del expediente:</Strong> {{$paciente->expediente->estado}}</p>
+                                <p><strong>Alergias conocidas:</strong> {{$paciente->expediente->alergias}}</p>
+                                <p><Strong>Antecendetes medicos:</Strong> {{$paciente->expediente->antecedentes_medicos}}</p>
+                                <p><Strong>Historial quirurgico</Strong> {{$paciente->expediente->historial_quirurgico}}</p>
+                                <p><Strong>Historial familiar relevante:</Strong> {{$paciente->expediente->historial_familiar}}</p>
+                                <p><Strong>Vacunas aplicadas:</Strong> {{$paciente->expediente->vacunas}}</p>
+                                <p><strong>Medicamentos actuales</strong> {{$paciente->expediente->medicamentos}}</p>
+                                <p><strong>Estudios o Examenes previos:</strong> {{$paciente->expediente->estudios_previos}}</p>
+                                <p><strong>Notas medicas</strong> {{$paciente->expediente->notas_medicas}}</p>
                             @else
                                 <p>No hay expediente disponible.</p>
                             @endif
@@ -567,8 +621,13 @@
                             <p>¿Estás seguro de que deseas eliminar a {{ $paciente->nombre }}?</p>
                         </div>
                         <div class="flex justify-end p-4">
-                            <button class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700"
-                                onclick="document.getElementById('form-delete-{{ $paciente->id }}').submit();">Eliminar</button>
+                            <form action="{{route('Pacientes.destroy', $paciente->id)}}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700">
+                                Eliminar
+                            </button>
+                        </form>
                             <button class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 ml-2"
                                 onclick="toggleModal('modal-borrar-paciente-{{ $paciente->id }}')">Cancelar</button>
                         </div>
@@ -584,16 +643,18 @@
                             <p>¿Estás seguro de que deseas borrar la consulta de {{ $paciente->nombre }}?</p>
                         </div>
                         <div class="flex justify-end p-4">
-                            <form action="{{ route('consultas.destroy', $paciente->id) }}" method="POST" class="inline-block">
+                            @foreach ($paciente->consultas as $consulta)
+                            <form action="{{ route('consultas.destroy', $consulta->id) }}" method="POST" class="inline-block">
                                 @csrf
                                 @method('DELETE')
-                                <button class="px-4 py-2 text-red-600 bg-red-200 rounded hover:bg-red-300">
+                                <button class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700">
                                     Eliminar 
                                 </button>
                             </form>
                             <button class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 ml-2"
                                 onclick="toggleModal('modal-borrar-consulta-{{ $paciente->id }}')">Cancelar</button>
                         </div>
+                        @endforeach
                     </div>
                 </div>
 
@@ -606,15 +667,19 @@
                             <p>¿Estás seguro de que deseas borrar el expediente de {{ $paciente->nombre }}?</p>
                         </div>
                         <div class="flex justify-end p-4">
-                            <form action="{{ route('Expedientes.destroy', $paciente->id) }}" method="POST" class="inline-block">
-                                @csrf
-                                @method('DELETE')
-                                <button class="px-4 py-2 text-red-600 bg-red-200 rounded hover:bg-red-300">
-                                    Eliminar Expediente
-                                </button>
-                            </form>
-                            <button class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 ml-2"
-                                onclick="toggleModal('modal-borrar-expediente-{{ $paciente->id }}')">Cancelar</button>
+                            @if ($paciente->expediente) <!-- Verifica si existe el expediente -->
+                                <form action="{{ route('Expedientes.destroy', $paciente->expediente->id) }}" method="POST" class="inline-block">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="px-4 py-2 text-white bg-red-600 rounded hover:bg-red-700">
+                                        Eliminar 
+                                    </button>
+                                </form>
+                                <button class="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300 ml-2"
+                                    onclick="toggleModal('modal-borrar-expediente-{{ $paciente->id }}')">Cancelar</button>
+                            @else
+                                <p class="text-red-500">No hay expediente disponible.</p> <!-- Mensaje si no hay expediente -->
+                            @endif
                         </div>
                     </div>
                 </div>

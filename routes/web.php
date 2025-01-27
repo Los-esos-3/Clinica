@@ -168,15 +168,6 @@ Route::resource('doctores', DoctoresController::class);
 });
 
 
-//Route::get('/get-citas', [CitaController::class, 'getCitas']);
-
-
-Route::get('/citas', [CitaController::class, 'index']); // Obtener todas las citas
-Route::post('/citas', [CitaController::class, 'store']); // Crear una nueva cita
-Route::get('/citas/{id}', [CitaController::class, 'show']); // Mostrar una cita específica
-Route::put('/citas/{id}', [CitaController::class, 'update']); // Actualizar una cita
-Route::delete('/citas/{id}', [CitaController::class, 'destroy']); // Eliminar una cita
-
 Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 
 Route::resource('secretarias', SecretariasController::class);

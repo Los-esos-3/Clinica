@@ -29,6 +29,10 @@ class Paciente extends Model
     {
         return $this->hasOne(Expediente::class);
     }
+    public function expedientes()
+{
+    return $this->hasMany(Expediente::class);
+}
     public function consultas()
     {
         return $this->hasMany(Consulta::class);

@@ -33,21 +33,6 @@
                             <input type="date" name="fecha_registro" id="fecha_registro" value="{{ now()->format('Y-m-d') }}" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required>
                         </div>
 
-
-                        <div class="mb-4">
-                            <label for="medico_id" class="block text-sm font-medium text-gray-700">Médico
-                                Responsable
-                            </label>
-
-                            <select name="doctor_id" id="doctor_id"
-                                class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required>
-                                <option value="">Seleccione un médico</option>
-                                @foreach ($doctores as $doctor)
-                                    <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
                         <div class="mb-4">
                             <label for="estado" class="block text-sm font-medium text-gray-700">Estado del
                                 Expediente</label>
@@ -113,6 +98,8 @@
                             class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                             Crear Expediente
                         </button>
+
+                        <a href="{{ route('Pacientes.PacientesView') }}" class="inline-flex items-center px-4 py-2 ml-2 text-xs font-semibold tracking-widest text-gray-700 uppercase transition bg-gray-200 border border-transparent rounded-md hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 disabled:opacity-25">Cancelar</a>
                     </form>
                 </div>
             </div>
