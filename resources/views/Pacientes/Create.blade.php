@@ -14,7 +14,7 @@
 
                         <div class="mb-4">
                             <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
-                            <input type="text" name="nombre" id="nombre" class="block w-full p-2 mt-1 border border-gray-400 rounded-md focus:outline-none focus:ring-blue-500 focus:border-blue-500" required>
+                            <input type="text" name="nombre" id="nombre" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required>
                         </div>
 
                         <div class="mb-4">

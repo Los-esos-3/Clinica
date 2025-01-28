@@ -11,8 +11,7 @@ class ConsultaController extends Controller
 {
     public function index()
     {
-        $consultas = Consulta::with(['paciente', 'doctor'])->get();
-      
+        $consultas = Consulta::with(['paciente', 'doctor'])->paginate(25);
         return view('consultas.index', compact('consultas'));
     }
 
@@ -47,13 +46,16 @@ class ConsultaController extends Controller
 
     public function show($id)
     {
-        $consulta = Consulta::with('medico')->findOrFail($id);
-        return view('consultas.show', compact('consulta'));
+        $consulta = Consulta::with(['medico', 'paciente'])->findOrFail($id);
+        $paciente = $consulta->paciente;
+        $consultas = $paciente->consultas()->paginate(1);
+        
+        return view('consultas.show', compact('consulta', 'consultas', 'expedientes'));
     }
 
     public function edit($id)
     {
-        $consulta = Consulta::findOrFail($id);
+        $consulta = Consulta::with('doctor')->findOrFail($id);
         $medicos = Doctores::all();
         return view('consultas.edit', compact('consulta', 'medicos'));
     }

@@ -170,52 +170,69 @@
                 <h3 class="text-2xl font-semibold text-gray-900">Nueva Cita</h3>
             </div>
 
-            <form id="citaForm" method="POST" action="{{ route('citas.store') }}">
-                @csrf
-                <div>
-                    <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-                    <input type="date" id="fecha" name="fecha" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                </div>
-                <div class="flex space-x-4">
-                    <div class="flex-1">
-                        <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora Inicio</label>
-                        <input type="time" id="hora_inicio" name="hora_inicio" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                    </div>
-                    <div class="flex-1">
-                        <label for="hora_fin" class="block text-sm font-medium text-gray-700">Hora Fin</label>
-                        <input type="time" id="hora_fin" name="hora_fin" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                    </div>
-                </div>
-                <div>
-                    <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor</label>
-                    <select name="doctor_id" id="doctor_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                        <option value="">Selecciona un doctor</option>
-                        @foreach ($doctores as $doctor)
-                            <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label for="paciente_id" class="block text-sm font-medium text-gray-700">Paciente</label>
-                    <select name="paciente_id" id="paciente_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
-                        <option value="">Selecciona un paciente</option>
-                        @foreach ($pacientes as $paciente)
-                            <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div>
-                    <label for="motivo" class="block text-sm font-medium text-gray-700">Motivo</label>
-                    <textarea name="motivo" id="motivo" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"></textarea>
-                </div>
-                <div class="flex justify-center mt-4">
-                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Programar Cita</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+                    <form id="citaForm" class="space-y-6">
+                        @csrf
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Fecha</label>
+                                <input type="date" id="fecha" name="fecha" 
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
+                                    required>
+                            </div>
 
+                            <div>
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Hora</label>
+                                <select name="hora" 
+                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
+                                    required>
+                                    <option value="">Seleccionar</option>
+                                    @for($i = 8; $i <= 17; $i++)
+                                        @foreach(['00', '30'] as $minutos)
+                                            <option value="{{ sprintf('%02d:%s', $i, $minutos) }}">
+                                                {{ sprintf('%02d:%s', $i, $minutos) }}
+                                            </option>
+                                        @endforeach
+                                    @endfor
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Doctor</label>
+                            <select type="text" name="doctor" 
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
+                                placeholder="Nombre del doctor" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Doctor</label>
+                            <input type="text" name="paciente" 
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
+                                placeholder="Nombre del paciente" required>
+                        </div>
+
+
+                        <div>
+                            <label class="block text-gray-700 text-sm font-bold mb-2">Motivo de la Cita</label>
+                            <textarea name="motivo" rows="3" 
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
+                                placeholder="Describe el motivo de la cita" required></textarea>
+                        </div>
+
+                        <div class="flex justify-end space-x-4 pt-4">
+                            <button type="button" id="cancelBtn" 
+                                class="px-6 py-2.5 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200">
+                                Cancelar
+                            </button>
+                            <button type="submit" 
+                                class="px-6 py-2.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
+                                Programar Cita
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
       
         <script>
             document.addEventListener('DOMContentLoaded', function() {

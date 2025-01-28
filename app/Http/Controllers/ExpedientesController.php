@@ -14,7 +14,7 @@ class ExpedientesController extends Controller
     public function index()
     {
         // Cargar expedientes con la relación de paciente y doctor
-        $expedientes = Expediente::with(['paciente', 'doctor'])->get();
+        $expedientes = Expediente::with(['paciente', 'doctor'])->paginate(10);
         return view('Expedientes.ExpedientesIndex', compact('expedientes'));
     }
 
@@ -26,7 +26,6 @@ class ExpedientesController extends Controller
 
     public function create(Request $request)
     {
-        // Verifica si se ha pasado el ID del paciente
         // Verifica si se ha pasado el ID del paciente
         if (!$request->has('paciente_id')) {
             return redirect()->back()->with('error', 'Es necesario seleccionar un paciente primero.');
@@ -44,8 +43,6 @@ class ExpedientesController extends Controller
         if (!$paciente) {
             return redirect()->back()->with('error', 'El paciente seleccionado no existe.');
         }
-    
-        // Obtiene todos los doctores
     
         // Obtiene todos los doctores
         $doctores = Doctores::all();
@@ -67,29 +64,6 @@ class ExpedientesController extends Controller
     {
         $validatedData = $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
-            'paciente_id' => 'required|exists:pacientes,id',
-            'doctor_id' => 'required|exists:doctores,id',
-            'especialidad' => 'nullable|string',
-            'diagnostico' => 'nullable|string',
-            'tratamiento' => 'nullable|string',
-            'especialidad' => 'nullable|string',
-            'diagnostico' => 'nullable|string',
-            'tratamiento' => 'nullable|string',
-            'antecedentes' => 'nullable|string',
-            'familiar_a_cargo' => 'nullable|string',
-            'numero_familiar' => 'nullable|string',
-            'proxima_cita' => 'nullable|date',
-            'hora_proxima_cita' => 'nullable|time',
-            'estado' => 'required|string',
-            'alergias' => 'nullable|string',
-            'antecedentes_medicos' => 'nullable|string',
-            'historial_quirurgico' => 'nullable|string',
-            'historial_familiar' => 'nullable|string',
-            'vacunas' => 'nullable|string',
-            'medicamentos' => 'nullable|string',
-            'estudios_previos' => 'nullable|string',
-            'notas_medicas' => 'nullable|string',
-            'hora_proxima_cita' => 'nullable|time',
             'estado' => 'required|string',
             'alergias' => 'nullable|string',
             'antecedentes_medicos' => 'nullable|string',
@@ -109,7 +83,7 @@ class ExpedientesController extends Controller
         // Crear el expediente
         Expediente::create(array_merge($validatedData, ['numero_expediente' => $numero_expediente]));
 
-        return redirect()->route('Pacientes.Pacientesindex')->with('success', 'Expediente creado con éxito.');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Consulta actualizada con éxito.');
     }
 
     private function generateUniqueExpedienteNumber()
@@ -138,14 +112,17 @@ class ExpedientesController extends Controller
     {
 
         $validatedData = $request->validate([
-            'doctor_id' => 'required|exists:doctores,id',
-            'diagnostico' => 'required|string',
-            'tratamiento' => 'required|string',
-            'antecedentes' => 'nullable|string',
-            'familiar_a_cargo' => 'nullable|string|max:255',
-            'numero_familiar' => 'nullable|string|max:20',
-            'proxima_cita' => 'nullable|date',
-            'hora_proxima_cita' => 'nullable|date_format:H:i',
+            'paciente_id' => 'required|exists:pacientes,id',
+            'estado' => 'required|string',
+            'alergias' => 'nullable|string',
+            'antecedentes_medicos' => 'nullable|string',
+            'historial_quirurgico' => 'nullable|string',
+            'historial_familiar' => 'nullable|string',
+            'vacunas' => 'nullable|string',
+            'medicamentos' => 'nullable|string',
+            'estudios_previos' => 'nullable|string',
+            'notas_medicas' => 'nullable|string',
+            'fecha_registro' => 'required|date',
         ]);
 
         $expediente = Expediente::findOrFail($id);

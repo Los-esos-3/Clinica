@@ -24,6 +24,7 @@ return new class extends Migration
             $table->time('hora_registro');
             $table->string('tipo_sangre');
             $table->string('ocupacion')->nullable();
+            $table->unsignedBigInteger('user_id');
             $table->timestamps(); 
         });
     }

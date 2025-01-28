@@ -15,7 +15,7 @@
                         <input type="hidden" name="paciente_id" value="{{ $paciente->id }}">
                         <div class="mb-4">
                             <label for="paciente" class="block text-sm font-medium text-gray-700">Nombre del Paciente</label>
-                            <input type="text" id="paciente" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" value="{{ $paciente->nombre }}" readonly>
+                            <input type="text" id="paciente" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" value="{{ $paciente->nombre }}" readonly required>
                         </div>
 
                         <div class="mb-4">
@@ -86,7 +86,7 @@
 
                         <div class="flex justify-end">
                             <button type="submit" class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 disabled:opacity-25">Guardar</button>
-                            <a href="{{ route('consultas.index') }}" class="inline-flex items-center px-4 py-2 ml-2 text-xs font-semibold tracking-widest text-gray-700 uppercase transition bg-gray-200 border border-transparent rounded-md hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 disabled:opacity-25">Cancelar</a>
+                            <a href="{{ route('Pacientes.PacientesView') }}" class="inline-flex items-center px-4 py-2 ml-2 text-xs font-semibold tracking-widest text-gray-700 uppercase transition bg-gray-200 border border-transparent rounded-md hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 disabled:opacity-25">Cancelar</a>
                         
                         </div>
                     </form>
