@@ -23,6 +23,7 @@ class Paciente extends Model
         'hora_registro',
         'tipo_sangre',
         'ocupacion',
+        'user_id',
     ];
 
     public function expediente()
@@ -36,5 +37,9 @@ class Paciente extends Model
     public function consultas()
     {
         return $this->hasMany(Consulta::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

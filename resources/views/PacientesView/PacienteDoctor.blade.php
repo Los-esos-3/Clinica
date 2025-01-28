@@ -351,7 +351,7 @@
                                                 @endphp
 
                                                 <div class="mt-4">
-                                                     <!-- Paginación para consultas -->
+                                                  <!-- Paginación para consultas -->
                                                 </div>
 
                                                 <div>
@@ -437,11 +437,13 @@
                                                 </div>
                     </div>
                 @else
+                <div class="block text-center">
                     <p class="text-red-500">No hay consultas disponibles.</p>
                     <a href="{{ route('consultas.create', ['paciente_id' => $paciente->id]) }}"
                         class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                         Agregar Consulta
                     </a>
+                </div>
                     @endif
                     </td>
 
@@ -450,7 +452,7 @@
 
                         @if ($paciente->expediente)
                             <div class="pagination">
-                                
+                              
                             </div>
 
                             <div>
@@ -531,11 +533,13 @@
                             </div>
                 </div>
             @else
+            <div class="block text-center">
                 <p class="text-red-500">No hay expediente disponible.</p>
                 <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
                     class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                     Agregar expediente
                 </a>
+            </div>
                 @endif
                 </td>
                 </tr>

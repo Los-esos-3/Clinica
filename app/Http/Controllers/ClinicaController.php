@@ -15,17 +15,16 @@ class ClinicaController extends Controller
     use AuthorizesRequests;
     public function PacientesView(Request $request)
     {
-
-
         $query = $request->input('search');
 
         if ($query) {
-            $pacientes = Paciente::where('nombre', 'LIKE', "%{$query}%")->with('expediente')->paginate(2);
+            $pacientes = Paciente::where('user_id', Auth::id())
+                ->where('nombre', 'LIKE', "%{$query}%")
+                ->paginate(20);
         } else {
-            $pacientes = Paciente::with('expediente')->paginate(25);
+            $pacientes = Paciente::where('user_id', Auth::id())->paginate(20);
         }
 
-        // Verificar si no se encontraron pacientes
         $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
 
         return view('Pacientes.PacientesIndex', compact('pacientes', 'noResultsMessage'));
@@ -39,8 +38,7 @@ class ClinicaController extends Controller
 
     public function store(Request $request)
     {
-
-        $request->validate([
+        $validatedData = $request->validate([
             'nombre' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:20',
             'fecha_nacimiento' => 'nullable|date',
@@ -52,16 +50,12 @@ class ClinicaController extends Controller
             'ocupacion' => 'nullable|string|max:100',
         ]);
 
-        // Crear el paciente solo si no se ha registrado antes
-        $pacienteData = $request->all();
+        // Verifica el ID del usuario autenticado
+        $validatedData['user_id'] = Auth::id(); // Esto debería ser 1
 
-        // Comprobar si 'fecha_registro' y 'hora_registro' ya están definidas
-        if (empty($pacienteData['fecha_registro']) && empty($pacienteData['hora_registro'])) {
-            $pacienteData['fecha_registro'] = now()->format('Y-m-d'); // Establecer 'fecha_registro' al valor actual
-            $pacienteData['hora_registro'] = now()->format('H:i:s');
-        }
+        // Crea el paciente
+        Paciente::create($validatedData);
 
-        Paciente::create($pacienteData); // Crear el paciente
 
         return redirect()->route('Pacientes.PacientesView');
     }
@@ -82,7 +76,7 @@ class ClinicaController extends Controller
         $expedientes = $paciente->expedientes()->paginate(1);  // Paginación de expedientes
 
         dd($consultas, $expedientes);
-        
+
         // Pasar el paciente, consultas y expedientes a la vista
         return view('PacientesView.PacienteDoctor', compact('paciente', 'consultas', 'expedientes'));
     }
