@@ -151,88 +151,71 @@
         <div id="calendar-secretaria"></div>
         </div>
 
-        <!-- Modal para crear cita con mejor diseño -->
-        <div id="citaModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
-                <div class="absolute top-0 right-0 pt-4 pr-4">
-                    <button id="closeModalBtn" class="text-gray-400 hover:text-gray-500 transition-colors duration-200">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="mt-3">
-                    <div class="flex items-center mb-6">
-                        <svg class="h-8 w-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                        <h3 class="text-2xl font-semibold text-gray-900">Nueva Cita</h3>
-                    </div>
-
-                    <form id="citaForm" class="space-y-6">
-                        @csrf
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Fecha</label>
-                                <input type="date" id="fecha" name="fecha" 
-                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
-                                    required>
-                            </div>
-
-                            <div>
-                                <label class="block text-gray-700 text-sm font-bold mb-2">Hora</label>
-                                <select name="hora" 
-                                    class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
-                                    required>
-                                    <option value="">Seleccionar</option>
-                                    @for($i = 8; $i <= 17; $i++)
-                                        @foreach(['00', '30'] as $minutos)
-                                            <option value="{{ sprintf('%02d:%s', $i, $minutos) }}">
-                                                {{ sprintf('%02d:%s', $i, $minutos) }}
-                                            </option>
-                                        @endforeach
-                                    @endfor
-                                </select>
-                            </div>
-                        </div>
-
-                        <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Doctor</label>
-                            <select type="text" name="doctor" 
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
-                                placeholder="Nombre del doctor" required>
-                        </div>
-
-                        <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Doctor</label>
-                            <input type="text" name="paciente" 
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
-                                placeholder="Nombre del paciente" required>
-                        </div>
-
-
-                        <div>
-                            <label class="block text-gray-700 text-sm font-bold mb-2">Motivo de la Cita</label>
-                            <textarea name="motivo" rows="3" 
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" 
-                                placeholder="Describe el motivo de la cita" required></textarea>
-                        </div>
-
-                        <div class="flex justify-end space-x-4 pt-4">
-                            <button type="button" id="cancelBtn" 
-                                class="px-6 py-2.5 rounded-lg text-gray-700 bg-gray-100 hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-400 transition-all duration-200">
-                                Cancelar
-                            </button>
-                            <button type="submit" 
-                                class="px-6 py-2.5 rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200">
-                                Programar Cita
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
+       <!-- Modal para crear cita con mejor diseño -->
+<div id="citaModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+    <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
+        <div class="absolute top-0 right-0 pt-4 pr-4">
+            <button id="closeModalBtn" class="text-gray-400 hover:text-gray-500 transition-colors duration-200">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
         </div>
+
+        <div class="mt-3">
+            <div class="flex items-center mb-6">
+                <svg class="h-8 w-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h3 class="text-2xl font-semibold text-gray-900">Nueva Cita</h3>
+            </div>
+
+            <form id="citaForm" method="POST" action="{{ route('citas.store') }}">
+                @csrf
+                <div>
+                    <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
+                    <input type="date" id="fecha" name="fecha" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                </div>
+                <div class="flex space-x-4">
+                    <div class="flex-1">
+                        <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora Inicio</label>
+                        <input type="time" id="hora_inicio" name="hora_inicio" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                    <div class="flex-1">
+                        <label for="hora_fin" class="block text-sm font-medium text-gray-700">Hora Fin</label>
+                        <input type="time" id="hora_fin" name="hora_fin" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                    </div>
+                </div>
+                <div>
+                    <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor</label>
+                    <select name="doctor_id" id="doctor_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <option value="">Selecciona un doctor</option>
+                        @foreach ($doctores as $doctor)
+                            <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="paciente_id" class="block text-sm font-medium text-gray-700">Paciente</label>
+                    <select name="paciente_id" id="paciente_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50">
+                        <option value="">Selecciona un paciente</option>
+                        @foreach ($pacientes as $paciente)
+                            <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="motivo" class="block text-sm font-medium text-gray-700">Motivo</label>
+                    <textarea name="motivo" id="motivo" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"></textarea>
+                </div>
+                <div class="flex justify-center mt-4">
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Programar Cita</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
       
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -365,63 +348,36 @@
                 });
 
                 citaForm.addEventListener('submit', function(e) {
-                    e.preventDefault();
+                    e.preventDefault(); // Evita el envío normal del formulario
                     const formData = new FormData(citaForm);
-                    
-                    calendar.addEvent({
-                        title: `${formData.get('doctor')} - ${formData.get('paciente')}`,
-                        start: `${formData.get('fecha')}T${formData.get('hora')}`,
-                        end: `${formData.get('fecha')}T${formData.get('hora')}`,
-                        backgroundColor: '#4F46E5',
-                        borderColor: '#4F46E5',
-                        textColor: '#ffffff',
-                        extendedProps: {
-                            motivo: formData.get('motivo')
+
+                    fetch("{{ route('citas.store') }}", {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         }
-                    });
-
-                    // Guardar citas después de agregar una nueva
-                    guardarCitas();
-
-                    closeModal();
-
-                    // Animación personalizada al crear la cita
-                    Swal.fire({
-                        title: '¡Cita Registrada!',
-                        text: 'La cita se ha programado exitosamente',
-                        icon: 'success',
-                        showConfirmButton: false,
-                        timer: 2000,
-                        timerProgressBar: true,
-                        backdrop: `
-                            rgba(0,123,255,0.4)
-                            url("/images/check-animation.gif")
-                            center top
-                            no-repeat
-                        `,
-                        customClass: {
-                            popup: 'animate__animated animate__fadeInDown'
-                        },
-                        showClass: {
-                            popup: 'animate__animated animate__fadeInDown'
-                        },
-                        hideClass: {
-                            popup: 'animate__animated animate__fadeOutUp'
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire('¡Cita Registrada!', data.success, 'success');
+                            // Agregar la cita al calendario
+                            calendar.addEvent({
+                                title: `${data.cita.doctor_id} - ${data.cita.paciente_id}`, // Ajusta según tus necesidades
+                                start: data.cita.fecha + 'T' + data.cita.hora_inicio,
+                                end: data.cita.fecha + 'T' + data.cita.hora_fin,
+                                extendedProps: {
+                                    motivo: data.cita.motivo
+                                }
+                            });
+                            closeModal(); // Cerrar el modal después de agregar la cita
+                        } else {
+                            Swal.fire('Error', data.error, 'error');
                         }
-                    }).then(() => {
-                        // Opcional: Mostrar un toast pequeño después
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: 'top-end',
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true
-                        });
-
-                        Toast.fire({
-                            icon: 'success',
-                            title: 'Cita guardada en el calendario'
-                        });
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Error al guardar la cita', 'error');
                     });
                 });
 

@@ -2,57 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Cita;
+use App\Models\Doctores; // Asegúrate de que el modelo Doctor esté correctamente importado
+use App\Models\Paciente; // Asegúrate de que el modelo Paciente esté correctamente importado
+use App\Models\Cita; // Asegúrate de que el modelo Cita esté correctamente importado
 use Illuminate\Http\Request;
 
 class CitaController extends Controller
 {
-    // Método para mostrar todas las citas
     public function index()
     {
-        $citas = Cita::all(); // Obtiene todas las citas
-        return response()->json($citas); // Devuelve las citas en formato JSON
+        $doctores = Doctores::all(); // Obtener todos los doctores
+        $pacientes = Paciente::all(); // Obtener todos los pacientes
+
+        return view('Secretaria.Dashboard', compact('doctores', 'pacientes')); // Pasar a la vista
     }
 
-    // Método para crear una nueva cita
+    public function getDoctores()
+    {
+        $doctores = Doctor::all();
+        return response()->json($doctores);
+    }
+
+    public function getPacientes()
+    {
+        $pacientes = Paciente::all();
+        return response()->json($pacientes);
+    }
+
     public function store(Request $request)
     {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'fecha_hora_inicio' => 'required|date',
-            'fecha_hora_fin' => 'required|date|after:fecha_hora_inicio',
-        ]);
+        try {
+            $request->validate([
+                'fecha' => 'required|date',
+                'hora_inicio' => 'required',
+                'hora_fin' => 'required',
+                'doctor_id' => 'required|exists:doctores,id',
+                'paciente_id' => 'required|exists:pacientes,id',
+                'motivo' => 'required|string',
+            ]);
 
-        $cita = Cita::create($request->all()); // Crea una nueva cita
-        return response()->json($cita, 201); // Devuelve la cita creada
-    }
+            $cita = Cita::create([
+                'fecha' => $request->fecha,
+                'hora_inicio' => $request->hora_inicio,
+                'hora_fin' => $request->hora_fin,
+                'doctor_id' => $request->doctor_id,
+                'paciente_id' => $request->paciente_id,
+                'motivo' => $request->motivo,
+            ]);
 
-    // Método para mostrar una cita específica
-    public function show($id)
-    {
-        $cita = Cita::findOrFail($id); // Encuentra la cita por ID
-        return response()->json($cita); // Devuelve la cita
-    }
-
-    // Método para actualizar una cita
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'titulo' => 'required|string|max:255',
-            'fecha_hora_inicio' => 'required|date',
-            'fecha_hora_fin' => 'required|date|after:fecha_hora_inicio',
-        ]);
-
-        $cita = Cita::findOrFail($id); // Encuentra la cita por ID
-        $cita->update($request->all()); // Actualiza la cita
-        return response()->json($cita); // Devuelve la cita actualizada
-    }
-
-    // Método para eliminar una cita
-    public function destroy($id)
-    {
-        $cita = Cita::findOrFail($id); // Encuentra la cita por ID
-        $cita->delete(); // Elimina la cita
-        return response()->json(null, 204); // Devuelve un estado 204 No Content
+            // return response()->json(['success' => 'Cita creada exitosamente.']); // Comentado
+        } catch (\Exception $e) {
+            // return response()->json(['error' => 'Error al crear la cita: ' . $e->getMessage()], 500); // Comentado
+        }
     }
 }
