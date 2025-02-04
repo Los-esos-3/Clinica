@@ -22,12 +22,12 @@ class ClinicaController extends Controller
                 ->where('nombre', 'LIKE', "%{$query}%")
                 ->paginate(20);
         } else {
-            $pacientes = Paciente::where('user_id', Auth::id())->paginate(20);
+            $pacientes = Paciente::where('user_id', Auth::id())->paginate(9);
         }
 
         $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
 
-        return view('Pacientes.PacientesIndex', compact('pacientes', 'noResultsMessage'));
+        return view('Pacientes.PacientesIndex', compact('pacientes',  'noResultsMessage'));
     }
 
 
@@ -39,6 +39,7 @@ class ClinicaController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nombre' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:20',
             'fecha_nacimiento' => 'nullable|date',
@@ -51,11 +52,18 @@ class ClinicaController extends Controller
         ]);
 
         // Verifica el ID del usuario autenticado
-        $validatedData['user_id'] = Auth::id(); // Esto debería ser 1
+        $validatedData['user_id'] = Auth::id();
+
+        // Manejo de la imagen
+        if ($request->hasFile('foto_perfil')) {
+            $imagen = $request->file('foto_perfil');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('images'), $nombreImagen);
+            $validatedData['foto_perfil'] = $nombreImagen;
+        }
 
         // Crea el paciente
         Paciente::create($validatedData);
-
 
         return redirect()->route('Pacientes.PacientesView');
     }
@@ -84,6 +92,7 @@ class ClinicaController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nombre' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:20',
             'fecha_nacimiento' => 'nullable|date',
