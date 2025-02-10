@@ -19,4 +19,8 @@ class Empresa extends Model
         'horario',
         'descripcion'
     ];
+    public function usuarios()
+    {
+        return $this->hasMany(User::class);
+    }
 }

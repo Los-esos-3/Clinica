@@ -24,6 +24,10 @@ return new class extends Migration
         $table->text('descripcion');
         $table->timestamps();
     });
+
+    Schema::table('users', function (Blueprint $table) {
+        $table->foreignId('empresa_id')->nullable()->constrained('empresas')->onDelete('set null');
+    });
 }
 
     /**

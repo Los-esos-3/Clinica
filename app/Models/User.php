@@ -19,6 +19,10 @@ class User extends Authenticatable
     use TwoFactorAuthenticatable;
     use HasRoles;
 
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 
     /**
      * The attributes that are mass assignable.

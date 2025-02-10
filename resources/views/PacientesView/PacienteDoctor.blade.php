@@ -192,123 +192,23 @@
                             </div>
 
                             <div class="flex justify-between p-4 border-t">
-                                <button class="text-blue-500 hover:underline"
+                                <button class="bg-[rgb(55,65,81)]  text-white px-4 py-2 rounded-lg"
                                     onclick="toggleModal('modal-informacion-{{ $paciente->id }}')">Ver
                                     Detalles</button>
                                 <a href="{{ route('Pacientes.edit', $paciente->id) }}"
-                                    class="text-blue-500 hover:underline">Editar</a>
+                                    class="bg-[rgb(55,65,81)]  text-white px-3 py-2 rounded-lg no-underline hover:no-underline">Editar</a>
                                 <form action="{{ route('Pacientes.destroy', $paciente->id) }}" method="POST"
                                     onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="text-red-500 hover:underline">Eliminar</button>
+                                    <button type="submit" class="bg-[rgb(55,65,81)]  text-white px-3 py-2 rounded-lg">Eliminar</button>
                                 </form>
                             </div>
                         </div>
-
-                        <!-- Modal -->
-                        <div id="modal-informacion-{{ $paciente->id }}"
-                            class="fixed inset-0 overflow-auto flex items-center justify-center bg-black bg-opacity-50 p-4 hidden">
-                            <div class="bg-white w-full h-full p-8 rounded-2xl shadow-xl">
-                                <!-- Botón para cerrar -->
-                                <button onclick="toggleModal('modal-informacion-{{ $paciente->id }}')"
-                                    class="absolute top-9 right-10 text-gray-500 hover:text-gray-700">&times;</button>
-
-                                <!-- Sección superior con imagen y texto -->
-                                <div class="flex items-center gap-4 border-b pb-4">
-                                    @if ($paciente->foto_perfil)
-                                        <img src="{{ asset('images/' . $paciente->foto_perfil) }}"
-                                            alt="Foto de {{ $paciente->nombre }}"
-                                            class="w-24 h-24 object-cover rounded-full">
-                                    @else
-                                        <div
-                                            class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
-                                            <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
-                                                viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                            </svg>
-                                        </div>
-                                    @endif
-
-                                    <h2 class="text-xl font-semibold">{{ $paciente->nombre }}</h2>
-
-                                    <div class="border-l-2 border-gray-500 h-32"></div>
-
-                                    <div class="grid grid-cols-4">
-                                        <p class="text-gray-600"><strong>Telefono:</strong> {{ $paciente->telefono }}
-                                        </p>
-                                        <p class="text-gray-600"><strong>Fecha de Nacimiento:</strong>
-                                            {{ $paciente->fecha_nacimiento }}</p>
-                                        <p class="text-gray-600"><strong>Edad:</strong> {{ $paciente->edad }}</p>
-                                        <p class="text-gray-600"><strong>Direccion:</strong>
-                                            {{ $paciente->direccion }}</p>
-                                        <p class="text-gray-600"><strong>Genero:</strong> {{ $paciente->genero }}</p>
-                                        <p class="text-gray-600"><strong>Estados civil:</strong>
-                                            {{ $paciente->estado_civil }}</p>
-                                        <p class="text-gray-600"><strong>Tipo de sangre:</strong>
-                                            {{ $paciente->tipo_sangre }}</p>
-                                        <p class="text-gray-600"><strong>Ocupacion:</strong>
-                                            {{ $paciente->ocupacion }}</p>
-                                    </div>
-                                </div>
-
-                                <!-- Sección inferior con consultas y expediente -->
-                                <div class="grid grid-cols-2 gap-4 mt-4 max-h-[80vh] overflow-y-auto">
-                                    <!-- Consultas -->
-                                    <div class="grid grid-cols-1 border p-4 rounded-lg shadow overflow-y-auto">
-                                        <h3 class="text-lg font-semibold text-center">Consultas</h3>
-
-                                        @if ($paciente->consultas->isNotEmpty())
-                                           
-                                                @php
-                                                    $ultimaConsulta = $paciente->consultas->last();
-                                                @endphp
-
-                                                <div class="mb-4">
-                                                    <p><strong>Médico:</strong>
-                                                        {{ $ultimaConsulta->doctor->nombre_completo }}</p>
-                                                    <p><strong>Fecha:</strong>
-                                                        {{ \Carbon\Carbon::parse($ultimaConsulta->created_at)->format('Y-m-d') }}
-                                                    </p>
-                                                    <p><strong>Hora:</strong>
-                                                        {{ \Carbon\Carbon::parse($ultimaConsulta->fecha_hora)->format('H:i') }}
-                                                    </p>
-                                                    <p><strong>Motivo de consulta:</strong>
-                                                        {{ $ultimaConsulta->motivo_consulta }}</p>
-                                                    <p><strong>Diagnóstico:</strong> {{ $ultimaConsulta->diagnostico }}</p>
-                                                    <p><strong>Tratamiento:</strong> {{ $ultimaConsulta->tratamiento }}</p>
-                                                    <p><strong>Notas adicionales:</strong>
-                                                        {{ $ultimaConsulta->notas_adicionales }}</p>
-                                                </div>
-                                           
-
-                                            <!-- Paginación de consultas -->
-                                            <div class="mt-4">
-                                                
-                                            </div>
-                                        @else
-                                            <div class="block text-center">
-                                                <p class="text-red-500">No hay consultas disponibles.</p>
-                                                <a href="{{ route('consultas.create', ['paciente_id' => $paciente->id]) }}"
-                                                    class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                                                    Agregar Consulta
-                                                </a>
-                                            </div>
-                                        @endif
-                                    </div>
-
-                                    <!-- Expediente -->
-                                    <div class="border p-4 rounded-lg shadow overflow-auto">
-                                        <h3 class="text-lg font-semibold text-center">Expediente</h3>
-                                        <p class="text-gray-600">Detalles del expediente...</p>
-                                    </div>
-                                </div>
-                            </div>
+                        <x-modal-mas-informacion :paciente="$paciente" />
+                    @endforeach
                 </div>
-                @endforeach
             </div>
-        </div>
         </div>
 
         <div>
@@ -366,3 +266,51 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     </x-app-layout>
+
+    <script>
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const pageContent = document.querySelector('#app'); // Asumiendo que tu contenedor principal tiene id="app"
+            
+            if (modal) {
+                if (modal.classList.contains('hidden')) {
+                    // Abrir modal
+                    modal.classList.remove('hidden');
+                    document.documentElement.style.overflow = 'hidden'; // Bloquea el scroll en html
+                    document.body.style.overflow = 'hidden'; // Bloquea el scroll en body
+                    if (pageContent) {
+                        pageContent.style.filter = 'blur(5px)';
+                        pageContent.style.pointerEvents = 'none';
+                    }
+                } else {
+                    // Cerrar modal
+                    modal.classList.add('hidden');
+                    document.documentElement.style.overflow = 'auto'; // Restaura el scroll en html
+                    document.body.style.overflow = 'auto'; // Restaura el scroll en body
+                    if (pageContent) {
+                        pageContent.style.filter = 'none';
+                        pageContent.style.pointerEvents = 'auto';
+                    }
+                }
+            }
+        }
+
+        // Agregar event listeners para cerrar con ESC y click fuera del modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('[id^="modal-"]');
+                modals.forEach(modal => {
+                    if (!modal.classList.contains('hidden')) {
+                        toggleModal(modal.id);
+                    }
+                });
+            }
+        });
+
+        // Cerrar al hacer click fuera del modal
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('[id^="modal-"]')) {
+                toggleModal(e.target.id);
+            }
+        });
+    </script>
