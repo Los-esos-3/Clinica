@@ -13,46 +13,85 @@ class CitaController extends Controller
     {
         $doctores = Doctores::all(); // Obtener todos los doctores
         $pacientes = Paciente::all(); // Obtener todos los pacientes
+        $citas = Cita::with(['paciente', 'doctor'])->get()->map(function ($cita) {
+            return [
+                'id' => $cita->id,
+                'title' => $cita->paciente->nombre,
+                'start' => $cita->fecha . 'T' . $cita->hora_inicio,
+                'end' => $cita->fecha . 'T' . $cita->hora_fin,
+                'doctor' => $cita->doctor->nombre_completo,
+                'motivo' => $cita->motivo,
+            ];
+        });
+        
 
-        return view('Secretaria.Dashboard', compact('doctores', 'pacientes')); // Pasar a la vista
+        return view('dashboard', compact('doctores', 'pacientes', 'citas')); // Pasar a la vista
     }
 
     public function getDoctores()
     {
-        $doctores = Doctor::all();
+        $doctores = Doctores::all();
         return response()->json($doctores);
     }
 
     public function getPacientes()
     {
         $pacientes = Paciente::all();
-        return response()->json($pacientes);
+        $citas = Cita::all();
+
+        return view('dashboard', compact('doctores', 'pacientes', 'citas'));
     }
 
     public function store(Request $request)
     {
-        try {
-            $request->validate([
-                'fecha' => 'required|date',
-                'hora_inicio' => 'required',
-                'hora_fin' => 'required',
-                'doctor_id' => 'required|exists:doctores,id',
-                'paciente_id' => 'required|exists:pacientes,id',
-                'motivo' => 'required|string',
-            ]);
+        $request->validate([
+            'fecha' => 'required|date',
+            'hora_inicio' => 'required',
+            'hora_fin' => 'required|after:hora_inicio',
+            'paciente_id' => 'required|exists:pacientes,id',
+            'doctor_id' => 'required|exists:doctores,id',
+            'motivo' => 'required|string|max:255',
+        ]);
 
-            $cita = Cita::create([
-                'fecha' => $request->fecha,
-                'hora_inicio' => $request->hora_inicio,
-                'hora_fin' => $request->hora_fin,
-                'doctor_id' => $request->doctor_id,
-                'paciente_id' => $request->paciente_id,
-                'motivo' => $request->motivo,
-            ]);
+        $cita = Cita::create($request->all());
 
-            // return response()->json(['success' => 'Cita creada exitosamente.']); // Comentado
-        } catch (\Exception $e) {
-            // return response()->json(['error' => 'Error al crear la cita: ' . $e->getMessage()], 500); // Comentado
-        }
+        return response()->json([
+            'message' => 'Cita creada correctamente',
+            'cita' => [
+                'id' => $cita->id,
+                'title' => $cita->paciente->nombre,
+                'start' => $cita->fecha . 'T' . $cita->hora_inicio,
+                'end' => $cita->fecha . 'T' . $cita->hora_fin,
+                'doctor' => $cita->doctor->nombre_completo,
+                'motivo' => $cita->motivo,
+            ],
+        ]);
     }
+
+
+   // En el controlador, el método destroy
+public function destroy($id)
+{
+    $cita = Cita::find($id);
+    
+    if (!$cita) {
+        return redirect()->route('citas.index')->with('error', 'Cita no encontrada.');
+    }
+
+    $cita->delete();
+
+    return redirect()->route('citas.index')->with('success', 'Cita eliminada exitosamente.');
 }
+
+public function show($id)
+{
+    $cita = Cita::find($id);
+    if (!$cita) {
+        return redirect()->route('citas.index')->with('error', 'Cita no encontrada.');
+    }
+
+    return view('citas.show', compact('cita'));
+}
+
+}
+

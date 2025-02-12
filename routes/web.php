@@ -173,16 +173,17 @@ Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 Route::resource('secretarias', SecretariasController::class);
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard'])
+    Route::get('/secretaria/dashboard', [SecretariasController::class, 'das hboard'])
         ->name('secretaria.dashboard');
-});
 
-
-
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard'])
-        ->name('secretaria.dashboard');
-});
     Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
- 
-Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
+
+    Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
+});
+Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
+
+Route::delete('/citas/{id}', [CitaController::class, 'destroy'])->name('citas.destroy');
+
+Route::get('/citas/{id}', [CitaController::class, 'show']);
+
+
