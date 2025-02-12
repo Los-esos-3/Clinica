@@ -12,6 +12,7 @@ class Paciente extends Model
     use HasRoles;
     use HasFactory;
     protected $fillable = [
+        'foto_perfil',
         'nombre',
         'telefono',
         'fecha_nacimiento',

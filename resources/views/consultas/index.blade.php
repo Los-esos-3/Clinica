@@ -26,7 +26,7 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($consultas as $consulta)
                                 <tr>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ $consulta->medico->nombre_completo }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ $consulta->doctor->nombre_completo }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $consulta->fecha_hora }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $consulta->motivo_consulta }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ $consulta->estado }}</td>
