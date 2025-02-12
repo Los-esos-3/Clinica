@@ -197,15 +197,12 @@
                                     Detalles</button>
                                 <a href="{{ route('Pacientes.edit', $paciente->id) }}"
                                     class="bg-[rgb(55,65,81)]  text-white px-3 py-2 rounded-lg no-underline hover:no-underline">Editar</a>
-                                <form action="{{ route('Pacientes.destroy', $paciente->id) }}" method="POST"
-                                    onsubmit="return confirm('¿Estás seguro de que deseas eliminar este paciente?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-[rgb(55,65,81)]  text-white px-3 py-2 rounded-lg">Eliminar</button>
-                                </form>
+                                <button onclick="toggleModal('modal-delete-pacientes-{{$paciente->id}}')"
+                                    class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg">Eliminar</button>
                             </div>
                         </div>
                         <x-modal-mas-informacion :paciente="$paciente" />
+                        <x-modal-delete-pacients :paciente="$paciente" />
                     @endforeach
                 </div>
             </div>
@@ -271,7 +268,7 @@
         function toggleModal(modalId) {
             const modal = document.getElementById(modalId);
             const pageContent = document.querySelector('#app'); // Asumiendo que tu contenedor principal tiene id="app"
-            
+
             if (modal) {
                 if (modal.classList.contains('hidden')) {
                     // Abrir modal

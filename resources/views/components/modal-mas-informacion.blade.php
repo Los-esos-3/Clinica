@@ -65,11 +65,12 @@
                                         <p class="text-lg"><strong>Médico:</strong> 
                                             {{ optional($consulta->doctor)->nombre_completo ?? 'No asignado' }}
                                         </p>
-                                        <p class="text-lg"><strong>Fecha:</strong> 
-                                            {{ \Carbon\Carbon::parse($consulta->created_at)->format('Y-m-d') }}
+                                        <p class="text-lg">
+                                            <strong>Fecha y Hora:</strong> 
+                                            {{ \Carbon\Carbon::parse($consulta->created_at)->format('Y-m-d h:i A') }}
                                         </p>
-                                        <p class="text-lg"><strong>Hora:</strong> 
-                                            {{ \Carbon\Carbon::parse($consulta->fecha_hora)->format('H:i') }}
+                                        <p class="text-lg"><strong>Estado de la consulta:</strong> 
+                                            {{$consulta->estado}}
                                         </p>
                                     </div>
 
@@ -77,17 +78,13 @@
                                         <a href="{{ route('consultas.edit', $consulta->id) }}" 
                                             class="bg-[rgb(55,65,81)] no-underline text-white px-4 py-2 rounded-lg text-sm">Editar</a>
                                         
-                                        <form action="{{ route('consultas.destroy', $consulta->id) }}" method="POST" class="inline"
-                                            onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta consulta?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg text-sm">
+                                            <button onclick="toggleModal('modal-delete-consulta-{{$consulta->id}}')" class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg text-sm">
                                                 Eliminar
                                             </button>
-                                        </form>
-                                        
-                                        <button class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg text-sm">Ver</button>
                                     </div>
+
+                                    <x-modal-delete-consultas :consulta="$consulta" :paciente="$paciente" />
+                                    <x-modal-delete-expedientes :paciente="$paciente"/>
                                 </div>
                             @endforeach
                         </div>
@@ -98,7 +95,7 @@
                         <div class="block text-center">
                             <p class="text-red-500">No hay consultas disponibles.</p>
                             <a href="{{ route('consultas.create', ['paciente_id' => $paciente->id]) }}"
-                                class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                class="inline-block no-underline mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                                 Agregar Consulta
                             </a>
                         </div>
@@ -108,28 +105,31 @@
                 <!-- Expediente -->
                 <div class="border p-4 rounded-lg shadow overflow-y-auto max-h-[60vh]">
                     @if ($paciente->expediente)
-                        <div id="ContainerTitleAndAdd" class="flex justify-between items-center w-full mb-4">
-                            <div id="ContainerTitle">
+                        <div id="ContainerTitleAndAdd" class="flex justify-center items-center w-full mb-4">
+                            <div id="ContainerTitle" class="text-center w-full">
                                 <h3 class="text-lg font-semibold">Expediente</h3>
                             </div>
                             
                         </div>
 
-                        <div class="bg-gray-100 h-36 border-black rounded-lg flex items-center px-4">
+                        <div class="border-black rounded-lg  items-center px-4">
                             <div id="ContainerText" class="w-1/2">
                                 <p><strong>Numero de expediente:</strong> {{ $paciente->expediente->numero_expediente }}</p>
                                 <p><strong>Fecha de creación:</strong> {{ $paciente->expediente->fecha_registro }}</p>
                                 <p><strong>Estado del expediente:</strong> {{ $paciente->expediente->estado }}</p>
+                                <p><strong>Alergias:</strong>{{$paciente->expediente->alergias}}</p>
+                                <p><strong>Antecendentes Medicos:</strong>{{$paciente->expediente->antecedentes_medicos}}</p>
+                                <p><strong>Historias Quirurgico:</strong>{{$paciente->expediente->historial_quirurgico}}</p>
+                                <p><strong>Historial familiar:</strong>{{$paciente->expediente->historial_familiar}}</p>
+                                <p><Strong>Vacunas:</Strong>{{$paciente->expediente->vacunas}}</p>
+                                <p><Strong>Medicamentos actuales:</Strong>{{$paciente->expediente->medicamentos}}</p>
+                                <p><Strong>Estudios previos:</Strong>{{$paciente->expediente->estudios_previos}}</p>
+                                <p><Strong>Notas medicas:</Strong>{{$paciente->expediente->notas_medicas}}</p>
                             </div>
 
-                            <div id="ContainerButtons" class="w-1/2 flex justify-end gap-2">
-                                <a href="{{ route('Expedientes.edit', $paciente->expediente->id) }}" class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg">Editar</a>
-                                <form action="{{ route('Expedientes.destroy', $paciente->expediente->id) }}" method="POST" class="inline" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este expediente?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg">Eliminar</button>
-                                </form>
-                                <button class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg">Ver</button>
+                            <div id="ContainerButtons" class="flex justify-center gap-2">
+                                <a href="{{ route('Expedientes.edit', $paciente->expediente->id) }}" class="bg-[rgb(55,65,81)] no-underline text-white px-4 py-2 rounded-lg">Editar</a>         
+                                    <button onclick="toggleModal('modal-delete-expediente-{{ $paciente->expediente ? $paciente->expediente->id : 'null' }}')" class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg">Eliminar</button>
                             </div>
                         </div>
                     @else
@@ -139,7 +139,7 @@
                         <div class="block text-center">
                             <p class="text-red-500">No hay expediente disponible.</p>
                             <a href="{{ route('Expedientes.create', ['paciente_id' => $paciente->id]) }}"
-                                class="inline-block mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                class="inline-block no-underline mt-4 px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                                 Agregar Expediente
                             </a>
                         </div>
