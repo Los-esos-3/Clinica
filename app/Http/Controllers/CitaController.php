@@ -16,10 +16,10 @@ class CitaController extends Controller
         $citas = Cita::with(['paciente', 'doctor'])->get()->map(function ($cita) {
             return [
                 'id' => $cita->id,
+                'doctor' => $cita->doctor->nombre_completo,
                 'title' => $cita->paciente->nombre,
                 'start' => $cita->fecha . 'T' . $cita->hora_inicio,
                 'end' => $cita->fecha . 'T' . $cita->hora_fin,
-                'doctor' => $cita->doctor->nombre_completo,
                 'motivo' => $cita->motivo,
             ];
         });
@@ -66,6 +66,7 @@ class CitaController extends Controller
                 'motivo' => $cita->motivo,
             ],
         ]);
+        
     }
 
 

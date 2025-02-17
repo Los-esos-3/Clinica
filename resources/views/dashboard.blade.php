@@ -164,8 +164,8 @@
                                                 <textarea name="motivo" id="motivo" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" rows="3"></textarea>
                                             </div>
                                             <div class="flex justify-center mt-4">
-                                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">Programar Cita</button>
-                                            </div>  
+                                                <button type="submit" id="closeModalOnSubmit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">Programar Cita</button>
+                                            </div>
                                         </form>
                                     </div>
                                 </div>
@@ -198,6 +198,7 @@
     const openCitaModalBtn = document.getElementById('openNewCitaModalBtn');
     const closeCitaModalBtn = document.getElementById('closeNewCitaModalBtn');
     const newCitaModal = document.getElementById('newCitaModal');
+    const closeModalOnSubmitBtn = document.getElementById('closeModalOnSubmit');
 
     if (openCitaModalBtn && closeCitaModalBtn && newCitaModal) {
         openCitaModalBtn.addEventListener('click', function () {
@@ -214,6 +215,14 @@
                 newCitaModal.classList.add('hidden');
             }
         });
+
+         // Cerrar modal al hacer clic en "Programar Cita"
+         if (closeModalOnSubmitBtn) {
+            closeModalOnSubmitBtn.addEventListener('click', function () {
+                newCitaModal.classList.add('hidden');
+                location.reload();
+            });
+        }
     }
 
     // -------------------- GUARDAR NUEVA CITA --------------------
@@ -256,10 +265,10 @@ if (calendarEl) {
         eventClick: function(info) {
             // Mostrar los detalles de la cita
             const detalles = `
-                <p><strong>Paciente:</strong> ${info.event.title}</p>
                 <p><strong>Doctor:</strong> ${info.event.extendedProps.doctor}</p>
-                <p><strong>Hora Inicio:</strong> ${info.event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                <p><strong>Hora Fin:</strong> ${info.event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                <p><strong>Paciente:</strong> ${info.event.title}</p>
+                 <p><strong>Hora Inicio:</strong> ${info.event.start.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit', hour12: true }).replace('a. m.', 'AM').replace('p. m.', 'PM')}</p>
+                <p><strong>Hora Fin:</strong> ${info.event.end.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit', hour12: true }).replace('a. m.', 'AM').replace('p. m.', 'PM')}</p>
                 <p><strong>Motivo:</strong> ${info.event.extendedProps.motivo}</p>
             `;
             document.getElementById('detalleCitaContent').innerHTML = detalles;
