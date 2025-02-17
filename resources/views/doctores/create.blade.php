@@ -6,6 +6,16 @@
                     <h2 class="text-2xl font-bold mb-4">{{ isset($doctor) ? 'Editar Doctor' : 'Registrar Nuevo Doctor' }}
                     </h2>
 
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <form action="{{ isset($doctor) ? route('doctores.update', $doctor->id) : route('doctores.store') }}"
                         method="POST" enctype="multipart/form-data" class="space-y-6">
                         @csrf
@@ -21,7 +31,7 @@
                                     <label class="block text-sm font-medium text-gray-700">Nombre Completo <label class="pl-5 text-red-500">*Obligatorio*</label></label>
                                     <input type="text" name="nombre_completo"
                                         value="{{ old('nombre_completo', $doctor->nombre_completo ?? '') }}"
-                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" required>
                                 </div>
 
                                 <div>
@@ -183,6 +193,17 @@
                                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Empresa -->
+                        <div class="mb-4">
+                            <label for="empresa_id" class="block text-sm font-medium text-gray-700">Empresa</label>
+                            <select name="empresa_id" id="empresa_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                <option value="">Selecciona una empresa</option>
+                                @foreach ($empresas as $empresa)
+                                    <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                                @endforeach
+                            </select>
                         </div>
 
                         <!-- Botones de Acción -->

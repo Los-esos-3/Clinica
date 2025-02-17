@@ -33,25 +33,20 @@
                                 <div class="mb-3">
                                     <label for="logo" class="form-label font-semibold">Logo</label>
                                     <input type="file" 
-                                           class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('logo') is-invalid @enderror" 
+                                           class="form-control @error('logo') is-invalid @enderror" 
                                            id="logo" 
                                            name="logo"
-                                           accept="image/*" <!-- Esto permite solo imágenes -->
+                                           accept="image/*"  Esto permite solo imágenes -->
                                     <div id="logoPreview" class="mt-2 hidden">
                                         <img id="preview" class="w-32 h-32 object-cover rounded-lg">
                                     </div>
-                                    @error('logo')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="nombre" class="form-label font-semibold">Nombre</label>
                                     <input type="text" class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('nombre') is-invalid @enderror" 
                                            id="nombre" name="nombre" value="{{ old('nombre') }}" required>
-                                    @error('nombre')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                   \
                                 </div>
 
                                 <div class="mb-3">
@@ -66,18 +61,14 @@
                                            placeholder="Ejemplo: 1234567890"
                                            oninput="this.value = this.value.replace(/[^0-9]/g, '').slice(0, 10)"
                                            required>
-                                    @error('telefono')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                    @\
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="email" class="form-label font-semibold">Email</label>
                                     <input type="email" class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('email') is-invalid @enderror" 
                                            id="email" name="email" value="{{ old('email') }}" required>
-                                    @error('email')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                    \
                                 </div>
 
                             
@@ -100,9 +91,7 @@
                                         <option value="Costa Rica">Costa Rica</option>
                                         <option value="Panamá">Panamá</option>
                                     </select>
-                                    @error('pais')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                \
                                 </div>
 
                                 <div class="mb-3">
@@ -110,9 +99,7 @@
                                     <select id="ciudad" name="ciudad" class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('ciudad') is-invalid @enderror" required>
                                         <option value="">Seleccione primero un país</option>
                                     </select>
-                                    @error('ciudad')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                    \
                                 </div>
                                 <div class="mb-3">
                                     <label for="direccion" class="form-label font-semibold">Dirección</label>
@@ -123,9 +110,7 @@
                                            placeholder="Comienza a escribir tu dirección..."
                                            value="{{ old('direccion') }}" 
                                            required>
-                                    @error('direccion')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                  \
                                 </div>
                                 <div class="mb-3">
                                     <label for="horario" class="form-label font-semibold">Horario</label>
@@ -153,18 +138,13 @@
                                                name="horario_custom" 
                                                placeholder="Especifique el horario">
                                     </div>
-                                    @error('horario')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
+                                    \
                                 </div>
                         
                                 <div class="mb-3">
                                     <label for="descripcion" class="form-label font-semibold">Descripción</label>
                                     <textarea class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('descripcion') is-invalid @enderror" 
                                               id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion') }}</textarea>
-                                    @error('descripcion')
-                                        <span class="invalid-feedback">{{ $message }}</span>
-                                    @enderror
                                 </div>
 
                                 <div class="text-center mt-4">

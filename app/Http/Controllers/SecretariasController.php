@@ -5,24 +5,47 @@ namespace App\Http\Controllers;
 use App\Models\Secretarias;
 use App\Models\Doctor;
 use App\Models\Paciente;
+use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class SecretariasController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $secretarias = Secretarias::when($search, function ($query) use ($search) {
-            return $query->where('nombre_completo', 'like', '%' . $search . '%');
-        })->get();
-    
+        
+        // Obtener todas las secretarias si no hay usuario autenticado
+        $query = Secretarias::query();
+        
+        // Si hay un usuario autenticado y tiene empresa_id, filtrar por esa empresa
+        if (Auth::check() && Auth::user()->empresa_id) {
+            $empresa_id = Auth::user()->empresa_id;
+            $query->where('empresa_id', $empresa_id);
+        }
+        
+        // Aplicar búsqueda si existe
+        if ($search) {
+            $query->where('nombre_completo', 'like', '%' . $search . '%');
+        }
+        
+        $secretarias = $query->get();
+        
         return view('secretarias.index', compact('secretarias'));
     }
 
     public function create()
     {
-        return view('secretarias.create');
+        // Si el usuario está autenticado y tiene empresa_id, mostrar solo esa empresa
+        if (Auth::check() && Auth::user()->empresa_id) {
+            $empresas = Empresa::where('id', Auth::user()->empresa_id)->get();
+        } else {
+            // Si no, mostrar todas las empresas
+            $empresas = Empresa::all();
+        }
+        
+        return view('secretarias.create', compact('empresas'));
     }
 
     public function store(Request $request)
@@ -31,17 +54,18 @@ class SecretariasController extends Controller
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'required|string|max:15',
-            'email' => 'required|email|unique:secretarias',
-            'domicilio' => 'required|string',
+            'telefono' => 'nullable|string|max:15',
+            'email' => 'nullable|email|unique:secretarias',
+            'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'departamento' => 'required|string',
+            'departamento' => 'nullable|string',
             'experiencia_laboral' => 'nullable|string',
-            'contacto_emergencia_nombre' => 'required|string',
-            'contacto_emergencia_relacion' => 'required|string',
-            'contacto_emergencia_telefono' => 'required|string',
+            'contacto_emergencia_nombre' => 'nullable|string',
+            'contacto_emergencia_relacion' => 'nullable|string',
+            'contacto_emergencia_telefono' => 'nullable|string',
             'idiomas' => 'nullable|string',
+            'empresa_id' => 'required|exists:empresas,id',
         ]);
 
         if ($request->hasFile('foto_perfil')) {
@@ -59,11 +83,15 @@ class SecretariasController extends Controller
 
     public function edit($id)
     {
-        $secretaria = Secretarias::find($id);
-        if (!$secretaria) {
-            return redirect()->route('secretarias.index')->with('error', 'Secretaria no encontrada.');
+        $secretaria = Secretarias::findOrFail($id);
+        // Si el usuario está autenticado y tiene empresa_id, mostrar solo esa empresa
+        if (Auth::check() && Auth::user()->empresa_id) {
+            $empresas = Empresa::where('id', Auth::user()->empresa_id)->get();
+        } else {
+            // Si no, mostrar todas las empresas
+            $empresas = Empresa::all();
         }
-        return view('secretarias.edit', compact('secretaria'));
+        return view('secretarias.edit', compact('secretaria', 'empresas'));
     }
 
     public function update(Request $request, $id)
@@ -73,17 +101,18 @@ class SecretariasController extends Controller
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'required|string|max:15',
-            'email' => 'required|email|unique:secretarias,email,' . $secretaria->id,
-            'domicilio' => 'required|string',
+            'telefono' => 'nullable|string|max:15',
+            'email' => 'nullable|email|unique:secretarias',
+            'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'departamento' => 'required|string',
+            'departamento' => 'nullable|string',
             'experiencia_laboral' => 'nullable|string',
-            'contacto_emergencia_nombre' => 'required|string',
-            'contacto_emergencia_relacion' => 'required|string',
-            'contacto_emergencia_telefono' => 'required|string',
+            'contacto_emergencia_nombre' => 'nullable|string',
+            'contacto_emergencia_relacion' => 'nullable|string',
+            'contacto_emergencia_telefono' => 'nullable|string',
             'idiomas' => 'nullable|string',
+            'empresa_id' => 'required|exists:empresas,id',
         ]);
 
         if ($request->hasFile('foto_perfil')) {
@@ -120,7 +149,7 @@ class SecretariasController extends Controller
                 'pacientes' => $pacientes
             ]);
         } catch (\Exception $e) {
-            \Log::error('Error en dashboard: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Error en dashboard: ' . $e->getMessage());
             return view('Secretaria.Dashboard', [
                 'doctores' => collect([]),
                 'pacientes' => collect([])

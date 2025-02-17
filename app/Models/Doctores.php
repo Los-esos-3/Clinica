@@ -30,6 +30,11 @@ class Doctores extends Model
         'contacto_emergencia_nombre',
         'contacto_emergencia_relacion',
         'contacto_emergencia_telefono',
-        'area_departamento'
+        'area_departamento',
+        'empresa_id'
     ];
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 } 

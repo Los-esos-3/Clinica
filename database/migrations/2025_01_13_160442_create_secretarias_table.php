@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('secretarias', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('empresa_id')->constrained()->onDelete('cascade');
             $table->string('nombre_completo');
             $table->date('fecha_nacimiento');
             $table->string('genero');

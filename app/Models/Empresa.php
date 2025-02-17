@@ -19,8 +19,13 @@ class Empresa extends Model
         'horario',
         'descripcion'
     ];
-    public function usuarios()
+
+    public function doctor()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(Doctores::class);
+    }
+    public function secretarias()
+    {
+        return $this->hasMany(Secretarias::class);
     }
 }

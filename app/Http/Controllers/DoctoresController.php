@@ -6,69 +6,97 @@ use App\Models\Doctores;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Models\Empresa;
+use Illuminate\Support\Facades\Auth;
 
 class DoctoresController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-        $doctores = Doctores::when($search, function ($query) use ($search) {
-            return $query->where('nombre_completo', 'like', '%' . $search . '%');
-        })->get();
-    
+        
+        // Obtener todos los doctores si no hay usuario autenticado
+        $query = Doctores::query();
+        
+        // Si hay un usuario autenticado y tiene empresa_id, filtrar por esa empresa
+        if (Auth::check() && Auth::user()->empresa_id) {
+            $empresa_id = Auth::user()->empresa_id;
+            $query->where('empresa_id', $empresa_id);
+        }
+        
+        // Aplicar búsqueda si existe
+        if ($search) {
+            $query->where('nombre_completo', 'like', '%' . $search . '%');
+        }
+        
+        $doctores = $query->get();
+        
         return view('doctores.index', compact('doctores'));
     }
 
     public function create()
     {
-        return view('doctores.create');
+        // Si el usuario está autenticado y tiene empresa_id, mostrar solo esa empresa
+        if (Auth::check() && Auth::user()->empresa_id) {
+            $empresas = Empresa::where('id', Auth::user()->empresa_id)->get();
+        } else {
+            // Si no, mostrar todas las empresas
+            $empresas = Empresa::all();
+        }
+        
+        return view('doctores.create', compact('empresas'));
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'fecha_nacimiento' => 'required|date',
-            'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'nullable|string|max:15',
-            'email' => 'nullable|email|unique:doctores',
-            'domicilio' => 'nullable|string',
-            'nacionalidad' => 'required|string' ,
-            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'especialidad_medica' => 'nullable|string',
-            'universidad' => 'nullable|string',
-            'titulo' => 'nullable|string',
-            'año_graduacion' => 'nullable|digits:4',
-            'años_experiencia' => 'nullable|integer',
-            'hospitales_previos' => 'nullable|string',
-            'idiomas' => 'nullable|string',
-            'contacto_emergencia_nombre' => 'nullable|string',
-            'contacto_emergencia_relacion' => 'nullable|string',
-            'contacto_emergencia_telefono' => 'nullable|string',
-            'area_departamento' => 'nullable|string'
-        ]);
+{
+    //dd($request->all());
+    $validated = $request->validate([
+        'nombre_completo' => 'required|string|max:255',
+        'fecha_nacimiento' => 'required|date',
+        'genero' => 'required|in:Masculino,Femenino,Otro',
+        'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        'telefono' => 'nullable|string|max:15',
+        'email' => 'nullable|email|unique:doctores',
+        'domicilio' => 'nullable|string',
+        'nacionalidad' => 'required|string',
+        'especialidad_medica' => 'required|string',
+        'universidad' => 'nullable|string',
+        'titulo' => 'nullable|string',
+        'año_graduacion' => 'nullable|integer',
+        'años_experiencia' => 'nullable|integer',
+        'contacto_emergencia_nombre' => 'nullable|string',
+        'contacto_emergencia_relacion' => 'nullable|string',
+        'contacto_emergencia_telefono' => 'nullable|string',
+        'area_departamento' => 'nullable|string',
+        'empresa_id' => 'required|exists:empresas,id',
+    ]);
 
-        if ($request->hasFile('foto_perfil')) {
-            $imagen = $request->file('foto_perfil');
-            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-            $imagen->move(public_path('images'), $nombreImagen);
-            $validated['foto_perfil'] = $nombreImagen;
-        }
 
-        Doctores::create($validated);
-
-        return redirect()->route('doctores.index')
-            ->with('success', 'Doctor registrado exitosamente.');
+    if ($request->hasFile('foto_perfil')) {
+        $imagen = $request->file('foto_perfil');
+        $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+        $imagen->move(public_path('images'), $nombreImagen);
+        $validated['foto_perfil'] = $nombreImagen; // Asegúrate de que esta línea esté aquí
     }
+
+    Doctores::create($validated); // Usa la variable $validated aquí
+
+    return redirect()->route('doctores.index')
+        ->with('success', 'Doctor registrado exitosamente.');
+}
 
     public function edit($id)
     {
-        $doctor = Doctores::find($id);
-        if (!$doctor) {
-            return redirect()->route('doctores.index')->with('error', 'Doctor no encontrado.');
+        $doctor = Doctores::findOrFail($id);
+        // Si el usuario está autenticado y tiene empresa_id, mostrar solo esa empresa
+        if (Auth::check() && Auth::user()->empresa_id) {
+            $empresas = Empresa::where('id', Auth::user()->empresa_id)->get();
+        } else {
+            // Si no, mostrar todas las empresas
+            $empresas = Empresa::all();
         }
-        return view('doctores.edit', compact('doctor'));
-    }    
+        return view('doctores.edit', compact('doctor', 'empresas'));
+    }
 
     public function update(Request $request, $id)
     {
@@ -77,22 +105,21 @@ class DoctoresController extends Controller
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'required|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
-            'telefono' => 'nullable |string|max:15',
-            'email' => 'nullable|email|unique:doctores,email,' . $doctor->id,
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'telefono' => 'nullable|string|max:15',
+            'email' => 'nullable|email|unique:doctores',
             'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string',
-            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'especialidad_medica' => 'nullable|string',
+            'especialidad_medica' => 'required|string',
             'universidad' => 'nullable|string',
-            'titulo' => ' nullable|string',
-            'año_graduacion' => 'nullable|digits:4',
+            'titulo' => 'nullable|string',
+            'año_graduacion' => 'nullable|integer',
             'años_experiencia' => 'nullable|integer',
-            'hospitales_previos' => 'nullable|string',
-            'idiomas' => 'nullable|string',
             'contacto_emergencia_nombre' => 'nullable|string',
             'contacto_emergencia_relacion' => 'nullable|string',
             'contacto_emergencia_telefono' => 'nullable|string',
-            'area_departamento' => 'nullable|string'
+            'area_departamento' => 'nullable|string',
+            'empresa_id' => 'required|exists:empresas,id',
         ]);
 
         if ($request->hasFile('foto_perfil')) {
@@ -114,8 +141,7 @@ class DoctoresController extends Controller
     {
         $doctor = Doctores::findOrFail($id);
         $doctor->delete();
-    
+
         return redirect()->route('doctores.index')->with('success', 'Doctor eliminado correctamente');
     }
-    
 }

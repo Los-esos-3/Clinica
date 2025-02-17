@@ -26,7 +26,8 @@ class Secretarias extends Model
         'contacto_emergencia_nombre',
         'contacto_emergencia_relacion',
         'contacto_emergencia_telefono',
-        'idiomas'
+        'idiomas',
+        'empresa_id'
     ];
 
     protected $dates = [
@@ -41,4 +42,8 @@ class Secretarias extends Model
         'experiencia_laboral' => 'array',
         'idiomas' => 'array'
     ];
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
+    }
 }

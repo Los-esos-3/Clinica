@@ -13,29 +13,30 @@ return new class extends Migration
     {
         Schema::create('doctores', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('empresa_id')->constrained()->onDelete('cascade');
             $table->string('nombre_completo');
             $table->date('fecha_nacimiento');
             $table->enum('genero', ['Masculino', 'Femenino', 'Otro']);
-            $table->string('telefono', 15);
+            $table->string('telefono', 15)->nullable();
             $table->string('email')->unique();
-            $table->text('domicilio');
+            $table->text('domicilio')->nullable();
             $table->string('nacionalidad');
             $table->string('foto_perfil')->nullable();
-            $table->string('especialidad_medica');
-            $table->string('universidad');
-            $table->string('titulo');
-            $table->year('año_graduacion');
-            $table->integer('años_experiencia');
+            $table->string('especialidad_medica')->nullable();
+            $table->string('universidad')->nullable();
+            $table->string('titulo')->nullable();
+            $table->year('año_graduacion')->nullable();
+            $table->integer('años_experiencia')->nullable();
             $table->text('hospitales_previos')->nullable();
-            $table->string('idiomas');
+            $table->string('idiomas')->nullable();
             
             // Información de contacto de emergencia
-            $table->string('contacto_emergencia_nombre');
-            $table->string('contacto_emergencia_relacion');
-            $table->string('contacto_emergencia_telefono');
+            $table->string('contacto_emergencia_nombre')->nullable();
+            $table->string('contacto_emergencia_relacion')->nullable();
+            $table->string('contacto_emergencia_telefono')->nullable();
             
             // Área o departamento
-            $table->string('area_departamento');
+            $table->string('area_departamento')->nullable();
             
             $table->timestamps();
             $table->softDeletes(); // Para borrado lógico
