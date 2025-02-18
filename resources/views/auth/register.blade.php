@@ -56,10 +56,20 @@
 
                     <div>
                         <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
-                        <input type="password" name="password" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                        <input type="password" 
+                               name="password" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md" 
                                required>
                     </div>
-
+                    
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
+                        <input type="password" 
+                               name="password_confirmation" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                               required>
+                    </div>
+                    
                     <div>
                         <label class="block text-sm text-gray-700 mb-2">Celular</label>
                         <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
