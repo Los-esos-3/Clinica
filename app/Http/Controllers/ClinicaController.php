@@ -25,6 +25,7 @@ class ClinicaController extends Controller
             $pacientes = Paciente::where('user_id', Auth::id())->paginate(9);
         }
 
+
         $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
 
         return view('Pacientes.PacientesIndex', compact('pacientes',  'noResultsMessage'));
