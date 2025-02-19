@@ -11,6 +11,8 @@ use App\Http\Middleware\CheckUserRole;
 
 class RouteServiceProvider extends ServiceProvider
 {
+    public const HOME = '/dashboard'; // Cambia esto a la ruta que desees
+
     public function boot(): void
     {
         RateLimiter::for('api', function (Request $request) {

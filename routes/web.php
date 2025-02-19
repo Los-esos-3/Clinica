@@ -15,6 +15,7 @@ use App\Http\Controllers\DoctoresController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\SecretariasController;
+use App\Http\Controllers\Auth\CustomRegisterController;
 
 //Redireccion para usuarios sin rol
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {

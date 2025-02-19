@@ -9,27 +9,27 @@
                 </p>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/expediente-icon.png') }}" class="w-6 h-6" alt="Expediente">
+                        <img src="{{ asset('images/expediente-icon.png') }}" class="w-6 h-6" alt="Expediente" loading="lazy">
                         <span>Expediente Clínico</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/agenda-icon.png') }}" class="w-6 h-6" alt="Agenda">
+                        <img src="{{ asset('images/agenda-icon.png') }}" class="w-6 h-6" alt="Agenda" loading="lazy">
                         <span>Agenda</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/sitio-web-icon.png') }}" class="w-6 h-6" alt="Sitio Web">
+                        <img src="{{ asset('images/sitio-web-icon.png') }}" class="w-6 h-6" alt="Sitio Web" loading="lazy">
                         <span>Sitio Web</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/portal-paciente-icon.png') }}" class="w-6 h-6" alt="Portal">
+                        <img src="{{ asset('images/portal-paciente-icon.png') }}" class="w-6 h-6" alt="Portal" loading="lazy">
                         <span>Portal Paciente</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/facturacion-icon.png') }}" class="w-6 h-6" alt="Facturación">
+                        <img src="{{ asset('images/facturacion-icon.png') }}" class="w-6 h-6" alt="Facturación" loading="lazy">
                         <span>Facturación</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/seguridad-icon.png') }}" class="w-6 h-6" alt="Seguridad">
+                        <img src="{{ asset('images/seguridad-icon.png') }}" class="w-6 h-6" alt="Seguridad" loading="lazy">
                         <span>Seguridad de tu información</span>
                     </div>
                 </div>

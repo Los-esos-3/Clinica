@@ -8,8 +8,6 @@
         <title>Consultorio</title>
         <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
 
-
-        <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -17,16 +15,8 @@
         <!-- Styles -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
-        <!-- Fallback para cuando Vite no está disponible -->
-        @if(!app()->environment('local'))
-            <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-            <script src="{{ asset('js/app.js') }}" defer></script>
-        @endif
-
-        <!-- Styles -->
-        @livewireStyles
-
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Solo cargar Bootstrap si es necesario para la vista actual -->
+        @stack('styles')
     </head>
     <body class="font-sans antialiased">
         
