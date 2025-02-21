@@ -2,7 +2,6 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
 export default defineConfig({
-   
     plugins: [
         laravel({
             input: ['resources/css/app.css', 'resources/js/app.js'],
@@ -10,9 +9,9 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: '192.168.1.99',
+        host: '192.168.1.75',
         hmr: {
-            host: '192.168.1.99'
+            host: '192.168.1.75'
         },
     },
     build: {

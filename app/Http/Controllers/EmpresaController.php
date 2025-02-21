@@ -5,13 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class EmpresaController extends Controller
 {
     public function index()
     {
-        $empresa = Empresa::first(); // Cambiamos de all() a first()
-        return view('empresas.index', compact('empresa'));
+        // Solo el admin que creó la empresa y los usuarios asociados pueden verla
+        $empresas = Empresa::where('id', Auth::user()->empresa_id)
+            ->orWhereHas('users', function ($query) {
+                $query->where('id', Auth::id());
+            })
+            ->get();
+
+        return view('empresas.index', compact('empresas'));
     }
 
     public function create()

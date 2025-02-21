@@ -15,8 +15,18 @@
         <!-- Styles -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
-        <!-- Solo cargar Bootstrap si es necesario para la vista actual -->
+        <!-- Fallback para cuando Vite no está disponible -->
+        @if(!app()->environment('local'))
+            <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+            <script src="{{ asset('js/app.js') }}" defer></script>
+        @endif
+
+        <!-- Styles -->
+        @livewireStyles
+        
         @stack('styles')
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     </head>
     <body class="font-sans antialiased">
         

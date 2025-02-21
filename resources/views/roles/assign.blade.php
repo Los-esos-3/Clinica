@@ -5,21 +5,33 @@
                 <h5 class="modal-title" id="assignRoleModalLabel{{ $user->id }}">Asignar Roles a {{ $user->name }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="{{ route('users.assign.role', $user) }}" method="POST">
+            <form action="{{ route('users.assign.role', $user->id) }}" method="POST">
                 @csrf
-                @method('PUT')
                 <div class="modal-body">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="mb-3">
                         <label class="form-label">Roles</label>
-                        @foreach($roles as $role)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->name }}" id="role{{ $role->id }}_{{ $user->id }}"
-                                    {{ $user->hasRole($role->name) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="role{{ $role->id }}_{{ $user->id }}">
-                                    {{ $role->name }}
-                                </label>
-                            </div>
-                        @endforeach
+                        <select name="roles[]" id="roles" multiple required>
+                            @foreach($roles as $role)
+                                <option value="{{ $role->name }}">{{ $role->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div>
+                        <label for="empresa_id">Seleccionar Empresa</label>
+                        <select name="empresa_id" id="empresa_id" required>
+                            @foreach($empresas as $empresa)
+                                <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="modal-footer">

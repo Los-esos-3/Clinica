@@ -28,10 +28,11 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name',
-            'permissions' => 'array',
-            'empresa_id' => 'required|exists:empresas,id'
+            'permissions' => 'nullable|array',
+            'empresa_id' => 'nullable|exists:empresas,id'
         ]);
 
+        $permissions = Permission::all();
         $role = Role::create(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
 
@@ -42,10 +43,11 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name,' . $role->id,
-            'permissions' => 'array',
+            'permissions' => 'required|array',
             'empresa_id' => 'required|exists:empresas,id'
         ]);
 
+        $permissions = Permission::all();
         $role->update(['name' => $request->name]);
         $role->syncPermissions($request->permissions);
 
@@ -54,6 +56,8 @@ class RoleController extends Controller
 
     public function assignRole(Request $request, User $user)
     {
+        dd($request->all()); // Verifica que los datos se estén enviando correctamente
+
         $request->validate([
             'roles' => 'required|array',
             'empresa_id' => 'required|exists:empresas,id'
@@ -63,6 +67,14 @@ class RoleController extends Controller
         $user->update(['empresa_id' => $request->empresa_id]);
 
         return redirect()->route('roles.index')->with('success', 'Roles y empresa asignados exitosamente.');
+    }
+    public function edit()
+    {
+        $roles = Role::all();
+        $users = User::all();
+        $permissions = Permission::all();
+        $empresas = Empresa::all();
+        return view('roles.edit', compact('permissions','empresas', 'roles', 'users'));
     }
 
     public function create()

@@ -20,6 +20,9 @@ return new class extends Migration
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('profile_photo_path', 2048)->nullable();
+            $table->string('role'); // Para almacenar el rol (admin, doctor, secretaria)
+            $table->unsignedBigInteger('empresa_id')->nullable(); // Relación con la empresa
+            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
             $table->timestamps();
         });
 

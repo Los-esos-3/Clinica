@@ -1,73 +1,46 @@
-<div class="modal fade" id="editRoleModal{{ $role->id }}" tabindex="-1" aria-labelledby="editRoleModalLabel{{ $role->id }}" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editRoleModalLabel{{ $role->id }}">Editar Rol: {{ $role->name }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('roles.update', $role) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nombre del Rol</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $role->name }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Permisos</label>
-                        @foreach($permissions as $permission)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" id="permission{{ $permission->id }}_{{ $role->id }}"
-                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="permission{{ $permission->id }}_{{ $role->id }}">
-                                    {{ $permission->name }}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+<div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+    @foreach ($roles as $role)
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Editar Rol: {{ $role->id->name }}</h2>
+    @endforeach
+    
 
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="editRoleModalLabel{{ $role->id }}">Editar Rol: {{ $role->name }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <form action="{{ route('roles.update', $role) }}" method="POST">
-                @csrf
-                @method('PUT')
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Nombre del Rol</label>
-                        <input type="text" class="form-control" id="name" name="name" value="{{ $role->name }}" required>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Permisos</label>
-                        @foreach($permissions as $permission)
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="permissions[]" value="{{ $permission->id }}" id="permission{{ $permission->id }}_{{ $role->id }}"
-                                    {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}>
-                                <label class="form-check-label" for="permission{{ $permission->id }}_{{ $role->id }}">
-                                    {{ $permission->name }}
-                                </label>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Actualizar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+    <form action="{{ route('roles.update', $role) }}" method="POST">
+        @csrf
+        @method('PUT')
 
- 
+        <!-- Nombre del Rol -->
+        <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Nombre del Rol</label>
+            <input type="text" id="name" name="name" value="{{ $role->name }}" required
+                class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <!-- Permisos -->
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700">Permisos</label>
+            <div class="grid grid-cols-2 gap-2">
+                @foreach ($permissions as $permission)
+                    <label class="flex items-center space-x-2">
+                        <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
+                            id="permission{{ $permission->id }}_{{ $role->id }}"
+                            {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}
+                            class="text-blue-600 rounded focus:ring-2 focus:ring-blue-500">
+                        <span class="text-gray-700">{{ $permission->name }}</span>
+                    </label>
+                @endforeach
+            </div>
+        </div>
+
+        <!-- Botones -->
+        <div class="flex justify-end space-x-2">
+            <a href="{{ route('roles.index') }}" 
+                class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                Cancelar
+            </a>
+            <button type="submit"
+                class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+                Actualizar
+            </button>
+        </div>
+    </form>
+</div>

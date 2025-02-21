@@ -27,6 +27,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'empresa_id',
+
     ];
 
     /**
@@ -66,5 +69,9 @@ class User extends Authenticatable
     public function pacientes()
     {
         return $this->hasMany(Paciente::class);
+    }
+    public function empresa()
+    {
+        return $this->belongsTo(Empresa::class);
     }
 }

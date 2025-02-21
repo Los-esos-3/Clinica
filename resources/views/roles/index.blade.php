@@ -27,10 +27,9 @@
                 <!-- Gestión de Roles -->
                 <h3 class="text-lg font-semibold mb-4">Gestión de Roles</h3>
                 @can('crear roles')
-                    <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal"
-                        data-bs-target="#createRoleModal">
+                    <a href="{{ route('roles.create') }}"  class="btn btn-primary mb-3">
                         Crear Nuevo Rol
-                    </button>
+                    </a>
                 @endcan
 
                 <table class="table mb-8">
@@ -51,8 +50,7 @@
                                     @endforeach
                                 </td>
                                 <td>
-                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                        data-bs-target="#editRoleModal{{ $role->id }}">Editar</button>
+                                    <a href="{{route('roles.edit' , $role->id) }}" class="btn btn-sm btn-warning">Editar</a>
                                     <form action="{{ route('roles.destroy', $role) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('DELETE')
