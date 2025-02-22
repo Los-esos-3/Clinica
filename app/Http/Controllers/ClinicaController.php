@@ -11,10 +11,12 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class ClinicaController extends Controller
 {
+    
     use HasRoles;
     use AuthorizesRequests;
     public function PacientesView(Request $request)
     {
+        $this->authorize('ver pacientes');
         $query = $request->input('search');
 
         if ($query) {
@@ -34,11 +36,13 @@ class ClinicaController extends Controller
 
     public function create()
     {
+        
         return view('pacientes.create'); // Retornar la vista para crear un nuevo paciente
     }
 
     public function store(Request $request)
     {
+        $this->authorize('crear pacientes');
         $validatedData = $request->validate([
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nombre' => 'required|string|max:255',
@@ -71,6 +75,7 @@ class ClinicaController extends Controller
 
     public function edit($id)
     {
+        $this->authorize('editar pacientes');
         $paciente = Paciente::findOrFail($id); // Obtener el paciente por ID
         return view('pacientes.edit', compact('paciente')); // Retornar la vista para editar el paciente
     }
@@ -92,6 +97,7 @@ class ClinicaController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->authorize('editar pacientes');
         $request->validate([
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nombre' => 'required|string|max:255',
@@ -113,6 +119,8 @@ class ClinicaController extends Controller
 
     public function destroy($id)
     {
+        $this->authorize('eliminar pacientes');
+        
         $paciente = Paciente::findOrFail($id);
 
         // Eliminar las consultas relacionadas

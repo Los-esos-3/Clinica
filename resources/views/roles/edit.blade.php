@@ -1,8 +1,5 @@
 <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
-    @foreach ($roles as $role)
-    <h2 class="text-lg font-semibold text-gray-800 mb-4">Editar Rol: {{ $role->id->name }}</h2>
-    @endforeach
-    
+    <h2 class="text-lg font-semibold text-gray-800 mb-4">Editar Rol: {{ $role->name }}</h2>
 
     <form action="{{ route('roles.update', $role) }}" method="POST">
         @csrf
@@ -21,7 +18,7 @@
             <div class="grid grid-cols-2 gap-2">
                 @foreach ($permissions as $permission)
                     <label class="flex items-center space-x-2">
-                        <input type="checkbox" name="permissions[]" value="{{ $permission->id }}"
+                        <input type="checkbox" name="permissions[]" value="{{ $permission->name }}"
                             id="permission{{ $permission->id }}_{{ $role->id }}"
                             {{ $role->hasPermissionTo($permission->name) ? 'checked' : '' }}
                             class="text-blue-600 rounded focus:ring-2 focus:ring-blue-500">

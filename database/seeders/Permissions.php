@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class RolesAndPermissionsSeeder extends Seeder
+class Permissions extends Seeder
 {
     /**
      * Run the database seeds.
@@ -52,18 +52,5 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name'=>'crear empresas']);
         Permission::create(['name'=>'editar empresas']);
         Permission::create(['name'=>'eliminar empresas']);
-
-
-        // Crear roles y asignar permisos 
-        $rolAdmin = Role::create(['name' => 'Admin']);
-        $rolAdmin->givePermissionTo(Permission::all());
-
-        $rolDoctor = Role::create(['name' => 'Doctor']);
-        $rolDoctor->givePermissionTo(['ver dashboard', 'ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes', 'crear expedientes', 'editar expedientes', 'eliminar expedientes', 'ver ingresos', 'crear ingresos']);
-
-        $rolSecretaria = Role::create(['name' => 'Secretaria']);
-        $rolSecretaria->givePermissionTo(['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
-
-        $rolUsuario = Role::create(['name'=> 'Usuario']);
     }
 }

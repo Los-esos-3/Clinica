@@ -160,7 +160,11 @@ Route::group(['middleware'=>['auth', 'permission:ver empresas']],function(){
   
 Route::group(['middleware'=> ['auth', 'permission:ver roles']], function(){
 Route::resource('roles', RoleController::class);
-Route::put('/users/{user}/assign-role', [RoleController::class, 'assignRole'])->name('users.assign.role');
+//Route::get('roles/assignate', [RoleController::class, 'assignRole'])->name('role.assignate');
+Route::get('/roles/assign/{user}', [RoleController::class, 'assignRole'])->name('roles.assign');
+Route::post('/roles/assign/{user}', [RoleController::class, 'storeAssignedRole'])
+    ->name('users.assign.role');
+
 });
 
 

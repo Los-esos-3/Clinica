@@ -28,13 +28,11 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name',
-            'permissions' => 'nullable|array',
-            'empresa_id' => 'nullable|exists:empresas,id'
         ]);
 
-        $permissions = Permission::all();
         $role = Role::create(['name' => $request->name]);
-        $role->syncPermissions($request->permissions);
+        $permissions = Permission::whereIn('name', $request->permissions)->pluck('id')->toArray();
+        $role->syncPermissions($permissions);
 
         return redirect()->route('roles.index')->with('success', 'Rol creado exitosamente.');
     }
@@ -43,38 +41,45 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|unique:roles,name,' . $role->id,
-            'permissions' => 'required|array',
-            'empresa_id' => 'required|exists:empresas,id'
+            'permissions' => 'nullable|array',
         ]);
 
-        $permissions = Permission::all();
+        $permissions = $request->permissions ?? [];
+
+        $role->syncPermissions($permissions);
+
         $role->update(['name' => $request->name]);
-        $role->syncPermissions($request->permissions);
 
         return redirect()->route('roles.index')->with('success', 'Rol actualizado exitosamente.');
     }
 
     public function assignRole(Request $request, User $user)
     {
-        dd($request->all()); // Verifica que los datos se estén enviando correctamente
-
-        $request->validate([
-            'roles' => 'required|array',
-            'empresa_id' => 'required|exists:empresas,id'
-        ]);
-
-        $user->syncRoles($request->roles);
-        $user->update(['empresa_id' => $request->empresa_id]);
-
-        return redirect()->route('roles.index')->with('success', 'Roles y empresa asignados exitosamente.');
-    }
-    public function edit()
-    {
         $roles = Role::all();
-        $users = User::all();
+        $empresas = Empresa::all();
+        return view('roles.assign', compact('roles', 'empresas', 'user'));
+    }
+
+    public function storeAssignedRole(Request $request, $userId)
+{
+    $user = User::findOrFail($userId);
+    $role = Role::findById($request->role_id); // Busca el rol con Spatie
+    
+    if (!$role) {
+        return redirect()->back()->with('error', 'Rol no encontrado.');
+    }
+
+    $user->syncRoles([$role->name]); // Asigna el nuevo rol, eliminando los anteriores
+    // Si deseas que pueda tener múltiples roles, usa `$user->assignRole($role->name);`
+
+    return redirect()->route('roles.index')->with('success', 'Rol asignado correctamente.');
+}
+
+    public function edit(Role $role)
+    {
         $permissions = Permission::all();
         $empresas = Empresa::all();
-        return view('roles.edit', compact('permissions','empresas', 'roles', 'users'));
+        return view('roles.edit', compact('permissions', 'empresas', 'role'));
     }
 
     public function create()
@@ -88,5 +93,11 @@ class RoleController extends Controller
     {
         $role->delete();
         return redirect()->route('roles.index')->with('success', 'Rol eliminado exitosamente.');
+
     }
+    public function show(Role $role)
+{
+    $permissions = Permission::all();
+    return view('roles.show', compact('role', 'permissions'));
+}
 }
