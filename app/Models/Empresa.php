@@ -20,6 +20,11 @@ class Empresa extends Model
         'descripcion'
     ];
 
+    public function users()
+    {
+        return $this->hasMany(User::class,'empresa_id');
+    }
+
     public function doctor()
     {
         return $this->hasMany(Doctores::class);
@@ -27,9 +32,5 @@ class Empresa extends Model
     public function secretarias()
     {
         return $this->hasMany(Secretarias::class);
-    }
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

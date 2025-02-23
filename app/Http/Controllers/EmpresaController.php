@@ -6,19 +6,23 @@ use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class EmpresaController extends Controller
 {
     public function index()
     {
-        // Solo el admin que creó la empresa y los usuarios asociados pueden verla
-        $empresas = Empresa::where('id', Auth::user()->empresa_id)
-            ->orWhereHas('users', function ($query) {
-                $query->where('id', Auth::id());
-            })
-            ->get();
+        $user = Auth::user();
+        $empresa = null;
 
-        return view('empresas.index', compact('empresas'));
+        // Verifica si el usuario tiene una empresa asociada
+        if ($user->empresa_id) {
+            // Si tiene, obtiene la empresa
+            $empresa = Empresa::find($user->empresa_id);
+        }
+
+        return view('empresas.index', compact('empresa'));
     }
 
     public function create()
@@ -38,6 +42,7 @@ class EmpresaController extends Controller
             'pais' => 'required',
             'horario' => 'required',
             'descripcion' => 'required',
+            
         ]);
 
         $data = $request->all();
@@ -49,7 +54,20 @@ class EmpresaController extends Controller
             $data['logo'] = $filename;
         }
 
-        Empresa::create($data);
+        // Crear la empresa
+        $empresa = Empresa::create($data);
+
+        // Asociar al usuario que crea la empresa
+        $empresa->users()->save(Auth::user());
+
+        // Si hay usuarios relacionados, asignarles el empresa_id
+        if ($request->has('usuarios')) {
+            foreach ($request->usuarios as $usuarioId) {
+                $user = User::find($usuarioId);
+                $user->empresa_id = $empresa->id; // Asignar el empresa_id
+                $user->save(); // Guardar el usuario
+            }
+        }
 
         return redirect()->route('empresas.index')
             ->with('success', 'Empresa registrada exitosamente.');
@@ -62,50 +80,96 @@ class EmpresaController extends Controller
 
     public function edit(Empresa $empresa)
     {
-        return view('empresas.edit', compact('empresa'));
+        // Cargar los usuarios asociados a la empresa
+        $empresa->load('users');
+        $user = Auth::user();
+
+        return view('empresas.edit', compact('empresa', 'user'));
     }
 
-    public function update(Request $request, Empresa $empresa)
-    {
-        $request->validate([
-            'nombre' => 'required',
-            'telefono' => 'required',
-            'email' => 'required|email|unique:empresas,email,' . $empresa->id,
-            'direccion' => 'required',
-            'ciudad' => 'required',
-            'pais' => 'required',
-            'horario' => 'required',
-            'descripcion' => 'required',
-            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048'
-        ]);
+    public function update(Request $request, $id)
+{
+    Log::info('Entro al metodo');
+    Log::info('En validacion', $request->all());
 
-        if ($request->hasFile('logo')) {
-            // Eliminar logo anterior si existe
-            if ($empresa->logo) {
-                Storage::disk('public')->delete($empresa->logo);
-            }
-            
-            $logo = $request->file('logo');
-            $nombreLogo = time() . '_' . $logo->getClientOriginalName();
-            $path = $logo->storeAs('logos', $nombreLogo, 'public');
-            $empresa->logo = $path;
+    $request->validate([
+        'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'nombre' => 'required',
+        'telefono' => 'required',
+        'email' => 'required|email|unique:empresas,email,' . $id,
+        'direccion' => 'required',
+        'ciudad' => 'required',
+        'pais' => 'required',
+        'horario' => 'required',
+        'descripcion' => 'required',
+        'usuarios' => 'nullable|array',
+        'usuarios.*' => 'exists:users,id',
+    ]);
+
+    $empresa = Empresa::findOrFail($id);
+    $data = $request->all();
+
+    Log::info('Busco el id de la empresa y pidio todos los datos de los inputs');
+
+    if ($request->hasFile('logo')) {
+        if ($empresa->logo) {
+            Storage::disk('public')->delete($empresa->logo);
         }
 
-        $empresa->update($request->except('logo'));
-
-        return redirect()->route('empresas.index')
-            ->with('success', 'Empresa actualizada exitosamente.');
+        $file = $request->file('logo');
+        $filename = time() . '.' . $file->getClientOriginalExtension();
+        $file->move(public_path('images'), $filename);
+        $data['logo'] = $filename;
     }
 
+    // Actualizar la empresa
+    $empresa->update($data);
+
+    Log::info('Actualizo la empresa');
+
+    // Procesar usuarios seleccionados
+    if ($request->has('usuarios')) {
+        // Desasociar usuarios que ya no están en la lista
+        User::where('empresa_id', $empresa->id)
+            ->whereNotIn('id', $request->usuarios)
+            ->update(['empresa_id' => null]);
+
+        // Asociar usuarios seleccionados
+        foreach ($request->usuarios as $usuarioId) {
+            $user = User::find($usuarioId);
+            if ($user) {
+                $user->empresa_id = $empresa->id;
+                $user->save();
+            }
+        }
+    } 
+
+    Log::info('Asocio el user con la empresa');
+
+    return redirect()->route('empresas.index')->with('success', 'Empresa actualizada correctamente.');
+}
     public function destroy(Empresa $empresa)
     {
         if ($empresa->logo) {
             Storage::disk('public')->delete($empresa->logo);
         }
-        
+
         $empresa->delete();
 
         return redirect()->route('empresas.index')
             ->with('success', 'Empresa eliminada exitosamente.');
+    }
+
+    public function buscarUsuarios(Request $request)
+    {
+        $nombre = $request->get('nombre');
+
+        if (empty($nombre)) {
+            return response()->json(['error' => 'Por favor, ingresa un nombre para buscar.'], 400);
+        }
+
+        $usuarios = User::where('name', 'like', '%' . $nombre . '%')->get();
+
+        return response()->json($usuarios);
     }
 }

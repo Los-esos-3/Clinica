@@ -1,7 +1,12 @@
 @php
-    $empresa = \App\Models\Empresa::first();
-    $nombreEmpresa = $empresa ? $empresa->nombre : 'KAISER';
-  @endphp
+    $nombreEmpresa = 'KAISER'; // Valor por defecto
+
+    // Verifica si el usuario está autenticado y tiene una empresa asociada
+    if (Auth::check() && Auth::user()->empresa_id) {
+        $empresa = \App\Models\Empresa::find(Auth::user()->empresa_id);
+        $nombreEmpresa = $empresa ? $empresa->nombre : $nombreEmpresa; // Asigna el nombre de la empresa si existe
+    }
+@endphp
 
 <style>
    a {

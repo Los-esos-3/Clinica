@@ -4,21 +4,19 @@
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 {{ __('Editar Empresa') }}
             </h2>
-           
         </div>
     </x-slot>
 
-    <div class="container py-6">
-        <div class="max-w-2xl mx-auto">
+    <div class="container py-6 flex">
+        <div class="w-2/3">
             <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
                 <!-- Cabecera con logo actual -->
                 <div class="p-8 text-center bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">
                     <div class="relative inline-block">
-                        @if($empresa->logo)
+                        @if ($empresa->logo)
                             <div class="w-36 h-36 mx-auto rounded-full bg-white p-2 shadow-xl">
-                                <img src="{{ asset('images/' . $empresa->logo) }}" 
-                                     alt="Logo actual" 
-                                     class="w-full h-full object-cover rounded-full">
+                                <img src="{{ asset('images/' . $empresa->logo) }}" alt="Logo actual"
+                                    class="w-full h-full object-cover rounded-full">
                             </div>
                         @endif
                     </div>
@@ -28,145 +26,162 @@
 
                 <!-- Formulario de edición -->
                 <div class="p-8">
-                    <form method="POST" action="{{ route('empresas.update', $empresa) }}" enctype="multipart/form-data">
-                        @csrf
-                        @method('PUT')
+                    <div class="flex">
+                        <div class="w-4/5 pl-36">
+                            <form id="updateForm" method="POST" action="{{ route('empresas.update', $empresa->id) }}"
+                                enctype="multipart/form-data">
+                                @csrf
+                                @method('PUT')
 
-                        <!-- Logo -->
-                        <div class="mb-6">
-                            <label for="logo" class="block text-sm font-semibold text-gray-700 mb-2">Nuevo Logo</label>
-                            <input type="file" 
-                                   class="form-control" 
-                                   id="logo" 
-                                   name="logo"
-                                   accept="image/*"
-                                   onchange="previewImage(this)">
-                            <div id="logoPreview" class="mt-2 hidden">
-                                <img id="preview" class="w-32 h-32 object-cover rounded-lg">
+                                <!-- Logo -->
+                                <div class="mb-6">
+                                    <label for="logo" class="block text-sm font-semibold text-gray-700 mb-2">Nuevo
+                                        Logo</label>
+                                    <input type="file" class="form-control" id="logo" name="logo"
+                                        accept="image/*" onchange="previewImage(this)">
+                                    <div id="logoPreview" class="mt-2 hidden">
+                                        <img id="preview" class="w-32 h-32 object-cover rounded-lg">
+                                    </div>
+                                </div>
+
+                                <!-- Nombre -->
+                                <div class="mb-3">
+                                    <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre</label>
+                                    <input type="text" class="form-control" id="nombre" name="nombre"
+                                        value="{{ old('nombre', $empresa->nombre) }}" required>
+                                </div>
+
+                                <!-- Teléfono -->
+                                <div class="mb-3">
+                                    <label for="telefono"
+                                        class="block text-sm font-medium text-gray-700">Teléfono</label>
+                                    <input type="tel" class="form-control" id="telefono" name="telefono"
+                                        value="{{ old('telefono', $empresa->telefono) }}" pattern="[0-9]{10}"
+                                        maxlength="10" required>
+                                </div>
+
+                                <!-- Email -->
+                                <div class="mb-3">
+                                    <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                                    <input type="email" class="form-control" id="email" name="email"
+                                        value="{{ old('email', $empresa->email) }}" required>
+                                </div>
+
+                                <!-- País -->
+                                <div class="mb-6">
+                                    <label for="pais"
+                                        class="block text-sm font-semibold text-gray-700 mb-2">País</label>
+                                    <select id="pais" name="pais" class="form-control" required>
+                                        <option value="">Seleccione un país</option>
+                                        @foreach (['México', 'España', 'Colombia', 'Argentina', 'Chile', 'Perú', 'Ecuador', 'Venezuela', 'Bolivia', 'Paraguay', 'Uruguay', 'Costa Rica', 'Panamá'] as $pais)
+                                            <option value="{{ $pais }}"
+                                                {{ old('pais', $empresa->pais) == $pais ? 'selected' : '' }}>
+                                                {{ $pais }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <!-- Ciudad -->
+                                <div class="mb-6">
+                                    <label for="ciudad"
+                                        class="block text-sm font-semibold text-gray-700 mb-2">Ciudad</label>
+                                    <select id="ciudad" name="ciudad" class="form-control" required>
+                                        <option value="">Seleccione primero un país</option>
+                                    </select>
+                                </div>
+
+                                <!-- Dirección -->
+                                <div class="mb-6">
+                                    <label for="direccion"
+                                        class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
+                                    <input type="text" class="form-control" id="direccion" name="direccion"
+                                        value="{{ old('direccion', $empresa->direccion) }}" required>
+                                </div>
+
+                                <!-- Horario -->
+                                <div class="mb-6">
+                                    <label for="horario"
+                                        class="block text-sm font-semibold text-gray-700 mb-2">Horario</label>
+                                    <select id="horario" name="horario" class="form-control" required>
+                                        @foreach (['Lunes a Viernes de 9:00 AM a 6:00 PM', 'Lunes a Sábado de 9:00 AM a 6:00 PM', 'Lunes a Domingo de 9:00 AM a 6:00 PM', 'Lunes a Viernes de 8:00 AM a 5:00 PM', 'Lunes a Sábado de 8:00 AM a 5:00 PM', 'Lunes a Domingo de 8:00 AM a 5:00 PM', 'Lunes a Viernes de 10:00 AM a 7:00 PM', 'Lunes a Sábado de 10:00 AM a 7:00 PM', 'Lunes a Domingo de 10:00 AM a 7:00 PM', '24/7', 'custom'] as $horarioOpcion)
+                                            <option value="{{ $horarioOpcion }}"
+                                                {{ old('horario', $empresa->horario) == $horarioOpcion ? 'selected' : '' }}>
+                                                {{ $horarioOpcion == 'custom' ? 'Horario Personalizado' : $horarioOpcion }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <div id="customHorario"
+                                        class="mt-2 {{ old('horario', $empresa->horario) == 'custom' ? '' : 'hidden' }}">
+                                        <input type="text" class="form-control" name="horario_custom"
+                                            value="{{ old('horario_custom', $empresa->horario) }}"
+                                            placeholder="Especifique el horario">
+                                    </div>
+                                </div>
+
+                                <!-- Descripción -->
+                                <div class="mb-6">
+                                    <label for="descripcion"
+                                        class="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
+                                    <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion', $empresa->descripcion) }}</textarea>
+                                </div>
+
+
+
+                                <div class="text-center space-x-4">
+                                    <button type="submit" class="button-update">
+                                        Actualizar Empresa
+                                    </button>
+                                    <a href="{{ route('empresas.index') }}" class="button-cancel">
+                                        Cancelar
+                                    </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="w-1/3 pl-4 fixed right-0 top-1/2 transform -translate-y-1/2">
+            <div class="bg-white p-4 rounded-lg shadow-lg">
+                <div class="mb-3">
+                    <label for="search_user" class="block text-sm font-medium text-gray-700">Buscar Usuario</label>
+                    <input type="text" id="search_user" name="search_user"
+                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm bg-gray-100"
+                        placeholder="Buscar por nombre...">
+                    <button type="button" id="search_button"
+                        class="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                        Buscar
+                    </button>
+                </div>
+
+                <div id="user_results" class="mt-4">
+                    <!-- Aquí se mostrarán los resultados de la búsqueda -->
+                </div>
+
+                <!-- Usuarios seleccionados -->
+                <div id="selected_users" class="mt-4">
+                    <h5 class="font-semibold">Usuarios Ligados a la empresa:</h5>
+                    @if ($empresa->users->isNotEmpty())
+                        @foreach ($empresa->users as $user)
+                            <div class="flex items-center justify-between border p-2 my-1 bg-green-100">
+                                <span>{{ $user->name }}</span>
+                                <button type="button" class="ml-2 text-red-500"
+                                    onclick="removeUser({{ $user->id }}, this)">Eliminar</button>
                             </div>
-                        </div>
 
-                        <!-- Nombre -->
-                        <div class="mb-6">
-                            <label for="nombre" class="block text-sm font-semibold text-gray-700 mb-2">Nombre</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="nombre" 
-                                   name="nombre" 
-                                   value="{{ old('nombre', $empresa->nombre) }}" 
-                                   required>
-                        </div>
-
-                        <!-- Teléfono -->
-                        <div class="mb-6">
-                            <label for="telefono" class="block text-sm font-semibold text-gray-700 mb-2">Teléfono</label>
-                            <input type="tel" 
-                                   class="form-control" 
-                                   id="telefono" 
-                                   name="telefono" 
-                                   value="{{ old('telefono', $empresa->telefono) }}"
-                                   pattern="[0-9]{10}"
-                                   maxlength="10"
-                                   required>
-                        </div>
-
-                        <!-- Email -->
-                        <div class="mb-6">
-                            <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email</label>
-                            <input type="email" 
-                                   class="form-control" 
-                                   id="email" 
-                                   name="email" 
-                                   value="{{ old('email', $empresa->email) }}" 
-                                   required>
-                        </div>
-
-                        <!-- País -->
-                        <div class="mb-6">
-                            <label for="pais" class="block text-sm font-semibold text-gray-700 mb-2">País</label>
-                            <select id="pais" name="pais" class="form-control" required>
-                                <option value="">Seleccione un país</option>
-                                @foreach(['México', 'España', 'Colombia', 'Argentina', 'Chile', 'Perú', 'Ecuador', 'Venezuela', 'Bolivia', 'Paraguay', 'Uruguay', 'Costa Rica', 'Panamá'] as $pais)
-                                    <option value="{{ $pais }}" {{ old('pais', $empresa->pais) == $pais ? 'selected' : '' }}>
-                                        {{ $pais }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <!-- Ciudad -->
-                        <div class="mb-6">
-                            <label for="ciudad" class="block text-sm font-semibold text-gray-700 mb-2">Ciudad</label>
-                            <select id="ciudad" name="ciudad" class="form-control" required>
-                                <option value="">Seleccione primero un país</option>
-                            </select>
-                        </div>
-
-                        <!-- Dirección -->
-                        <div class="mb-6">
-                            <label for="direccion" class="block text-sm font-semibold text-gray-700 mb-2">Dirección</label>
-                            <input type="text" 
-                                   class="form-control" 
-                                   id="direccion" 
-                                   name="direccion" 
-                                   value="{{ old('direccion', $empresa->direccion) }}" 
-                                   required>
-                        </div>
-
-                        <!-- Horario -->
-                        <div class="mb-6">
-                            <label for="horario" class="block text-sm font-semibold text-gray-700 mb-2">Horario</label>
-                            <select id="horario" name="horario" class="form-control" required>
-                                @foreach([
-                                    'Lunes a Viernes de 9:00 AM a 6:00 PM',
-                                    'Lunes a Sábado de 9:00 AM a 6:00 PM',
-                                    'Lunes a Domingo de 9:00 AM a 6:00 PM',
-                                    'Lunes a Viernes de 8:00 AM a 5:00 PM',
-                                    'Lunes a Sábado de 8:00 AM a 5:00 PM',
-                                    'Lunes a Domingo de 8:00 AM a 5:00 PM',
-                                    'Lunes a Viernes de 10:00 AM a 7:00 PM',
-                                    'Lunes a Sábado de 10:00 AM a 7:00 PM',
-                                    'Lunes a Domingo de 10:00 AM a 7:00 PM',
-                                    '24/7',
-                                    'custom'
-                                ] as $horarioOpcion)
-                                    <option value="{{ $horarioOpcion }}" {{ old('horario', $empresa->horario) == $horarioOpcion ? 'selected' : '' }}>
-                                        {{ $horarioOpcion == 'custom' ? 'Horario Personalizado' : $horarioOpcion }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            <div id="customHorario" class="mt-2 {{ old('horario', $empresa->horario) == 'custom' ? '' : 'hidden' }}">
-                                <input type="text" 
-                                       class="form-control" 
-                                       name="horario_custom" 
-                                       value="{{ old('horario_custom', $empresa->horario) }}"
-                                       placeholder="Especifique el horario">
-                            </div>
-                        </div>
-
-                        <!-- Descripción -->
-                        <div class="mb-6">
-                            <label for="descripcion" class="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
-                            <textarea class="form-control" 
-                                      id="descripcion" 
-                                      name="descripcion" 
-                                      rows="3" 
-                                      required>{{ old('descripcion', $empresa->descripcion) }}</textarea>
-                        </div>
-
-                        <div class="text-center space-x-4">
-                            <button type="submit" class="button-update">
-                                Actualizar Empresa
-                            </button>
-                            <a href="{{ route('empresas.index') }}" class="button-cancel">
-                                Cancelar
-                            </a>
-                        </div>
-                    </form>
+                            <!-- Campo oculto para el usuario -->
+                            <input  name="usuarios" value="{{ json_encode($empresa->users->pluck('id')) }}">
+                        @endforeach
+                    @else
+                        <p>No hay usuarios asociados a esta empresa.</p>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
+
 
     <style>
         .form-control {
@@ -247,19 +262,45 @@
     <script>
         // Objeto con las ciudades por país
         const ciudadesPorPais = {
-            'México': ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Cancún', 'Mérida', 'Querétaro'],
-            'España': ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Bilbao', 'Alicante'],
-            'Colombia': ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Cúcuta', 'Bucaramanga', 'Pereira', 'Santa Marta', 'Ibagué'],
-            'Argentina': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán', 'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'],
-            'Chile': ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Antofagasta', 'Temuco', 'Rancagua', 'Talca', 'Arica', 'Puerto Montt'],
-            'Perú': ['Lima', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura', 'Cusco', 'Huancayo', 'Tacna', 'Ica', 'Pucallpa'],
-            'Ecuador': ['Quito', 'Guayaquil', 'Cuenca', 'Machala', 'Manta', 'Portoviejo', 'Ambato', 'Riobamba', 'Loja', 'Ibarra'],
-            'Venezuela': ['Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana', 'Barcelona', 'Maturín', 'Petare', 'Mérida'],
-            'Bolivia': ['La Paz', 'Santa Cruz de la Sierra', 'Cochabamba', 'Sucre', 'Oruro', 'Potosí', 'Tarija', 'Trinidad', 'Cobija', 'Riberalta'],
-            'Paraguay': ['Asunción', 'Ciudad del Este', 'San Lorenzo', 'Luque', 'Capiatá', 'Lambaré', 'Fernando de la Mora', 'Limpio', 'Ñemby', 'Encarnación'],
-            'Uruguay': ['Montevideo', 'Salto', 'Paysandú', 'Las Piedras', 'Rivera', 'Maldonado', 'Tacuarembó', 'Melo', 'Mercedes', 'Artigas'],
-            'Costa Rica': ['San José', 'Alajuela', 'Cartago', 'Heredia', 'Liberia', 'Limón', 'Puntarenas', 'Quesada', 'San Isidro', 'Turrialba'],
-            'Panamá': ['Ciudad de Panamá', 'San Miguelito', 'Tocumen', 'David', 'Arraiján', 'Colón', 'La Chorrera', 'Santiago', 'Chitré', 'Penonomé']
+            'México': ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Cancún',
+                'Mérida', 'Querétaro'
+            ],
+            'España': ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Bilbao',
+                'Alicante'
+            ],
+            'Colombia': ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Cúcuta', 'Bucaramanga', 'Pereira',
+                'Santa Marta', 'Ibagué'
+            ],
+            'Argentina': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán',
+                'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'
+            ],
+            'Chile': ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Antofagasta', 'Temuco', 'Rancagua', 'Talca',
+                'Arica', 'Puerto Montt'
+            ],
+            'Perú': ['Lima', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura', 'Cusco', 'Huancayo', 'Tacna', 'Ica',
+                'Pucallpa'
+            ],
+            'Ecuador': ['Quito', 'Guayaquil', 'Cuenca', 'Machala', 'Manta', 'Portoviejo', 'Ambato', 'Riobamba', 'Loja',
+                'Ibarra'
+            ],
+            'Venezuela': ['Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana', 'Barcelona',
+                'Maturín', 'Petare', 'Mérida'
+            ],
+            'Bolivia': ['La Paz', 'Santa Cruz de la Sierra', 'Cochabamba', 'Sucre', 'Oruro', 'Potosí', 'Tarija',
+                'Trinidad', 'Cobija', 'Riberalta'
+            ],
+            'Paraguay': ['Asunción', 'Ciudad del Este', 'San Lorenzo', 'Luque', 'Capiatá', 'Lambaré',
+                'Fernando de la Mora', 'Limpio', 'Ñemby', 'Encarnación'
+            ],
+            'Uruguay': ['Montevideo', 'Salto', 'Paysandú', 'Las Piedras', 'Rivera', 'Maldonado', 'Tacuarembó', 'Melo',
+                'Mercedes', 'Artigas'
+            ],
+            'Costa Rica': ['San José', 'Alajuela', 'Cartago', 'Heredia', 'Liberia', 'Limón', 'Puntarenas', 'Quesada',
+                'San Isidro', 'Turrialba'
+            ],
+            'Panamá': ['Ciudad de Panamá', 'San Miguelito', 'Tocumen', 'David', 'Arraiján', 'Colón', 'La Chorrera',
+                'Santiago', 'Chitré', 'Penonomé'
+            ]
         };
 
         // Función para actualizar las ciudades
@@ -267,9 +308,9 @@
             const paisSelect = document.getElementById('pais');
             const ciudadSelect = document.getElementById('ciudad');
             const ciudadActual = '{{ old('ciudad', $empresa->ciudad) }}';
-            
+
             ciudadSelect.innerHTML = '<option value="">Seleccione una ciudad</option>';
-            
+
             if (paisSelect.value) {
                 const ciudades = ciudadesPorPais[paisSelect.value] || [];
                 ciudades.forEach(ciudad => {
@@ -293,7 +334,7 @@
         function previewImage(input) {
             const preview = document.getElementById('preview');
             const previewDiv = document.getElementById('logoPreview');
-            
+
             if (input.files && input.files[0]) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
@@ -306,5 +347,82 @@
 
         // Inicializar ciudades al cargar la página
         window.addEventListener('load', actualizarCiudades);
+
+      
+
+        document.getElementById('search_button').addEventListener('click', function() {
+            const searchValue = document.getElementById('search_user').value;
+
+            if (!searchValue) {
+                alert('Por favor, ingresa un nombre para buscar.');
+                return;
+            }
+
+            fetch(`/buscar-usuarios?nombre=${searchValue}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la búsqueda');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const userResultsDiv = document.getElementById('user_results');
+                    userResultsDiv.innerHTML = ''; // Limpiar resultados anteriores
+
+                    if (data.length > 0) {
+                        data.forEach(user => {
+                            const userDiv = document.createElement('div');
+                            userDiv.classList.add('flex', 'items-center', 'justify-between', 'border',
+                                'p-2', 'my-1');
+                            userDiv.innerHTML = `
+                        <span>${user.name}</span>
+                        <button type="button" class="ml-2 bg-green-500 text-white px-2 py-1 rounded" onclick="addUser(${user.id}, '${user.name}')">Agregar</button>
+                    `;
+                            userResultsDiv.appendChild(userDiv);
+                        });
+                    } else {
+                        userResultsDiv.innerHTML = '<p>No se encontraron usuarios.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Hubo un problema al buscar usuarios.');
+                });
+        });
+
+
+        let selectedUsers = @json($empresa->users->pluck('id')); // Inicializar con los usuarios actuales
+       
+
+        function addUser(userId, userName) {
+            // Verificar si el usuario ya está en la lista
+            if (!selectedUsers.includes(userId)) {
+                selectedUsers.push(userId); // Agregar el ID del usuario al array
+                const userListDiv = document.getElementById('selected_users');
+                const userItem = document.createElement('div');
+                userItem.classList.add('flex', 'items-center', 'justify-between', 'border', 'p-2', 'my-1', 'bg-green-100');
+                userItem.innerHTML = `
+                    <span>${userName}</span>
+                    <button type="button" class="ml-2 text-red-500" onclick="removeUser(${userId}, this)">Eliminar</button>
+                `;
+                userListDiv.appendChild(userItem);
+                
+                // Actualizar el campo oculto
+                document.querySelector('input[name="usuarios"]').value = JSON.stringify(selectedUsers);
+            } else {
+                alert('Este usuario ya ha sido agregado.');
+            }
+        }
+
+        function removeUser(userId, button) {
+            // Eliminar el usuario del array
+            selectedUsers = selectedUsers.filter(id => id !== userId);
+            // Eliminar el elemento del DOM
+            button.parentElement.remove();
+            
+            // Actualizar el campo oculto
+            document.querySelector('input[name="usuarios"]').value = JSON.stringify(selectedUsers);
+        }
     </script>
+
 </x-app-layout>

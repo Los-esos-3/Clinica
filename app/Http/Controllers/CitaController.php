@@ -6,6 +6,7 @@ use App\Models\Doctores; // Asegúrate de que el modelo Doctor esté correctamen
 use App\Models\Paciente; // Asegúrate de que el modelo Paciente esté correctamente importado
 use App\Models\Cita; // Asegúrate de que el modelo Cita esté correctamente importado
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CitaController extends Controller
 {
@@ -69,30 +70,39 @@ class CitaController extends Controller
         
     }
 
+    public function create()
+    {
+        $doctores = [];
+        
+        if (Auth::check() && Auth::user()->empresa_id) {
+            $doctores = Doctores::where('empresa_id', Auth::user()->empresa_id)->get();
+        }
 
-   // En el controlador, el método destroy
-public function destroy($id)
-{
-    $cita = Cita::find($id);
-    
-    if (!$cita) {
-        return redirect()->route('citas.index')->with('error', 'Cita no encontrada.');
+        return view('citas.create', compact('doctores'));
     }
 
-    $cita->delete();
+    // En el controlador, el método destroy
+    public function destroy($id)
+    {
+        $cita = Cita::find($id);
+        
+        if (!$cita) {
+            return redirect()->route('citas.index')->with('error', 'Cita no encontrada.');
+        }
 
-    return redirect()->route('citas.index')->with('success', 'Cita eliminada exitosamente.');
-}
+        $cita->delete();
 
-public function show($id)
-{
-    $cita = Cita::find($id);
-    if (!$cita) {
-        return redirect()->route('citas.index')->with('error', 'Cita no encontrada.');
+        return redirect()->route('citas.index')->with('success', 'Cita eliminada exitosamente.');
     }
 
-    return view('citas.show', compact('cita'));
-}
+    public function show($id)
+    {
+        $cita = Cita::find($id);
+        if (!$cita) {
+            return redirect()->route('citas.index')->with('error', 'Cita no encontrada.');
+        }
 
+        return view('citas.show', compact('cita'));
+    }
 }
 
