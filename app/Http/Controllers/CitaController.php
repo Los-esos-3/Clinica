@@ -12,8 +12,12 @@ class CitaController extends Controller
 {
     public function index()
     {
-        $doctores = Doctores::all(); // Obtener todos los doctores
-        $pacientes = Paciente::all(); // Obtener todos los pacientes
+        $doctores = [];
+        $user = Auth::user();
+
+        // Obtener solo los pacientes creados por el usuario actual
+        $pacientes = Paciente::where('user_id', $user->id)->get();
+
         $citas = Cita::with(['paciente', 'doctor'])->get()->map(function ($cita) {
             return [
                 'id' => $cita->id,
@@ -24,9 +28,16 @@ class CitaController extends Controller
                 'motivo' => $cita->motivo,
             ];
         });
-        
 
-        return view('dashboard', compact('doctores', 'pacientes', 'citas')); // Pasar a la vista
+        if ($user->hasRole('Admin')) {
+            $doctores = Doctores::all(); // Obtener todos los doctores
+            return view('dashboard', compact('doctores', 'pacientes', 'citas'));
+        } else {
+            if ($user->empresa_id) {
+                $doctores = Doctores::where('empresa_id', $user->empresa_id)->get();
+            }
+            return view('Secretaria.dashboard', compact('doctores', 'pacientes', 'citas'));
+        }
     }
 
     public function getDoctores()
@@ -67,25 +78,14 @@ class CitaController extends Controller
                 'motivo' => $cita->motivo,
             ],
         ]);
-        
     }
 
-    public function create()
-    {
-        $doctores = [];
-        
-        if (Auth::check() && Auth::user()->empresa_id) {
-            $doctores = Doctores::where('empresa_id', Auth::user()->empresa_id)->get();
-        }
-
-        return view('citas.create', compact('doctores'));
-    }
 
     // En el controlador, el método destroy
     public function destroy($id)
     {
         $cita = Cita::find($id);
-        
+
         if (!$cita) {
             return redirect()->route('citas.index')->with('error', 'Cita no encontrada.');
         }
@@ -105,4 +105,3 @@ class CitaController extends Controller
         return view('citas.show', compact('cita'));
     }
 }
-

@@ -6,6 +6,7 @@ use App\Models\Consulta;
 use App\Models\Doctores;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConsultaController extends Controller
 {
@@ -19,8 +20,13 @@ class ConsultaController extends Controller
     {
 
         $paciente = Paciente::find($request->paciente_id); // Asegúrate de que estás obteniendo el paciente
-        $medicos = Doctores::all(); // Obtener todos los médicos
-        return view('consultas.create', compact('paciente','medicos'));
+        // Filtrar doctores según el rol del usuario
+    if (Auth::check() && Auth::user()->empresa_id) {
+        $doctores = Doctores::where('empresa_id', Auth::user()->empresa_id)->get();
+    } else {
+        $doctores = Doctores::all(); // Obtener todos los doctores si no hay empresa
+    }
+        return view('consultas.create', compact('paciente','doctores'));
     }
 
     public function store(Request $request)
@@ -54,11 +60,19 @@ class ConsultaController extends Controller
     }
 
     public function edit($id)
-    {
-        $consulta = Consulta::with('doctor')->findOrFail($id);
-        $medicos = Doctores::all();
-        return view('consultas.edit', compact('consulta', 'medicos'));
+{
+    $consulta = Consulta::with('doctor')->findOrFail($id);
+    $paciente = $consulta->paciente;
+
+    // Filtrar doctores según el rol del usuario
+    if (Auth::check() && Auth::user()->empresa_id) {
+        $doctores = Doctores::where('empresa_id', Auth::user()->empresa_id)->get();
+    } else {
+        $doctores = Doctores::all(); // Obtener todos los doctores si no hay empresa
     }
+
+    return view('consultas.edit', compact('consulta', 'paciente', 'doctores'));
+}
 
     public function update(Request $request, $id)
     {

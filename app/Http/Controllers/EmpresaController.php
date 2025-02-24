@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Log;
 
 class EmpresaController extends Controller
 {
+  
+
+   
     public function index()
     {
         $user = Auth::user();
@@ -28,6 +31,21 @@ class EmpresaController extends Controller
     public function create()
     {
         return view('empresas.create');
+    }
+
+    
+
+    public function show(Empresa $empresa)
+    {
+        return view('empresas.show', compact('empresa'));
+    }
+
+    public function edit(Empresa $empresa)
+    {
+        // Obtener todos los usuarios para mostrarlos en el formulario
+        $usuarios = User::all();
+
+        return view('empresas.edit', compact('empresa', 'usuarios'));
     }
 
     public function store(Request $request)
@@ -73,81 +91,72 @@ class EmpresaController extends Controller
             ->with('success', 'Empresa registrada exitosamente.');
     }
 
-    public function show(Empresa $empresa)
-    {
-        return view('empresas.show', compact('empresa'));
-    }
-
-    public function edit(Empresa $empresa)
-    {
-        // Cargar los usuarios asociados a la empresa
-        $empresa->load('users');
-        $user = Auth::user();
-
-        return view('empresas.edit', compact('empresa', 'user'));
-    }
-
     public function update(Request $request, $id)
-{
-    Log::info('Entro al metodo');
-    Log::info('En validacion', $request->all());
+    {
+        Log::info('Entro al metodo');
+        Log::info('En validacion', $request->all());
 
-    $request->validate([
-        'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'nombre' => 'required',
-        'telefono' => 'required',
-        'email' => 'required|email|unique:empresas,email,' . $id,
-        'direccion' => 'required',
-        'ciudad' => 'required',
-        'pais' => 'required',
-        'horario' => 'required',
-        'descripcion' => 'required',
-        'usuarios' => 'nullable|array',
-        'usuarios.*' => 'exists:users,id',
-    ]);
+        $request->validate([
+            'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nombre' => 'required',
+            'telefono' => 'required',
+            'email' => 'required|email|unique:empresas,email,' . $id,
+            'direccion' => 'required',
+            'ciudad' => 'required',
+            'pais' => 'required',
+            'horario' => 'required',
+            'descripcion' => 'required',
+            'usuarios' => 'nullable|array',
+            'usuarios.*' => 'exists:users,id',
+        ]);
 
-    $empresa = Empresa::findOrFail($id);
-    $data = $request->all();
+        $empresa = Empresa::findOrFail($id);
+        $data = $request->all();
 
-    Log::info('Busco el id de la empresa y pidio todos los datos de los inputs');
+        Log::info('Busco el id de la empresa y pidio todos los datos de los inputs');
 
-    if ($request->hasFile('logo')) {
-        if ($empresa->logo) {
-            Storage::disk('public')->delete($empresa->logo);
+        if ($request->hasFile('logo')) {
+            if ($empresa->logo) {
+                Storage::disk('public')->delete($empresa->logo);
+            }
+
+            $file = $request->file('logo');
+            $filename = time() . '.' . $file->getClientOriginalExtension();
+            $file->move(public_path('images'), $filename);
+            $data['logo'] = $filename;
         }
 
-        $file = $request->file('logo');
-        $filename = time() . '.' . $file->getClientOriginalExtension();
-        $file->move(public_path('images'), $filename);
-        $data['logo'] = $filename;
+        // Actualizar la empresa
+        $empresa->update($data);
+
+        Log::info('Actualizo la empresa');
+
+        // Procesar usuarios seleccionados
+        if ($request->has('usuarios')) {
+            // Desasociar usuarios que ya no están en la lista
+            User::where('empresa_id', $empresa->id)
+                ->whereNotIn('id', $request->usuarios)
+                ->update(['empresa_id' => null]);
+
+            // Asociar usuarios seleccionados
+            foreach ($request->usuarios as $usuarioId) {
+                $user = User::find($usuarioId);
+                if ($user) {
+                    $user->empresa_id = $empresa->id;
+                    $user->save();
+                }
+            }
+        } else {
+            // Si no hay usuarios seleccionados, desasociar todos
+            User::where('empresa_id', $empresa->id)
+                ->update(['empresa_id' => null]);
+        }
+
+        Log::info('Asocio el user con la empresa');
+
+        return redirect()->route('empresas.index')->with('success', 'Empresa actualizada correctamente.');
     }
 
-    // Actualizar la empresa
-    $empresa->update($data);
-
-    Log::info('Actualizo la empresa');
-
-    // Procesar usuarios seleccionados
-    if ($request->has('usuarios')) {
-        // Desasociar usuarios que ya no están en la lista
-        User::where('empresa_id', $empresa->id)
-            ->whereNotIn('id', $request->usuarios)
-            ->update(['empresa_id' => null]);
-
-        // Asociar usuarios seleccionados
-        foreach ($request->usuarios as $usuarioId) {
-            $user = User::find($usuarioId);
-            if ($user) {
-                $user->empresa_id = $empresa->id;
-                $user->save();
-            }
-        }
-    } 
-
-    Log::info('Asocio el user con la empresa');
-
-    return redirect()->route('empresas.index')->with('success', 'Empresa actualizada correctamente.');
-}
     public function destroy(Empresa $empresa)
     {
         if ($empresa->logo) {
@@ -159,7 +168,6 @@ class EmpresaController extends Controller
         return redirect()->route('empresas.index')
             ->with('success', 'Empresa eliminada exitosamente.');
     }
-
     public function buscarUsuarios(Request $request)
     {
         $nombre = $request->get('nombre');

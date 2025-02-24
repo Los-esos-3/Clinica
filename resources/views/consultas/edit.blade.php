@@ -17,8 +17,8 @@
                             <label for="medico_id" class="block text-sm font-medium text-gray-700">Médico</label>
                             <select name="medico_id" id="medico_id" class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required>
                                 <option value="">Seleccione un médico</option>
-                                @foreach ($medicos as $medico)
-                                    <option value="{{ $medico->id }}" {{ $consulta->medico_id == $medico->id ? 'selected' : '' }}>{{ $medico->nombre_completo }}</option>
+                                @foreach ($doctores as $doctor)
+                                    <option value="{{ $doctor->id }}" >{{ $doctor->nombre_completo }}</option>
                                 @endforeach
                             </select>
                         </div>

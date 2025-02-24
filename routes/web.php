@@ -129,6 +129,7 @@ Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function ()
 Route::group(['middleware' => ['auth', 'permission:ver dashboard']], function () {
     return view('dashboard');
 });
+
 Route::get('/Expedientes', [ExpedientesController::class, 'admin'])->name('Expedientes.admin');
 
 Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
@@ -177,7 +178,7 @@ Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 Route::resource('secretarias', SecretariasController::class);
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('/secretaria/dashboard', [SecretariasController::class, 'das hboard'])
+    Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard'])
         ->name('secretaria.dashboard');
 
     Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');

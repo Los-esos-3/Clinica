@@ -26,8 +26,8 @@
                             <select name="medico_id" id="medico_id" required
                                 class="block w-full p-2 mt-1 border border-gray-400 rounded-md">
                                 <option value="">Seleccione un médico</option>
-                                @foreach ($medicos as $medico)
-                                    <option value="{{ $medico->id }}">{{ $medico->nombre_completo }}</option>
+                                @foreach ($doctores as $doctor)
+                                    <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
                                 @endforeach
                             </select>
                         </div>
