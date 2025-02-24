@@ -20,7 +20,7 @@
             <!-- Campo de nombre -->
             <div class="mb-4">
                 <label for="name" class="block text-lg font-semibold">Nombre del Rol</label>
-                <input type="text" id="name" name="name" value="Secretaria"
+                <input type="text" id="name" name="name" value="{{$role->name}}"
                     class="w-full p-2 border border-gray-300 rounded-lg">
             </div>
 

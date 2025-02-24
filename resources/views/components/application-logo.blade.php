@@ -41,7 +41,7 @@
 
 </style>
 
-<a href="{{ route('welcome') }}">
+<a class="no-underline" href="{{ route('welcome') }}">
     <div class="header-title"> 
         <span class="kaiser">{{ $nombreEmpresa }}</span> 
     </div> 
