@@ -24,10 +24,6 @@ return new class extends Migration
         $table->text('descripcion');
         $table->timestamps();
     });
-
-    Schema::table('users', function (Blueprint $table) {
-        $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
-    });
 }
 
     /**

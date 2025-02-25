@@ -19,13 +19,17 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
+            
+            // Definir 'role' antes de la clave foránea
+            $table->unsignedBigInteger('role')->default('4'); 
             $table->foreign('role')->references('id')->on('roles')->onDelete('cascade');
+        
             $table->string('profile_photo_path', 2048)->nullable();
-            $table->string('role'); // Para almacenar el rol (admin, doctor, secretaria)
-            $table->unsignedBigInteger('empresa_id')->nullable(); // Relación con la empresa
+            $table->unsignedBigInteger('empresa_id')->nullable();
             $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
             $table->timestamps();
         });
+        
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
