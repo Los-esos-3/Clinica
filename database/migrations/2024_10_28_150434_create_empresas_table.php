@@ -26,7 +26,7 @@ return new class extends Migration
     });
 
     Schema::table('users', function (Blueprint $table) {
-        $table->foreignId('empresa_id')->nullable()->constrained('empresas')->onDelete('set null');
+        $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
     });
 }
 
