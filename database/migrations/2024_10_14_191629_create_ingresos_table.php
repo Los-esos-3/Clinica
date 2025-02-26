@@ -14,8 +14,7 @@ class CreateIngresosTable extends Migration
             $table->unsignedBigInteger('paciente_id');
             $table->decimal('total', 8);
             $table->timestamps();
-
-              });
+            });
     }
 
 
