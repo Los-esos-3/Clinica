@@ -33,11 +33,26 @@ class CustomRegisterController extends Controller
      */
     protected function validator(array $data)
     {
+
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                'unique:users',
+                function ($attribute, $value, $fail) {
+                    if (!preg_match('/^[a-zA-Z0-9._%+-]+@gmail\.com$/', $value)) {
+                        $fail('El correo electrónico debe ser una cuenta de Gmail.');
+                    }
+                },
+            ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone' => ['required', 'string', 'max:20'],
+            'phone' => [
+                'required',
+                'digits:10', // 🔹 EXIGE exactamente 10 dígitos numéricos
+            ],
         ]);
     }
 

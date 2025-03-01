@@ -79,7 +79,7 @@
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-gray-700">Foto de Perfil <label
-                                            class="pl-5 text-red-500">*Obligatorio*</label></label>
+                                            class="pl-5 text-gray-400">*Opcional*</label></label>
                                     <div id="drop-area"
                                         class="border-2 border-dashed border-gray-300 p-4 rounded-lg text-center">
                                         <p>Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>

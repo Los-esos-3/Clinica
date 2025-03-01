@@ -10,6 +10,7 @@ use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use App\Events\UsuarioCreado;
 
 class User extends Authenticatable
 {
@@ -65,7 +66,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    protected static function boot()
+    {
+        parent::boot();
 
+        static::created(function ($user) {
+            event(new UsuarioCreado($user));
+        });
+
+        static::updated(function ($user) {
+            if ($user->wasChanged('role')) {
+                event(new UsuarioCreado($user));
+            }
+        });
+    }
+
+    public function doctor()
+    {
+        return $this->hasOne(Doctores::class );
+    }
     public function pacientes()
     {
         return $this->hasMany(Paciente::class);

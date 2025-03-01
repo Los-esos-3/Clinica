@@ -15,13 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('telefono');
+            $table->string('foto_perfil')->nullable(); 
             $table->date('fecha_nacimiento');
             $table->integer('edad');
             $table->string('direccion');
             $table->string('genero');
             $table->string('estado_civil');
-            $table->date('fecha_registro');
-            $table->time('hora_registro');
             $table->string('tipo_sangre');
             $table->string('ocupacion')->nullable();
             $table->unsignedBigInteger('user_id');

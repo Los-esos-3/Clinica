@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('doctores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('empresa_id')->constrained()->onDelete('cascade');
+            $table->foreignId('empresa_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('user_id')->constrain()->onDelete('cascade');
             $table->string('nombre_completo');
-            $table->date('fecha_nacimiento');
-            $table->enum('genero', ['Masculino', 'Femenino', 'Otro']);
+            $table->date('fecha_nacimiento')->nullable();
+            $table->enum('genero', ['Masculino', 'Femenino', 'Otro'])->nullable();
             $table->string('telefono', 15)->nullable();
-            $table->string('email')->unique();
+            $table->string('email')->unique()->nullable();
             $table->text('domicilio')->nullable();
             $table->string('nacionalidad');
             $table->string('foto_perfil')->nullable();

@@ -189,7 +189,7 @@
                          <div class="mb-4">
                             <label for="empresa_id" class="block text-sm font-medium text-gray-700">Empresa</label>
                             <select name="empresa_id" id="empresa_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
-                                <option value="">Selecciona una empresa</option>
+                                <option value="{{ old('empresa_id',$doctor->empresa ?? '') }}">Selecciona una empresa</option>
                                 @foreach ($empresas as $empresa)
                                     <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
                                 @endforeach

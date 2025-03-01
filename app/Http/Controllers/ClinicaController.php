@@ -56,6 +56,7 @@ class ClinicaController extends Controller
             'ocupacion' => 'nullable|string|max:100',
         ]);
 
+            
         // Verifica el ID del usuario autenticado
         $validatedData['user_id'] = Auth::id();
 

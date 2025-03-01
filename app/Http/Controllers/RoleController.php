@@ -8,8 +8,8 @@ use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use App\Models\Empresa;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Support\Facades\Hash;
-
+use App\Models\Doctores;
+use Illuminate\Support\Facades\Auth;
 class RoleController extends Controller
 {
     use AuthorizesRequests;
@@ -61,18 +61,45 @@ class RoleController extends Controller
     }
 
     public function storeAssignedRole(Request $request, $userId)
-{
-    $user = User::findOrFail($userId);
-    $role = Role::findById($request->role_id); // Busca el rol con Spatie
-    
-    if (!$role) {
-        return redirect()->back()->with('error', 'Rol no encontrado.');
+    {
+        $user = User::findOrFail($userId);
+        $role = Role::findById($request->role_id); // Busca el rol con Spatie
+
+        if (!$role) {
+            return redirect()->back()->with('error', 'Rol no encontrado.');
+        }
+
+        // Asignar el nuevo rol, eliminando los anteriores
+        $user->syncRoles([$role->name]);
+
+        // Si el rol asignado es "Doctor", crear el registro en la tabla doctores
+        if ($role->name === 'Doctor') {
+            $this->asignarRolDoctor($userId);
+        }
+
+        return redirect()->route('roles.index')->with('success', 'Rol asignado correctamente.');
     }
 
-    $user->syncRoles([$role->name]); // Asigna el nuevo rol, eliminando los anteriores
-    // Si deseas que pueda tener múltiples roles, usa `$user->assignRole($role->name);`
+    protected function asignarRolDoctor($userId)
+{
+    // Obtener el usuario
+    $user = User::findOrFail($userId);
 
-    return redirect()->route('roles.index')->with('success', 'Rol asignado correctamente.');
+    // Obtener el empresa_id del usuario autenticado (admin que asigna el rol)
+    $empresaId = Auth::user()->empresa_id;
+
+    // Verificar si ya existe un registro en la tabla doctores para este usuario
+    $doctorExistente = Doctores::where('user_id', $user->id)->first();
+
+    if (!$doctorExistente) {
+        // Crear un registro en la tabla doctores
+        Doctores::create([
+            'user_id' => $user->id,
+            'nombre_completo' => $user->name,
+            'email' => $user->email,
+            'empresa_id' => $empresaId, // Asignar el empresa_id del admin
+        ]);
+    }
 }
 
     public function edit(Role $role)
@@ -93,11 +120,11 @@ class RoleController extends Controller
     {
         $role->delete();
         return redirect()->route('roles.index')->with('success', 'Rol eliminado exitosamente.');
-
     }
+
     public function show(Role $role)
-{
-    $permissions = Permission::all();
-    return view('roles.show', compact('role', 'permissions'));
-}
+    {
+        $permissions = Permission::all();
+        return view('roles.show', compact('role', 'permissions'));
+    }
 }

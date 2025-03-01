@@ -112,8 +112,13 @@
                     </label>
                     <a href="{{ route('password.request') }}" class="text-sm text-blue-500 hover:underline">¿Olvidaste tu contraseña?</a>
                 </div>
-                <div>
-                    <button type="submit" id="submit-btn" class="w-full py-3 bg-gray-500 text-white rounded hover:bg-blue-600 btn-animate" disabled>Iniciar Sesión</button>
+                <div class="flex flex-col space-y-4">
+                    <button type="submit" id="submit-btn" class="w-full py-3 bg-gray-500 text-white rounded hover:bg-blue-600 btn-animate" disabled>
+                        Iniciar Sesión
+                    </button>
+                    <a href="{{ route('register') }}" class="w-full py-3 bg-green-500 text-white text-center rounded hover:bg-green-600 btn-animate">
+                        Registrarse
+                    </a>
                 </div>
             </form>
         </div>

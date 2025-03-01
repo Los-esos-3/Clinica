@@ -1,11 +1,13 @@
 <x-app-layout>
 
     <head>
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Dashboard Secretaria</title>
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/es.js'></script>
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
         <style>
             /* Estilos del calendario */
@@ -305,19 +307,19 @@
                                 });
 
                                 newCitaModal.classList.add(
-                                'hidden'); // Cierra el modal después de guardar la cita
+                                    'hidden'); // Cierra el modal después de guardar la cita
                                 location.reload(); // Recarga la página para actualizar el calendario
                             })
                             .catch(error => console.error("Error:", error));
                     });
                 }
-
                 // -------------------- INICIALIZAR FULLCALENDAR --------------------
                 let calendarEl = document.getElementById('admin-calendar');
 
                 if (calendarEl) {
                     let calendar = new FullCalendar.Calendar(calendarEl, {
                         initialView: 'dayGridMonth',
+                        locale: 'es',
                         events: @json($citas),
                         eventClick: function(info) {
                             // Mostrar los detalles de la cita

@@ -5,6 +5,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <title>Dashboard</title>
         <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.js'></script>
+        <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/locales/es.js'></script>
         <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.10.2/main.min.css' rel='stylesheet' />
         <style>
             /* Estilos del calendario */
@@ -112,7 +113,7 @@
 
                                     <!-- Calendario -->
                                     <div id="admin-calendar"></div>
-                                </div>
+                                </div>  
 
                                 <!-- Modal para crear cita -->
                                 <div id="newCitaModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
@@ -261,6 +262,7 @@ let calendarEl = document.getElementById('admin-calendar');
 if (calendarEl) {
     let calendar = new FullCalendar.Calendar(calendarEl, {
         initialView: 'dayGridMonth',
+        locale: 'es',
         events: @json($citas),
         eventClick: function(info) {
             // Mostrar los detalles de la cita
@@ -373,24 +375,6 @@ document.head.appendChild(style);
 </x-app-layout>
 
 @push('scripts')
-{{-- <script>
-    function initializeCalendar() {
-        var calendarEl = document.getElementById('secretaria-calendar');
-        if (calendarEl && !calendarEl.classList.contains('initialized')) {
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialVie  w: 'dayGridMonth',
-
-            });
-            calendar.render();
-            calendarEl.classList.add('initialized');
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        if (typeof Alpine !== 'undefined') {
-            Alpine.start();
-        }
-    }); --}}
 </script>
 @endpush
 

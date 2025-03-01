@@ -11,9 +11,6 @@ use Illuminate\Support\Facades\Log;
 
 class EmpresaController extends Controller
 {
-  
-
-   
     public function index()
     {
         $user = Auth::user();

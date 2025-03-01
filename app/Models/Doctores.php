@@ -13,6 +13,7 @@ class Doctores extends Model
 
     protected $fillable = [
         'nombre_completo',
+        'user_id',
         'fecha_nacimiento',
         'genero',
         'telefono',
@@ -36,5 +37,9 @@ class Doctores extends Model
     public function empresa()
     {
         return $this->belongsTo(Empresa::class);
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 } 

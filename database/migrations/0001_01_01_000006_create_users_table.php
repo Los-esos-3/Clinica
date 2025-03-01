@@ -26,7 +26,7 @@ return new class extends Migration
         
             $table->string('profile_photo_path', 2048)->nullable();
             $table->unsignedBigInteger('empresa_id')->nullable();
-            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('cascade');
+            $table->foreign('empresa_id')->references('id')->on('empresas')->onDelete('set null');
             $table->timestamps();
         });
         

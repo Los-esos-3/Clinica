@@ -7,11 +7,19 @@ use App\Models\Paciente; // Asegúrate de que el modelo Paciente esté correctam
 use App\Models\Cita; // Asegúrate de que el modelo Cita esté correctamente importado
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Spatie\Permission\Traits\HasRoles;
 
 class CitaController extends Controller
 {
+    use AuthorizesRequests;
+    use hasRoles;
+    
     public function index()
     {
+        $this->authorize('ver dashboard');
+
         $doctores = [];
         $user = Auth::user();
 
@@ -28,7 +36,6 @@ class CitaController extends Controller
                 'motivo' => $cita->motivo,
             ];
         });
-
         if ($user->hasRole('Admin')) {
             $doctores = Doctores::all(); // Obtener todos los doctores
             return view('dashboard', compact('doctores', 'pacientes', 'citas'));

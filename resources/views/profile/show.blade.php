@@ -1,8 +1,18 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
-        </h2>
+        <div class="flex items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Profile') }}
+            </h2>
+            <ul class="flex">
+                <li>
+                    <a href="{{ route('welcome') }}" 
+                       class="inline-block border-b-2 rounded-t-lg no-underline text-zinc-950 hover:text-indigo-600 transition-colors duration-200">
+                        INICIO 
+                    </a>
+                </li>
+            </ul>
+        </div>
     </x-slot>
 
     <div>
