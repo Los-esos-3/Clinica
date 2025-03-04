@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Spatie\Permission\Traits\HasRoles;
-
+use Spatie\Permission\Models\Role;
 class CitaController extends Controller
 {
     use AuthorizesRequests;
@@ -23,7 +23,6 @@ class CitaController extends Controller
         $doctores = [];
         $user = Auth::user();
 
-        // Obtener solo los pacientes creados por el usuario actual
         $pacientes = Paciente::where('user_id', $user->id)->get();
 
         $citas = Cita::with(['paciente', 'doctor'])->get()->map(function ($cita) {
@@ -36,8 +35,8 @@ class CitaController extends Controller
                 'motivo' => $cita->motivo,
             ];
         });
-        if ($user->hasRole('Admin')) {
-            $doctores = Doctores::all(); // Obtener todos los doctores
+        if ($user->hasAnyRole('Root','Admin')) {
+            $doctores = Doctores::all(); 
             return view('dashboard', compact('doctores', 'pacientes', 'citas'));
         } else {
             if ($user->empresa_id) {

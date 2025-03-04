@@ -96,9 +96,9 @@
                     
                     <div>
                         <label class="block text-sm text-gray-700 mb-2">Celular</label>
-                        <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md 
-                               @error('phone') border-red-500 @enderror" 
-                               value="{{ old('phone') }}" required>
+                        <input type="tel" name="number" class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                               @error('number') border-red-500 @enderror" 
+                               value="{{ old('number') }}" required>
                         @error('phone')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror

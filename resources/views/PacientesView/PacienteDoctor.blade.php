@@ -4,7 +4,6 @@
             background-color: rgb(55, 65, 81, 1) !important;
             color: white;
             padding: 1rem;
-            display: block;
         }
 
         .nav-container {
@@ -76,7 +75,6 @@
             <div class="nav-links">
                 <a href="{{ route('dashboard') }}">Calendario</a>
                 <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
-                <a href="{{ route('ingresos.index') }}">Ingresos</a>
             </div>
 
             <div class="relative inline-block text-left">

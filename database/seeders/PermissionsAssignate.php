@@ -14,17 +14,30 @@ class PermissionsAssignate extends Seeder
      */
     public function run(): void
     {
- 
+        $rolRoot = Role::create(['name'=>'Root']);
+        $rolRoot->givePermissionTo(Permission::all());
    
+       
         $rolAdmin = Role::create(['name' => 'Admin']);
-        $rolAdmin->givePermissionTo(Permission::all());
+        $rolAdmin->givePermissionTo(
+            ['ver dashboard', 'ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes',
+             'crear expedientes', 'editar expedientes', 'eliminar expedientes', 'ver ingresos', 'crear ingresos', 'ver doctores', 'crear doctores',
+              'editar doctores', 'eliminar doctores', 'ver secretarias', 'crear secretarias', 'editar secretarias', 'eliminar secretarias'
+            ,'ver empresas', 'crear empresas', 'editar empresas', 'eliminar empresas']);
+
 
         $rolDoctor = Role::create(['name' => 'Doctor']);
-        $rolDoctor->givePermissionTo(['ver dashboard', 'ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes', 'crear expedientes', 'editar expedientes', 'eliminar expedientes', 'ver ingresos', 'crear ingresos']);
+        $rolDoctor->givePermissionTo(
+            ['ver dashboard', 'ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes', 
+            'crear expedientes', 'editar expedientes', 'eliminar expedientes', 'ver ingresos', 'crear ingresos']);
 
-        $rolSecretaria = Role::create(['name' => 'Secretaria']);
-        $rolSecretaria->givePermissionTo(['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes','crear expedientes','editar expedientes','eliminar expedientes', 'ver ingresos', 'crear ingresos']);
+        
+            $rolSecretaria = Role::create(['name' => 'Secretaria']);
+        $rolSecretaria->givePermissionTo(
+            ['ver dashboard','ver pacientes', 'crear pacientes', 'editar pacientes', 'eliminar pacientes', 'ver expedientes',
+            'crear expedientes','editar expedientes','eliminar expedientes']);
 
-        $rolUsuario = Role::create(['name'=> 'Usuario']);
+        
+            $rolUsuario = Role::create(['name'=> 'Usuario']);
     }
 }

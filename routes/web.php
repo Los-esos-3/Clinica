@@ -26,17 +26,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         return redirect()->route('welcome');
     })->name('welcome');
 
-    Route::get('/welcome', function () {
-        return view('welcome');
-    })->name('welcome');
-
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-
-    Route::get('/pacientes', [ClinicaController::class, 'PacientesView'])
-        ->name('clinica.pacientes')
-        ->middleware('check.role');
 });
 
 //Rutas para usuarios
@@ -130,8 +122,6 @@ Route::group(['middleware' => ['auth', 'permission:ver dashboard']], function ()
     return view('dashboard');
 });
 
-Route::get('/Expedientes', [ExpedientesController::class, 'admin'])->name('Expedientes.admin');
-
 Route::group(['middleware' => ['auth', 'permission:ver expedientes']], function () {
     Route::get('/Expedientes', [ExpedientesController::class, 'admin'])->name('Expedientes.admin');
     Route::get('/Expedientes', action: [ExpedientesController::class, 'index'])->name(name: 'Expedientes');
@@ -177,14 +167,15 @@ Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 
 Route::resource('secretarias', SecretariasController::class);
 
-Route::group(['middleware' => ['auth']], function () {
-    Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard'])
-        ->name('secretaria.dashboard');
+
+    Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard']);
+    
 
     Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
 
     Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
-});
+
+
 Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
 
 Route::delete('/citas/{id}', [CitaController::class, 'destroy'])->name('citas.destroy');

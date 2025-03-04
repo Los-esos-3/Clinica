@@ -19,9 +19,9 @@ return new class extends Migration
             $table->date('fecha_nacimiento')->nullable();
             $table->enum('genero', ['Masculino', 'Femenino', 'Otro'])->nullable();
             $table->string('telefono', 15)->nullable();
-            $table->string('email')->unique()->nullable();
+            $table->string('email')->unique();
             $table->text('domicilio')->nullable();
-            $table->string('nacionalidad');
+            $table->string('nacionalidad')->nullable();
             $table->string('foto_perfil')->nullable();
             $table->string('especialidad_medica')->nullable();
             $table->string('universidad')->nullable();

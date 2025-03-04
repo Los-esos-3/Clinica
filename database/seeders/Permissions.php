@@ -47,6 +47,12 @@ class Permissions extends Seeder
         Permission::create(['name'=>'editar doctores']);
         Permission::create(['name'=>'eliminar doctores']);
 
+        //Permisos para el apartado de Secretaria
+        Permission::create(['name'=>'ver secretarias']);
+        Permission::create(['name'=>'crear secretarias']);
+        Permission::create(['name'=>'editar secretarias']);
+        Permission::create(['name'=>'eliminar secretarias']);
+
         //Permisos par el apartado de Empresas
         Permission::create(['name'=>'ver empresas']);
         Permission::create(['name'=>'crear empresas']);

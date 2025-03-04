@@ -36,6 +36,7 @@ class CustomRegisterController extends Controller
 
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
+            'number' =>['required','integer','numeric', 'max:10', 'unique:users'],
             'email' => [
                 'required',
                 'string',
@@ -49,11 +50,8 @@ class CustomRegisterController extends Controller
                 },
             ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone' => [
-                'required',
-                'digits:10', // 🔹 EXIGE exactamente 10 dígitos numéricos
-            ],
         ]);
+ 
     }
 
     /**
@@ -67,8 +65,8 @@ class CustomRegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
+            'number'=> $data['number'],
             'password' => Hash::make($data['password']),
-            'phone' => $data['phone'],
         ]);
     }
 

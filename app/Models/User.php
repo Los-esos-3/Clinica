@@ -27,6 +27,7 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'number',
         'password',
         'role',
         'empresa_id',
@@ -66,21 +67,6 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::created(function ($user) {
-            event(new UsuarioCreado($user));
-        });
-
-        static::updated(function ($user) {
-            if ($user->wasChanged('role')) {
-                event(new UsuarioCreado($user));
-            }
-        });
-    }
-
     public function doctor()
     {
         return $this->hasOne(Doctores::class );

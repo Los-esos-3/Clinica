@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(Auth::user()->hasRole('Admin'))
+    @if (Auth::user()->hasAnyRole(['Root','Admin']))
         <div class="p-4 sm:p-6 md:p-8 min-h-screen bg-gray-100">
             <div class="max-w-full mx-auto">
                 <div class="bg-white overflow-hidden shadow-xl rounded-lg">
@@ -37,21 +37,13 @@
                                             PACIENTES
                                         </a>
                                     </li>
-                                    <li class="ml-1">
-                                        <a  class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                            VISITAS
-                                        </a>
-                                    </li>
-                                    <li class="ml-1">
-                                        <a href="{{route('ingresos.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
-                                            INGRESOS
-                                        </a>
-                                    </li>
+                                    @if (Auth::user()->hasAnyRole(['Root']))
                                     <li>
                                         <a href="{{route('roles.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                             ROLES
                                         </a>
                                     </li>
+                                    @endif
                                     <li>
                                         <a href="{{route('empresas.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
                                             EMPRESA

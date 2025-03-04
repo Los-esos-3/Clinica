@@ -150,27 +150,7 @@
                                         class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('descripcion') is-invalid @enderror"
                                         id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion') }}</textarea>
                                 </div>
-
-                                <div class="mb-4">
-                                    <label for="search_user" class="block text-sm font-medium text-gray-700">Buscar
-                                        Usuario</label>
-                                    <input type="text" id="search_user" name="search_user"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
-                                        placeholder="Buscar por nombre...">
-                                    <button type="button" id="search_button"
-                                        class="mt-2 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-                                        Buscar
-                                    </button>
-                                </div>
-
-                                <div id="user_results" class="mt-4">
-                                    <!-- Aquí se mostrarán los resultados de la búsqueda -->
-                                </div>
-
-                                <div id="selected_users" class="mt-4">
-                                    <!-- Aquí se mostrarán los usuarios seleccionados -->
-                                </div>
-
+                                
                                 <div class="text-center mt-4">
                                     <button type="submit" class="btn-submit">
                                         Guardar Datos de la Empresa

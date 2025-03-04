@@ -9,15 +9,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
+use Spatie\Permission\Traits\HasRoles;
 
 class DoctoresController extends Controller
 {
+    use HasRoles;
     public function index(Request $request)
     {
         $search = $request->input('search');
 
-        // Obtener todos los doctores con sus relaciones
-        $query = Doctores::with('user');
+        $query = Doctores::with('user')->whereHas('user', function ($q) {
+            $q->whereHas('roles', function ($roleQuery) {
+                $roleQuery->where('name', 'Doctor'); // Filtrar por rol usando Spatie
+            });
+        });
+    
 
         // Filtrar por empresa si el usuario autenticado tiene empresa_id
         if (Auth::check() && Auth::user()->empresa_id) {

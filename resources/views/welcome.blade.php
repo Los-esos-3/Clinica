@@ -758,7 +758,10 @@
                 @if (Route::has('login'))
                     @auth
                         <li>
-                            <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Agenda</a>
+                            @if (Auth::user()->hasAnyRole(['Root','Admin', 'Doctor', 'Secretaria']))
+                                <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Agenda</a>
+                            @endif
+
                             <!-- Ajustar margen aquí -->
 
                             <div class="user-avatar" onclick="toggleUserMenu()">

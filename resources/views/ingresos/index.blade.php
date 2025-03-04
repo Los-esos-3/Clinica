@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if(Auth::user()->hasRole('Admin'))
+    @if (Auth::user()->hasAnyRole(['Root','Admin']))
         <div class="p-4 sm:p-6 md:p-8 min-h-screen bg-gray-100">
             <div class="max-w-full mx-auto">
                 <div class="bg-white overflow-hidden shadow-xl rounded-lg">
