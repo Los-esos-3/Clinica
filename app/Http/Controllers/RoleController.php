@@ -10,6 +10,7 @@ use App\Models\Empresa;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Doctores;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Secretarias;
 class RoleController extends Controller
 {
     use AuthorizesRequests;
@@ -76,6 +77,11 @@ class RoleController extends Controller
         if ($role->name === 'Doctor') {
             $this->asignarRolDoctor($userId);
         }
+        
+        if($role->name == 'Secretaria')
+        {
+            $this->asignarRolSecretaria($userId);
+        }
 
         return redirect()->route('roles.index')->with('success', 'Rol asignado correctamente.');
     }
@@ -98,6 +104,27 @@ class RoleController extends Controller
             'nombre_completo' => $user->name,
             'email' => $user->email,
             'empresa_id' => $empresaId, // Asignar el empresa_id del admin
+        ]);
+    }
+}
+protected function asignarRolSecretaria($userId)
+{
+    // Obtener el usuario
+    $user = User::findOrFail($userId);
+
+    // Obtener el empresa_id del usuario autenticado (admin que asigna el rol)
+    $empresaId = Auth::user()->empresa_id;
+
+    // Verificar si ya existe un registro en la tabla doctores para este usuario
+    $secretariaExistente = Secretarias::where('user_id', $user->id)->first();
+
+    if (!$secretariaExistente) {
+        // Crear un registro en la tabla doctores
+        Secretarias::create(attributes: [
+            'user_id' => $user->id,
+            'nombre_completo' => $user->name,
+            'email' => $user->email,
+            'empresa_id' => $empresaId, 
         ]);
     }
 }

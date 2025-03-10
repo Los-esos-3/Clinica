@@ -15,23 +15,30 @@ class SecretariasController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-        
+
         // Obtener todas las secretarias si no hay usuario autenticado
         $query = Secretarias::query();
-        
-        // Si hay un usuario autenticado y tiene empresa_id, filtrar por esa empresa
+
+        // Verificar si el usuario autenticado tiene una empresa asignada
         if (Auth::check() && Auth::user()->empresa_id) {
-            $empresa_id = Auth::user()->empresa_id;
-            $query->where('empresa_id', $empresa_id);
+            $empresaId = Auth::user()->empresa_id;
+
+            // Filtrar doctores solo si el usuario tiene una empresa
+            $query->whereHas('user', function ($q) use ($empresaId) {
+                $q->where('empresa_id', $empresaId);
+            });
+        } else {
+            // Si el usuario no tiene empresa, no mostrar ningún doctor
+            $query->whereRaw('1 = 0'); // Esto asegura que no se devuelvan resultados
         }
-        
+
         // Aplicar búsqueda si existe
         if ($search) {
             $query->where('nombre_completo', 'like', '%' . $search . '%');
         }
-        
+
         $secretarias = $query->get();
-        
+
         return view('secretarias.index', compact('secretarias'));
     }
 
@@ -44,7 +51,7 @@ class SecretariasController extends Controller
             // Si no, mostrar todas las empresas
             $empresas = Empresa::all();
         }
-        
+
         return view('secretarias.create', compact('empresas'));
     }
 
@@ -134,7 +141,7 @@ class SecretariasController extends Controller
     {
         $secretaria = Secretarias::findOrFail($id);
         $secretaria->delete();
-    
+
         return redirect()->route('secretarias.index')->with('success', 'Secretaria eliminada correctamente.');
     }
 
@@ -143,7 +150,7 @@ class SecretariasController extends Controller
         try {
             $doctores = \App\Models\Doctores::all();
             $pacientes = \App\Models\Paciente::all();
-            
+
             return view('Secretaria.Dashboard', [
                 'doctores' => $doctores,
                 'pacientes' => $pacientes

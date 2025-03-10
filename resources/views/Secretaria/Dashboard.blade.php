@@ -85,8 +85,8 @@
                 <div class="nav-links">
                     <a href="{{ route('dashboard') }}">Calendario</a>
                     <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
-                    @if (Auth::user()->hasAnyRole(['Root','Doctor', 'Admin']))
-                    <a href="{{route ('ingresos.index')}}">Ingresos</a>
+                    @if (Auth::user()->hasAnyRole(['Doctor']))
+                    <a href="{{route ('ingresos.index')}}">Secretaria</a>
                     @endif
                 </div>
 

@@ -4,6 +4,7 @@
             background-color: rgb(55, 65, 81, 1) !important;
             color: white;
             padding: 1rem;
+            display:block !important;
         }
 
         .nav-container {
@@ -75,6 +76,9 @@
             <div class="nav-links">
                 <a href="{{ route('dashboard') }}">Calendario</a>
                 <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
+                @if (Auth::user()->hasRole('Doctor'))
+                    <a href="">Secretarias</a>
+                @endif
             </div>
 
             <div class="relative inline-block text-left">

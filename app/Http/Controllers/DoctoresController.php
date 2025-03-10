@@ -17,21 +17,26 @@ class DoctoresController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-
+    
         $query = Doctores::with('user')->whereHas('user', function ($q) {
             $q->whereHas('roles', function ($roleQuery) {
                 $roleQuery->where('name', 'Doctor'); // Filtrar por rol usando Spatie
             });
         });
     
-
-        // Filtrar por empresa si el usuario autenticado tiene empresa_id
+        // Verificar si el usuario autenticado tiene una empresa asignada
         if (Auth::check() && Auth::user()->empresa_id) {
-            $query->whereHas('user', function ($q) {
-                $q->where('empresa_id', Auth::user()->empresa_id);
+            $empresaId = Auth::user()->empresa_id;
+    
+            // Filtrar doctores solo si el usuario tiene una empresa
+            $query->whereHas('user', function ($q) use ($empresaId) {
+                $q->where('empresa_id', $empresaId);
             });
+        } else {
+            // Si el usuario no tiene empresa, no mostrar ningún doctor
+            $query->whereRaw('1 = 0'); // Esto asegura que no se devuelvan resultados
         }
-
+    
         // Aplicar búsqueda si existe
         if ($search) {
             $query->whereHas('user', function ($q) use ($search) {
@@ -39,10 +44,10 @@ class DoctoresController extends Controller
                     ->orWhere('especialidad_medica', 'like', '%' . $search . '%');
             });
         }
-
+    
         // Paginar los resultados
         $doctores = $query->paginate(10);
-
+    
         return view('doctores.index', compact('doctores', 'search'));
     }
     public function create()
@@ -56,30 +61,6 @@ class DoctoresController extends Controller
         }
 
         return view('doctores.create', compact('empresas'));
-    }
-    public function asignarRolDoctor($userId)
-    {
-        // Obtener el usuario
-        $user = User::findOrFail($userId);
-
-        // Asignar el rol de "Doctor"
-        $doctorRole = Role::where('name', 'Doctor')->first();
-        $user->assignRole($doctorRole);
-
-        // Verificar si ya existe un registro en la tabla doctores para este usuario
-        $doctorExistente = Doctores::where('user_id', $user->id)->first();
-
-        if (!$doctorExistente) {
-            // Crear un registro en la tabla doctores
-            Doctores::create([
-                'user_id' => $user->id,
-                'nombre_completo' => $user->name, 
-                'email' => $user->email,
-            ]);
-        }
-
-        return redirect()->route('doctores.index')
-            ->with('success', 'Rol de Doctor asignado y registro creado exitosamente.');
     }
 
     public function store(Request $request)
@@ -107,13 +88,6 @@ class DoctoresController extends Controller
             'empresa_id' => 'required|exists:empresas,id',
         ]);
 
-        // Crear el usuario
-        $user = User::create([
-            'nombre_completo' => $validated['nombre_completo'],
-            'email' => $validated['email'],
-            'password' => bcrypt($validated['password']),
-            'empresa_id' => $validated['empresa_id'],
-        ]);
 
         // Guardar la foto de perfil si se proporciona
         if ($request->hasFile('foto_perfil')) {
@@ -122,26 +96,6 @@ class DoctoresController extends Controller
             $imagen->move(public_path('images'), $nombreImagen);
             $validated['foto_perfil'] = $nombreImagen;
         }
-
-        // Crear el registro en la tabla doctores
-        Doctores::create([
-            'user_id' => $user->id,
-            'fecha_nacimiento' => $validated['fecha_nacimiento'],
-            'genero' => $validated['genero'],
-            'foto_perfil' => $validated['foto_perfil'] ?? null,
-            'telefono' => $validated['telefono'],
-            'domicilio' => $validated['domicilio'],
-            'nacionalidad' => $validated['nacionalidad'],
-            'especialidad_medica' => $validated['especialidad_medica'],
-            'universidad' => $validated['universidad'],
-            'titulo' => $validated['titulo'],
-            'año_graduacion' => $validated['año_graduacion'],
-            'años_experiencia' => $validated['años_experiencia'],
-            'contacto_emergencia_nombre' => $validated['contacto_emergencia_nombre'],
-            'contacto_emergencia_relacion' => $validated['contacto_emergencia_relacion'],
-            'contacto_emergencia_telefono' => $validated['contacto_emergencia_telefono'],
-            'area_departamento' => $validated['area_departamento'],
-        ]);
 
         return redirect()->route('doctores.index')
             ->with('success', 'Doctor registrado exitosamente.');
