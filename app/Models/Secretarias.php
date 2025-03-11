@@ -47,8 +47,16 @@ class Secretarias extends Model
     {
         return $this->belongsTo(Empresa::class);
     }
+    public function pacientes()
+    {
+        return $this->hasMany(Paciente::class, 'doctor_id');
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function doctor()
+    {
+        return $this->belongsTo(Doctores::class, 'doctor_id');
     }
 }

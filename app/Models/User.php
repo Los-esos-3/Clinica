@@ -69,7 +69,7 @@ class User extends Authenticatable
     }
     public function doctor()
     {
-        return $this->hasOne(Doctores::class );
+        return $this->hasOne(Doctores::class,'user_id');
     }
     public function pacientes()
     {
@@ -78,5 +78,15 @@ class User extends Authenticatable
     public function empresa()
     {
         return $this->belongsTo(Empresa::class, 'empresa_id');
+    }
+    public function doctores()
+    {
+        return $this->belongsTo(Doctores::class, 'doctor_id');
+    }
+
+    // Relación con la secretaria
+    public function secretaria()
+    {
+        return $this->hasOne(Secretarias::class, 'user_id');
     }
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClinicaController;
 use App\Http\Controllers\ExpedientesController;
 use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\SecretariasDoctorController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -156,6 +157,11 @@ Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
         ->name('users.assign.role');
 });
 
+Route::middleware(['auth', 'role:Doctor'])->group(function () {
+    Route::get('/doctor/secretarias', [SecretariasDoctorController::class, 'index'])->name('Doctor.Secretaria');
+    Route::post('/doctor/secretarias/asignar', [SecretariasDoctorController::class, 'asignarSecretaria'])->name('Doctor.Secretaria.Asignar');
+    Route::delete('/doctor/secretarias/desasignar/{id}', [SecretariasDoctorController::class, 'desasignarSecretaria'])->name('Doctor.Secretaria.Desasignar');
+});
 
 Route::group(['middleware' => ['auth', 'permission:ver doctores']], function () {
     Route::resource('doctores', DoctoresController::class);

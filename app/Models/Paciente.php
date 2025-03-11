@@ -13,6 +13,8 @@ class Paciente extends Model
     use HasFactory;
     protected $fillable = [
         'foto_perfil',
+        'doctor_id',
+        'secretaria_id',
         'nombre',
         'telefono',
         'fecha_nacimiento',
@@ -42,5 +44,9 @@ class Paciente extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function doctor()
+    {
+        return $this->belongsTo(Doctores::class, 'doctor_id');
     }
 }
