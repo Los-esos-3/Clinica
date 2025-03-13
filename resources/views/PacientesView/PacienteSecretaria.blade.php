@@ -136,8 +136,8 @@
 
         <div class="flex items-center ml-4">
             <div class="relative flex">
-                <input type="text" id="search" placeholder="Buscar paciente"
-                    class="border rounded-l px-4 py-2" style="width: 300px;" oninput="filterPatients()">
+                <input type="text" id="search" placeholder="Buscar paciente" class="border rounded-l px-4 py-2"
+                    style="width: 300px;" oninput="filterPatients()">
                 <button type="button"
                     class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
@@ -158,55 +158,60 @@
     </div>
     <!-- Vista Crud de pacientes -->
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @foreach ($pacientes as $paciente)
-                    <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden">
-                        <div class="doctor-header flex items-center p-4 border-b">
-                            @if ($paciente->foto_perfil)
-                                <img src="{{ asset('images/' . $paciente->foto_perfil) }}"
-                                    alt="Foto de {{ $paciente->nombre }}"
-                                    class="w-24 h-24 object-cover rounded-full">
-                            @else
-                                <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
-                                    <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                    </svg>
+    @if ($pacientes->isEmpty())
+        <div class="flex justify-center justify-items-center items-center min-h-[500px]">
+            <h4 class="text-red-600">No hay pacientes creados</h4>
+        </div>
+    @else
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    @foreach ($pacientes as $paciente)
+                        <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden">
+                            <div class="doctor-header flex items-center p-4 border-b">
+                                @if ($paciente->foto_perfil)
+                                    <img src="{{ asset('images/' . $paciente->foto_perfil) }}"
+                                        alt="Foto de {{ $paciente->nombre }}"
+                                        class="w-24 h-24 object-cover rounded-full">
+                                @else
+                                    <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
+                                        <svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                        </svg>
+                                    </div>
+                                @endif
+                                <div class="ml-4">
+                                    <h3 class="text-lg font-semibold">{{ $paciente->nombre }}</h3>
+                                    <p class="text-gray-600">{{ $paciente->telefono }}</p>
                                 </div>
-                            @endif
-                            <div class="ml-4">
-                                <h3 class="text-lg font-semibold">{{ $paciente->nombre }}</h3>
-                                <p class="text-gray-600">{{ $paciente->telefono }}</p>
+                            </div>
+
+                            <div class="doctor-content p-4">
+                                <h4 class="font-semibold text-gray-700 mb-2">Información Personal</h4>
+                                <p><strong>Dirección:</strong> {!! $paciente->direccion ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
+                                <p><strong>Ocupacion:</strong> {{ $paciente->ocupacion }}</p>
+                            </div>
+
+                            <div class="flex justify-between p-4 border-t">
+                                <button class="bg-[rgb(55,65,81)]  text-white px-4 py-2 rounded-lg"
+                                    onclick="toggleModal('modal-informacion-{{ $paciente->id }}')">Ver
+                                    Detalles</button>
+                                <a href="{{ route('Pacientes.edit', $paciente->id) }}"
+                                    class="bg-[rgb(55,65,81)]  text-white px-3 py-2 rounded-lg no-underline hover:no-underline">Editar</a>
+                                <button onclick="toggleModal('modal-delete-pacientes-{{ $paciente->id }}')"
+                                    class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg">Eliminar</button>
                             </div>
                         </div>
-
-                        <div class="doctor-content p-4">
-                            <h4 class="font-semibold text-gray-700 mb-2">Información Personal</h4>
-                            <p><strong>Dirección:</strong> {!! $paciente->direccion ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
-                            <p><strong>Fecha de Nacimiento:</strong> {{ $paciente->fecha_nacimiento }}</p>
-                            <p><strong>Ocupacion:</strong> {{ $paciente->ocupacion }}</p>
-                        </div>
-
-                        <div class="flex justify-between p-4 border-t">
-                            <button class="bg-[rgb(55,65,81)]  text-white px-4 py-2 rounded-lg"
-                                onclick="toggleModal('modal-informacion-{{ $paciente->id }}')">Ver
-                                Detalles</button>
-                            <a href="{{ route('Pacientes.edit', $paciente->id) }}"
-                                class="bg-[rgb(55,65,81)]  text-white px-3 py-2 rounded-lg no-underline hover:no-underline">Editar</a>
-                            <button onclick="toggleModal('modal-delete-pacientes-{{$paciente->id}}')"
-                                class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg">Eliminar</button>
-                        </div>
-                    </div>
-                    <x-modal-mas-informacion :paciente="$paciente" />
-                    <x-modal-delete-pacients :paciente="$paciente" />
-                @endforeach
+                        <x-modal-mas-informacion :paciente="$paciente" />
+                        <x-modal-delete-pacients :paciente="$paciente" />
+                    @endforeach
+                </div>
             </div>
         </div>
-    </div>
-
+    @endif
     <div>
         {{ $pacientes->links() }}
     </div>
@@ -259,51 +264,51 @@
         });
     </script>
 
-    
-<script>
-    function toggleModal(modalId) {
-        const modal = document.getElementById(modalId);
-        const pageContent = document.querySelector('#app'); // Asegúrate de que tu contenedor principal tenga id="app"
 
-        if (modal) {
-            if (modal.classList.contains('hidden')) {   
-                // Abrir modal
-                modal.classList.remove('hidden');
-                document.documentElement.style.overflow = 'hidden'; // Bloquea el scroll en html
-                document.body.style.overflow = 'hidden'; // Bloquea el scroll en body
-                
-            } else {
-                // Cerrar modal
-                modal.classList.add('hidden');
-                document.documentElement.style.overflow = 'auto'; // Restaura el scroll en html
-                document.body.style.overflow = 'auto'; // Restaura el scroll en body
-                if (pageContent) {
-                    pageContent.style.filter = 'none'; // Elimina el desenfoque
-                    pageContent.style.pointerEvents = 'auto'; // Restaura eventos en el contenido
+    <script>
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            const pageContent = document.querySelector('#app'); // Asegúrate de que tu contenedor principal tenga id="app"
+
+            if (modal) {
+                if (modal.classList.contains('hidden')) {
+                    // Abrir modal
+                    modal.classList.remove('hidden');
+                    document.documentElement.style.overflow = 'hidden'; // Bloquea el scroll en html
+                    document.body.style.overflow = 'hidden'; // Bloquea el scroll en body
+
+                } else {
+                    // Cerrar modal
+                    modal.classList.add('hidden');
+                    document.documentElement.style.overflow = 'auto'; // Restaura el scroll en html
+                    document.body.style.overflow = 'auto'; // Restaura el scroll en body
+                    if (pageContent) {
+                        pageContent.style.filter = 'none'; // Elimina el desenfoque
+                        pageContent.style.pointerEvents = 'auto'; // Restaura eventos en el contenido
+                    }
                 }
             }
         }
-    }
 
-    // Agregar event listeners para cerrar con ESC y click fuera del modal
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            const modals = document.querySelectorAll('[id^="modal-"]');
-            modals.forEach(modal => {
-                if (!modal.classList.contains('hidden')) {
-                    toggleModal(modal.id);
-                }
-            });
-        }
-    });
+        // Agregar event listeners para cerrar con ESC y click fuera del modal
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = document.querySelectorAll('[id^="modal-"]');
+                modals.forEach(modal => {
+                    if (!modal.classList.contains('hidden')) {
+                        toggleModal(modal.id);
+                    }
+                });
+            }
+        });
 
-    // Cerrar al hacer click fuera del modal
-    document.addEventListener('click', function(e) {
-        if (e.target.matches('[id^="modal-"]')) {
-            toggleModal(e.target.id);
-        }
-    });
-</script>
+        // Cerrar al hacer click fuera del modal
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('[id^="modal-"]')) {
+                toggleModal(e.target.id);
+            }
+        });
+    </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">

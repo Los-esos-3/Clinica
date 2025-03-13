@@ -129,7 +129,11 @@
 
                             <div id="ContainerButtons" class="flex justify-center gap-2">
                                 <a href="{{ route('Expedientes.edit', $paciente->expediente->id) }}" class="bg-[rgb(55,65,81)] no-underline text-white px-4 py-2 rounded-lg">Editar</a>         
-                                    <button onclick="toggleModal('modal-delete-expediente-{{ $paciente->expediente ? $paciente->expediente->id : 'null' }}')" class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg">Eliminar</button>
+                                <form action="{{route('Expedientes.destroy', $paciente->expediente->id)}}" method="post">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-[rgb(55,65,81)] text-white px-4 py-2 rounded-lg">Eliminar</button>
+                                </form>
                             </div>
                         </div>
                     @else

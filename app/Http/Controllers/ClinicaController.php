@@ -15,42 +15,19 @@ class ClinicaController extends Controller
 
     use HasRoles;
     use AuthorizesRequests;
-    // public function PacientesView(Request $request)
-    // {
-    //     $this->authorize('ver pacientes');
-    //     $query = $request->input('search');
-
-    //     if ($query) {
-    //         $pacientes = Paciente::where('user_id', Auth::id())
-    //             ->where('nombre', 'LIKE', "%{$query}%")
-    //             ->paginate(20);
-    //     } else {
-    //         $pacientes = Paciente::where('user_id', Auth::id())->paginate(9);
-    //     }
-
-
-    //     $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
-
-    //     return view('Pacientes.PacientesIndex', compact('pacientes',  'noResultsMessage'));
-    // }
-
     public function PacientesView(Request $request)
     {
         $user = Auth::user();
         $query = $request->input('search');
 
         if ($user->hasRole('Doctor')) {
-            // Obtener los pacientes del doctor y los creados por sus secretarias
-            $pacientes = Paciente::where('doctor_id', $user->doctor->id);
+            // Obtener los pacientes creados por el doctor
+            $pacientes = Paciente::where('doctor_id', $user->doctor->id)
+                ->orWhere('user_id', $user->id);
         } elseif ($user->hasRole('Secretaria')) {
-            // Obtener los pacientes asociados al doctor que asignó a la secretaria
-            $secretaria = $user->secretaria;
-            if (!$secretaria || !$secretaria->doctor) {
-                // Si la secretaria no tiene un doctor asignado, mostrar una lista vacía
-                $pacientes = Paciente::where('id', -1); // Lista vacía
-            } else {
-                $pacientes = Paciente::where('doctor_id', $secretaria->doctor->id);
-            }
+            // Obtener los pacientes creados por la secretaria
+            $pacientes = Paciente::where('secretaria_id', $user->secretaria->id)
+                ->orWhere('user_id', $user->id);
         } else {
             // Si no es doctor ni secretaria, mostrar una lista vacía
             $pacientes = Paciente::where('id', -1); // Lista vacía
@@ -92,35 +69,38 @@ class ClinicaController extends Controller
             'ocupacion' => 'nullable|string|max:100',
         ]);
 
-        Log::info('Tomo las validacion', $request->all());
-
         $user = Auth::user();
+
+        // Asignar el user_id del usuario autenticado
+        $validatedData['user_id'] = $user->id;
 
         // Verificar si el usuario es un doctor o una secretaria
         if ($user->hasRole('Doctor')) {
             // Si es un doctor, asignar el paciente al doctor
             $doctor = $user->doctor;
-            $validatedData['doctor_id'] = $doctor->id;
-            $validatedData['secretaria_id'] = null; // El doctor no tiene una secretaria asociada
-        } elseif ($user->hasRole('Secretaria')) {
-            // Si es una secretaria, obtener el doctor que la asignó
-            $secretaria = $user->secretaria;
-            if (!$secretaria || !$secretaria->doctor) {
-                Log::info('La secretaria no tiene un doctor asignado.');
-                return redirect()->back()->with('error', 'No tienes un doctor asignado. Contacta al administrador.');
+            if ($doctor) {
+                $validatedData['doctor_id'] = $doctor->id;
+            } else {
+                // Si el doctor no tiene un registro en la tabla doctores, asignar null
+                $validatedData['doctor_id'] = null;
             }
-            $doctor = $secretaria->doctor;
-            $validatedData['doctor_id'] = $doctor->id;
-            $validatedData['secretaria_id'] = $secretaria->id;
+            // El doctor no tiene una secretaria asociada
+            $validatedData['secretaria_id'] = null;
+        } elseif ($user->hasRole('Secretaria')) {
+            // Si es una secretaria, obtener el doctor que la asignó (si existe)
+            $secretaria = $user->secretaria;
+            if ($secretaria && $secretaria->doctor) {
+                $validatedData['doctor_id'] = $secretaria->doctor->id;
+            } else {
+                // Si la secretaria no tiene un doctor asignado, asignar null
+                $validatedData['doctor_id'] = null;
+            }
+            // Asignar la secretaria al paciente
+            $validatedData['secretaria_id'] = $secretaria ? $secretaria->id : null;
         } else {
             // Si no es doctor ni secretaria, redirigir con un error
             return redirect()->back()->with('error', 'No tienes permisos para crear pacientes.');
         }
-
-        Log::info('Asigno el doctor y la secretaria al paciente');
-
-        // Asignar el user_id del usuario autenticado
-        $validatedData['user_id'] = $user->id;
 
         // Manejo de la imagen
         if ($request->hasFile('foto_perfil')) {
@@ -130,12 +110,8 @@ class ClinicaController extends Controller
             $validatedData['foto_perfil'] = $nombreImagen;
         }
 
-        Log::info('Capturo la img');
-
         // Crear el paciente
         Paciente::create($validatedData);
-
-        Log::info('Creo al paciente');
 
         return redirect()->route('Pacientes.PacientesView')->with('success', 'Paciente creado correctamente.');
     }
