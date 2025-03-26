@@ -7,6 +7,7 @@ use App\Models\Doctores;
 use App\Models\Paciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ConsultaController extends Controller
 {
@@ -90,8 +91,12 @@ class ConsultaController extends Controller
             'estado' => 'required|in:Completada,Pendiente,Cancelada',
         ]);
 
+        Log::info($request->all());
+
         $consulta = Consulta::findOrFail($id);
         $consulta->update($validatedData);
+
+        $consulta->refresh();
         return redirect()->route('Pacientes.PacientesView')->with('success', 'Consulta actualizada con éxito.');
     }
 

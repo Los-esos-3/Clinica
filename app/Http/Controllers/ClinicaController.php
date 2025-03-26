@@ -18,33 +18,45 @@ class ClinicaController extends Controller
     public function PacientesView(Request $request)
     {
         $user = Auth::user();
-        $query = $request->input('search');
+        $search = $request->input('search');
+
+        // Construir la consulta inicial
+        $query = Paciente::query();
 
         if ($user->hasRole('Doctor')) {
-            // Obtener los pacientes creados por el doctor
-            $pacientes = Paciente::where('doctor_id', $user->doctor->id)
-                ->orWhere('user_id', $user->id);
+            if ($user->doctor) {
+                $query->where('doctor_id', $user->doctor->id)
+                    ->orWhere('user_id', $user->id);
+            } else {
+                $query->whereNull('id'); // Lista vacía
+            }
         } elseif ($user->hasRole('Secretaria')) {
-            // Obtener los pacientes creados por la secretaria
-            $pacientes = Paciente::where('secretaria_id', $user->secretaria->id)
-                ->orWhere('user_id', $user->id);
+            if ($user->secretaria) {
+                $query->where('secretaria_id', $user->secretaria->id)
+                    ->orWhere('user_id', $user->id);
+            } else {
+                $query->whereNull('id'); // Lista vacía
+            }
         } else {
-            // Si no es doctor ni secretaria, mostrar una lista vacía
-            $pacientes = Paciente::where('id', -1); // Lista vacía
+            $query->whereNull('id'); // Lista vacía
         }
 
-        // Filtrar pacientes si hay una búsqueda
-        if ($query) {
-            $pacientes->where('nombre', 'LIKE', "%{$query}%");
+        // Aplicar filtro de búsqueda si existe
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('nombre', 'LIKE', "%{$search}%");
+            });
         }
 
         // Paginar los resultados
-        $pacientes = $pacientes->paginate(9);
+        $pacientes = $query->paginate(9);
 
+        // Mensaje si no hay resultados
         $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
 
-        return view('Pacientes.PacientesIndex', compact('pacientes', 'noResultsMessage'));
+        return view('Pacientes.PacientesIndex', compact('pacientes', 'noResultsMessage', 'search'));
     }
+
 
     public function create()
     {
@@ -54,7 +66,6 @@ class ClinicaController extends Controller
     public function store(Request $request)
     {
         $this->authorize('crear pacientes');
-        Log::info('Entro al metodo Store');
 
         $validatedData = $request->validate([
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',

@@ -113,6 +113,7 @@ class ExpedientesController extends Controller
 
         $validatedData = $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
+            
             'estado' => 'required|string',
             'alergias' => 'nullable|string',
             'antecedentes_medicos' => 'nullable|string',
