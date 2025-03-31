@@ -73,32 +73,33 @@ class SecretariasDoctorController extends Controller
     {
         // Obtener la secretaria
         $secretaria = Secretarias::findOrFail($id);
-
+    
         // Verificar si la secretaria está asignada al doctor actual
         if ($secretaria->doctor_id === Auth::user()->doctor->id) {
             // Caso 1: Eliminar el doctor_id de los pacientes creados por la secretaria
             $pacientesSecretaria = Paciente::where('secretaria_id', $secretaria->id)->get();
-
+    
             foreach ($pacientesSecretaria as $paciente) {
                 $paciente->doctor_id = null; // Eliminar el doctor_id
+                $paciente->secretaria_id = null; // También eliminamos la secretaria_id
                 $paciente->save();
             }
-
+    
             // Caso 2: Eliminar el secretaria_id de los pacientes creados por el doctor y asignados a la secretaria
             $pacientesDoctor = Paciente::where('doctor_id', Auth::user()->doctor->id)
                 ->where('secretaria_id', $secretaria->id) // Solo pacientes con esta secretaria
                 ->get();
-
+    
             foreach ($pacientesDoctor as $paciente) {
                 $paciente->secretaria_id = null; // Eliminar el secretaria_id
                 $paciente->save();
             }
-
+    
             // Desasignar la secretaria (eliminar el doctor_id de la secretaria)
             $secretaria->doctor_id = null;
             $secretaria->save();
         }
-
+    
         return redirect()->route('Doctor.Secretaria')->with('success', 'Secretaria desasignada correctamente.');
     }
 }

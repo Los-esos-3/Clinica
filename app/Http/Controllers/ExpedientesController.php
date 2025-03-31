@@ -144,7 +144,7 @@ class ExpedientesController extends Controller
     {
         $citas = Expediente::with(['paciente', 'doctor'])
             ->whereNotNull('proxima_cita')
-            ->get();
+            ->get(); 
 
         $formattedCitas = $citas->map(function ($cita) {
             $hora12 = \Carbon\Carbon::createFromFormat('H:i:s', $cita->hora_proxima_cita)->format('h:i A');

@@ -9,24 +9,10 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: '192.168.1.99',
+        host: 'localhost', // o '0.0.0.0' para acceso desde la red
         hmr: {
-            host: '192.168.1.99'
+            host: 'localhost'
         },
     },
-    build: {
-        // Habilitar minificación
-        minify: 'terser',
-        // Dividir el código en chunks más pequeños
-        rollupOptions: {
-            output: {
-                manualChunks: {
-                    vendor: ['@/vendor'],
-                }
-            }
-        },
-        // Comprimir assets
-        assetsInlineLimit: 4096,
-        chunkSizeWarningLimit: 1000,
-    }
+    // ... resto de tu configuración
 });
