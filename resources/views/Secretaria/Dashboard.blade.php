@@ -85,9 +85,9 @@
                 <div class="nav-links">
                     <a href="{{ route('dashboard') }}">Calendario</a>
                     <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
-                     @if (Auth::user()->hasAnyRole(['Doctor']))
-                    <a href="{{route ('Doctor.Secretaria')}}">Secretaria</a>
-                    @endif 
+                    @if (Auth::user()->hasAnyRole(['Doctor']))
+                        <a href="{{ route('Doctor.Secretaria') }}">Secretaria</a>
+                    @endif
                 </div>
 
                 <div class="relative inline-block text-left">
@@ -251,6 +251,22 @@
             </div>
         </div>
 
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Verificar si el ID del doctor está disponible
+                const doctorId = "{{ $doctorId }}"; // Obtenido desde el controlador
+
+                if (doctorId) {
+                    // Seleccionar automáticamente el doctor en el campo <select>
+                    const doctorSelect = document.getElementById('doctor_id');
+                    if (doctorSelect) {
+                        doctorSelect.value = doctorId;
+                        doctorSelect.disabled = true; // Deshabilitar el campo para evitar cambios
+                    }
+                }
+            });
+        </script>
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // -------------------- ABRIR Y CERRAR MODAL DE NUEVA CITA --------------------

@@ -55,35 +55,10 @@
                      
                         
                         <div x-data="{ activeTab: 'doctor' }">
-                            <!-- Pestañas -->
-                            <div class="mb-4 border-b border-gray-200">
-                                <ul class="flex flex-wrap -mb-px">
-                                    <li class="mr-2">
-                                        <button 
-                                            @click="activeTab = 'doctor'" 
-                                            :class="{'border-blue-500': activeTab === 'doctor', 'border-transparent': activeTab !== 'doctor'}"
-                                            class="inline-block p-4 border-b-2 rounded-t-lg">
-                                            Vista Doctor
-                                        </button>
-                                    </li>
-                                    <li class="mr-2">
-                                        <button 
-                                            @click="activeTab = 'secretaria'" 
-                                            :class="{'border-blue-500': activeTab === 'secretaria', 'border-transparent': activeTab !== 'secretaria'}"
-                                            class="inline-block p-4 border-b-2 rounded-t-lg">
-                                            Vista Secretaria
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
-                            
                             <!-- Contenido de las pestañas -->
                             <div class="mt-4">
                                 <div x-show="activeTab === 'doctor'" class="p-4 rounded-lg bg-gray-50" x-transition>
                                     <x-pacientes-doctor-component :pacientes="$pacientes"></x-pacientes-doctor-component>
-                                </div>
-                                <div x-show="activeTab === 'secretaria'" class="p-4 rounded-lg bg-gray-50" x-transition>
-                                    <x-pacientes-secretaria-component :pacientes="$pacientes"></x-pacientes-secretaria-component>
                                 </div>
                             </div>
                         </div>

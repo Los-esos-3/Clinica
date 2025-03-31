@@ -18,13 +18,15 @@ class SecretariasDoctorController extends Controller
     {
         $doctor = Auth::user();
 
-
+        // Obtener todas las secretarias disponibles en la misma empresa
         $usuarios = User::whereHas('roles', function ($query) {
             $query->where('name', 'Secretaria');
         })
             ->where('empresa_id', $doctor->empresa_id)
+            ->whereDoesntHave('secretaria.doctor') // Excluir secretarias ya asignadas a un doctor
             ->get();
 
+        // Obtener las secretarias asignadas al doctor actual
         $secretariasAsignadas = $doctor->doctor->secretarias;
 
         return view('SecretariaDeDoctor.SecretariaDoctor', compact('usuarios', 'secretariasAsignadas'));
@@ -102,26 +104,26 @@ class SecretariasDoctorController extends Controller
     // }
 
     public function desasignarSecretaria($id)
-{
-    $secretaria = Secretarias::findOrFail($id);
+    {
+        $secretaria = Secretarias::findOrFail($id);
 
-    // Verificar que la secretaria pertenezca al doctor actual
-    if ($secretaria->doctor_id === Auth::user()->doctor->id) {
-        // Obtener todos los pacientes relacionados con la secretaria
-        $pacientesSecretaria = Paciente::where('secretaria_id', $secretaria->id)->get();
+        // Verificar que la secretaria pertenezca al doctor actual
+        if ($secretaria->doctor_id === Auth::user()->doctor->id) {
+            // Obtener todos los pacientes relacionados con la secretaria
+            $pacientesSecretaria = Paciente::where('secretaria_id', $secretaria->id)->get();
 
-        // Desvincular el doctor y la secretaria de los pacientes
-        foreach ($pacientesSecretaria as $paciente) {
-            $paciente->doctor_id = null;
-            $paciente->secretaria_id = null;
-            $paciente->save();
+            // Desvincular el doctor y la secretaria de los pacientes
+            foreach ($pacientesSecretaria as $paciente) {
+                $paciente->doctor_id = null;
+                $paciente->secretaria_id = null;
+                $paciente->save();
+            }
+
+            // Limpiar la relación de la secretaria con el doctor
+            $secretaria->doctor_id = null;
+            $secretaria->save();
         }
 
-        // Limpiar la relación de la secretaria con el doctor
-        $secretaria->doctor_id = null;
-        $secretaria->save();
+        return redirect()->route('Doctor.Secretaria')->with('success', 'Secretaria desasignada correctamente.');
     }
-
-    return redirect()->route('Doctor.Secretaria')->with('success', 'Secretaria desasignada correctamente.');
-}
 }
