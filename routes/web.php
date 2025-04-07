@@ -17,6 +17,9 @@ use App\Http\Controllers\CitaController;
 use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\Auth\CustomRegisterController;
+use App\Http\Controllers\ComplaintController;
+use App\Http\Controllers\Auth\RegisterController;
+
 
 //Redireccion para usuarios sin rol
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -194,3 +197,11 @@ Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
 Route::delete('/citas/{id}', [CitaController::class, 'destroy'])->name('citas.destroy');
 
 Route::get('/citas/{id}', [CitaController::class, 'show']);
+
+Route::post('/quejas/enviar', [ComplaintController::class, 'submit'])->name('complaints.submit');
+Route::get('/contactenos', function () {
+    return view('contactenos');
+})->name('contactenos.form');
+
+Route::get('/verificar-email', [\App\Http\Controllers\VerificacionController::class, 'form'])->name('verificar.email.form');
+Route::post('/verificar-email', [\App\Http\Controllers\VerificacionController::class, 'verificar'])->name('verificar.email');
