@@ -66,8 +66,10 @@
                                             {{ optional($consulta->doctor)->nombre_completo ?? 'No asignado' }}
                                         </p>
                                         <p class="text-lg">
-                                            <strong>Fecha y Hora:</strong> 
-                                            {{ \Carbon\Carbon::parse($consulta->created_at)->format('Y-m-d h:i A') }}
+                                            <strong>Fecha y hora:</strong> 
+                                            {{ (new DateTime($consulta->fecha_hora))->format('Y-m-d  h:i A' ) }} 
+
+                                          
                                         </p>
                                         <p class="text-lg"><strong>Estado de la consulta:</strong> 
                                             {{$consulta->estado}}

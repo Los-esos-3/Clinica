@@ -49,7 +49,7 @@ Route::get('/contactenos', function () {
 //Rutas para secretaria
 Route::middleware(['auth', 'role:Secretaria'])->group(function () {
     Route::get('/Expedientes', [ExpedientesController::class, 'admin'])->name('Expedientes.admin');
-    Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
+    Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.3');
     Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
     Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
     Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('Pacientes.edit');
@@ -71,7 +71,7 @@ Route::middleware(['auth', 'role:Secretaria'])->group(function () {
 Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::resource('ingresos', IngresoController::class);
     Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
-    Route::get('/Pacientes/create', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
+    Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
     Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
     Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
     Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('Pacientes.edit');
@@ -95,6 +95,14 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 });
 //fin de las rutas de admin
 
+Route::middleware(["auth", 'permission:editar doctores'])->group(function()
+{
+    Route::get('/doctores/{id}/edit', [DoctoresController::class, 'edit'])->name('doctores.edit');
+    Route::put('/doctores/{id}', [DoctoresController::class, 'update'])->name('doctores.update');
+    Route::delete('/doctores/{id}', [DoctoresController::class, 'destroy'])->name('doctores.destroy');
+});
+
+// Route::get('/pacientes/filter', [ClinicaController::class, 'filterPatients'])->name('pacientes.filter');
 
 //Rutas De Doctor
 Route::middleware(['auth', 'role:Doctor'])->group(function () {
@@ -111,7 +119,7 @@ Route::middleware(['auth', 'role:Doctor'])->group(function () {
 Route::group(['middleware' => ['auth', 'permission:ver pacientes']], function () {
     Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
     Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
-    Route::get('/Pacientes/create', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
+    Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
     Route::get('/pacientes/create', [ClinicaController::class, 'create'])->name('Pacientes.create');
     Route::post('/pacientes/create', [ClinicaController::class, 'store'])->name('Pacientes.store');
     Route::get('/pacientes/{id}/edit', [ClinicaController::class, 'edit'])->name('Pacientes.edit');

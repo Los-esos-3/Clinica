@@ -113,6 +113,7 @@ class ExpedientesController extends Controller
 
         $validatedData = $request->validate([
             'paciente_id' => 'required|exists:pacientes,id',
+            
             'estado' => 'required|string',
             'alergias' => 'nullable|string',
             'antecedentes_medicos' => 'nullable|string',
@@ -140,25 +141,26 @@ class ExpedientesController extends Controller
         return redirect()->route('Pacientes.PacientesView')->with('success', 'Expediente eliminado con éxito.');
     }
 
-    public function getCitas()
-    {
-        $citas = Expediente::with(['paciente', 'doctor'])
-            ->whereNotNull('proxima_cita')
-            ->get(); 
 
-        $formattedCitas = $citas->map(function ($cita) {
-            $hora12 = \Carbon\Carbon::createFromFormat('H:i:s', $cita->hora_proxima_cita)->format('h:i A');
-            return [
-                'title' => '', // El título se manejará en el frontend
-                'start' => $cita->proxima_cita . 'T' . $cita->hora_proxima_cita,
-                'extendedProps' => [
-                    'paciente' => $cita->paciente->nombre,
-                    'doctor' => $cita->doctor->nombre_completo,
-                    'hora' => $hora12,
-                ],
-            ];
-        });
+    // public function getCitas()
+    // {
+    //     $citas = Expediente::with(['paciente', 'doctor'])
+    //         ->whereNotNull('proxima_cita')
+    //         ->get();
 
-        return response()->json($formattedCitas);
-    }
+    //     $formattedCitas = $citas->map(function ($cita) {
+    //         $hora12 = \Carbon\Carbon::createFromFormat('H:i:s', $cita->hora_proxima_cita)->format('h:i A');
+    //         return [
+    //             'title' => '', // El título se manejará en el frontend
+    //             'start' => $cita->proxima_cita . 'T' . $cita->hora_proxima_cita,
+    //             'extendedProps' => [
+    //                 'paciente' => $cita->paciente->nombre,
+    //                 'doctor' => $cita->doctor->nombre_completo,
+    //                 'hora' => $hora12,
+    //             ],
+    //         ];
+    //     });
+
+    //     return response()->json($formattedCitas);
+    // }
 }

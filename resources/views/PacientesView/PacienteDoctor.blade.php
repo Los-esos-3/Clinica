@@ -139,18 +139,16 @@
         </h2>
 
         <div class="flex items-center ml-4">
-            <div class="relative flex">
-                <input type="text" id="search" placeholder="Buscar paciente" class="border rounded-l px-4 py-2"
-                    style="width: 300px;" oninput="filterPatients()">
-                <button type="button"
-                    class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
-                        <path
-                            d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z">
-                        </path>
-                    </svg>
-                </button>
-            </div>
+            <form action="{{ route('Pacientes.PacientesView') }}" method="GET" class="flex items-center ml-4">
+                <div class="relative flex">
+                    <input type="text" name="search" placeholder="Buscar" class="border rounded-l px-4 py-2" style="width: 300px;">
+                    <button type="submit" class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 50 50">
+                            <path d="M 21 3 C 11.601563 3 4 10.601563 4 20 C 4 29.398438 11.601563 37 21 37 C 24.355469 37 27.460938 36.015625 30.09375 34.34375 L 42.375 46.625 L 46.625 42.375 L 34.5 30.28125 C 36.679688 27.421875 38 23.878906 38 20 C 38 10.601563 30.398438 3 21 3 Z M 21 7 C 28.199219 7 34 12.800781 34 20 C 34 27.199219 28.199219 33 21 33 C 13.800781 33 8 27.199219 8 20 C 8 12.800781 13.800781 7 21 7 Z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </form>
         </div>
 
         <a href="{{ route('Pacientes.create') }}"
@@ -171,7 +169,8 @@
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     @foreach ($pacientes as $paciente)
-                        <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden">
+                        <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden"
+                            data-name="{{ strtolower($paciente->nombre) }}">
                             <div class="doctor-header flex items-center p-4 border-b">
                                 @if ($paciente->foto_perfil)
                                     <img src="{{ asset('images/' . $paciente->foto_perfil) }}"
@@ -224,19 +223,22 @@
     <script>
         // Función para filtrar pacientes
         function filterPatients() {
-            const searchInput = document.getElementById('search').value.toLowerCase();
-            const patientRows = document.querySelectorAll('.patient-row');
+            // Obtener el término de búsqueda
+            const searchTerm = document.getElementById('search').value.toLowerCase();
 
-            patientRows.forEach(row => {
-                const patientName = row.querySelector('td').textContent.toLowerCase();
-                if (patientName.includes(searchInput)) {
-                    row.style.display = ''; // Mostrar fila
+            // Obtener todas las tarjetas de pacientes
+            const pacientes = document.querySelectorAll('.doctor-card');
+
+            // Iterar sobre las tarjetas y mostrar/ocultar según el término de búsqueda
+            pacientes.forEach(paciente => {
+                const nombre = paciente.querySelector('h3').textContent.toLowerCase();
+                if (nombre.includes(searchTerm)) {
+                    paciente.style.display = ''; // Mostrar tarjeta
                 } else {
-                    row.style.display = 'none'; // Ocultar fila
+                    paciente.style.display = 'none'; // Ocultar tarjeta
                 }
             });
         }
-
         // Registrar las funciones en el objeto global para que sean accesibles
         window.toggleModal = toggleModal;
         window.filterPatients = filterPatients;

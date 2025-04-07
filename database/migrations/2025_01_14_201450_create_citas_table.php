@@ -10,22 +10,24 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up()
-{
-    Schema::create('citas', function (Blueprint $table) {
-        $table->id();
-        $table->date('fecha');
-        $table->time('hora_inicio');
-        $table->time('hora_fin');
-        $table->unsignedBigInteger('doctor_id');
-        $table->unsignedBigInteger('paciente_id');
-        $table->text('motivo');
-        $table->timestamps();
+    {
+        Schema::create('citas', function (Blueprint $table) {
+            $table->id();
+            $table->unsignedBigInteger('secretaria_id')->nullable();
+            $table->date('fecha');
+            $table->time('hora_inicio');
+            $table->time('hora_fin');
+            $table->unsignedBigInteger('doctor_id');
+            $table->unsignedBigInteger('paciente_id');
+            $table->text('motivo');
+            $table->timestamps();
 
-        // Relaciones
-        $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('cascade');
-        $table->foreign('doctor_id')->references('id')->on('doctores')->onDelete('cascade');
+            // Relaciones             
+            $table->foreign('secretaria_id')->references('id')->on('secretarias')->onDelete('set null');
+            $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('cascade');
+            $table->foreign('doctor_id')->references('id')->on('doctores')->onDelete('cascade');
         });
-}
+    }
 
 
     /**
