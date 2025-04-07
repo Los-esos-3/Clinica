@@ -25,8 +25,12 @@ class ComplaintController extends Controller
             'received_at' => now()->format('d/m/Y H:i:s')
         ];
         
-        Mail::to('agitokanoh657@gmail.com')->send(new ComplaintReceived($data));
-        
+        Mail::to([
+            'agitokanoh657@gmail.com',
+            'diurnovampiro6@gmail.com',
+            'ig9682756@gmail.com',
+        ])->send(new ComplaintReceived($data));
+                
         return redirect()->route('contactenos.form')  // Usa el nombre correcto
         ->with('success', 'Tu queja ha sido enviada correctamente.');
     

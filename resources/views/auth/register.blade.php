@@ -209,82 +209,128 @@
                 </div>
             </div>
 
-            <!-- Sección derecha (Formulario) -->
-            <div class="w-1/2 p-6">
-                <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
-                @if (session('success'))
-    <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
-        {{ session('success') }}
-    </div>
-@endif
+           <!-- Sección derecha (Formulario) -->
+<div class="w-1/2 p-6">
+    <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
 
-                <form method="POST" action="{{ route('register') }}" class="space-y-4">
-                    @csrf
-                    
-                    <div>
-                        <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
-                        <input type="text" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                               value="{{ old('name') }}" required>
-                    </div>
+    <form method="POST" action="{{ route('register') }}" class="space-y-4">
+        @csrf
+        
+        <div>
+            <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
+            <input type="text" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                   @error('name') border-red-500 @enderror" 
+                   value="{{ old('name') }}" required>
+            @error('name')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
 
-                    <div>
-                        <label class="block text-sm text-gray-700 mb-2">Correo Electrónico</label>
-                        <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                               value="{{ old('email') }}" required>
-                    </div>
+        <div>
+            <label class="block text-sm text-gray-700 mb-2">Correo Electrónico</label>
+            <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                   @error('email') border-red-500 @enderror" 
+                   value="{{ old('email') }}" required>
+            @error('email')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
 
-                    <div>
-                        <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
-                        <input type="password" 
-                               name="password" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                               required>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
-                        <input type="password" 
-                               name="password_confirmation" 
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md" 
-                               required>
-                    </div>
-                    
-                    <div>
-                        <label class="block text-sm text-gray-700 mb-2">Celular</label>
-                        <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-500" 
-                               value="{{ old('phone') }}" required>
-                    </div>
-   <!-- Campo de Comentarios -->
-   <div>
-    <label class="block text-sm text-gray-700 mb-2">Comentarios</label>
-    <textarea name="comments" class="w-full px-3 py-2 border border-gray-300 rounded-md 
-              @error('comments') border-red-500 @enderror" 
-              rows="4" placeholder="Cuéntenos sobre su negocio">{{ old('comments') }}</textarea>
-    @error('comments')
-        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-    @enderror
+        <div>
+            <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
+            <input type="password" name="password" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md
+                   @error('password') border-red-500 @enderror" required>
+            @error('password')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+        
+        <div>
+            <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
+            <input type="password" name="password_confirmation" 
+                   class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+        </div>
+        
+        <div>
+            <label class="block text-sm text-gray-700 mb-2">Celular</label>
+            <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                   @error('phone') border-red-500 @enderror" 
+                   value="{{ old('phone') }}" required>
+            @error('phone')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <!-- Campo de Comentarios -->
+        <div>
+            <label class="block text-sm text-gray-700 mb-2">Comentarios</label>
+            <textarea name="comments" class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                      @error('comments') border-red-500 @enderror" 
+                      rows="4" placeholder="Cuéntenos sobre su negocio">{{ old('comments') }}</textarea>
+            @error('comments')
+                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+            @enderror
+        </div>
+
+        <div class="g-recaptcha" data-sitekey="6LeNBA0rAAAAAMawoCfe6xp5O3fvLGUDvy_cXCes"></div>
+        @if ($errors->has('g-recaptcha-response'))
+            <p class="text-red-500 text-sm mt-1">
+                {{ $errors->first('g-recaptcha-response') }}
+            </p>
+        @endif
+
+        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-200">
+            CREAR CUENTA
+        </button>
+        
+        <p class="text-sm text-gray-600 text-center mt-4">
+            Al dar clic en "Registrarme" estás aceptando nuestros 
+            <a href="#" class="text-blue-500 underline">términos y condiciones de uso</a>.
+        </p>
+    </form>
 </div>
-
-<div class="g-recaptcha" data-sitekey="6LeNBA0rAAAAAMawoCfe6xp5O3fvLGUDvy_cXCes"></div>
-@if ($errors->has('g-recaptcha-response'))
-    <p class="text-red-500 text-sm mt-1">
-        {{ $errors->first('g-recaptcha-response') }}
-    </p>
-@endif
-
-                    <button type="submit" class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
-                        CREAR CUENTA
-                    </button>
-                    
-
-                    <p class="text-sm text-gray-600 text-center mt-4">
-                        Al dar clic en "Registrarme" estás aceptando nuestros 
-                        <a href="#" class="text-blue-500 underline">términos y condiciones de uso</a>.
-                    </p>
-                </form>
+<!-- Modal de verificación -->
+<div id="verificationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+        <div class="flex items-start mb-4">
+            <svg class="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">Verificación requerida</h3>
+                <div class="mt-2 text-sm text-gray-600">
+                    <p>Hemos enviado un código de 6 dígitos a <span class="font-semibold" id="modalEmail"></span>.</p>
+                    <p class="mt-2">Por favor revisa tu correo electrónico para completar el registro.</p>
+                </div>
             </div>
         </div>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <div class="mt-4 flex justify-end">
+            <button onclick="closeModal()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                Entendido
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Función para mostrar el modal con el email
+    function showVerificationModal(email) {
+        document.getElementById('modalEmail').textContent = email;
+        document.getElementById('verificationModal').classList.remove('hidden');
+    }
+
+    // Función para cerrar el modal
+    function closeModal() {
+        document.getElementById('verificationModal').classList.add('hidden');
+    }
+
+    // Mostrar modal si hay sesión de verificación
+    @if(session('verification_sent'))
+        showVerificationModal("{{ session('registered_email') }}");
+    @endif
+</script>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
     </div>
 </x-guest-layout>

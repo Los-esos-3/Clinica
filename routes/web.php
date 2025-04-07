@@ -18,8 +18,7 @@ use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\Auth\CustomRegisterController;
 use App\Http\Controllers\ComplaintController;
-use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\VerificacionController;
 
 //Redireccion para usuarios sin rol
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
@@ -203,5 +202,7 @@ Route::get('/contactenos', function () {
     return view('contactenos');
 })->name('contactenos.form');
 
-Route::get('/verificar-email', [\App\Http\Controllers\VerificacionController::class, 'form'])->name('verificar.email.form');
-Route::post('/verificar-email', [\App\Http\Controllers\VerificacionController::class, 'verificar'])->name('verificar.email');
+
+Route::get('/verificar-email', function () {
+    return view('auth.verificar');
+})->name('verificar.email.form');
