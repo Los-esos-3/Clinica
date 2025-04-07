@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Paciente;
 use App\Models\Secretaria;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;

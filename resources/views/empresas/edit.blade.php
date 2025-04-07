@@ -89,18 +89,7 @@
                     <!-- Horario -->
                     <div class="mb-6">
                         <label for="horario" class="block text-sm font-semibold text-gray-700 mb-2">Horario</label>
-                        <select id="horario" name="horario" class="form-control" required>
-                            @foreach (['Lunes a Viernes de 9:00 AM a 6:00 PM', 'Lunes a Sábado de 9:00 AM a 6:00 PM', 'Lunes a Domingo de 9:00 AM a 6:00 PM', 'Lunes a Viernes de 8:00 AM a 5:00 PM', 'Lunes a Sábado de 8:00 AM a 5:00 PM', 'Lunes a Domingo de 8:00 AM a 5:00 PM', 'Lunes a Viernes de 10:00 AM a 7:00 PM', 'Lunes a Sábado de 10:00 AM a 7:00 PM', 'Lunes a Domingo de 10:00 AM a 7:00 PM', '24/7', 'custom'] as $horarioOpcion)
-                                <option value="{{ $horarioOpcion }}" {{ old('horario', $empresa->horario) == $horarioOpcion ? 'selected' : '' }}>
-                                    {{ $horarioOpcion == 'custom' ? 'Horario Personalizado' : $horarioOpcion }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <div id="customHorario" class="mt-2 {{ old('horario', $empresa->horario) == 'custom' ? '' : 'hidden' }}">
-                            <input type="text" class="form-control" name="horario_custom"
-                                value="{{ old('horario_custom', $empresa->horario) }}"
-                                placeholder="Especifique el horario">
-                        </div>
+                        <input value="{{old('horario', $empresa->horario)}}" type="text" placeholder="Escribe tu horario" class="form-control" id="horario" name="horario"></input>
                     </div>
 
                     <!-- Descripción -->
@@ -108,32 +97,6 @@
                         <label for="descripcion" class="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
                         <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion', $empresa->descripcion) }}</textarea>
                     </div>
-
-                    <!-- Buscador de usuarios -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Buscar usuarios:</label>
-                        <input type="text" id="search_user" class="form-control" placeholder="Buscar por nombre...">
-                        <button type="button" id="search_button" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">
-                            Buscar
-                        </button>
-                    </div>
-
-                    <!-- Resultados de la búsqueda -->
-                    <div id="user_results" class="mb-6">
-                        <!-- Aquí se mostrarán los resultados de la búsqueda -->
-                    </div>
-
-                    <!-- Usuarios seleccionados -->
-                    <div id="selected_users" class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Usuarios asociados:</label>
-                        @foreach ($empresa->users as $user)
-                            <div class="flex items-center justify-between border p-2 my-1 bg-green-100">
-                                <span>{{ $user->name }}</span>
-                                <input type="checkbox" name="usuarios[]" value="{{ $user->id }}" checked>
-                            </div>
-                        @endforeach
-                    </div>
-
                     <!-- Botón de guardar -->
                     <div class="text-center space-x-4">
                         <button type="submit" class="button-update">

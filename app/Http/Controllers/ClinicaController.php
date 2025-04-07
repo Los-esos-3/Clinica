@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Consulta;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Traits\HasRoles;

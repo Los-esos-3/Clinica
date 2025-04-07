@@ -6,6 +6,7 @@ use App\Models\Doctores;
 use App\Models\Paciente;
 use App\Models\Cita;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -124,8 +125,6 @@ class CitaController extends Controller
             'doctor_id' => 'required|exists:doctores,id',
             'motivo' => 'required|string|max:255',
         ]);
-
-        Log:info($request->all());
 
         $cita = Cita::create($request->all());
 

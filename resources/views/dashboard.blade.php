@@ -93,6 +93,10 @@
                                     </ul>
                                 </div>
 
+                                {{-- <div>
+                                    <x-sidebar :user="$user" />
+                                </div> --}}
+
                                 <!-- Contenedor para el botón y calendario -->
                                 <div class="p-6">
                                     <!-- Botón para abrir modal -->
