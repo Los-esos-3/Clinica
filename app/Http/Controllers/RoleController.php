@@ -12,7 +12,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Doctores;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Secretarias;
-class RoleController extends Controller
+class RoleController 
 {
     use AuthorizesRequests;
 

@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
-class EmpresaController extends Controller
+class EmpresaController 
 {
     public function index()
     {

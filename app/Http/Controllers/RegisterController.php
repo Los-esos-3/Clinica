@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\User; // Importación añadida
 use App\Mail\VerificationCodeMail;
 
-class RegistrationController extends Controller // Asumo que es el nombre de tu controlador
+class RegisterController  // Asumo que es el nombre de tu controlador
 {
     public function register(Request $request)
     {

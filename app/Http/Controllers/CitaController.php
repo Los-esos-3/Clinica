@@ -14,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use App\Models\Secretarias;
 
-class CitaController extends Controller
+class CitaController 
 {
     use AuthorizesRequests;
     use hasRoles;

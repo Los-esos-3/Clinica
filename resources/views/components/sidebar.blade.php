@@ -2,22 +2,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<div class="sidebar-container">
-
-    <button id="toggle-sidebar" class="toggle-button">
-        <i class="fas fa-bars"></i>
-    </button>
+<div class="sidebar-container" >
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar closed">
 
         <div class="empresa-container">
             <x-application-logo></x-application-logo>
-
-            <button class="toggle-button-secondary">
-                <i class="fas fa-bars"></i>
-            </button>
-
         </div>
 
 
@@ -125,22 +116,6 @@
 </div>
 
 <style>
-    .toggle-button-secondary {
-        position: fixed;
-        height: 35px;
-        width: 35px;
-        left: 250px;
-        z-index: 9999;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        padding: 4px;
-        font-size: 20px;
-        cursor: pointer;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease-in-out;
-    }
-
     .empresa-container {
         display: flex;
     }
@@ -206,7 +181,7 @@
         position: fixed;
         top: 0;
         left: 0;
-        width: 250px;
+        width: 260px;
         height: 100%;
         background-color: #2c3e50;
         color: white;
@@ -342,8 +317,6 @@
 
         // Asegurarse de que el sidebar esté cerrado al cargar la página
         sidebar.classList.add('closed');
-        toggleButton.style.display = 'block'; // Mostrar el primer botón
-        toggleButtonSecondary.style.display = 'none'; // Ocultar el segundo botón
 
         // Alternar el estado del sidebar
         toggleButton.addEventListener('click', function() {
@@ -355,16 +328,5 @@
             sidebar.classList.toggle('closed');
             updateButtonVisibility();
         });
-
-        // Función para actualizar la visibilidad de los botones
-        function updateButtonVisibility() {
-            if (sidebar.classList.contains('closed')) {
-                toggleButton.style.display = 'block'; // Mostrar el primer botón
-                toggleButtonSecondary.style.display = 'none'; // Ocultar el segundo botón
-            } else {
-                toggleButton.style.display = 'none'; // Ocultar el primer botón
-                toggleButtonSecondary.style.display = 'block'; // Mostrar el segundo botón
-            }
-        }
     });
 </script>

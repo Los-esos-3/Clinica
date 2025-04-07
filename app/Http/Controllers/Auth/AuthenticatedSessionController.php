@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use App\Models\User;
 
-class AuthenticatedSessionController extends Controller
+class AuthenticatedSessionController 
 {
     public function create()
     {

@@ -11,7 +11,7 @@ use Spatie\Permission\Traits\HasRoles;
 use App\Models\Paciente;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ClinicaController extends Controller
+class ClinicaController 
 {
 
     use HasRoles;

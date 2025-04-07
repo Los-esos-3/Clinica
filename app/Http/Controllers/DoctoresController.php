@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class DoctoresController extends Controller
+class DoctoresController 
 {
     use HasRoles;
     public function index(Request $request)

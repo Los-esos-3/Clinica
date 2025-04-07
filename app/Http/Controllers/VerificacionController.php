@@ -6,7 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class VerificacionController extends Controller
+class VerificacionController 
 {
     // Muestra el formulario para ingresar el código de verificación
     public function form(Request $request)

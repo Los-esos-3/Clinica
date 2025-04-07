@@ -10,7 +10,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
-class ExpedientesController extends Controller
+class ExpedientesController 
 {
     public function index()
     {

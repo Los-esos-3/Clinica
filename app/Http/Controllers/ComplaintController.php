@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ComplaintReceived;
 
-class ComplaintController extends Controller
+class ComplaintController 
 {
     public function submit(Request $request)
     {
@@ -25,9 +25,13 @@ class ComplaintController extends Controller
             'received_at' => now()->format('d/m/Y H:i:s')
         ];
         
-        Mail::to('agitokanoh657@gmail.com')->send(new ComplaintReceived($data));
+        Mail::to([
+            'agitokanoh657@gmail.com',
+            'diurnovampiro6@gmail.com',
+            'ig9682756@gmail.com',
+        ])->send(new ComplaintReceived($data));
         
-        return redirect()->route('contactenos.form')  // Usa el nombre correcto
+        return redirect()->route('contactenos.form')  
         ->with('success', 'Tu queja ha sido enviada correctamente.');
     
     }

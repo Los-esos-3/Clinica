@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 
-class SecretariasDoctorController extends Controller
+class SecretariasDoctorController 
 {
     public function index()
     {

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
-class IngresoController extends Controller
+class IngresoController 
 {
     // Mostrar todos los ingresos
     public function index()

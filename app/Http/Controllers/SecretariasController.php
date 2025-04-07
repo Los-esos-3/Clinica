@@ -11,7 +11,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
-class SecretariasController extends Controller
+class SecretariasController 
 {
     public function index(Request $request)
     {
