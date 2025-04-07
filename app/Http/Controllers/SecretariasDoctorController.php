@@ -108,10 +108,12 @@ class SecretariasDoctorController extends Controller
     {
         $secretaria = Secretarias::findOrFail($id);
 
+
         // Verificar que la secretaria pertenezca al doctor actual
         if ($secretaria->doctor_id === Auth::user()->doctor->id) {
             // Obtener todos los pacientes relacionados con la secretaria
             $pacientesSecretaria = Paciente::where('secretaria_id', $secretaria->id)->get();
+
 
             // Desvincular el doctor y la secretaria de los pacientes
             foreach ($pacientesSecretaria as $paciente) {
@@ -124,7 +126,7 @@ class SecretariasDoctorController extends Controller
             $secretaria->doctor_id = null;
             $secretaria->save();
         }
-
+    
         return redirect()->route('Doctor.Secretaria')->with('success', 'Secretaria desasignada correctamente.');
     }
 }

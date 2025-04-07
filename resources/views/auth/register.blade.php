@@ -212,7 +212,12 @@
             <!-- Sección derecha (Formulario) -->
             <div class="w-1/2 p-6">
                 <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
-                
+                @if (session('success'))
+    <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+        {{ session('success') }}
+    </div>
+@endif
+
                 <form method="POST" action="{{ route('register') }}" class="space-y-4">
                     @csrf
                     
@@ -246,13 +251,31 @@
                     
                     <div>
                         <label class="block text-sm text-gray-700 mb-2">Celular</label>
-                        <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                        <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-500" 
                                value="{{ old('phone') }}" required>
                     </div>
+   <!-- Campo de Comentarios -->
+   <div>
+    <label class="block text-sm text-gray-700 mb-2">Comentarios</label>
+    <textarea name="comments" class="w-full px-3 py-2 border border-gray-300 rounded-md 
+              @error('comments') border-red-500 @enderror" 
+              rows="4" placeholder="Cuéntenos sobre su negocio">{{ old('comments') }}</textarea>
+    @error('comments')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
+<div class="g-recaptcha" data-sitekey="6LeNBA0rAAAAAMawoCfe6xp5O3fvLGUDvy_cXCes"></div>
+@if ($errors->has('g-recaptcha-response'))
+    <p class="text-red-500 text-sm mt-1">
+        {{ $errors->first('g-recaptcha-response') }}
+    </p>
+@endif
 
                     <button type="submit" class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
                         CREAR CUENTA
                     </button>
+                    
 
                     <p class="text-sm text-gray-600 text-center mt-4">
                         Al dar clic en "Registrarme" estás aceptando nuestros 
@@ -261,5 +284,7 @@
                 </form>
             </div>
         </div>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     </div>
 </x-guest-layout>

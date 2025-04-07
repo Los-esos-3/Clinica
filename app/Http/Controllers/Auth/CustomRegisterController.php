@@ -32,27 +32,27 @@ class CustomRegisterController extends Controller
      * @return \Illuminate\Contracts\Validation\Validator
      */
     protected function validator(array $data)
-    {
+{
+    return Validator::make($data, [
+        'name' => ['required', 'string', 'max:255'],
+        'number' => ['required', 'integer', 'numeric', 'digits:10', 'unique:users'],
+        'email' => [
+            'required',
+            'string',
+            'email',
+            'max:255',
+            'unique:users',
+            function ($attribute, $value, $fail) {
+                if (!preg_match('/^[a-zA-Z0-9._%+-]+@gmail\.com$/', $value)) {
+                    $fail('El correo electrónico debe ser una cuenta de Gmail.');
+                }
+            },
+        ],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'comments' => ['nullable', 'string', 'max:500'], 
+    ]);
+}
 
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'number' =>['required','integer','numeric', 'max:10', 'unique:users'],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                'unique:users',
-                function ($attribute, $value, $fail) {
-                    if (!preg_match('/^[a-zA-Z0-9._%+-]+@gmail\.com$/', $value)) {
-                        $fail('El correo electrónico debe ser una cuenta de Gmail.');
-                    }
-                },
-            ],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
- 
-    }
 
     /**
      * Create a new user instance after a valid registration.
@@ -65,10 +65,12 @@ class CustomRegisterController extends Controller
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'number'=> $data['number'],
+            'number' => $data['number'],
             'password' => Hash::make($data['password']),
+            'comments' => $data['comments'] ?? null, 
         ]);
     }
+    
 
     /**
      * Handle a registration request for the application.
