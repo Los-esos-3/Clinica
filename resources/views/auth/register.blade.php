@@ -210,6 +210,7 @@
             </div>
 
            <!-- Sección derecha (Formulario) -->
+<!-- Sección derecha (Formulario) -->
 <div class="w-1/2 p-6">
     <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
 
@@ -273,6 +274,7 @@
             @enderror
         </div>
 
+        <!-- Google reCAPTCHA -->
         <div class="g-recaptcha" data-sitekey="6LeNBA0rAAAAAMawoCfe6xp5O3fvLGUDvy_cXCes"></div>
         @if ($errors->has('g-recaptcha-response'))
             <p class="text-red-500 text-sm mt-1">
@@ -280,57 +282,95 @@
             </p>
         @endif
 
+        <!-- Botón de envío -->
         <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-200">
             CREAR CUENTA
         </button>
         
         <p class="text-sm text-gray-600 text-center mt-4">
-            Al dar clic en "Registrarme" estás aceptando nuestros 
+            Al dar clic en "CREAR CUENTA" estás aceptando nuestros 
             <a href="#" class="text-blue-500 underline">términos y condiciones de uso</a>.
         </p>
     </form>
 </div>
+
 <!-- Modal de verificación -->
-<div id="verificationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
-    <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4">
-        <div class="flex items-start mb-4">
+<div id="verificationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+    <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4 shadow-lg">
+        <div class="flex items-start justify-between mb-4">
+            <!-- Icono de verificación -->
             <svg class="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <div>
-                <h3 class="text-lg font-medium text-gray-900">Verificación requerida</h3>
-                <div class="mt-2 text-sm text-gray-600">
-                    <p>Hemos enviado un código de 6 dígitos a <span class="font-semibold" id="modalEmail"></span>.</p>
-                    <p class="mt-2">Por favor revisa tu correo electrónico para completar el registro.</p>
-                </div>
+            <button id="closeModalButton" class="text-gray-600 hover:text-gray-800" aria-label="Cerrar modal">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                          d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        
+        <div>
+            <h3 class="text-lg font-medium text-gray-900">Verificación requerida</h3>
+            <div class="mt-2 text-sm text-gray-600">
+                <p>Hemos enviado un código de 6 dígitos a <span class="font-semibold" id="modalEmail"></span>.</p>
+                <p class="mt-2">Por favor revisa tu correo electrónico para completar el registro.</p>
             </div>
         </div>
+
         <div class="mt-4 flex justify-end">
-            <button onclick="closeModal()" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                Entendido
-            </button>
+            <a href="{{ route('verificar.email.view') }}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                Ir a Verificación
+            </a>
         </div>
     </div>
 </div>
 
+<!-- Scripts -->
 <script>
-    // Función para mostrar el modal con el email
+    // Mostrar modal con el email
     function showVerificationModal(email) {
         document.getElementById('modalEmail').textContent = email;
         document.getElementById('verificationModal').classList.remove('hidden');
     }
 
-    // Función para cerrar el modal
-    function closeModal() {
-        document.getElementById('verificationModal').classList.add('hidden');
-    }
-
-    // Mostrar modal si hay sesión de verificación
+    // Mostrar modal si existe la sesión
     @if(session('verification_sent'))
         showVerificationModal("{{ session('registered_email') }}");
     @endif
 </script>
 <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+    // Función para mostrar el modal con el email
+    function showVerificationModal(email) {
+        // Asignar el email al modal
+        document.getElementById('modalEmail').textContent = email;
+        // Mostrar el modal al eliminar la clase 'hidden'
+        document.getElementById('verificationModal').classList.remove('hidden');
+    }
 
+    // Mostrar modal si existe la sesión 'verification_sent' (indicando que el correo fue enviado)
+    @if(session('verification_sent'))
+        showVerificationModal("{{ session('registered_email') }}");
+    @endif
+
+    // Obtener el modal y el botón de cerrar
+    const modal = document.getElementById('verificationModal');
+    const closeButton = document.getElementById('closeModalButton');
+
+    // Cerrar el modal al hacer clic en el botón de cerrar
+    closeButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    // Cerrar el modal si se hace clic fuera del área del modal
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+</script>
     </div>
 </x-guest-layout>

@@ -10,7 +10,7 @@
                 </p>
             </div>
 
-            <form class="mt-8 space-y-6" action="{{ route('verificar.email.code') }}" method="POST">
+            <form class="mt-8 space-y-6" action="{{ route('verificar.email') }}" method="POST">
                 @csrf
                 <input type="hidden" name="email" value="{{ $email }}">
                 
@@ -34,11 +34,11 @@
             <div class="text-center">
                 <p class="text-sm text-gray-600">
                     ¿No recibiste el código? 
-                    <a href="{{ route('register.form') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">
                         Volver al registro
                     </a>
                 </p>
             </div>
         </div>
     </div>
-</x-guest-layout>
+</x-guest-layout> 

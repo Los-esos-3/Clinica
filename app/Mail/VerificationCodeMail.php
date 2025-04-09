@@ -18,6 +18,7 @@ class VerificationCodeMail extends Mailable
     public function __construct($verificationCode)
     {
         $this->verificationCode = $verificationCode;
+        logger()->info('Constructor VerificationCodeMail - Code: ' . $verificationCode);
     }
 
     /**
@@ -25,10 +26,12 @@ class VerificationCodeMail extends Mailable
      */
     public function build()
     {
+        logger()->info('Building email with verification code: ' . $this->verificationCode);
+        
         return $this->subject('Tu Código de Verificación')
-                   ->view('emails.verification_code')
-                   ->with([
-                       'verificationCode' => $this->verificationCode
-                   ]);
+                    ->view('emails.verification_code')
+                    ->with([
+                        'verificationCode' => $this->verificationCode
+                    ]);
     }
-}
+} 
