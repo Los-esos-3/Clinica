@@ -29,7 +29,7 @@
             </li>
             <li>
                 <a href="{{ route('Pacientes.PacientesView') }}">
-                    <i class="fas fa-users"></i>
+                    <i class="fa-solid fa-bed-pulse"></i>
                     <span>Pacientes</span>
                 </a>
             </li>
@@ -60,6 +60,7 @@
 
                 <li>
                     <a href="">
+                        <i class="fa-solid fa-users-line"></i>
                         <span>Trabajadores</span>
                     </a>
                 </li>
