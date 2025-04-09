@@ -2,7 +2,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
-<div class="sidebar-container" >
+<div class="sidebar-container">
 
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar closed">
@@ -23,8 +23,8 @@
 
             <li>
                 <a href="{{ route('dashboard') }}">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Calendario</span>
                 </a>
             </li>
             <li>
@@ -36,7 +36,7 @@
 
             @if (Auth::user()->hasRole('Doctor'))
                 <li>
-                    <a href="">
+                    <a href="{{ route('Doctor.Secretaria') }}">
                         <img class="img-secretary" src="{{ asset('images/secretary.png') }}" />
                         <span>Secretaria</span>
                     </a>
@@ -45,29 +45,36 @@
 
             @if (Auth::user()->hasAnyRole('Admin', 'Root'))
                 <li>
-                    <a href="#">
+                    <a href="{{ route('doctores.index') }}">
                         <i class="fa-solid fa-user-doctor"></i>
                         <span>Doctores</span>
                     </a>
+                </li>
 
                 <li>
-                    <a href="#">
-                        <i class="fas fa-building"></i>
-                        <span>Empresa</span>
+                    <a href="{{ route('secretarias.index') }}">
+                        <img class="img-secretary2" src="{{ asset('images/secretary.png') }}" />
+                        <span>Secretarias</span>
                     </a>
                 </li>
 
                 <li>
                     <a href="">
-                        <img class="img-secretary2" src="{{ asset('images/secretary.png') }}" />
-                        <span>Secretarias</span>
+                        <span>Trabajadores</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ route('empresas.index') }}">
+                        <i class="fas fa-building"></i>
+                        <span>Empresa</span>
                     </a>
                 </li>
             @endif
 
             @if (Auth::user()->hasRole('Root'))
                 <li>
-                    <a href="#">
+                    <a href="{{ route('roles.index') }}">
                         <i class="fa-solid fa-users-gear"></i>
                         <span>Roles</span>
                     </a>
@@ -84,7 +91,7 @@
         </ul>
 
         <div class="role-container">
-            <label for="">Role Actual: Secretaria</label>
+            <label for="">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
         </div>
         <!-- Contenedor para el usuario -->
         <div class="user-container">
@@ -92,7 +99,8 @@
             <div class="name-space">
                 <!-- Imagen de perfil o icono de sombra -->
                 @if ($user->foto_perfil)
-                    <img src="{{ asset('images/' . $user->foto_perfil) }}" alt="Foto de Perfil" class="profile-picture">
+                    <img src="{{ asset('images/' . $user->foto_perfil) }}" alt="Foto de Perfil"
+                        class="profile-picture">
                 @else
                     <i class="fa-solid fa-2xs profile-icon fa-circle-user"></i>
                 @endif
@@ -219,7 +227,7 @@
         align-items: center;
         padding: 15px 20px;
         text-decoration: none;
-        color: #ecf0f1;
+        color: #ecf0f1 !important;
         font-size: 14px;
         transition: background-color 0.3s ease-in-out;
     }
@@ -328,5 +336,91 @@
             sidebar.classList.toggle('closed');
             updateButtonVisibility();
         });
+    });
+</script>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const content = document.getElementById('content');
+
+    if (sidebarToggle && sidebar && content) {
+        sidebarToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('-translate-x-full');
+            content.classList.toggle('ml-0');
+            content.classList.toggle('md:ml-64');
+        });
+    }
+
+    function toggleModal(modalId) {
+        const modal = document.getElementById(modalId);
+        const appContainer = document.getElementById(
+            'app'); // Asegúrate de que tu layout tenga un ID "app" en el div principal
+
+        if (modal) {
+            modal.classList.toggle('hidden');
+            document.documentElement.classList.toggle('overflow-hidden');
+            document.body.classList.toggle('overflow-hidden');
+
+            if (appContainer) {
+                appContainer.classList.toggle('filter', !modal.classList.contains('hidden'));
+                appContainer.classList.toggle('blur-sm', !modal.classList.contains('hidden'));
+                appContainer.style.pointerEvents = modal.classList.contains('hidden') ? 'auto' : 'none';
+            }
+        }
+    }
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            const modals = document.querySelectorAll('[id^="modal-"]');
+            modals.forEach(modal => {
+                if (!modal.classList.contains('hidden')) {
+                    toggleModal(modal.id);
+                }
+            });
+        }
+    });
+
+    document.addEventListener('click', function(e) {
+        if (e.target.matches('[id^="modal-"]')) {
+            toggleModal(e.target.id);
+        }
+    });
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const sidebar = document.getElementById('sidebar');
+        const content = document.getElementById('content');
+
+        // Función para actualizar los estilos del contenido
+        function updateContentStyles() {
+            if (!sidebar.classList.contains('closed')) {
+                // Si el sidebar está abierto, aplicar los estilos
+                content.classList.add('md:ml-64');
+            } else {
+                // Si el sidebar está cerrado, quitar los estilos
+                content.classList.remove('md:ml-64');
+            }
+        }
+
+        // Escuchar cambios en el estado del sidebar
+        const observer = new MutationObserver(function(mutationsList) {
+            for (let mutation of mutationsList) {
+                if (mutation.attributeName === 'class') {
+                    updateContentStyles();
+                }
+            }
+        });
+
+        // Observar cambios en las clases del sidebar
+        if (sidebar) {
+            observer.observe(sidebar, {
+                attributes: true
+            });
+        }
+
+        // Inicializar los estilos al cargar la página
+        updateContentStyles();
     });
 </script>

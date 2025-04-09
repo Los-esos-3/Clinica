@@ -8,13 +8,17 @@
 
             <div class="flex items-center justify-between bg-gray-300 p-3 mb-6 border">
 
-            <button id="toggle-sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
+                <div class="flex items-center gap-16">
+                    <button id="toggle-sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
 
-                <h2 class="pl-14 text-xl pt-1.5 font-semibold leading-tight text-gray-800">
-                    {{ __('Pacientes') }}
-                </h2>
+                    <h2 class="text-xl pt-1.5 font-semibold leading-tight text-gray-800">
+                        {{ __('Pacientes') }}
+                    </h2>
+                </div>
+
+
 
                 <div class="flex items-center ml-4">
                     <form action="{{ route('Pacientes.PacientesView') }}" method="GET" class="flex items-center ml-4">
@@ -107,91 +111,7 @@
         </div>
     </div>
 
-    <script>
-        const sidebar = document.getElementById('sidebar');
-        const sidebarToggle = document.getElementById('sidebar-toggle');
-        const content = document.getElementById('content');
-
-        if (sidebarToggle && sidebar && content) {
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('-translate-x-full');
-                content.classList.toggle('ml-0');
-                content.classList.toggle('md:ml-64');
-            });
-        }
-
-        function toggleModal(modalId) {
-            const modal = document.getElementById(modalId);
-            const appContainer = document.getElementById(
-                'app'); // Asegúrate de que tu layout tenga un ID "app" en el div principal
-
-            if (modal) {
-                modal.classList.toggle('hidden');
-                document.documentElement.classList.toggle('overflow-hidden');
-                document.body.classList.toggle('overflow-hidden');
-
-                if (appContainer) {
-                    appContainer.classList.toggle('filter', !modal.classList.contains('hidden'));
-                    appContainer.classList.toggle('blur-sm', !modal.classList.contains('hidden'));
-                    appContainer.style.pointerEvents = modal.classList.contains('hidden') ? 'auto' : 'none';
-                }
-            }
-        }
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                const modals = document.querySelectorAll('[id^="modal-"]');
-                modals.forEach(modal => {
-                    if (!modal.classList.contains('hidden')) {
-                        toggleModal(modal.id);
-                    }
-                });
-            }
-        });
-
-        document.addEventListener('click', function(e) {
-            if (e.target.matches('[id^="modal-"]')) {
-                toggleModal(e.target.id);
-            }
-        });
-    </script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
-
-            // Función para actualizar los estilos del contenido
-            function updateContentStyles() {
-                if (!sidebar.classList.contains('closed')) {
-                    // Si el sidebar está abierto, aplicar los estilos
-                    content.classList.add('md:ml-64');
-                } else {
-                    // Si el sidebar está cerrado, quitar los estilos
-                    content.classList.remove('md:ml-64');
-                }
-            }
-
-            // Escuchar cambios en el estado del sidebar
-            const observer = new MutationObserver(function(mutationsList) {
-                for (let mutation of mutationsList) {
-                    if (mutation.attributeName === 'class') {
-                        updateContentStyles();
-                    }
-                }
-            });
-
-            // Observar cambios en las clases del sidebar
-            if (sidebar) {
-                observer.observe(sidebar, {
-                    attributes: true
-                });
-            }
-
-            // Inicializar los estilos al cargar la página
-            updateContentStyles();
-        });
-    </script>
+    
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">

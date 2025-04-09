@@ -1,7 +1,6 @@
 <x-app-layout>
 
     <head>
-
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -39,213 +38,121 @@
             .fc-event-title {
                 font-weight: bold;
             }
-
-            /* Barra de navegación */
-            .nav {
-                background-color: #374151 !important;
-                color: white;
-                padding: 1rem;
-                display: block;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            .nav-container {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                max-width: 1200px;
-                margin: 0 auto;
-            }
-
-            .nav-links {
-                display: flex;
-                gap: 1rem;
-            }
-
-            .nav-links a {
-                color: white;
-                text-decoration: none;
-                font-size: 1.1rem;
-                transition: color 0.2s ease-in-out;
-            }
-
-            .nav-links a:hover {
-                color: #3b82f6;
-                text-decoration: underline;
-            }
         </style>
     </head>
 
     <body>
-        <nav class="nav">
-            <div class="nav-container">
-                <div class="Container-img">
-                    <x-application-logo></x-application-logo>
-                </div>
-                <div class="nav-links">
-                    <a href="{{ route('dashboard') }}">Calendario</a>
-                    <a href="{{ route('Pacientes.PacientesView') }}">Pacientes</a>
-                    @if (Auth::user()->hasAnyRole(['Doctor']))
-                        <a href="{{ route('Doctor.Secretaria') }}">Secretaria</a>
-                    @endif
-                </div>
+        <div class="min-h-screen flex">
+            <aside>
+                <x-sidebar :user="Auth::user()" />
+            </aside>
 
-                <div class="relative inline-block text-left">
-                    <button type="button"
-                        class="inline-flex items-center justify-center w-full px-4 py-2 text-sm font-medium text-white bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-gray-500"
-                        id="options-menu" aria-expanded="true" aria-haspopup="true">
-                        <span class="mr-2">{{ Auth::user()->name }}</span>
-                        <!-- Icono de flecha -->
-                        <svg class="-mr-1 ml-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
-                            fill="currentColor">
-                            <path fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
+            <div class="flex-grow bg-gray-100 transition-all duration-300 ml-0 md:ml-64" id="content">
+
+
+                <div class="p-6">
+
+                    <button id="toggle-sidebar" class="w-12">
+                        <i class="fa-solid fa-bars fa-lg"></i>
                     </button>
 
-                    <!-- Menú desplegable -->
-                    <div id="dropdown-menu"
-                        class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 divide-y divide-gray-100"
-                        role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                        <div class="py-1" role="none">
-                            <a href="{{ route('profile.show') }}"
-                                class="group flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                role="menuitem">
-                                <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                        clip-rule="evenodd" />
+                    <!-- Calendario -->
+                    <div id="admin-calendar"></div>
+                </div>
+
+                <!-- Modal para crear cita -->
+                <div id="newCitaModal"
+                    class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+                    <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
+                        <div class="absolute top-0 right-0 pt-4 pr-4">
+                            <button id="closeNewCitaModalBtn"
+                                class="text-gray-400 hover:text-gray-500 transition-colores duration-200">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                                Perfil
-                            </a>
+                            </button>
                         </div>
-                        <div class="py-1" role="none">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit"
-                                    class="group flex w-full items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                                    role="menuitem">
-                                    <svg class="mr-3 h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                        <path fill-rule="evenodd"
-                                            d="M3 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm10.293 9.293a1 1 0 001.414 1.414l3-3a1 1 0 000-1.414l-3-3a1 1 0 10-1.414 1.414L14.586 9H7a1 1 0 100 2h7.586l-1.293 1.293z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    Cerrar Sesión
-                                </button>
-                            </form>
-                        </div>
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Nueva Cita</h3>
+                        <form id="newCitaForm" method="POST" action="{{ route('citas.store') }}">
+                            @csrf
+                            <div class="mb-4">
+                                <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
+                                <input type="date" id="fecha" name="fecha" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4 mb-4">
+                                <div>
+                                    <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora
+                                        Inicio</label>
+                                    <input type="time" id="hora_inicio" name="hora_inicio" required
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                </div>
+                                <div>
+                                    <label for="hora_fin" class="block text-sm font-medium text-gray-700">Hora
+                                        Fin</label>
+                                    <input type="time" id="hora_fin" name="hora_fin" required
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor</label>
+                                <select name="doctor_id" id="doctor_id" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                    <option value="">Selecciona un doctor</option>
+                                    @foreach ($doctores as $doctor)
+                                        <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="paciente_id"
+                                    class="block text-sm font-medium text-gray-700">Paciente</label>
+                                <select name="paciente_id" id="paciente_id" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                    <option value="">Selecciona un paciente</option>
+                                    @foreach ($pacientes as $paciente)
+                                        <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="motivo" class="block text-sm font-medium text-gray-700">Motivo</label>
+                                <textarea name="motivo" id="motivo" required
+                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" rows="3"></textarea>
+                            </div>
+                            <div class="flex justify-center mt-4">
+                                <button type="submit" id="closeModalOnSubmit"
+                                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">Programar
+                                    Cita</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            </div>
-        </nav>
 
-        <!-- Contenedor para el botón y calendario -->
-        <div class="p-6">
-            <!-- Botón para abrir modal -->
-            <button id="openNewCitaModalBtn"
-                class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd"
-                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                        clip-rule="evenodd" />
-                </svg>
-                Nueva Cita
-            </button>
 
-            <!-- Calendario -->
-            <div id="admin-calendar"></div>
-        </div>
-
-        <!-- Modal para crear cita -->
-        <div id="newCitaModal"
-            class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
-                <div class="absolute top-0 right-0 pt-4 pr-4">
-                    <button id="closeNewCitaModalBtn"
-                        class="text-gray-400 hover:text-gray-500 transition-colores duration-200">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Nueva Cita</h3>
-                <form id="newCitaForm" method="POST" action="{{ route('citas.store') }}">
-                    @csrf
-                    <div class="mb-4">
-                        <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-                        <input type="date" id="fecha" name="fecha" required
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
-                    </div>
-                    <div class="grid grid-cols-2 gap-4 mb-4">
-                        <div>
-                            <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora Inicio</label>
-                            <input type="time" id="hora_inicio" name="hora_inicio" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                <!-- Modal para mostrar detalles de la cita -->
+                <div id="detalleCitaModal"
+                    class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+                    <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
+                        <div class="absolute top-0 right-0 pt-4 pr-4">
+                            <button id="closeDetalleModalBtn"
+                                class="text-gray-400 hover:text-gray-500 transition-colores duration-200">
+                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
                         </div>
-                        <div>
-                            <label for="hora_fin" class="block text-sm font-medium text-gray-700">Hora Fin</label>
-                            <input type="time" id="hora_fin" name="hora_fin" required
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                        <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-ñcenter">Detalles de la Cita</h3>
+                        <div id="detalleCitaContent" class="text-gray-700">
+                            <!-- Aquí se mostrarán los detalles de la cita -->
                         </div>
-                    </div>
-                    <div class="mb-4">
-                        <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor</label>
-                        <select name="doctor_id" id="doctor_id" required
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
-                            <option value="">Selecciona un doctor</option>
-                            @foreach ($doctores as $doctor)
-                                <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="paciente_id" class="block text-sm font-medium text-gray-700">Paciente</label>
-                        <select name="paciente_id" id="paciente_id" required
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
-                            <option value="">Selecciona un paciente</option>
-                            @foreach ($pacientes as $paciente)
-                                <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label for="motivo" class="block text-sm font-medium text-gray-700">Motivo</label>
-                        <textarea name="motivo" id="motivo" required
-                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500"
-                            rows="3"></textarea>
-                    </div>
-                    <div class="flex justify-center mt-4">
-                        <button type="submit" id="closeModalOnSubmit"
-                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">Programar
-                            Cita</button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                        <div class="flex justify-center mt-4" id="deleteFormContainer">
+                            <!-- Este contenedor se actualizará dinámicamente con el botón de eliminar para la cita seleccionada -->
+                        </div>
 
-
-        <!-- Modal para mostrar detalles de la cita -->
-        <div id="detalleCitaModal"
-            class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
-                <div class="absolute top-0 right-0 pt-4 pr-4">
-                    <button id="closeDetalleModalBtn"
-                        class="text-gray-400 hover:text-gray-500 transition-colores duration-200">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
-                <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-ñcenter">Detalles de la Cita</h3>
-                <div id="detalleCitaContent" class="text-gray-700">
-                    <!-- Aquí se mostrarán los detalles de la cita -->
-                </div>
-                <div class="flex justify-center mt-4" id="deleteFormContainer">
-                    <!-- Este contenedor se actualizará dinámicamente con el botón de eliminar para la cita seleccionada -->
+                    </div>
                 </div>
 
             </div>
@@ -267,6 +174,45 @@
                 }
             });
         </script>
+
+        
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebar = document.getElementById('sidebar');
+            const content = document.getElementById('content');
+
+            // Función para actualizar los estilos del contenido
+            function updateContentStyles() {
+                if (!sidebar.classList.contains('closed')) {
+                    // Si el sidebar está abierto, aplicar los estilos
+                    content.classList.add('md:ml-64');
+                } else {
+                    // Si el sidebar está cerrado, quitar los estilos
+                    content.classList.remove('md:ml-64');
+                }
+            }
+
+            // Escuchar cambios en el estado del sidebar
+            const observer = new MutationObserver(function(mutationsList) {
+                for (let mutation of mutationsList) {
+                    if (mutation.attributeName === 'class') {
+                        updateContentStyles();
+                    }
+                }
+            });
+
+            // Observar cambios en las clases del sidebar
+            if (sidebar) {
+                observer.observe(sidebar, {
+                    attributes: true
+                });
+            }
+
+            // Inicializar los estilos al cargar la página
+            updateContentStyles();
+        });
+    </script>
+
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 // -------------------- ABRIR Y CERRAR MODAL DE NUEVA CITA --------------------
@@ -384,6 +330,8 @@ Eliminar Cita
 color: black !important; /* Cambia el color a negro */
 font-weight: bold;
 }
+
+
 
 /* Cambiar color de los nombres de los días de la semana */
 .fc-col-header-cell a {
