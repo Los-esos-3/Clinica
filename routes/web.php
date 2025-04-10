@@ -19,7 +19,7 @@ use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\Auth\CustomRegisterController;
 use App\Http\Controllers\ComplaintController;
-use App\Http\Controllers\verificacionController;
+use App\Http\Controllers\VerificacionController;
 
 
 //Redireccion para usuarios sin rol
@@ -212,3 +212,5 @@ Route::post('/register', [CustomRegisterController::class, 'register'])->name('r
 Route::get('/verificar-email', [CustomRegisterController::class, 'verifyForm'])->name('verificar.email.view');
 Route::post('/verificar-email', [CustomRegisterController::class, 'verifyCode'])->name('verificar.email');
 Route::post('/refresh-captcha', [CustomRegisterController::class, 'refreshCaptcha'])->name('refresh.captcha');
+
+

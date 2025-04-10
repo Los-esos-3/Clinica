@@ -12,14 +12,24 @@ class ComplaintReceived extends Mailable
 
     public $data;
 
+    /**
+     * Create a new message instance.
+     *
+     * @param array $data Datos del mensaje
+     */
     public function __construct($data)
     {
         $this->data = $data;
     }
 
+    /**
+     * Build the message.
+     *
+     * @return $this
+     */
     public function build()
     {
-        return $this->subject('Nueva Queja Recibida - ' . config('app.name'))
-            ->view('emails.complaint');
+        return $this->subject('Nuevo Mensaje de Contacto - Expedmed')
+                   ->view('emails.complaint'); // Asegúrate que esta vista existe
     }
 }
