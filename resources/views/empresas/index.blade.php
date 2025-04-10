@@ -79,7 +79,7 @@
                                             <input type="text" id="pais" name="pais"
                                                 class="form-control @error('pais') is-invalid @enderror"
                                                 placeholder="Ejemplo: México" required>
-                                           
+
                                         </div>
 
                                         <div class="mb-3">
@@ -87,7 +87,7 @@
                                             <input type="text" id="ciudad" name="ciudad"
                                                 class="form-control @error('ciudad') is-invalid @enderror"
                                                 placeholder="Ejemplo: Ciudad de México" required>
-                                           
+
                                         </div>
 
                                         <div class="mb-3">
@@ -468,23 +468,29 @@
     <!-- Agregar este script para el horario personalizado -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            async function obtenerUbicacion() {
-                try {
-                    const response = await fetch('https://ipapi.co/json/');
-                    const data = await response.json();
+            const paisInput = document.getElementById('pais');
+            const ciudadInput = document.getElementById('ciudad');
 
-                    // Rellenar los campos de país y ciudad
-                    document.getElementById('pais').value = data.country_name || '';
-                    document.getElementById('ciudad').value = data.region || '';
+            // Verificar si los campos están vacíos
+            if (!paisInput.value && !ciudadInput.value) {
+                async function obtenerUbicacion() {
+                    try {
+                        const response = await fetch('https://ipapi.co/json/');
+                        const data = await response.json();
 
-                } catch (error) {
-                    console.error('Error al obtener la ubicación:', error);
-                    alert('No se pudo obtener la ubicación automáticamente. Por favor, ingrésela manualmente.');
+                        // Rellenar los campos solo si están vacíos
+                        if (!paisInput.value) paisInput.value = data.country_name || '';
+                        if (!ciudadInput.value) ciudadInput.value = data.region || '';
+                    } catch (error) {
+                        console.error('Error al obtener la ubicación:', error);
+                        alert(
+                            'No se pudo obtener la ubicación automáticamente. Por favor, ingrésela manualmente.');
+                    }
                 }
-            }
 
-            // Llamar a la función al cargar la página
-            obtenerUbicacion();
+                // Llamar a la función al cargar la página
+                obtenerUbicacion();
+            }
         });
 
         // Validación del teléfono

@@ -5,11 +5,13 @@
             <div class="w-1/2 p-6">
                 <h2 class="text-2xl font-bold mb-4">Estás a un paso de modernizar tu consultorio.</h2>
                 <p class="text-gray-600 mb-6">
-                Optimiza la gestión de expedientes clínicos con nuestro software seguro, intuitivo y accesible. Mantén toda la información de tus pacientes organizada y disponible en todo momento.
+                    Optimiza la gestión de expedientes clínicos con nuestro software seguro, intuitivo y accesible.
+                    Mantén toda la información de tus pacientes organizada y disponible en todo momento.
                 </p>
                 <div class="grid grid-cols-2 gap-4">
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/expediente-icon.png') }}" class="w-6 h-6" alt="Expediente" loading="lazy">
+                        <img src="{{ asset('images/expediente-icon.png') }}" class="w-6 h-6" alt="Expediente"
+                            loading="lazy">
                         <span>Expediente Clínico</span>
                     </div>
                     <div class="flex items-center space-x-2">
@@ -17,39 +19,51 @@
                         <span>Agenda</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/sitio-web-icon.png') }}" class="w-6 h-6" alt="Sitio Web" loading="lazy">
+                        <img src="{{ asset('images/sitio-web-icon.png') }}" class="w-6 h-6" alt="Sitio Web"
+                            loading="lazy">
                         <span>Sitio Web</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/portal-paciente-icon.png') }}" class="w-6 h-6" alt="Portal" loading="lazy">
+                        <img src="{{ asset('images/portal-paciente-icon.png') }}" class="w-6 h-6" alt="Portal"
+                            loading="lazy">
                         <span>Portal Paciente</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/facturacion-icon.png') }}" class="w-6 h-6" alt="Facturación" loading="lazy">
+                        <img src="{{ asset('images/facturacion-icon.png') }}" class="w-6 h-6" alt="Facturación"
+                            loading="lazy">
                         <span>Facturación</span>
                     </div>
                     <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/seguridad-icon.png') }}" class="w-6 h-6" alt="Seguridad" loading="lazy">
+                        <img src="{{ asset('images/seguridad-icon.png') }}" class="w-6 h-6" alt="Seguridad"
+                            loading="lazy">
                         <span>Seguridad de tu información</span>
                     </div>
                 </div>
 
                 <!-- Nueva sección de planes -->
                 <div class="mt-6">
-                    <h3 class="text-xl font-bold text-center mb-6 text-gray-800">Planes de Suscripción</h3>
+                    <h3 class="text-xl font-bold text-center mb-6 text-gray-800">Planes de Suscripción:</h3>
                     <div class="flex flex-col space-y-4 max-w-xl mx-auto">
                         <!-- Plan Básico -->
                         <div class="relative group w-full">
-                            <div class="absolute -inset-1 bg-gradient-to-r from-blue-300 to-blue-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
-                            <div class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-blue-400 hover:shadow-lg active:scale-95">
+                            <div
+                                class="absolute -inset-1 bg-gradient-to-r from-blue-300 to-blue-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500">
+                            </div>
+                            <div
+                                class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-blue-400 hover:shadow-lg active:scale-95">
                                 <div class="flex items-center">
-                                    <div class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
-                                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                                    <div
+                                        class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
+                                        <svg class="w-6 h-6 text-blue-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                                         </svg>
                                     </div>
                                     <div class="flex-grow">
-                                        <h4 class="text-lg font-bold text-gray-800 group-hover:text-blue-500 transition-colors duration-300">Plan Básico</h4>
+                                        <h4
+                                            class="text-lg font-bold text-gray-800 group-hover:text-blue-500 transition-colors duration-300">
+                                            Plan Básico</h4>
                                         <div class="text-sm text-gray-600">Acceso mensual con funciones esenciales</div>
                                     </div>
                                     <div class="text-right">
@@ -59,51 +73,67 @@
                                 </div>
                                 <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Acceso solo por 30 días</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Hasta 20 expedientes activos</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Solo 1 médico registrado</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-blue-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Sin acceso a herramientas avanzadas</span>
                                     </div>
                                 </div>
-                                <button class="mt-4 w-full bg-gradient-to-r from-blue-400 to-blue-600 text-white py-2 px-4 rounded-md text-sm font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95">
-                                    Seleccionar Plan
-                                </button>
+
                             </div>
                         </div>
 
                         <!-- Plan Popular -->
                         <div class="relative group w-full">
-                            <div class="absolute -inset-1 bg-gradient-to-r from-purple-300 to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
-                            <div class="relative bg-white border-2 border-purple-500 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:shadow-lg active:scale-95">
+                            <div
+                                class="absolute -inset-1 bg-gradient-to-r from-purple-300 to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500">
+                            </div>
+                            <div
+                                class="relative bg-white border-2 border-purple-500 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:shadow-lg active:scale-95">
                                 <div class="absolute -top-3 right-4">
-                                    <span class="bg-gradient-to-r from-purple-400 to-purple-600 text-white text-sm px-4 py-1 rounded-full uppercase tracking-wider font-semibold shadow-lg">Más Popular</span>
+                                    <span
+                                        class="bg-gradient-to-r from-purple-400 to-purple-600 text-white text-sm px-4 py-1 rounded-full uppercase tracking-wider font-semibold shadow-lg">Más
+                                        Popular</span>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
-                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                                    <div
+                                        class="h-12 w-12 bg-purple-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
+                                        <svg class="w-6 h-6 text-purple-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                                         </svg>
                                     </div>
                                     <div class="flex-grow">
-                                        <h4 class="text-lg font-bold text-gray-800 group-hover:text-purple-500 transition-colors duration-300">Plan Popular</h4>
+                                        <h4
+                                            class="text-lg font-bold text-gray-800 group-hover:text-purple-500 transition-colors duration-300">
+                                            Plan Popular</h4>
                                         <div class="text-sm text-gray-600">Mayor accesibilidad y más herramientas</div>
                                     </div>
                                     <div class="text-right">
@@ -113,55 +143,72 @@
                                 </div>
                                 <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Acceso por 6 meses</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Hasta 150 expedientes activos</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Hasta 2 médicos registrados</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Acceso parcial a herramientas avanzadas</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-purple-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Opción de añadir 1 secretaria</span>
                                     </div>
                                 </div>
-                                <button class="mt-4 w-full bg-gradient-to-r from-purple-400 to-purple-600 text-white py-2 px-4 rounded-md text-sm font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95">
-                                    Seleccionar Plan
-                                </button>
+
                             </div>
                         </div>
 
                         <!-- Plan Premium -->
                         <div class="relative group w-full">
-                            <div class="absolute -inset-1 bg-gradient-to-r from-pink-300 via-yellow-300 to-pink-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
-                            <div class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-pink-400 hover:shadow-lg active:scale-95">
+                            <div
+                                class="absolute -inset-1 bg-gradient-to-r from-pink-300 via-yellow-300 to-pink-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500">
+                            </div>
+                            <div
+                                class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-pink-400 hover:shadow-lg active:scale-95">
                                 <div class="flex items-center">
-                                    <div class="h-12 w-12 bg-gradient-to-r from-pink-100 to-yellow-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
-                                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                    <div
+                                        class="h-12 w-12 bg-gradient-to-r from-pink-100 to-yellow-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
+                                        <svg class="w-6 h-6 text-pink-500" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                         </svg>
                                     </div>
                                     <div class="flex-grow">
-                                        <h4 class="text-lg font-bold text-gray-800 group-hover:text-pink-500 transition-colors duration-300">Plan Premium</h4>
-                                        <div class="text-sm text-gray-600">La mejor opción para clínicas y hospitales</div>
+                                        <h4
+                                            class="text-lg font-bold text-gray-800 group-hover:text-pink-500 transition-colors duration-300">
+                                            Plan Premium</h4>
+                                        <div class="text-sm text-gray-600">La mejor opción para clínicas y hospitales
+                                        </div>
                                     </div>
                                     <div class="text-right">
                                         <div class="text-2xl font-bold text-gray-900">$1,200</div>
@@ -170,296 +217,124 @@
                                 </div>
                                 <div class="mt-3 grid grid-cols-2 gap-2 text-sm">
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Acceso por 12 meses</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Expedientes ilimitados</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Hasta 4 médicos y 2 secretarias</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Acceso completo a herramientas avanzadas</span>
                                     </div>
                                     <div class="flex items-center text-gray-600 space-x-2">
-                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                        <svg class="w-5 h-5 text-pink-500 flex-shrink-0" fill="none"
+                                            stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M5 13l4 4L19 7" />
                                         </svg>
                                         <span>Prioridad en soporte técnico</span>
                                     </div>
                                 </div>
-                                <button class="mt-4 w-full bg-gradient-to-r from-pink-400 via-yellow-400 to-pink-600 text-white py-2 px-4 rounded-md text-sm font-semibold transform transition-all duration-300 hover:scale-105 hover:shadow-lg active:scale-95">
-                                    Seleccionar Plan
-                                </button>
+
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-           <!-- Sección derecha (Formulario) -->
-<!-- Sección derecha (Formulario) -->
-<div class="w-1/2 p-6">
-    <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
-
-    <form method="POST" action="{{ route('register') }}" class="space-y-4">
-        @csrf
-        
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
-            <input type="text" name="name" class="w-full px-3 py-2 border border-gray-300 rounded-md 
-                   @error('name') border-red-500 @enderror" 
-                   value="{{ old('name') }}" required>
-            @error('name')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Correo Electrónico</label>
-            <input type="email" name="email" class="w-full px-3 py-2 border border-gray-300 rounded-md 
-                   @error('email') border-red-500 @enderror" 
-                   value="{{ old('email') }}" required>
-            @error('email')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
-            <input type="password" name="password" 
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md
-                   @error('password') border-red-500 @enderror" required>
-            @error('password')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-        
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
-            <input type="password" name="password_confirmation" 
-                   class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
-        </div>
-        
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Celular</label>
-            <input type="tel" name="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md 
-                   @error('phone') border-red-500 @enderror" 
-                   value="{{ old('phone') }}" required>
-            @error('phone')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <!-- Campo de Comentarios -->
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Comentarios</label>
-            <textarea name="comments" class="w-full px-3 py-2 border border-gray-300 rounded-md 
-                      @error('comments') border-red-500 @enderror" 
-                      rows="4" placeholder="Cuéntenos sobre su negocio">{{ old('comments') }}</textarea>
-            @error('comments')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-
-        <!-- CAPTCHA Personalizado -->
-        <div class="mt-4">
-            <label class="block text-sm text-gray-700 mb-2">Verificación de Seguridad</label>
-            <div class="flex items-center space-x-4">
-                <div id="captcha-container" class="relative bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg w-48 h-16 flex items-center justify-center shadow-inner">
-                    <div class="absolute inset-0 bg-white/40 backdrop-blur-sm rounded-lg"></div>
-                    <div id="captcha-code" class="relative font-mono text-2xl font-bold tracking-widest text-gray-800" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
-                        @php
-                            if (!session()->has('captcha_code')) {
-                                $captchaCode = random_int(100000, 999999);
-                                session(['captcha_code' => $captchaCode]);
-                            } else {
-                                $captchaCode = session('captcha_code');
-                            }
-                        @endphp
-                        {{ $captchaCode }}
+            <!-- Sección derecha (Formulario) -->
+            <div class="w-1/2 p-6">
+                <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
+                @if (session('success'))
+                    <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                        {{ session('success') }}
                     </div>
-                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine"></div>
-                </div>
-                <button type="button" id="refresh-captcha" class="p-2 text-blue-500 hover:text-blue-700 transition-colors duration-200 transform hover:scale-110">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                </button>
+                @endif
+
+                <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                    @csrf
+
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
+                        <input type="text" name="name"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="{{ old('name') }}"
+                            required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Correo Electrónico</label>
+                        <input type="email" name="email"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="{{ old('email') }}"
+                            required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
+                        <input type="password" name="password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
+                        <input type="password" name="password_confirmation"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Celular</label>
+                        <input type="tel" name="phone"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-500"
+                            value="{{ old('phone') }}" required>
+                    </div>
+                    <!-- Campo de Comentarios -->
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Comentarios</label>
+                        <textarea name="comments"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md 
+              @error('comments') border-red-500 @enderror"
+                            rows="4" placeholder="Cuéntenos sobre su negocio">{{ old('comments') }}</textarea>
+                        @error('comments')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+
+
+                    <button type="submit" class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
+                        CREAR CUENTA
+                    </button>
+
+
+                    <p class="text-sm text-gray-600 text-center mt-4">
+                        Al dar clic en "Registrarme" estás aceptando nuestros
+                        <a href="#" class="text-blue-500 underline">términos y condiciones de uso</a>.
+                    </p>
+                </form>
             </div>
-            <div class="mt-2">
-                <input type="text" name="captcha" id="captcha-input" class="w-full px-3 py-2 border border-gray-300 rounded-md 
-                       @error('captcha') border-red-500 @enderror" 
-                       placeholder="Escribe el código que aparece arriba" required>
-                @error('captcha')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
         </div>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-        <!-- Botón de envío -->
-        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-200">
-            CREAR CUENTA
-        </button>
-        
-        <p class="text-sm text-gray-600 text-center mt-4">
-            Al dar clic en "CREAR CUENTA" estás aceptando nuestros 
-            <a href="#" class="text-blue-500 underline">términos y condiciones de uso</a>.
-        </p>
-    </form>
-</div>
-
-<!-- Modal de verificación -->
-<div id="verificationModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-    <div class="bg-white p-6 rounded-lg max-w-md w-full mx-4 shadow-lg">
-        <div class="flex items-start justify-between mb-4">
-            <!-- Icono de verificación -->
-            <svg class="h-6 w-6 text-blue-500 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            <button id="closeModalButton" class="text-gray-600 hover:text-gray-800" aria-label="Cerrar modal">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                          d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-        </div>
-        
-        <div>
-            <h3 class="text-lg font-medium text-gray-900">Verificación requerida</h3>
-            <div class="mt-2 text-sm text-gray-600">
-                <p>Hemos enviado un código de 6 dígitos a <span class="font-semibold" id="modalEmail"></span>.</p>
-                <p class="mt-2">Por favor revisa tu correo electrónico para completar el registro.</p>
-            </div>
-        </div>
-
-        <div class="mt-4 flex justify-end">
-            <a href="{{ route('verificar.email.view') }}" 
-               class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                Ir a Verificación
-            </a>
-        </div>
-    </div>
-</div>
-
-<!-- Scripts -->
-<script>
-    // Función para mostrar el modal con el email
-    function showVerificationModal(email) {
-        // Asignar el email al modal
-        document.getElementById('modalEmail').textContent = email;
-        // Mostrar el modal al eliminar la clase 'hidden'
-        document.getElementById('verificationModal').classList.remove('hidden');
-    }
-
-    // Mostrar modal si existe la sesión 'verification_sent' (indicando que el correo fue enviado)
-    @if(session('verification_sent'))
-        showVerificationModal("{{ session('registered_email') }}");
-    @endif
-
-    // Obtener el modal y el botón de cerrar
-    const modal = document.getElementById('verificationModal');
-    const closeButton = document.getElementById('closeModalButton');
-
-    // Cerrar el modal al hacer clic en el botón de cerrar
-    closeButton.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
-
-    // Cerrar el modal si se hace clic fuera del área del modal
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.classList.add('hidden');
-        }
-    });
-</script>
     </div>
 </x-guest-layout>
-
-<style>
-    @keyframes shine {
-        0% {
-            transform: translateX(-100%);
-        }
-        100% {
-            transform: translateX(100%);
-        }
-    }
-    .animate-shine {
-        animation: shine 2s infinite;
-        pointer-events: none;
-    }
-    #captcha-container {
-        transition: transform 0.3s ease;
-    }
-    #captcha-container:hover {
-        transform: scale(1.02);
-    }
-    #refresh-captcha:active {
-        transform: scale(0.95);
-    }
-</style>
-
-<script>
-    document.getElementById('refresh-captcha').addEventListener('click', function() {
-        const button = this;
-        button.disabled = true;
-        
-        fetch('/refresh-captcha', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.status === 'success') {
-                const captchaCode = document.getElementById('captcha-code');
-                const container = document.getElementById('captcha-container');
-                
-                // Actualizar el código
-                captchaCode.textContent = data.captcha_code;
-                
-                // Limpiar el campo de entrada
-                document.getElementById('captcha-input').value = '';
-                
-                // Efecto de actualización
-                container.style.transform = 'scale(0.95)';
-                setTimeout(() => {
-                    container.style.transform = 'scale(1)';
-                }, 150);
-            }
-        })
-        .catch(error => console.error('Error:', error))
-        .finally(() => {
-            button.disabled = false;
-        });
-    });
-
-    // Validación del formulario
-    document.querySelector('form').addEventListener('submit', function(e) {
-        const captchaInput = document.getElementById('captcha-input');
-        if (!captchaInput.value.trim()) {
-            e.preventDefault();
-            captchaInput.classList.add('border-red-500');
-            const errorMsg = document.createElement('p');
-            errorMsg.className = 'text-red-500 text-sm mt-1';
-            errorMsg.textContent = 'Por favor, ingresa el código de verificación.';
-            captchaInput.parentNode.appendChild(errorMsg);
-        }
-    });
-</script>

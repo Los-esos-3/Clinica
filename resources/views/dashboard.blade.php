@@ -197,6 +197,7 @@
             @endif
         </x-app-layout>
     </body>
+
 </x-app-layout>
 
 @push('scripts')

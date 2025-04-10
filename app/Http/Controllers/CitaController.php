@@ -25,20 +25,18 @@ class CitaController
 
         $user = Auth::user();
         $citas = [];
-        $pacientes = []; // Inicializar la variable $pacientes
+        $pacientes = []; 
 
         $doctores = Doctores::all();
         $pacientes = Paciente::all();
 
-        // Obtener el ID del doctor si el usuario tiene el rol de Doctor
         $doctorId = null;
 
 
+        // Traer el id del doctor y secretaria
         if ($user->hasRole('Doctor')) {
-            // Si el usuario es doctor, obtener su propio ID
             $doctorId = $user->doctor->id;
         } elseif ($user->hasRole('Secretaria')) {
-            // Si el usuario es secretaria, obtener el ID del doctor asignado
             $secretaria = Secretarias::where('user_id', $user->id)->first();
             $doctorId = $secretaria?->doctor_id;
         }
@@ -87,10 +85,12 @@ class CitaController
             $pacientes = Paciente::where('secretaria_id', $secretaria->id)->get();
         }
 
+
+
         // Verificar si el usuario es Root o Admin
         if ($user->hasAnyRole('Root', 'Admin')) {
             $doctores = Doctores::all();
-            $pacientes = Paciente::all(); // Todos los pacientes para Root/Admin
+            $pacientes = Paciente::all(); 
             return view('dashboard', compact('doctores', 'pacientes', 'citas'));
         } else {
             // Si el usuario tiene una empresa asignada
