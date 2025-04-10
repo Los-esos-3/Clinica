@@ -59,7 +59,7 @@
                 </li>
 
                 <li>
-                    <a href="">
+                    <a href="{{route('Trabajadores.index')}}">
                         <i class="fa-solid fa-users-line"></i>
                         <span>Trabajadores</span>
                     </a>

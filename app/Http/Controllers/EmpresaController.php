@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
-class EmpresaController 
+class EmpresaController
 {
     public function index()
     {
@@ -31,7 +31,7 @@ class EmpresaController
         return view('empresas.create');
     }
 
-    
+
 
     public function show(Empresa $empresa)
     {
@@ -54,11 +54,11 @@ class EmpresaController
             'telefono' => 'required',
             'email' => 'required|email|unique:empresas',
             'direccion' => 'required',
-            'ciudad' => 'required',
-            'pais' => 'required',
-            'horario' => 'required',
+            'pais' => 'required|string|max:255',
+            'ciudad' => 'required|string|max:255',   
+            'horario' => 'required | String',
             'descripcion' => 'required',
-            
+
         ]);
 
         $data = $request->all();
@@ -91,8 +91,6 @@ class EmpresaController
 
     public function update(Request $request, $id)
     {
-        Log::info('Entro al metodo');
-        Log::info('En validacion', $request->all());
 
         $request->validate([
             'logo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
@@ -100,18 +98,15 @@ class EmpresaController
             'telefono' => 'required',
             'email' => 'required|email|unique:empresas,email,' . $id,
             'direccion' => 'required',
-            'ciudad' => 'required',
-            'pais' => 'required',
+            'pais' => 'required|string|max:255',
+            'ciudad' => 'required|string|max:255',
             'horario' => 'required',
             'descripcion' => 'required',
-            'usuarios' => 'nullable|array',
-            'usuarios.*' => 'exists:users,id',
         ]);
 
         $empresa = Empresa::findOrFail($id);
         $data = $request->all();
 
-        Log::info('Busco el id de la empresa y pidio todos los datos de los inputs');
 
         if ($request->hasFile('logo')) {
             if ($empresa->logo) {
@@ -144,10 +139,6 @@ class EmpresaController
                     $user->save();
                 }
             }
-        } else {
-            // Si no hay usuarios seleccionados, desasociar todos
-            User::where('empresa_id', $empresa->id)
-                ->update(['empresa_id' => null]);
         }
 
         Log::info('Asocio el user con la empresa');
@@ -165,17 +156,5 @@ class EmpresaController
 
         return redirect()->route('empresas.index')
             ->with('success', 'Empresa eliminada exitosamente.');
-    }
-    public function buscarUsuarios(Request $request)
-    {
-        $nombre = $request->get('nombre');
-
-        if (empty($nombre)) {
-            return response()->json(['error' => 'Por favor, ingresa un nombre para buscar.'], 400);
-        }
-
-        $usuarios = User::where('name', 'like', '%' . $nombre . '%')->get();
-
-        return response()->json($usuarios);
     }
 }

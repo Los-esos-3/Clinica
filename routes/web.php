@@ -4,6 +4,7 @@ use App\Http\Controllers\ClinicaController;
 use App\Http\Controllers\ExpedientesController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\SecretariasDoctorController;
+use App\Http\Controllers\TrabajadoresController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -18,7 +19,7 @@ use App\Http\Controllers\ConsultaController;
 use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\Auth\CustomRegisterController;
 use App\Http\Controllers\ComplaintController;
-use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\verificacionController;
 
 
 //Redireccion para usuarios sin rol
@@ -203,5 +204,11 @@ Route::get('/contactenos', function () {
     return view('contactenos');
 })->name('contactenos.form');
 
-Route::get('/verificar-email', [\App\Http\Controllers\VerificacionController::class, 'form'])->name('verificar.email.form');
-Route::post('/verificar-email', [\App\Http\Controllers\VerificacionController::class, 'verificar'])->name('verificar.email');
+Route::get('/Trabajadores',[TrabajadoresController::class, 'index'])->name("Trabajadores.index");
+
+    
+Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [CustomRegisterController::class, 'register'])->name('register.submit');
+Route::get('/verificar-email', [CustomRegisterController::class, 'verifyForm'])->name('verificar.email.view');
+Route::post('/verificar-email', [CustomRegisterController::class, 'verifyCode'])->name('verificar.email');
+Route::post('/refresh-captcha', [CustomRegisterController::class, 'refreshCaptcha'])->name('refresh.captcha');

@@ -369,7 +369,13 @@
         .feature:hover img {
             filter: brightness(0) invert(1);
         }
-
+    /*     .feature img {
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    filter: brightness(0) invert(1); /* ← Esto los hace blancos */
+}
+ */
         .feature:hover {
             background: linear-gradient(135deg, #a7d3e0 0%, #003366 100%);
             color: #ffffff;
@@ -739,7 +745,7 @@
 
     <header>
         @php
-            $nombreEmpresa = 'KAISER'; // Valor por defecto
+            $nombreEmpresa = 'Expedmed'; // Valor por defecto
 
             // Verifica si el usuario está autenticado y tiene una empresa asociada
             if (Auth::check() && Auth::user()->empresa_id) {
@@ -798,7 +804,7 @@
                     @else
                         <li>
                             <!-- Cambiar el ícono por la palabra "Ingresar" -->
-                            <a href="#" id="toggle-auth-links">Ingresar</a>
+                            <a href="#" id="toggle-auth-links">Ingresa</a>
 
                             <!-- Enlaces de autenticación que se muestran/ocultan -->
                             <div id="auth-links" style="display: none;">
@@ -819,7 +825,7 @@
 
     <div class="content">
         <div class="content-text">
-            <h1>Bienvenido a nuestro software de expedientes médicos.</h1>
+            <h1>Sistema para la gestión de expedientes médicos.</h1>
             <h2>Optimiza la gestión de tus expedientes médicos con un software diseñado para simplificar procesos y
                 mejorar la atención desde cualquier lugar.</h2>
         </div>
@@ -835,13 +841,13 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h2 style="text-align: center">Innovamos en Nuestros expedientes clinicos</h2>
+                    <h2 style="text-align: center">Innovamos en nuestros expedientes clínicos</h2>
                     <p>Transforma la forma en que gestionas tus expedientes clínicos con nuestra solución digital
                         avanzada. Simplificamos tus procesos, mejoramos la accesibilidad y garantizamos un manejo seguro
-                        y eficiente de la información médica, todo desde una plataforma centralizada..</p>
+                        y eficiente de la información médica, todo desde una plataforma centralizada.</p>
                     <ul class="features-list">
                         <li><i class="icon-check"></i> Tecnología de última generación</li>
-                        <li><i class="icon-check"></i> Expedientes rapidos</li>
+                        <li><i class="icon-check"></i> Expedientes rápidos</li>
                         <li><i class="icon-check"></i> Especialistas capacitados en nuestro sistema</li>
                     </ul>
                 </div>
@@ -861,13 +867,13 @@
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h2>Pasarás menos tiempo usando el Expediente Clínico Electrónico</h2>
-                    <p>Kaizen Software es un sistema de gestión de expedientes clínicos que combina todas las
+                    <h2>Pasarás menos tiempo usando el expediente clínico electrónico</h2>
+                    <p>Expemed es un sistema de gestión de expedientes clínicos que combina todas las
                         funcionalidades esenciales con la potencia de la tecnología moderna. Es intuitivo, accesible
-                        desde cualquier dispositivo con conexión a internet y permite la creación, el envío y el
-                        intercambio de expedientes de manera eficiente. Con Kaizen Software, dedica más tiempo a tus
-                        pacientes y menos tiempo a la administración, facilitando el trabajo en equipo y la comunicación
-                        con tus compañeros o pacientes..</p>
+                        desde cualquier dispositivo con conexión a internet, y permite la creación, el envío y el
+                        intercambio de expedientes de manera eficiente. Con Kaizen Software, dedicas más tiempo a tus
+                        pacientes y menos a la administración, facilitando el trabajo en equipo y la comunicación
+                        con tus compañeros o pacientes.</p>
                     <ul class="features-list">
                     </ul>
                 </div>
@@ -887,8 +893,7 @@
             <div class="feature">
                 <div class="feature-content">
                     <h3 class="feature-title">Gestión Eficiente de Expedientes</h3>
-                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.
-                    </p>
+                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.</p>
                 </div>
                 <img src="images/icons8-grupo-50.png" alt="Icono de Gestión de Expedientes">
             </div>
@@ -967,125 +972,6 @@
     </div>
 
     <footer>
-        <div class="footer-container">
-            <div class="footer-column">
-                <h4>Acerca de nosotros</h4>
-                <p>Bienvenido a la sección de gestión de expedientes médicos. Aquí podrás registrar, organizar y acceder
-                    de manera eficiente a la información clínica de tus pacientes. Nuestro sistema está diseñado para
-                    facilitar tu trabajo y garantizar la seguridad y confidencialidad de los datos, ayudándote a ofrecer
-                    una atención de calidad.</p>
-            </div>
-            <div class="footer-column">
-                <h4>Horario de atención</h4>
-                <p>Lunes a Viernes: 9:00 AM - 6:00 PM</p>
-            </div>
-            <div class="footer-column">
-                <h4>Contáctenos</h4>
-                <ul>
-                    <li>
-                        <a href="https://www.google.com.mx/maps/place/Kaizen+Business+Training/@25.8694126,-97.5038464,19z/data=!4m6!3m5!1s0x866feb74305d47a3:0x5ceb7d0b261d15d7!8m2!3d25.8694124!4d-97.5033911!16s%2Fg%2F11jzkyh2cx?entry=ttu&g_ep=EgoyMDI0MTAwMi4xIKXMDSoASAFQAw%3D%3D"
-                            target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="22"
-                                height="22" style="vertical-align: middle; margin-right: 8px;">
-                                <path
-                                    d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z" />
-                            </svg>
-                            Pedro José Méndez, Industrial, 87350 Heroica Matamoros, Tamps.
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tel:8683671279">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22"
-                                height="22" style="vertical-align: middle; margin-right: 8px;">
-                                <path
-                                    d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
-                            </svg>
-                            8683671279
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tel:8683032189">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22"
-                                height="22" style="vertical-align: middle; margin-right: 8px;">
-                                <path
-                                    d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
-                            </svg>
-                            8683032189
-                        </a>
-                    </li>
-                    <li>
-                        <a href="tel:8682603919">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22"
-                                height="22" style="vertical-align: middle; margin-right: 8px;">
-                                <path
-                                    d="M164.9 24.6c-7.7-18.6-28-28.5-47.4-23.2l-88 24C12.1 30.2 0 46 0 64C0 311.4 200.6 512 448 512c18 0 33.8-12.1 38.6-29.5l24-88c5.3-19.4-4.6-39.7-23.2-47.4l-96-40c-16.3-6.8-35.2-2.1-46.3 11.6L304.7 368C234.3 334.7 177.3 277.7 144 207.3L193.3 167c13.7-11.2 18.4-30 11.6-46.3l-40-96z" />
-                            </svg>
-                            8682603919
-                        </a>
-                    </li>
-                    <li>
-                        <a href="mailto:agitokanoh657@gmail.com" target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="22"
-                                height="22" style="vertical-align: middle; margin-right: 8px;">
-                                <path
-                                    d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z" />
-                            </svg>
-                            agitokanoh657@gmail.com
-                        </a>
-                    </li>
-                </ul>
-                <div class="card">
-                    <a href="#" class="socialContainer containerOne">
-                        <svg class="socialSvg instagramSvg" viewBox="0 0 16 16">
-                            <path
-                                d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.917 3.917 0 0 0-1.417.923A3.927 3.927 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.433.923.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.434-.923.038-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
-                            </path>
-                        </svg>
-                    </a>
-
-                    <a href="#" class="socialContainer containerTwo">
-                        <svg class="socialSvg tiktokSvg largeIcon" viewBox="0 0 48 48" version="1.1"
-                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                            <title>Tiktok</title>
-                            <g id="Icon/Social/tiktok-white" stroke="none" stroke-width="1" fill="none"
-                                fill-rule="evenodd">
-                                <path
-                                    d="M38.0766847,15.8542954 C36.0693906,15.7935177 34.2504839,14.8341149 32.8791434,13.5466056 C32.1316475,12.8317108 31.540171,11.9694126 31.1415066,11.0151329 C30.7426093,10.0603874 30.5453728,9.03391952 30.5619062,8 L24.9731521,8 L24.9731521,28.8295196 C24.9731521,32.3434487 22.8773693,34.4182737 20.2765028,34.4182737 C19.6505623,34.4320127 19.0283477,34.3209362 18.4461858,34.0908659 C17.8640239,33.8612612 17.3337909,33.5175528 16.8862248,33.0797671 C16.4386588,32.6422142 16.0833071,32.1196657 15.8404292,31.5426268 C15.5977841,30.9658208 15.4727358,30.3459348 15.4727358,29.7202272 C15.4727358,29.0940539 15.5977841,28.4746337 15.8404292,27.8978277 C16.0833071,27.3207888 16.4386588,26.7980074 16.8862248,26.3604545 C17.3337909,25.9229017 17.8640239,25.5791933 18.4461858,25.3491229 C19.0283477,25.1192854 19.6505623,25.0084418 20.2765028,25.0219479 C20.7939283,25.0263724 21.3069293,25.1167239 21.794781,25.2902081 L21.794781,19.5985278 C21.2957518,19.4900128 20.7869423,19.436221 20.2765028,19.4380839 C18.2431278,19.4392483 16.2560928,20.0426009 14.5659604,21.1729264 C12.875828,22.303019 11.5587449,23.9090873 10.7814424,25.7878401 C10.003907,27.666593 9.80084889,29.7339663 10.1981162,31.7275214 C10.5953834,33.7217752 11.5748126,35.5530237 13.0129853,36.9904978 C14.4509252,38.4277391 16.2828722,39.4064696 18.277126,39.8028054 C20.2711469,40.1991413 22.3382874,39.9951517 24.2163416,39.2169177 C26.0948616,38.4384508 27.7002312,37.1209021 28.8296253,35.4300711 C29.9592522,33.7397058 30.5619062,31.7522051 30.5619062,29.7188301 L30.5619062,18.8324027 C32.7275484,20.3418321 35.3149087,21.0404263 38.0766847,21.0867664 L38.0766847,15.8542954 Z"
-                                    id="Fill-1" fill="#FFFFFF"></path>
-                            </g>
-                        </svg>
-                    </a>
-
-                    <a href="#" class="socialContainer containerThree">
-                        <div>
-                            <svg class="socialSvg tiktokSvg largeIcon" width="44px" height="44px"
-                                viewBox="0 0 45 35" version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                xmlns:xlink="http://www.w3.org/1999/xlink">
-                                <title>Facebook</title>
-                                <g id="Icon/Social/facebook-black" stroke="none" stroke-width="1" fill="none"
-                                    fill-rule="evenodd">
-                                    <path
-                                        d="M30.0793333,40 L30.0793333,27.608 L34.239,27.608 L34.8616667,22.7783333 L30.0793333,22.7783333 L30.0793333,19.695 C30.0793333,18.2966667 30.4676667,17.344 32.4726667,17.344 L35.0303333,17.3426667 L35.0303333,13.0233333 C34.5876667,12.9646667 33.0696667,12.833 31.3036667,12.833 C27.6163333,12.833 25.0923333,15.0836667 25.0923333,19.2166667 L25.0923333,22.7783333 L20.922,22.7783333 L20.922,27.608 L25.0923333,27.608 L25.0923333,40 L30.0793333,40 Z M9.766,40 C8.79033333,40 8,39.209 8,38.234 L8,9.766 C8,8.79033333 8.79033333,8 9.766,8 L38.2336667,8 C39.209,8 40,8.79033333 40,9.766 L40,38.234 C40,39.209 39.209,40 38.2336667,40 L9.766,40 Z"
-                                        id="Shape" fill="#FFFFFF"></path>
-                                </g>
-                            </svg>
-                        </div>
-                    </a>
-                    <a href="#" class="socialContainer containerFour">
-                        <svg class="socialSvg whatsappSvg" viewBox="0 0 16 16">
-                            <path
-                                d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.24-.705-.275-1.485-.276-.738.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.478 2.478 0 0 1-.92-.598 2.48 2.48 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233 0-2.136.008-2.388.046-3.231.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92.28-.28.546-.453.92-.598.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045v.002zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92zm-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217zm0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334z">
-                            </path>
-                        </svg>
-                    </a>
-                </div>
-
-            </div>
-
-        </div>
-
-
-        </div>
         <div class="footer-copyright">
             <p>&copy; 2023 Todos los derechos reservados por WD3.</p>
         </div>

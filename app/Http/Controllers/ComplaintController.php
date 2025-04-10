@@ -4,35 +4,49 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ComplaintReceived;
+use App\Mail\ContactReceived;
+use Illuminate\Support\Facades\Log;
 
-class ComplaintController 
+class ComplaintController   
 {
     public function submit(Request $request)
     {
+        // Validar los datos del formulario
         $request->validate([
-            'complaint' => 'required|string|max:2000',
-            'name' => 'nullable|string|max:100',
-            'contact' => 'nullable|string|max:100',
-            'anonymous' => 'nullable|boolean'
+            'name' => 'required|string|max:100',
+            'lastname' => 'required|string|max:100',
+            'email' => 'required|email|max:100',
+            'phone' => 'required|string|max:20',
+            'message' => 'required|string|max:2000'
         ]);
-        
+
+        // Preparar los datos para el correo
         $data = [
-            'name' => $request->anonymous ? 'Anónimo' : ($request->name ?? 'No proporcionado'),
-            'contact' => $request->contact ?? 'No proporcionado',
-            'complaint' => $request->complaint,
-            'ip' => $request->ip(),
+            'name' => $request->name . ' ' . $request->lastname,
+            'contact' => $request->email . ' | Tel: ' . $request->phone,
+            'message' => $request->message,
             'received_at' => now()->format('d/m/Y H:i:s')
         ];
-        
-        Mail::to([
-            'agitokanoh657@gmail.com',
-            'diurnovampiro6@gmail.com',
-            'ig9682756@gmail.com',
-        ])->send(new ComplaintReceived($data));
-        
-        return redirect()->route('contactenos.form')  
-        ->with('success', 'Tu queja ha sido enviada correctamente.');
-    
+
+        try {
+            // Enviar el correo a los destinatarios
+            Mail::to('agitokanoh657@gmail.com')
+                ->cc([
+                    'diurnovampiro6@gmail.com',
+                    'ig9682756@gmail.com'
+                ])
+                ->send(new \App\Mail\ComplaintReceived($data));
+                
+            // Redirigir con mensaje de éxito
+            return redirect()->back()
+                ->with('success', 'Tu mensaje ha sido enviado correctamente.');
+        } catch (\Exception $e) {
+            // Registrar el error en los logs
+            Log::error('Error al enviar el correo: ' . $e->getMessage());
+
+            // Redirigir con mensaje de error
+            return redirect()->back()
+                ->with('error', 'Hubo un problema al enviar el mensaje. Por favor intenta nuevamente.');
+        }
     }
 }

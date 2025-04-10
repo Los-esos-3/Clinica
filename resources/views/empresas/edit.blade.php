@@ -25,15 +25,15 @@
 
             <!-- Formulario de edición -->
             <div class="p-8">
-                <form method="POST" action="{{ route('empresas.update', $empresa->id) }}" enctype="multipart/form-data">
+                <form method="POST" action="{{ route('empresas.update', $empresa->id) }}"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
                     <!-- Logo -->
                     <div class="mb-6">
                         <label for="logo" class="block text-sm font-semibold text-gray-700 mb-2">Nuevo Logo</label>
-                        <input type="file" class="form-control" id="logo" name="logo"
-                            accept="image/*">
+                        <input type="file" class="form-control" id="logo" name="logo" accept="image/*">
                     </div>
 
                     <!-- Nombre -->
@@ -47,8 +47,8 @@
                     <div class="mb-3">
                         <label for="telefono" class="block text-sm font-medium text-gray-700">Teléfono</label>
                         <input type="tel" class="form-control" id="telefono" name="telefono"
-                            value="{{ old('telefono', $empresa->telefono) }}" pattern="[0-9]{10}"
-                            maxlength="10" required>
+                            value="{{ old('telefono', $empresa->telefono) }}" pattern="[0-9]{10}" maxlength="10"
+                            required>
                     </div>
 
                     <!-- Email -->
@@ -59,24 +59,19 @@
                     </div>
 
                     <!-- País -->
-                    <div class="mb-6">
-                        <label for="pais" class="block text-sm font-semibold text-gray-700 mb-2">País</label>
-                        <select id="pais" name="pais" class="form-control" required>
-                            <option value="">Seleccione un país</option>
-                            @foreach (['México', 'España', 'Colombia', 'Argentina', 'Chile', 'Perú', 'Ecuador', 'Venezuela', 'Bolivia', 'Paraguay', 'Uruguay', 'Costa Rica', 'Panamá'] as $pais)
-                                <option value="{{ $pais }}" {{ old('pais', $empresa->pais) == $pais ? 'selected' : '' }}>
-                                    {{ $pais }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="mb-3">
+                        <label for="pais" class="form-label font-semibold">País</label>
+                        <input type="text" id="pais" name="pais"
+                            class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('pais') is-invalid @enderror"
+                            value="{{ old('pais', $empresa->pais) }}" required>
                     </div>
 
                     <!-- Ciudad -->
-                    <div class="mb-6">
-                        <label for="ciudad" class="block text-sm font-semibold text-gray-700 mb-2">Ciudad</label>
-                        <select id="ciudad" name="ciudad" class="form-control" required>
-                            <option value="">Seleccione primero un país</option>
-                        </select>
+                    <div class="mb-3">
+                        <label for="ciudad" class="form-label font-semibold">Ciudad</label>
+                        <input type="text" id="ciudad" name="ciudad"
+                            class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('ciudad') is-invalid @enderror"
+                            value="{{ old('ciudad', $empresa->ciudad) }}" required>
                     </div>
 
                     <!-- Dirección -->
@@ -89,12 +84,14 @@
                     <!-- Horario -->
                     <div class="mb-6">
                         <label for="horario" class="block text-sm font-semibold text-gray-700 mb-2">Horario</label>
-                        <input value="{{old('horario', $empresa->horario)}}" type="text" placeholder="Escribe tu horario" class="form-control" id="horario" name="horario"></input>
+                        <input value="{{ old('horario', $empresa->horario) }}" type="text"
+                            placeholder="Escribe tu horario" class="form-control" id="horario" name="horario"></input>
                     </div>
 
                     <!-- Descripción -->
                     <div class="mb-6">
-                        <label for="descripcion" class="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
+                        <label for="descripcion"
+                            class="block text-sm font-semibold text-gray-700 mb-2">Descripción</label>
                         <textarea class="form-control" id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion', $empresa->descripcion) }}</textarea>
                     </div>
                     <!-- Botón de guardar -->
@@ -190,19 +187,45 @@
     <script>
         // Objeto con las ciudades por país
         const ciudadesPorPais = {
-            'México': ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Cancún', 'Mérida', 'Querétaro'],
-            'España': ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Bilbao', 'Alicante'],
-            'Colombia': ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Cúcuta', 'Bucaramanga', 'Pereira', 'Santa Marta', 'Ibagué'],
-            'Argentina': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán', 'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'],
-            'Chile': ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Antofagasta', 'Temuco', 'Rancagua', 'Talca', 'Arica', 'Puerto Montt'],
-            'Perú': ['Lima', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura', 'Cusco', 'Huancayo', 'Tacna', 'Ica', 'Pucallpa'],
-            'Ecuador': ['Quito', 'Guayaquil', 'Cuenca', 'Machala', 'Manta', 'Portoviejo', 'Ambato', 'Riobamba', 'Loja', 'Ibarra'],
-            'Venezuela': ['Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana', 'Barcelona', 'Maturín', 'Petare', 'Mérida'],
-            'Bolivia': ['La Paz', 'Santa Cruz de la Sierra', 'Cochabamba', 'Sucre', 'Oruro', 'Potosí', 'Tarija', 'Trinidad', 'Cobija', 'Riberalta'],
-            'Paraguay': ['Asunción', 'Ciudad del Este', 'San Lorenzo', 'Luque', 'Capiatá', 'Lambaré', 'Fernando de la Mora', 'Limpio', 'Ñemby', 'Encarnación'],
-            'Uruguay': ['Montevideo', 'Salto', 'Paysandú', 'Las Piedras', 'Rivera', 'Maldonado', 'Tacuarembó', 'Melo', 'Mercedes', 'Artigas'],
-            'Costa Rica': ['San José', 'Alajuela', 'Cartago', 'Heredia', 'Liberia', 'Limón', 'Puntarenas', 'Quesada', 'San Isidro', 'Turrialba'],
-            'Panamá': ['Ciudad de Panamá', 'San Miguelito', 'Tocumen', 'David', 'Arraiján', 'Colón', 'La Chorrera', 'Santiago', 'Chitré', 'Penonomé']
+            'México': ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Cancún',
+                'Mérida', 'Querétaro'
+            ],
+            'España': ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Bilbao',
+                'Alicante'
+            ],
+            'Colombia': ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Cúcuta', 'Bucaramanga', 'Pereira',
+                'Santa Marta', 'Ibagué'
+            ],
+            'Argentina': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán',
+                'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'
+            ],
+            'Chile': ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Antofagasta', 'Temuco', 'Rancagua', 'Talca',
+                'Arica', 'Puerto Montt'
+            ],
+            'Perú': ['Lima', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura', 'Cusco', 'Huancayo', 'Tacna', 'Ica',
+                'Pucallpa'
+            ],
+            'Ecuador': ['Quito', 'Guayaquil', 'Cuenca', 'Machala', 'Manta', 'Portoviejo', 'Ambato', 'Riobamba', 'Loja',
+                'Ibarra'
+            ],
+            'Venezuela': ['Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana', 'Barcelona',
+                'Maturín', 'Petare', 'Mérida'
+            ],
+            'Bolivia': ['La Paz', 'Santa Cruz de la Sierra', 'Cochabamba', 'Sucre', 'Oruro', 'Potosí', 'Tarija',
+                'Trinidad', 'Cobija', 'Riberalta'
+            ],
+            'Paraguay': ['Asunción', 'Ciudad del Este', 'San Lorenzo', 'Luque', 'Capiatá', 'Lambaré',
+                'Fernando de la Mora', 'Limpio', 'Ñemby', 'Encarnación'
+            ],
+            'Uruguay': ['Montevideo', 'Salto', 'Paysandú', 'Las Piedras', 'Rivera', 'Maldonado', 'Tacuarembó', 'Melo',
+                'Mercedes', 'Artigas'
+            ],
+            'Costa Rica': ['San José', 'Alajuela', 'Cartago', 'Heredia', 'Liberia', 'Limón', 'Puntarenas', 'Quesada',
+                'San Isidro', 'Turrialba'
+            ],
+            'Panamá': ['Ciudad de Panamá', 'San Miguelito', 'Tocumen', 'David', 'Arraiján', 'Colón', 'La Chorrera',
+                'Santiago', 'Chitré', 'Penonomé'
+            ]
         };
 
         // Función para actualizar las ciudades
@@ -258,7 +281,8 @@
                     if (data.length > 0) {
                         data.forEach(user => {
                             const userDiv = document.createElement('div');
-                            userDiv.classList.add('flex', 'items-center', 'justify-between', 'border', 'p-2', 'my-1');
+                            userDiv.classList.add('flex', 'items-center', 'justify-between', 'border',
+                                'p-2', 'my-1');
                             userDiv.innerHTML = `
                                 <span>${user.name}</span>
                                 <button type="button" class="ml-2 bg-green-500 text-white px-2 py-1 rounded" onclick="addUser(${user.id}, '${user.name}')">Agregar</button>

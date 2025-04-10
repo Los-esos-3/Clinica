@@ -16,26 +16,30 @@ class VerificacionController
 
     // Verifica el código enviado por el usuario
     public function verificar(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'code' => 'required|string'
+{
+    $request->validate([
+        'email' => 'required|email',
+        'verification_code' => 'required|digits:6' // Asegúrate que coincida con el nombre en la vista
+    ]);
+
+    $user = User::where('email', $request->email)
+                ->where('verification_code', $request->verification_code)
+                ->first();
+
+    if (!$user) {
+        return back()->withInput()->withErrors([
+            'verification_code' => 'Código incorrecto o expirado.'
         ]);
-
-        $user = User::where('email', $request->email)
-                    ->where('verification_code', $request->code)
-                    ->first();
-
-        if (!$user) {
-            return back()->withErrors(['code' => 'Código incorrecto.']);
-        }
-
-        $user->is_verified = true;
-        $user->verification_code = null;
-        $user->save();
-
-        Auth::login($user);
-
-        return redirect()->route('dashboard')->with('success', 'Cuenta verificada con éxito.');
     }
+
+    $user->update([
+        'email_verified_at' => now(),
+        'verification_code' => null
+    ]);
+
+    Auth::login($user);
+
+    return redirect()->intended('/home')
+                   ->with('success', '¡Cuenta verificada con éxito!');
+}
 }

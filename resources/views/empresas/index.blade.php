@@ -76,36 +76,20 @@
 
                                         <div class="mb-3">
                                             <label for="pais" class="form-label font-semibold">País</label>
-                                            <select id="pais" name="pais"
-                                                class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('pais') is-invalid @enderror"
-                                                required>
-                                                <option value="">Seleccione un país</option>
-                                                <option value="México">México</option>
-                                                <option value="España">España</option>
-                                                <option value="Colombia">Colombia</option>
-                                                <option value="Argentina">Argentina</option>
-                                                <option value="Chile">Chile</option>
-                                                <option value="Perú">Perú</option>
-                                                <option value="Ecuador">Ecuador</option>
-                                                <option value="Venezuela">Venezuela</option>
-                                                <option value="Bolivia">Bolivia</option>
-                                                <option value="Paraguay">Paraguay</option>
-                                                <option value="Uruguay">Uruguay</option>
-                                                <option value="Costa Rica">Costa Rica</option>
-                                                <option value="Panamá">Panamá</option>
-                                            </select>
-
+                                            <input type="text" id="pais" name="pais"
+                                                class="form-control @error('pais') is-invalid @enderror"
+                                                placeholder="Ejemplo: México" required>
+                                           
                                         </div>
 
                                         <div class="mb-3">
                                             <label for="ciudad" class="form-label font-semibold">Ciudad</label>
-                                            <select id="ciudad" name="ciudad"
-                                                class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('ciudad') is-invalid @enderror"
-                                                required>
-                                                <option value="">Seleccione primero un país</option>
-                                            </select>
-
+                                            <input type="text" id="ciudad" name="ciudad"
+                                                class="form-control @error('ciudad') is-invalid @enderror"
+                                                placeholder="Ejemplo: Ciudad de México" required>
+                                           
                                         </div>
+
                                         <div class="mb-3">
                                             <label for="direccion" class="form-label font-semibold">Dirección</label>
                                             <input type="text" id="direccion" name="direccion"
@@ -113,65 +97,30 @@
                                                 placeholder="Comienza a escribir tu dirección..."
                                                 value="{{ old('direccion') }}" required>
 
-                                        </div>
-                                        <div class="mb-3">
-                                            <label for="horario" class="form-label font-semibold">Horario</label>
-                                            <select
-                                                class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('horario') is-invalid @enderror"
-                                                id="horario" name="horario" required>
-                                                <option value="">Seleccione un horario</option>
-                                                <option value="Lunes a Viernes de 9:00 AM a 6:00 PM">Lunes a Viernes de
-                                                    9:00 AM
-                                                    a 6:00 PM</option>
-                                                <option value="Lunes a Sábado de 9:00 AM a 6:00 PM">Lunes a Sábado de
-                                                    9:00 AM a
-                                                    6:00 PM</option>
-                                                <option value="Lunes a Domingo de 9:00 AM a 6:00 PM">Lunes a Domingo de
-                                                    9:00 AM
-                                                    a 6:00 PM</option>
-                                                <option value="Lunes a Viernes de 8:00 AM a 5:00 PM">Lunes a Viernes de
-                                                    8:00 AM
-                                                    a 5:00 PM</option>
-                                                <option value="Lunes a Sábado de 8:00 AM a 5:00 PM">Lunes a Sábado de
-                                                    8:00 AM a
-                                                    5:00 PM</option>
-                                                <option value="Lunes a Domingo de 8:00 AM a 5:00 PM">Lunes a Domingo de
-                                                    8:00 AM
-                                                    a 5:00 PM</option>
-                                                <option value="Lunes a Viernes de 10:00 AM a 7:00 PM">Lunes a Viernes
-                                                    de 10:00
-                                                    AM a 7:00 PM</option>
-                                                <option value="Lunes a Sábado de 10:00 AM a 7:00 PM">Lunes a Sábado de
-                                                    10:00 AM
-                                                    a 7:00 PM</option>
-                                                <option value="Lunes a Domingo de 10:00 AM a 7:00 PM">Lunes a Domingo
-                                                    de 10:00
-                                                    AM a 7:00 PM</option>
-                                                <option value="24/7">Abierto las 24 horas, todos los días</option>
-                                                <option value="custom">Horario Personalizado</option>
-                                            </select>
 
-                                            <div id="customHorario" class="mt-2 hidden">
-                                                <input type="text"
+                                            <div class="mb-3">
+                                                <label for="horario" class="form-label font-semibold">Horario</label>
+                                                <input type="text" id="horario" name="horario"
                                                     class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                                    name="horario_custom" placeholder="Especifique el horario">
-                                            </div>
+                                                    placeholder="Ejemplo: Lunes a Viernes de 9:00 AM a 6:00 PM"
+                                                    title="Ingrese un horario válido, por ejemplo: 9:00 AM - 6:00 PM"
+                                                    required>
+                                                </input>
 
-                                        </div>
 
-                                        <div class="mb-3">
-                                            <label for="descripcion"
-                                                class="form-label font-semibold">Descripción</label>
-                                            <textarea
-                                                class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('descripcion') is-invalid @enderror"
-                                                id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion') }}</textarea>
-                                        </div>
+                                                <div class="mb-3">
+                                                    <label for="descripcion"
+                                                        class="form-label font-semibold">Descripción</label>
+                                                    <textarea
+                                                        class="form-control border-gray-400 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm @error('descripcion') is-invalid @enderror"
+                                                        id="descripcion" name="descripcion" rows="3" required>{{ old('descripcion') }}</textarea>
+                                                </div>
 
-                                        <div class="text-center mt-4">
-                                            <button type="submit" class="btn-submit">
-                                                Guardar Datos de la Empresa
-                                            </button>
-                                        </div>
+                                                <div class="text-center mt-4">
+                                                    <button type="submit" class="btn-submit">
+                                                        Guardar Datos de la Empresa
+                                                    </button>
+                                                </div>
                                     </form>
                                 </div>
                             </div>
@@ -518,13 +467,24 @@
 
     <!-- Agregar este script para el horario personalizado -->
     <script>
-        document.getElementById('horario').addEventListener('change', function() {
-            const customHorario = document.getElementById('customHorario');
-            if (this.value === 'custom') {
-                customHorario.classList.remove('hidden');
-            } else {
-                customHorario.classList.add('hidden');
+        document.addEventListener('DOMContentLoaded', function() {
+            async function obtenerUbicacion() {
+                try {
+                    const response = await fetch('https://ipapi.co/json/');
+                    const data = await response.json();
+
+                    // Rellenar los campos de país y ciudad
+                    document.getElementById('pais').value = data.country_name || '';
+                    document.getElementById('ciudad').value = data.region || '';
+
+                } catch (error) {
+                    console.error('Error al obtener la ubicación:', error);
+                    alert('No se pudo obtener la ubicación automáticamente. Por favor, ingrésela manualmente.');
+                }
             }
+
+            // Llamar a la función al cargar la página
+            obtenerUbicacion();
         });
 
         // Validación del teléfono
@@ -621,64 +581,5 @@
                 reader.readAsDataURL(input.files[0]);
             }
         }
-
-        document.getElementById('search_button').addEventListener('click', function() {
-            const searchValue = document.getElementById('search_user').value;
-
-            fetch(`/buscar-usuarios?nombre=${searchValue}`)
-                .then(response => response.json())
-                .then(data => {
-                    const userResultsDiv = document.getElementById('user_results');
-                    userResultsDiv.innerHTML = ''; // Limpiar resultados anteriores
-
-                    if (data.length > 0) {
-                        data.forEach(user => {
-                            const userDiv = document.createElement('div');
-                            userDiv.classList.add('flex', 'items-center', 'justify-between', 'border',
-                                'p-2', 'my-1');
-                            userDiv.innerHTML = `
-                            <span>${user.name}</span>
-                            <button type="button" class="ml-2 bg-green-500 text-white px-2 py-1 rounded" onclick="addUser(${user.id}, '${user.name}')">Agregar</button>
-                        `;
-                            userResultsDiv.appendChild(userDiv);
-                        });
-                    } else {
-                        userResultsDiv.innerHTML = '<p>No se encontraron usuarios.</p>';
-                    }
-                });
-        });
-
-        function addUser(userId, userName) {
-            // Verificar si el usuario ya está en la lista
-            if (!selectedUsers.includes(userId)) {
-                selectedUsers.push(userId); // Agregar el ID del usuario al array
-                const userListDiv = document.getElementById('selected_users');
-                const userItem = document.createElement('div');
-                userItem.classList.add('flex', 'items-center', 'justify-between', 'border', 'p-2', 'my-1',
-                    'bg-green-100'); // Resaltar el usuario agregado
-                userItem.innerHTML = `
-                <span>${userName}</span>
-                <button type="button" class="ml-2 text-red-500" onclick="removeUser(${userId}, this)">Eliminar</button>
-            `;
-                userListDiv.appendChild(userItem);
-
-                // Mostrar mensaje de confirmación
-                const confirmationMessage = document.createElement('div');
-                confirmationMessage.classList.add('alert', 'alert-success', 'mt-2');
-                confirmationMessage.innerText = `${userName} ha sido agregado.`;
-                document.getElementById('user_results').appendChild(confirmationMessage);
-
-                // Eliminar el mensaje después de 3 segundos
-                setTimeout(() => {
-                    confirmationMessage.remove();
-                }, 3000);
-            } else {
-                alert('Este usuario ya ha sido agregado.');
-            }
-        }
-
-        setTimeout(function() {
-            document.getElementById('successMessage').style.display = 'none';
-        }, 3000); // 5000ms = 5 segundos
     </script>
 </x-app-layout>
