@@ -19,7 +19,7 @@
                 box-shadow: none; /* Eliminar la sombra */
             }
 
-    
+
 
             .fc-event {
                 background-color: #e0e0e0; /* Color gris claro para los eventos */
@@ -39,54 +39,54 @@
             .fc-event-title {
                 font-weight: bold;
             }
-            
+
         </style>
-        
+
     </head>
     <body>
         <x-app-layout>
             @if (Auth::user()->hasAnyRole(['Root','Admin']))
-                <div class="p-4 sm:p-6 md:p-8 min-h-screen bg-gray-100">
+                <div class="min-h-screen p-4 bg-gray-100 sm:p-6 md:p-8">
                     <div class="max-w-full mx-auto">
-                        <div class="bg-white overflow-hidden shadow-xl rounded-lg">
+                        <div class="overflow-hidden bg-white rounded-lg shadow-xl">
                             <div class="p-4 sm:p-6">
-                                <h2 class="text-2xl font-semibold mb-4">AGENDA</h2>
-                                <div class="flex justify-items-center justify-center">
+                                <h2 class="mb-4 text-2xl font-semibold">AGENDA</h2>
+                                <div class="flex justify-center justify-items-center">
                                     <ul class="flex">
                                         <li>
-                                            <a href="{{ route('welcome') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            <a href="{{ route('welcome') }}" class="inline-block p-4 no-underline border-b-2 rounded-t-lg text-zinc-950">
                                                  BIENVENIDA
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('dashboard') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            <a href="{{ route('dashboard') }}" class="inline-block p-4 no-underline border-b-2 rounded-t-lg text-zinc-950">
                                                 INICIO
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('doctores.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            <a href="{{ route('doctores.index') }}" class="inline-block p-4 no-underline border-b-2 rounded-t-lg text-zinc-950">
                                                 DOCTORES
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="{{ route('secretarias.index') }}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            <a href="{{ route('secretarias.index') }}" class="inline-block p-4 no-underline border-b-2 rounded-t-lg text-zinc-950">
                                                 SECRETARIAS
                                             </a>
                                         </li>
                                         <li class="ml-1">
-                                            <a href="{{route('Pacientes.PacientesView')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            <a href="{{route('Pacientes.PacientesView')}}" class="inline-block p-4 no-underline border-b-2 rounded-t-lg text-zinc-950">
                                                 PACIENTES
                                             </a>
                                         </li>
                                         @if (Auth::user()->hasAnyRole(['Root']))
                                         <li>
-                                            <a href="{{route('roles.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            <a href="{{route('roles.index')}}" class="inline-block p-4 no-underline border-b-2 rounded-t-lg text-zinc-950">
                                                 ROLES
                                             </a>
                                         </li>
                                         @endif
                                         <li>
-                                            <a href="{{route('empresas.index')}}" class="inline-block p-4 border-b-2 rounded-t-lg no-underline text-zinc-950">
+                                            <a href="{{route('empresas.index')}}" class="inline-block p-4 no-underline border-b-2 rounded-t-lg text-zinc-950">
                                                 EMPRESA
                                             </a>
                                         </li>
@@ -96,8 +96,8 @@
                                 <!-- Contenedor para el botón y calendario -->
                                 <div class="p-6">
                                     <!-- Botón para abrir modal -->
-                                    <button id="openNewCitaModalBtn" class="mb-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                    <button id="openNewCitaModalBtn" class="flex items-center px-4 py-2 mb-4 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
                                         </svg>
                                         Nueva Cita
@@ -105,38 +105,38 @@
 
                                     <!-- Calendario -->
                                     <div id="admin-calendar"></div>
-                                </div>  
+                                </div>
 
                                 <!-- Modal para crear cita -->
-                                <div id="newCitaModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+                                <div id="newCitaModal" class="fixed inset-0 z-50 hidden w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50">
                                     <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
                                         <div class="absolute top-0 right-0 pt-4 pr-4">
-                                            <button id="closeNewCitaModalBtn" class="text-gray-400 hover:text-gray-500 transition-colores duration-200">
-                                                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <button id="closeNewCitaModalBtn" class="text-gray-400 duration-200 hover:text-gray-500 transition-colores">
+                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                 </svg>
                                             </button>
                                         </div>
-                                        <h3 class="text-2xl font-semibold text-gray-900 mb-4 text-center">Nueva Cita</h3>
+                                        <h3 class="mb-4 text-2xl font-semibold text-center text-gray-900">Nueva Cita</h3>
                                         <form id="newCitaForm" method="POST" action="{{ route('citas.store') }}">
                                             @csrf
                                             <div class="mb-4">
                                                 <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-                                                <input type="date" id="fecha" name="fecha" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                                <input type="date" id="fecha" name="fecha" required class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
                                             </div>
                                             <div class="grid grid-cols-2 gap-4 mb-4">
                                                 <div>
                                                     <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora Inicio</label>
-                                                    <input type="time" id="hora_inicio" name="hora_inicio" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                                    <input type="time" id="hora_inicio" name="hora_inicio" required class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
                                                 </div>
                                                 <div>
                                                     <label for="hora_fin" class="block text-sm font-medium text-gray-700">Hora Fin</label>
-                                                    <input type="time" id="hora_fin" name="hora_fin" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                                    <input type="time" id="hora_fin" name="hora_fin" required class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
                                                 </div>
                                             </div>
                                             <div class="mb-4">
                                                 <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor</label>
-                                                <select name="doctor_id" id="doctor_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                                <select name="doctor_id" id="doctor_id" required class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
                                                     <option value="">Selecciona un doctor</option>
                                                     @foreach ($doctores as $doctor)
                                                         <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
@@ -145,7 +145,7 @@
                                             </div>
                                             <div class="mb-4">
                                                 <label for="paciente_id" class="block text-sm font-medium text-gray-700">Paciente</label>
-                                                <select name="paciente_id" id="paciente_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
+                                                <select name="paciente_id" id="paciente_id" required class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
                                                     <option value="">Selecciona un paciente</option>
                                                     @foreach ($pacientes as $paciente)
                                                         <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
@@ -154,22 +154,22 @@
                                             </div>
                                             <div class="mb-4">
                                                 <label for="motivo" class="block text-sm font-medium text-gray-700">Motivo</label>
-                                                <textarea name="motivo" id="motivo" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" rows="3"></textarea>
+                                                <textarea name="motivo" id="motivo" required class="block w-full mt-1 border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" rows="3"></textarea>
                                             </div>
                                             <div class="flex justify-center mt-4">
-                                                <button type="submit" id="closeModalOnSubmit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out transform hover:scale-105">Programar Cita</button>
+                                                <button type="submit" id="closeModalOnSubmit" class="px-4 py-2 font-bold text-white transition duration-300 ease-in-out transform bg-blue-500 rounded hover:bg-blue-700 hover:scale-105">Programar Cita</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
-                                
+
 
                                     <!-- Modal para mostrar detalles de la cita -->
-                                    <div id="detalleCitaModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
+                                    <div id="detalleCitaModal" class="fixed inset-0 z-50 hidden w-full h-full overflow-y-auto bg-gray-600 bg-opacity-50">
                                         <div class="relative top-20 mx-auto p-6 border w-[500px] shadow-2xl rounded-xl bg-white">
                                             <div class="absolute top-0 right-0 pt-4 pr-4">
-                                                <button id="closeDetalleModalBtn" class="text-gray-400 hover:text-gray-500 transition-colores duration-200">
-                                                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <button id="closeDetalleModalBtn" class="text-gray-400 duration-200 hover:text-gray-500 transition-colores">
+                                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                                     </svg>
                                                 </button>
@@ -201,7 +201,7 @@
         closeCitaModalBtn.addEventListener('click', function () {
             newCitaModal.classList.add('hidden');
         });
-        
+
                 // Cerrar modal haciendo clic fuera de él
         newCitaModal.addEventListener('click', function (event) {
             if (event.target === newCitaModal) {
@@ -275,7 +275,7 @@ if (calendarEl) {
                 <form action="{{ route('citas.destroy', '') }}/${citaId}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+                    <button type="submit" class="px-4 py-2 font-bold text-white transition duration-300 ease-in-out bg-red-500 rounded hover:bg-red-700">
                         Eliminar Cita
                     </button>
                 </form>
@@ -323,7 +323,7 @@ document.head.appendChild(style);
         });
     }
 
-   
+
 
     // -------------------- MANEJAR DROPDOWN --------------------
     const dropdownButton = document.getElementById('options-menu');

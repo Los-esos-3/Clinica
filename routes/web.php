@@ -208,5 +208,6 @@ Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'
 Route::post('/register', [CustomRegisterController::class, 'register'])->name('register.submit');
 Route::get('/verificar-email', [CustomRegisterController::class, 'verifyForm'])->name('verificar.email.view');
 Route::post('/verificar-email', [CustomRegisterController::class, 'verifyCode'])->name('verificar.email');
+Route::post('/refresh-captcha', [CustomRegisterController::class, 'refreshCaptcha'])->name('refresh.captcha');
 
 

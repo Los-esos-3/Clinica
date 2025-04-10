@@ -274,13 +274,40 @@
             @enderror
         </div>
 
-        <!-- Google reCAPTCHA -->
-        <div class="g-recaptcha" data-sitekey="6LeNBA0rAAAAAMawoCfe6xp5O3fvLGUDvy_cXCes"></div>
-        @if ($errors->has('g-recaptcha-response'))
-            <p class="text-red-500 text-sm mt-1">
-                {{ $errors->first('g-recaptcha-response') }}
-            </p>
-        @endif
+        <!-- CAPTCHA Personalizado -->
+        <div class="mt-4">
+            <label class="block text-sm text-gray-700 mb-2">Verificación de Seguridad</label>
+            <div class="flex items-center space-x-4">
+                <div id="captcha-container" class="relative bg-gradient-to-r from-blue-50 to-indigo-50 p-4 rounded-lg w-48 h-16 flex items-center justify-center shadow-inner">
+                    <div class="absolute inset-0 bg-white/40 backdrop-blur-sm rounded-lg"></div>
+                    <div id="captcha-code" class="relative font-mono text-2xl font-bold tracking-widest text-gray-800" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">
+                        @php
+                            if (!session()->has('captcha_code')) {
+                                $captchaCode = random_int(100000, 999999);
+                                session(['captcha_code' => $captchaCode]);
+                            } else {
+                                $captchaCode = session('captcha_code');
+                            }
+                        @endphp
+                        {{ $captchaCode }}
+                    </div>
+                    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shine"></div>
+                </div>
+                <button type="button" id="refresh-captcha" class="p-2 text-blue-500 hover:text-blue-700 transition-colors duration-200 transform hover:scale-110">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                </button>
+            </div>
+            <div class="mt-2">
+                <input type="text" name="captcha" id="captcha-input" class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                       @error('captcha') border-red-500 @enderror" 
+                       placeholder="Escribe el código que aparece arriba" required>
+                @error('captcha')
+                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+        </div>
 
         <!-- Botón de envío -->
         <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-200">
@@ -330,19 +357,6 @@
 
 <!-- Scripts -->
 <script>
-    // Mostrar modal con el email
-    function showVerificationModal(email) {
-        document.getElementById('modalEmail').textContent = email;
-        document.getElementById('verificationModal').classList.remove('hidden');
-    }
-
-    // Mostrar modal si existe la sesión
-    @if(session('verification_sent'))
-        showVerificationModal("{{ session('registered_email') }}");
-    @endif
-</script>
-<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-<script>
     // Función para mostrar el modal con el email
     function showVerificationModal(email) {
         // Asignar el email al modal
@@ -374,3 +388,78 @@
 </script>
     </div>
 </x-guest-layout>
+
+<style>
+    @keyframes shine {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(100%);
+        }
+    }
+    .animate-shine {
+        animation: shine 2s infinite;
+        pointer-events: none;
+    }
+    #captcha-container {
+        transition: transform 0.3s ease;
+    }
+    #captcha-container:hover {
+        transform: scale(1.02);
+    }
+    #refresh-captcha:active {
+        transform: scale(0.95);
+    }
+</style>
+
+<script>
+    document.getElementById('refresh-captcha').addEventListener('click', function() {
+        const button = this;
+        button.disabled = true;
+        
+        fetch('/refresh-captcha', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                const captchaCode = document.getElementById('captcha-code');
+                const container = document.getElementById('captcha-container');
+                
+                // Actualizar el código
+                captchaCode.textContent = data.captcha_code;
+                
+                // Limpiar el campo de entrada
+                document.getElementById('captcha-input').value = '';
+                
+                // Efecto de actualización
+                container.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    container.style.transform = 'scale(1)';
+                }, 150);
+            }
+        })
+        .catch(error => console.error('Error:', error))
+        .finally(() => {
+            button.disabled = false;
+        });
+    });
+
+    // Validación del formulario
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const captchaInput = document.getElementById('captcha-input');
+        if (!captchaInput.value.trim()) {
+            e.preventDefault();
+            captchaInput.classList.add('border-red-500');
+            const errorMsg = document.createElement('p');
+            errorMsg.className = 'text-red-500 text-sm mt-1';
+            errorMsg.textContent = 'Por favor, ingresa el código de verificación.';
+            captchaInput.parentNode.appendChild(errorMsg);
+        }
+    });
+</script>

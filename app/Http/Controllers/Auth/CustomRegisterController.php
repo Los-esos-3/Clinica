@@ -41,6 +41,15 @@ class CustomRegisterController extends Controller
             ],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'comments' => ['nullable', 'string', 'max:500'],
+            'captcha' => ['required', 'string', function ($attribute, $value, $fail) {
+                $sessionCaptcha = session('captcha_code');
+                logger()->info('Captcha ingresado: ' . $value);
+                logger()->info('Captcha en sesión: ' . $sessionCaptcha);
+                
+                if ((string)$value !== (string)$sessionCaptcha) {
+                    $fail('El código de verificación no es correcto.');
+                }
+            }],
         ]);
     }
 
@@ -72,6 +81,9 @@ class CustomRegisterController extends Controller
     {
         $request->merge(['number' => $request->phone]);
 
+        logger()->info('Datos del formulario:', $request->all());
+        logger()->info('Captcha en sesión antes de validar:', [session('captcha_code')]);
+
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {
@@ -89,12 +101,17 @@ class CustomRegisterController extends Controller
             Session::put('registered_email', $user->email);
             Session::put('verification_sent', true);
 
+            // Generar nuevo código CAPTCHA después del registro exitoso
+            Session::forget('captcha_code');
+
             return redirect()->route('verificar.email.view', ['email' => $user->email])
                            ->with('success', 'Código enviado al correo.');
 
         } catch (\Exception $e) {
             logger()->error('Error in registration process: ' . $e->getMessage());
-            $user->delete();
+            if (isset($user)) {
+                $user->delete();
+            }
             return back()->with('error', 'Error al enviar el correo. Intenta nuevamente.');
         }
     }
@@ -130,5 +147,16 @@ class CustomRegisterController extends Controller
         Auth::login($user);
 
         return redirect($this->redirectTo)->with('success', 'Registro verificado y completado.');
+    }
+
+    public function refreshCaptcha()
+    {
+        $newCaptcha = random_int(100000, 999999);
+        session(['captcha_code' => $newCaptcha]);
+        
+        return response()->json([
+            'captcha_code' => $newCaptcha,
+            'status' => 'success'
+        ]);
     }
 }
