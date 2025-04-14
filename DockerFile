@@ -1,37 +1,48 @@
-FROM php:8.2-fpm AS builder
+# Etapa de construcción
+FROM php:8.2-fpm-bullseye AS builder
 
-# 1. Instalar dependencias del sistema
+# Instalar dependencias necesarias del sistema
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev zip unzip \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+    git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# 2. Instalar Node.js y Yarn por separado
+# Node y Yarn
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g yarn
 
-# 3. Instalar Composer
+# Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# 4. Instalar dependencias PHP primero
 WORKDIR /var/www
-COPY composer.json composer.lock .
+
+# Dependencias PHP
+COPY composer.json composer.lock ./
 RUN composer install --optimize-autoloader --no-dev --no-scripts
 
-# 5. Instalar dependencias JavaScript después
-COPY package.json yarn.lock .
+# Dependencias JS
+COPY package.json yarn.lock ./
 RUN yarn install --production --frozen-lockfile
 
-# 6. Copiar el resto de la aplicación
+# Copiar código completo
 COPY . .
 
-# 7. Etapa de producción
-FROM php:8.2-fpm
+# Etapa final de producción
+FROM php:8.2-fpm-bullseye
+
+# Copiar app desde builder
 COPY --from=builder /var/www /var/www
+
 WORKDIR /var/www
 
-# 8. Configurar permisos
+# Reinstalar extensiones necesarias (usa bullseye)
+RUN apt-get update && apt-get install -y \
+    zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+
+# Permisos
 RUN chown -R www-data:www-data storage bootstrap/cache
 
 EXPOSE 8000
+
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
