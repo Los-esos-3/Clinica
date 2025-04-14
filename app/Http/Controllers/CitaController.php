@@ -90,7 +90,7 @@ class CitaController
         // Verificar si el usuario es Root o Admin
         if ($user->hasAnyRole('Root', 'Admin')) {
             $doctores = Doctores::all();
-            $pacientes = Paciente::all(); 
+            $pacientes = Paciente::all(); // Todos los pacientes para Root/Admin
             return view('dashboard', compact('doctores', 'pacientes', 'citas'));
         } else {
             // Si el usuario tiene una empresa asignada

@@ -1,0 +1,37 @@
+# Etapa 1: Construcción de las dependencias de Composer
+FROM composer:2 AS builder
+
+# Establecer el directorio de trabajo
+WORKDIR /app
+
+# Copiar el código fuente del proyecto
+COPY . .
+
+# Instalar dependencias de Composer
+RUN composer install --no-dev --optimize-autoloader
+
+# Etapa 2: Entorno de producción
+FROM php:8.1-fpm-alpine
+
+# Instalar extensiones necesarias para Laravel
+RUN apk add --no-cache \
+    bash \
+    curl \
+    git \
+    libzip-dev \
+    && docker-php-ext-install pdo_mysql zip
+
+# Crear el directorio de trabajo
+WORKDIR /var/www/html
+
+# Copiar el código compilado desde la etapa de construcción
+COPY --from=builder /app .
+
+# Configurar permisos
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+# Exponer el puerto
+EXPOSE 9000
+
+# Comando para iniciar el servidor PHP-FPM
+CMD ["php-fpm"]

@@ -759,7 +759,7 @@
         </div>
         <nav>
             <ul>
-                <li><a href="{{ url('/contactenos') }}">Contáctenos</a></li>
+                <li><a href="{{ url('/contactenos') }}">Contáctanos</a></li>
 
                 @if (Route::has('login'))
                     @auth
