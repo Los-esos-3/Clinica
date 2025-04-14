@@ -1,3 +1,4 @@
+
 # Etapa de construcción
 FROM php:8.2-fpm-bullseye AS builder
 
@@ -22,10 +23,13 @@ RUN composer install --optimize-autoloader --no-dev --no-scripts
 
 # Dependencias JS
 COPY package.json yarn.lock ./
-RUN yarn install --production --frozen-lockfile
+RUN yarn install
 
 # Copiar código completo
 COPY . .
+
+# Compilar assets dentro del contenedor
+RUN npm install && npm run build
 
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
@@ -53,4 +57,4 @@ RUN chmod +x /var/www/init.sh
 EXPOSE 8000
 
 # Usar el script de inicialización
-CMD ["/var/www/init.sh"]
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
