@@ -1,46 +1,37 @@
-# Etapa de construcción
-FROM php:8.2-fpm as builder
+FROM php:8.2-fpm AS builder
 
-# Instalar dependencias del sistema
+# 1. Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
-    git \
-    curl \
-    libpng-dev \
-    libonig-dev \
-    libxml2-dev \
-    zip \
-    unzip \
-    nodejs \
-    npm
+    git curl libpng-dev libonig-dev libxml2-dev zip unzip \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
-# Instalar extensiones PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# 2. Instalar Node.js y Yarn por separado
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && npm install -g yarn
 
-# Instalar Composer
+# 3. Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Instalar Yarn
-RUN npm install -g yarn
-
-# Copiar archivos
+# 4. Instalar dependencias PHP primero
 WORKDIR /var/www
+COPY composer.json composer.lock .
+RUN composer install --optimize-autoloader --no-dev --no-scripts
+
+# 5. Instalar dependencias JavaScript después
+COPY package.json yarn.lock .
+RUN yarn install --production --frozen-lockfile
+
+# 6. Copiar el resto de la aplicación
 COPY . .
 
-# Instalar dependencias
-RUN composer install --optimize-autoloader --no-dev
-RUN yarn install --production
-
-# Etapa de producción
+# 7. Etapa de producción
 FROM php:8.2-fpm
-
-# Copiar solo lo necesario desde la etapa de construcción
 COPY --from=builder /var/www /var/www
-
-# Configurar permisos
-RUN chown -R www-data:www-data /var/www/storage
-RUN chown -R www-data:www-data /var/www/bootstrap/cache
-
-# Puerto y comando de inicio
 WORKDIR /var/www
+
+# 8. Configurar permisos
+RUN chown -R www-data:www-data storage bootstrap/cache
+
 EXPOSE 8000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
