@@ -1,0 +1,12 @@
+{
+    "build": {
+      "nixpacks": {
+        "config": {
+          "php": {
+            "version": "8.2",
+            "extensions": ["mbstring", "openssl", "pdo", "mysql", "tokenizer", "xml", "ctype", "json", "bcmath", "gd"]
+          }
+        }
+      }
+    }
+  }
