@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contáctanos - Consultorio Dental</title>
+    <title>Expemed</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
@@ -137,8 +137,6 @@
         }
 
         .form-row {
-            display: flex;
-            flex-wrap: wrap;
             gap: 20px;
         }
 
@@ -155,7 +153,7 @@
         }
 
         input, textarea {
-            width: 100%;
+            width: 95.4%;
             padding: 12px 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -220,16 +218,10 @@
         <h1>Contáctanos</h1>
         <p class="intro-text">Nuestro sistema está diseñado para ofrecer comodidad y seguridad en la gestión de expedientes médicos. Proporcionamos una plataforma integral que abarca desde la administración de consultas generales hasta la gestión de especialidades médicas avanzadas.</p>
 
-        <h2>Nuestra Sucursal Principal</h2>
-        <p class="intro-text">A continuación, encontrarás un mapa que muestra nuestra sucursal principal:</p>
-
-        <div class="map-container">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3589.92275863813!2d-97.5087741!3d25.8720195!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x866f9492e94bd5ad%3A0x6c1938b171e70720!2sIMSS%20Hospital%20General%20de%20Zona%20No.%2013%2C%20Heroica%20Matamoros!5e0!3m2!1ses-419!2smx!4v1728492393674!5m2!1ses-419!2smx" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-        </div>
-
+    
+       
         <div class="button-container">
             <a href="/" class="btn btn-outline">Volver al inicio</a>
-            <a href="https://maps.app.goo.gl/L5LsJuYjLBoo8RVi6" target="_blank" class="btn btn-primary">Ver en Google Maps</a>
         </div>
 
         <!-- Formulario de contacto -->
@@ -243,8 +235,8 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('complaints.submit') }}">                @csrf
-
+            <form method="POST" action="{{ route('complaints.submit') }}">               
+                 @csrf
                 <div class="form-row">
                     <div class="form-col">
                         <div class="form-group">

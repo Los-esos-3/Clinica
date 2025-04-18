@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Laravel</title>
+    <title>Expemed</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
@@ -369,13 +369,6 @@
         .feature:hover img {
             filter: brightness(0) invert(1);
         }
-    /*     .feature img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
-    filter: brightness(0) invert(1); /* ← Esto los hace blancos */
-}
- */
         .feature:hover {
             background: linear-gradient(135deg, #a7d3e0 0%, #003366 100%);
             color: #ffffff;
