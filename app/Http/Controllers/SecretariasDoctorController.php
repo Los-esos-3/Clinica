@@ -34,6 +34,7 @@ class SecretariasDoctorController
     }
     public function asignarSecretaria(Request $request)
     {
+       
         $request->validate([
             'secretaria_id' => 'required|exists:users,id',
         ]);
@@ -104,7 +105,7 @@ class SecretariasDoctorController
     //     }
     // }
 
-    public function desasignarSecretaria($id)
+      public function desasignarSecretaria($id)
     {
         $secretaria = Secretarias::findOrFail($id);
 

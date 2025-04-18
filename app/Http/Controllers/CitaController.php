@@ -14,7 +14,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Spatie\Permission\Models\Role;
 use App\Models\Secretarias;
 
-class CitaController 
+class CitaController
 {
     use AuthorizesRequests;
     use hasRoles;
@@ -25,7 +25,7 @@ class CitaController
 
         $user = Auth::user();
         $citas = [];
-        $pacientes = []; 
+        $pacientes = [];
 
         $doctores = Doctores::all();
         $pacientes = Paciente::all();
@@ -62,27 +62,31 @@ class CitaController
             $pacientes = Paciente::where('doctor_id', $user->doctor->id)->get();
         } elseif ($user->hasRole('Secretaria')) {
             // Obtener las citas de la secretaria
-            $secretaria = Secretarias::where('user_id', $user->id)->first();
-            $citas = Cita::whereIn('paciente_id', function ($query) use ($secretaria) {
-                $query->select('id')
-                    ->from('pacientes')
-                    ->where('secretaria_id', $secretaria->id);
-            })
-                ->with(['paciente', 'doctor'])
-                ->get()
-                ->map(function ($cita) {
-                    return [
-                        'id' => $cita->id,
-                        'doctor' => $cita->doctor->nombre_completo,
-                        'title' => $cita->paciente->nombre,
-                        'start' => $cita->fecha . 'T' . $cita->hora_inicio,
-                        'end' => $cita->fecha . 'T' . $cita->hora_fin,
-                        'motivo' => $cita->motivo,
-                    ];
-                });
+            try {
+                $secretaria = Secretarias::where('user_id', $user->id)->first();
+                $citas = Cita::whereIn('paciente_id', function ($query) use ($secretaria) {
+                    $query->select('id')
+                        ->from('pacientes')
+                        ->where('secretaria_id', $secretaria->id);
+                })
+                    ->with(['paciente', 'doctor'])
+                    ->get()
+                    ->map(function ($cita) {
+                        return [
+                            'id' => $cita->id,
+                            'doctor' => $cita->doctor->nombre_completo,
+                            'title' => $cita->paciente->nombre,
+                            'start' => $cita->fecha . 'T' . $cita->hora_inicio,
+                            'end' => $cita->fecha . 'T' . $cita->hora_fin,
+                            'motivo' => $cita->motivo,
+                        ];
+                    });
 
-            // Obtener los pacientes asignados a la secretaria
-            $pacientes = Paciente::where('secretaria_id', $secretaria->id)->get();
+                // Obtener los pacientes asignados a la secretaria
+                $pacientes = Paciente::where('secretaria_id', $secretaria->id)->get();
+            } catch (\Exception $e) {
+                return view('Secretaria.dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'))->with('No se encontraron Citas para esta secretaria');
+            }
         }
 
 

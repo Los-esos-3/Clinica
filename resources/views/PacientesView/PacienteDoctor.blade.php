@@ -45,6 +45,7 @@
                     </button>
                 </a>
             </div>
+            
             <div class="p-6">
                 @if ($pacientes->isEmpty())
                     <div class="flex justify-center justify-items-center items-center min-h-[500px]">

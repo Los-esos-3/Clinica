@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
+            $table->string('comments')->nullable();
             
             // Definir 'role' antes de la clave foránea
             $table->unsignedBigInteger('role')->default('4'); 

@@ -50,22 +50,27 @@
             <div class="flex-grow bg-gray-100 transition-all duration-300 ml-0 md:ml-64" id="content">
 
 
-                <div class="p-6">
 
-                    <div class="flex justify-between items-center p-3">
-                        <!-- Botón de menú -->
-                        <button id="toggle-sidebar" class="menu-button   p-3">
-                            <i class="fa-solid fa-bars fa-lg"></i>
-                        </button>
-                    
-                        <!-- Botón "Nueva Cita" -->
-                        <button id="openNewCitaModalBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                            </svg>
-                            Nueva Cita
-                        </button>
-                    </div>
+                <div class="flex justify-between items-center p-3">
+                    <!-- Botón de menú -->
+                    <button id="toggle-sidebar" class="menu-button   p-3">
+                        <i class="fa-solid fa-bars fa-lg"></i>
+                    </button>
+
+                    <!-- Botón "Nueva Cita" -->
+                    <button id="openNewCitaModalBtn"
+                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20"
+                            fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Nueva Cita
+                    </button>
+                </div>
+
+                <div class="p-6">
 
                     <!-- Calendario -->
                     <div id="admin-calendar"></div>
@@ -186,43 +191,43 @@
             });
         </script>
 
-        
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const sidebar = document.getElementById('sidebar');
-            const content = document.getElementById('content');
 
-            // Función para actualizar los estilos del contenido
-            function updateContentStyles() {
-                if (!sidebar.classList.contains('closed')) {
-                    // Si el sidebar está abierto, aplicar los estilos
-                    content.classList.add('md:ml-64');
-                } else {
-                    // Si el sidebar está cerrado, quitar los estilos
-                    content.classList.remove('md:ml-64');
-                }
-            }
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const sidebar = document.getElementById('sidebar');
+                const content = document.getElementById('content');
 
-            // Escuchar cambios en el estado del sidebar
-            const observer = new MutationObserver(function(mutationsList) {
-                for (let mutation of mutationsList) {
-                    if (mutation.attributeName === 'class') {
-                        updateContentStyles();
+                // Función para actualizar los estilos del contenido
+                function updateContentStyles() {
+                    if (!sidebar.classList.contains('closed')) {
+                        // Si el sidebar está abierto, aplicar los estilos
+                        content.classList.add('md:ml-64');
+                    } else {
+                        // Si el sidebar está cerrado, quitar los estilos
+                        content.classList.remove('md:ml-64');
                     }
                 }
-            });
 
-            // Observar cambios en las clases del sidebar
-            if (sidebar) {
-                observer.observe(sidebar, {
-                    attributes: true
+                // Escuchar cambios en el estado del sidebar
+                const observer = new MutationObserver(function(mutationsList) {
+                    for (let mutation of mutationsList) {
+                        if (mutation.attributeName === 'class') {
+                            updateContentStyles();
+                        }
+                    }
                 });
-            }
 
-            // Inicializar los estilos al cargar la página
-            updateContentStyles();
-        });
-    </script>
+                // Observar cambios en las clases del sidebar
+                if (sidebar) {
+                    observer.observe(sidebar, {
+                        attributes: true
+                    });
+                }
+
+                // Inicializar los estilos al cargar la página
+                updateContentStyles();
+            });
+        </script>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
