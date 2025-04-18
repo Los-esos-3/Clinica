@@ -3,100 +3,55 @@
 </head>
 
 <div class="sidebar-container">
-
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar closed">
-
         <div class="empresa-container">
             <x-application-logo></x-application-logo>
         </div>
 
-
         <!-- Menú principal -->
-        <ul class="sidebar-menu">
-            <li>
-                <a href="{{ route('welcome') }}">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Inicio</span>
-                </a>
+        <ul
+            class="sidebar-menu {{ Auth::user()->hasAnyRole(['Admin', 'Root']) ? 'admin-menu' : 'doctor-secretaria-menu' }}">
+            <li><a href="{{ route('welcome') }}"><i class="fa-solid fa-house"></i><span>Inicio</span></a></li>
+            <li><a href="{{ route('dashboard') }}"><i class="fa-solid fa-calendar-days"></i><span>Calendario</span></a>
             </li>
-
-            <li>
-                <a href="{{ route('dashboard') }}">
-                    <i class="fa-solid fa-calendar-days"></i>
-                    <span>Calendario</span>
-                </a>
-            </li>
-            <li>
-                <a href="{{ route('Pacientes.PacientesView') }}">
-                    <i class="fa-solid fa-bed-pulse"></i>
-                    <span>Pacientes</span>
-                </a>
-            </li>
+            <li><a href="{{ route('Pacientes.PacientesView') }}"><i
+                        class="fa-solid fa-bed-pulse"></i><span>Pacientes</span></a></li>
 
             @if (Auth::user()->hasRole('Doctor'))
-                <li>
-                    <a href="{{ route('Doctor.Secretaria') }}">
-                        <img class="img-secretary" src="{{ asset('images/secretary.png') }}" />
-                        <span>Secretaria</span>
-                    </a>
-                </li>
+                <li><a href="{{ route('Doctor.Secretaria') }}"><img class="img-secretary"
+                            src="{{ asset('images/secretary.png') }}" /><span>Secretaria</span></a></li>
             @endif
 
             @if (Auth::user()->hasAnyRole('Admin', 'Root'))
-                <li>
-                    <a href="{{ route('doctores.index') }}">
-                        <i class="fa-solid fa-user-doctor"></i>
-                        <span>Doctores</span>
-                    </a>
-                </li>
+                <li><a href="{{ route('doctores.index') }}"><i
+                            class="fa-solid fa-user-doctor"></i><span>Doctores</span></a></li>
+                <li><a href="{{ route('secretarias.index') }}"><img class="img-secretary2"
+                            src="{{ asset('images/secretary.png') }}" /><span>Secretarias</span></a></li>
 
-                <li>
-                    <a href="{{ route('secretarias.index') }}">
-                        <img class="img-secretary2" src="{{ asset('images/secretary.png') }}" />
-                        <span>Secretarias</span>
-                    </a>
-                </li>
 
-                <li>
-                    <a href="{{route('Trabajadores.index')}}">
-                        <i class="fa-solid fa-users-line"></i>
-                        <span>Trabajadores</span>
-                    </a>
-                </li>
+                <li><a href="{{ route('Trabajadores.index') }}"><img class="img-secretary"
+                    src="{{ asset('images/human.png') }}" /> <span>Trabajadores</span></a></li>
 
-                <li>
-                    <a href="{{ route('empresas.index') }}">
-                        <i class="fas fa-building"></i>
-                        <span>Empresa</span>
-                    </a>
+
+                <li><a href="{{ route('empresas.index') }}"><i class="fas fa-building"></i><span>Empresa</span></a>
                 </li>
             @endif
 
             @if (Auth::user()->hasRole('Root'))
-                <li>
-                    <a href="{{ route('roles.index') }}">
-                        <i class="fa-solid fa-users-gear"></i>
-                        <span>Roles</span>
-                    </a>
+                <li><a href="{{ route('roles.index') }}"><i class="fa-solid fa-users-gear"></i><span>Roles</span></a>
                 </li>
             @endif
 
-
-            <li>
-                <a href="{{ route('profile.show') }}">
-                    <i class="fas fa-user-circle"></i>
-                    <span>Perfil</span>
-                </a>
-            </li>
+            <li><a href="{{ route('profile.show') }}"><i class="fas fa-user-circle"></i><span>Perfil</span></a></li>
         </ul>
 
         <div class="role-container">
             <label for="">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
         </div>
+
         <!-- Contenedor para el usuario -->
         <div class="user-container">
-
             <div class="name-space">
                 <!-- Imagen de perfil o icono de sombra -->
                 @if ($user->foto_perfil)
@@ -105,19 +60,14 @@
                 @else
                     <i class="fa-solid fa-2xs profile-icon fa-circle-user"></i>
                 @endif
-
                 <!-- Nombre del usuario -->
                 <p class="username">{{ explode(' ', $user->name)[0] }}</p>
             </div>
-
-
             <!-- Botón de salir -->
             <div>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit">
-                        <i title="Cerrar Sesion" class="fas fa-sign-out-alt"></i>
-                    </button>
+                    <button type="submit"><i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></button>
                 </form>
             </div>
         </div>
@@ -125,8 +75,88 @@
 </div>
 
 <style>
+    /* Estilos generales del menú */
+    .sidebar-menu {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        /* Centra verticalmente los elementos */
+    }
+
+    .sidebar-menu li {
+        margin: 0;
+    }
+
+    /* Altura para Admin/Root */
+    .admin-menu {
+        height: 70% !important;
+        /* Altura deseada para Admin/Root */
+    }
+
+    /* Altura para Doctor/Secretaria */
+    .doctor-secretaria-menu {
+        height: 35% !important;
+        /* Altura deseada para Doctor/Secretaria */
+    }
+
+    /* Estilos adicionales */
     .empresa-container {
         display: flex;
+        justify-content: center;
+    }
+
+    .img-secretary {
+        filter: invert();
+        padding-right: 10px;
+        height: 25px !important;
+    }
+
+    .img-secretary2 {
+        filter: invert();
+        padding-right: 10px;
+        height: 25px !important;
+    }
+
+    .name-space {
+        display: flex;
+    }
+
+    .sidebar-content {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        /* Asegura que ocupe toda la altura del sidebar */
+    }
+
+    .username {
+        margin: 0px !important;
+        font-size: 16px;
+        color: #ecf0f1;
+        text-align: center;
+    }
+
+    .logout-button {
+        background-color: #ecf0f1;
+        color: #2c3e50;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .logout-button i {
+        font-size: 18px;
+    }
+
+    .logout-button:hover {
+        background-color: #dcdcdc;
     }
 
     .img-secretary {
@@ -217,10 +247,6 @@
         margin: 0;
         font-size: 18px;
         color: #ecf0f1;
-    }
-
-    .sidebar-menu li {
-        margin: 0;
     }
 
     .sidebar-menu a {
@@ -362,12 +388,6 @@
             modal.classList.toggle('hidden');
             document.documentElement.classList.toggle('overflow-hidden');
             document.body.classList.toggle('overflow-hidden');
-
-            if (appContainer) {
-                appContainer.classList.toggle('filter', !modal.classList.contains('hidden'));
-                appContainer.classList.toggle('blur-sm', !modal.classList.contains('hidden'));
-                appContainer.style.pointerEvents = modal.classList.contains('hidden') ? 'auto' : 'none';
-            }
         }
     }
 
