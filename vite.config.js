@@ -9,24 +9,9 @@ export default defineConfig({
         }),
     ],
     server: {
-        host: '192.168.1.76',
+        host: 'expemed2.up.railway.app',
         hmr: {
-            host: '192.168.1.76'
+            host: 'expemed2.up.railway.app'
         },
     },
-    build: {
-        // Habilitar minificación
-        minify: 'terser',
-        // Dividir el código en chunks más pequeños
-        rollupOptions: {
-            output: {
-                manualChunks: {
-                    vendor: ['@/vendor'],
-                }
-            }
-        },
-        // Comprimir assets
-        assetsInlineLimit: 4096,
-        chunkSizeWarningLimit: 1000,
-    }
 });

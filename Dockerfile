@@ -1,4 +1,3 @@
-
 # Etapa de construcción
 FROM php:8.2-fpm-bullseye AS builder
 
@@ -31,6 +30,9 @@ COPY . .
 # Compilar assets dentro del contenedor
 RUN npm install && npm run build
 
+# Verificar que los archivos generados existan
+RUN ls -la /var/www/public/build/assets/
+
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
 
@@ -48,7 +50,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get update && apt-get install -y netcat
 
 # Permisos
-RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R www-data:www-data storage bootstrap/cache public
 
 # Copiar script de inicialización
 COPY init.sh /var/www/init.sh
@@ -57,4 +59,4 @@ RUN chmod +x /var/www/init.sh
 EXPOSE 8000
 
 # Usar el script de inicialización
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+CMD ["/var/www/init.sh"]
