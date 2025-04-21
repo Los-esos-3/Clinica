@@ -1,59 +1,65 @@
 # Etapa de construcción
 FROM php:8.2-fpm-bullseye AS builder
 
-# Instalar dependencias necesarias del sistema
+# Instalar dependencias del sistema
 RUN apt-get update && apt-get install -y \
     git curl zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    build-essential python3 \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
 
-# Node.js y Yarn
+# Instalar Node.js 18.x
 RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && npm install -g yarn
 
-# Composer
+# Instalar Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
 
-# Dependencias PHP
+# Instalar dependencias PHP
 COPY composer.json composer.lock ./
 RUN composer install --optimize-autoloader --no-dev --no-scripts
 
-# Dependencias JS
+# Instalar dependencias JS
 COPY package.json yarn.lock ./
-RUN yarn install
+RUN yarn install --frozen-lockfile
 
-# Copiar código completo
+# Copiar código fuente
 COPY . .
 
-# Configurar entorno para producción
+# Variables de entorno para producción
 ENV VITE_APP_ENV=production
+ENV VITE_APP_URL=${APP_URL}
 
-# Compilar assets
-RUN npm install && npm run build
+# Compilar assets con verificación
+RUN npm run build && \
+    [ -f /var/www/public/build/manifest.json ] || (echo "ERROR: Manifest no generado" && exit 1)
 
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
 
-# Instalar dependencias necesarias
+# Instalar dependencias mínimas
 RUN apt-get update && apt-get install -y \
-    zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev netcat \
+    libpng-dev libonig-dev libxml2-dev libzip-dev \
     && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Copiar solo lo necesario desde builder
-COPY --from=builder /var/www /var/www
+COPY --from=builder /var/www/public/build /var/www/public/build
+COPY --from=builder /var/www/vendor /var/www/vendor
+COPY --from=builder /var/www/bootstrap/cache /var/www/bootstrap/cache
+COPY --from=builder /var/www/storage /var/www/storage
 
 WORKDIR /var/www
 
-# Permisos
-RUN chown -R www-data:www-data storage bootstrap/cache public
+# Configurar permisos
+RUN chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/www/public/build
 
-# Script de inicialización
-COPY init.sh /var/www/init.sh
-RUN chmod +x /var/www/init.sh
+# Script de inicio
+COPY init.sh /usr/local/bin/start
+RUN chmod +x /usr/local/bin/start
 
 EXPOSE 8000
 
-CMD ["/var/www/init.sh"]
+CMD ["/usr/local/bin/start"] 
