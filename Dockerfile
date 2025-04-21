@@ -72,4 +72,4 @@ RUN chmod +x /usr/local/bin/start
 
 EXPOSE 8000
 
-CMD ["/usr/local/bin/start"] 
+CMD ["/usr/local/bin/start" ]
