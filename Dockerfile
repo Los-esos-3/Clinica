@@ -27,43 +27,33 @@ RUN yarn install
 # Copiar código completo
 COPY . .
 
-# Antes del npm run build
+# Configurar entorno para producción
 ENV VITE_APP_ENV=production
 
-# Compilar assets dentro del contenedor
+# Compilar assets
 RUN npm install && npm run build
-
-# Verificar que los archivos generados existan
-RUN ls -la /var/www/public/build/assets/
-
-
-# En tu etapa final, asegúrate de copiar los assets
-COPY --from=builder /var/www/public/build /var/www/public/build
 
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
 
-# Copiar app desde builder
+# Instalar dependencias necesarias
+RUN apt-get update && apt-get install -y \
+    zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev netcat \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+# Copiar solo lo necesario desde builder
 COPY --from=builder /var/www /var/www
 
 WORKDIR /var/www
 
-# Reinstalar extensiones necesarias (usa bullseye)
-RUN apt-get update && apt-get install -y \
-    zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
-    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
-
-# Instalar netcat para verificar la disponibilidad de la base de datos
-RUN apt-get update && apt-get install -y netcat
-
 # Permisos
 RUN chown -R www-data:www-data storage bootstrap/cache public
 
-# Copiar script de inicialización
+# Script de inicialización
 COPY init.sh /var/www/init.sh
 RUN chmod +x /var/www/init.sh
 
 EXPOSE 8000
 
-# Usar el script de inicialización
 CMD ["/var/www/init.sh"]
