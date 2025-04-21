@@ -45,6 +45,8 @@ COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copiar app desde builder
 COPY --from=builder /var/www/public /usr/share/nginx/html
 
+RUN ls -la /usr/share/nginx/html/build/assets/
+
 # Exponer el puerto
 EXPOSE 80
 
