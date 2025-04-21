@@ -27,6 +27,9 @@ RUN yarn install
 # Copiar código completo
 COPY . .
 
+# Antes del npm run build
+ENV VITE_APP_ENV=production
+
 # Compilar assets dentro del contenedor
 RUN npm install && npm run build
 
