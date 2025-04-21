@@ -4,23 +4,21 @@ import laravel from 'laravel-vite-plugin';
 export default defineConfig({
   plugins: [
     laravel({
-      input: [
-        'resources/css/app.css', 
-        'resources/js/app.js'
-      ],
+      input: ['resources/css/app.css', 'resources/js/app.js'],
       refresh: true,
     }),
   ],
   build: {
-    manifest: true, // Asegúrate que esto esté true
+    manifest: true,
     outDir: 'public/build',
     emptyOutDir: true,
     rollupOptions: {
       output: {
+        // Mueve el manifest.json al directorio raíz de build
+        manifestFile: '../../public/build/manifest.json',
         entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name].[hash].[ext]',
-        manualChunks: undefined, // Elimina chunks manuales si existen
+        assetFileNames: 'assets/[name].[hash].[ext]'
       }
     }
   }

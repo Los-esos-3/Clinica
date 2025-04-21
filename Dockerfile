@@ -35,17 +35,14 @@ ENV VITE_APP_URL=${APP_URL}
 # Reemplaza la sección de build con esto:
     RUN echo "Instalando dependencias..." && \
     npm install --force && \
-    echo "Limpiando cache..." && \
-    npm cache clean --force && \
     echo "Ejecutando build..." && \
     npm run build && \
-    echo "Verificando archivos generados..." && \
+    echo "Moviendo manifest.json..." && \
+    mv /var/www/public/build/.vite/manifest.json /var/www/public/build/ && \
+    echo "Verificando archivos..." && \
     ls -la /var/www/public/build && \
     [ -f /var/www/public/build/manifest.json ] || { \
-        echo "ERROR: Manifest no generado. Contenido de public/build:"; \
-        ls -la /var/www/public/build; \
-        echo "Contenido de .vite:"; \
-        ls -la /var/www/public/build/.vite; \
+        echo "ERROR: Manifest no encontrado"; \
         exit 1; \
     }
 
