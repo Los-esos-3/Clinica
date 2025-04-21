@@ -48,7 +48,7 @@ COPY --from=builder /var/www/public /usr/share/nginx/html
 RUN ls -la /usr/share/nginx/html/build/assets/
 
 # Exponer el puerto
-EXPOSE 80
+EXPOSE 8000
 
 # Iniciar Nginx
 CMD ["nginx", "-g", "daemon off;"]
