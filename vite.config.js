@@ -1,17 +1,22 @@
 import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 
-export default defineConfig(({ command }) => ({
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.js'],
-            refresh: true,
-        }),
-    ],
-    server: command === 'serve' ? {
-        host: 'expemed.up.railway.app',
-        hmr: {
-            host: 'expemed.up.railway.app'
-        },
-    } : undefined,
-}));
+export default defineConfig({
+  plugins: [
+    laravel({
+      input: ['resources/css/app.css', 'resources/js/app.js'],
+      refresh: true,
+    }),
+  ],
+  build: {
+    manifest: true,
+    outDir: 'public/build',
+    rollupOptions: {
+      output: {
+        entryFileNames: `assets/[name].js`,
+        chunkFileNames: `assets/[name].js`,
+        assetFileNames: `assets/[name].[ext]`
+      }
+    }
+  }
+});

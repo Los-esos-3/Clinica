@@ -36,6 +36,10 @@ RUN npm install && npm run build
 # Verificar que los archivos generados existan
 RUN ls -la /var/www/public/build/assets/
 
+
+# En tu etapa final, asegúrate de copiar los assets
+COPY --from=builder /var/www/public/build /var/www/public/build
+
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
 
