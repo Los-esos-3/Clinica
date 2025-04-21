@@ -32,9 +32,11 @@ COPY . .
 ENV VITE_APP_ENV=production
 ENV VITE_APP_URL=${APP_URL}
 
-# Compilar assets con verificación
-RUN npm run build && \
-    [ -f /var/www/public/build/manifest.json ] || (echo "ERROR: Manifest no generado" && exit 1)
+# Por esto:
+    RUN echo "Instalando dependencias npm..." && npm install
+    RUN echo "Ejecutando build..." && npm run build 2>&1
+    RUN echo "Verificando archivos generados..." && ls -la /var/www/public/build
+    RUN [ -f /var/www/public/build/manifest.json ] || (echo "ERROR: Manifest no generado" && ls -la /var/www/public/ && exit 1)
 
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
