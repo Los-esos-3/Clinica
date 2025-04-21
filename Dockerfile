@@ -32,11 +32,22 @@ COPY . .
 ENV VITE_APP_ENV=production
 ENV VITE_APP_URL=${APP_URL}
 
-# Por esto:
-    RUN echo "Instalando dependencias npm..." && npm install
-    RUN echo "Ejecutando build..." && npm run build 2>&1
-    RUN echo "Verificando archivos generados..." && ls -la /var/www/public/build
-    RUN [ -f /var/www/public/build/manifest.json ] || (echo "ERROR: Manifest no generado" && ls -la /var/www/public/ && exit 1)
+# Reemplaza la sección de build con esto:
+    RUN echo "Instalando dependencias..." && \
+    npm install --force && \
+    echo "Limpiando cache..." && \
+    npm cache clean --force && \
+    echo "Ejecutando build..." && \
+    npm run build && \
+    echo "Verificando archivos generados..." && \
+    ls -la /var/www/public/build && \
+    [ -f /var/www/public/build/manifest.json ] || { \
+        echo "ERROR: Manifest no generado. Contenido de public/build:"; \
+        ls -la /var/www/public/build; \
+        echo "Contenido de .vite:"; \
+        ls -la /var/www/public/build/.vite; \
+        exit 1; \
+    }
 
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
