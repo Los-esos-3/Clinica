@@ -51,4 +51,4 @@ RUN ls -la /usr/share/nginx/html/build/assets/
 EXPOSE 8000
 
 # Iniciar Nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh", "-c", "envsubst '$PORT' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && nginx -g 'daemon off;'"]
