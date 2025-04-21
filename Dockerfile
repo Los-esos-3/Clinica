@@ -27,28 +27,36 @@ RUN yarn install
 # Copiar código completo
 COPY . .
 
-# Configurar entorno para producción
-ENV VITE_APP_ENV=production
-
-# Compilar assets
+# Compilar assets dentro del contenedor
 RUN npm install && npm run build
 
 # Verificar que los archivos generados existan
 RUN ls -la /var/www/public/build/assets/
 
 # Etapa final de producción
-FROM nginx:alpine
-
-# Copiar configuración de Nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+FROM php:8.2-fpm-bullseye
 
 # Copiar app desde builder
-COPY --from=builder /var/www/public /usr/share/nginx/html
+COPY --from=builder /var/www /var/www
 
-RUN ls -la /usr/share/nginx/html/build/assets/
+WORKDIR /var/www
 
-# Exponer el puerto
+# Reinstalar extensiones necesarias (usa bullseye)
+RUN apt-get update && apt-get install -y \
+    zip unzip libpng-dev libonig-dev libxml2-dev libzip-dev \
+    && docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd zip
+
+# Instalar netcat para verificar la disponibilidad de la base de datos
+RUN apt-get update && apt-get install -y netcat
+
+# Permisos
+RUN chown -R www-data:www-data storage bootstrap/cache public
+
+# Copiar script de inicialización
+COPY init.sh /var/www/init.sh
+RUN chmod +x /var/www/init.sh
+
 EXPOSE 8000
 
-CMD ["/usr/local/bin/start" ]
-
+# Usar el script de inicialización
+CMD ["/var/www/init.sh"]
