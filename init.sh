@@ -1,7 +1,9 @@
 #!/bin/bash
 
 # Forzar HTTPS en Railway
+# Verifica y actualiza esta línea
 if [ "$RAILWAY_ENVIRONMENT" = "production" ]; then
+    # Asegúrate de que este dominio es exactamente el correcto
     export APP_URL=https://expemed2.up.railway.app
 fi
 

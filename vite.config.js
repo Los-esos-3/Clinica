@@ -8,10 +8,17 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    server: {
-        host: 'expemed2.up.railway.app',
-        hmr: {
-            host: 'expemed2.up.railway.app'
+    // Configuración para entorno de producción
+    build: {
+        // Asegura que los manifests y assets se generen correctamente
+        manifest: true,
+        outDir: 'public/build',
+        rollupOptions: {
+            output: {
+                manualChunks: undefined,
+            },
         },
     },
+    // Configura la base URL para los assets
+    base: process.env.APP_URL ? '' : '/build/',
 });
