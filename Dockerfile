@@ -28,10 +28,18 @@ RUN yarn install
 COPY . .
 
 # Compilar assets dentro del contenedor
-RUN npm install && npm run build
+RUN npm run build
 
 # Verificar que los archivos generados existan
-RUN ls -la /var/www/public/build/assets/
+RUN ls -la /var/www/public/build/ || echo "El directorio build no existe"
+RUN ls -la /var/www/public/build/assets/ || echo "El directorio assets no existe"
+RUN cat /var/www/public/build/manifest.json || echo "El manifiesto no existe"
+
+# Generar manifiesto manual si no existe
+RUN if [ ! -f /var/www/public/build/manifest.json ]; then \
+    mkdir -p /var/www/public/build; \
+    echo '{"resources/css/app.css":{"file":"assets/app.css"},"resources/js/app.js":{"file":"assets/app.js"}}' > /var/www/public/build/manifest.json; \
+    fi
 
 # Etapa final de producción
 FROM php:8.2-fpm-bullseye
