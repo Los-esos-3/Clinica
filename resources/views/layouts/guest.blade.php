@@ -13,7 +13,6 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-        {!! vite_assets('resources/css/app.css', 'resources/js/app.js') !!}
 
         <!-- Styles -->
         @livewireStyles
