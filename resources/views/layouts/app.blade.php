@@ -12,11 +12,8 @@
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-           {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
-        
-        <!-- Enlaces directos a assets como solución temporal -->
-        <link rel="stylesheet" href="{{ asset('build/assets/app.css') }}">
-        <script src="{{ asset('build/assets/app.js') }}" defer></script>
+        <!-- Styles -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         
         <!-- Fallback para cuando Vite no está disponible -->
         @if(!app()->environment('local'))

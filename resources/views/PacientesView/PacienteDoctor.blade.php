@@ -8,6 +8,8 @@
 
             <div class="flex items-center justify-between bg-gray-300 p-3 mb-6 border">
 
+
+
                 <div class="flex items-center gap-16">
                     <button id="toggle-sidebar">
                         <i class="fas fa-bars"></i>
@@ -21,10 +23,10 @@
 
 
                 <div class="flex items-center ml-4">
-                    <form action="{{ route('Pacientes.PacientesView') }}" method="GET" class="flex items-center ml-4">
+                    <form method="GET" action="{{ route('Pacientes.PacientesView') }}" class="flex items-center ml-4">
                         <div class="relative flex">
-                            <input type="text" name="search" placeholder="Buscar" class="border rounded-l px-4 py-2"
-                                style="width: 300px;">
+                            <input type="text" name="search" placeholder="Buscar" value="{{ request('search') }}"
+                                class="border rounded-l px-4 py-2" style="width: 300px;">
                             <button type="submit"
                                 class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
@@ -38,14 +40,16 @@
                     </form>
                 </div>
 
-                <a href="{{ route('Pacientes.create') }}"
-                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    <button>
-                        Agregar Paciente
-                    </button>
-                </a>
+                @if (Auth::user()->hasRole('Doctor'))
+                    <a href="{{ route('Pacientes.create') }}"
+                        class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
+                        <button>
+                            Agregar Paciente
+                        </button>
+                    </a>
+                @endif
             </div>
-            
+
             <div class="p-6">
                 @if ($pacientes->isEmpty())
                     <div class="flex justify-center justify-items-center items-center min-h-[500px]">
@@ -112,9 +116,8 @@
         </div>
     </div>
 
-    
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
 </x-app-layout>
-    

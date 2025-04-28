@@ -21,9 +21,9 @@
 
 
                 <div class="flex items-center ml-4">
-                    <form action="{{ route('Pacientes.PacientesView') }}" method="GET" class="flex items-center ml-4">
+                    <form method="GET" action="{{ route('Pacientes.PacientesView') }}" class="flex items-center ml-4">
                         <div class="relative flex">
-                            <input type="text" name="search" placeholder="Buscar" class="border rounded-l px-4 py-2"
+                            <input type="text" name="search" placeholder="Buscar" value="{{ request('search') }}" class="border rounded-l px-4 py-2"
                                 style="width: 300px;">
                             <button type="submit"
                                 class="bg-blue-500 text-white rounded-r px-3 py-2 hover:bg-blue-700 transition-colors duration-200 flex items-center">

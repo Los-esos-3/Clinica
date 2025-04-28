@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use App\Models\Consulta;
+use App\Models\Empresa;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Paciente;
+use App\Models\Doctores;
+use App\Models\Secretarias;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class ClinicaController 
+class ClinicaController
 {
 
     use HasRoles;
@@ -19,43 +23,67 @@ class ClinicaController
     public function PacientesView(Request $request)
     {
         $user = Auth::user();
-        $search = $request->input('search');
+        $search = trim(strtolower($request->input('search')));
 
         // Construir la consulta inicial
-        $query = Paciente::query();
+        $query = Paciente::with(['user', 'doctor', 'secretaria']);
 
-        if ($user->hasRole('Doctor')) {
-            if ($user->doctor) {
-                $query->where('doctor_id', $user->doctor->id)
-                    ->orWhere('user_id', $user->id);
+        // Filtrar pacientes según el rol del usuario autenticado
+        if ($user->hasRole('Admin')) {
+            // Verificar si el administrador tiene una empresa asignada
+            if ($user->empresa_id) {
+                // Obtener todos los usuarios (doctores y secretarias) de la misma empresa
+                $usuariosEmpresa = User::where('empresa_id', $user->empresa_id)->pluck('id');
+
+                // Filtrar pacientes cuyo doctor, secretaria o usuario pertenezca a la misma empresa
+                $query->where(function ($q) use ($usuariosEmpresa) {
+                    $q->whereIn('doctor_id', $usuariosEmpresa)
+                        ->orWhereIn('secretaria_id', $usuariosEmpresa)
+                        ->orWhereIn('user_id', $usuariosEmpresa);
+                });
             } else {
-                $query->whereNull('id'); // Lista vacía
+                // Si el administrador no tiene empresa, no mostrar ningún paciente
+                $query->whereNull('id');
+            }
+        } elseif ($user->hasRole('Doctor')) {
+            // Filtrar pacientes para doctores
+            if ($user->doctor) {
+                $query->where(function ($q) use ($user) {
+                    $q->where('doctor_id', $user->doctor->id)
+                        ->orWhere('user_id', $user->id);
+                });
+            } else {
+                $query->whereNull('id'); // Lista vacía si el doctor no está asociado
             }
         } elseif ($user->hasRole('Secretaria')) {
+            // Filtrar pacientes para secretarias
             if ($user->secretaria) {
-                $query->where('secretaria_id', $user->secretaria->id)
-                    ->orWhere('user_id', $user->id);
+                $query->where(function ($q) use ($user) {
+                    $q->where('secretaria_id', $user->secretaria->id)
+                        ->orWhere('user_id', $user->id);
+                });
             } else {
-                $query->whereNull('id'); // Lista vacía
+                $query->whereNull('id'); // Lista vacía si la secretaria no está asociada
             }
         } else {
-            $query->whereNull('id'); // Lista vacía
+            // Lista vacía para otros roles
+            $query->whereNull('id');
         }
 
-        // Aplicar filtro de búsqueda si existe
+        // Aplicar búsqueda si existe un término
         if ($search) {
             $query->where(function ($q) use ($search) {
-                $q->where('nombre', 'LIKE', "%{$search}%");
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhere('telefono', 'like', '%' . $search . '%')
+                    ->orWhere('direccion', 'like', '%' . $search . '%')
+                    ->orWhere('ocupacion', 'like', '%' . $search . '%');
             });
         }
 
         // Paginar los resultados
         $pacientes = $query->paginate(9);
 
-        // Mensaje si no hay resultados
-        $noResultsMessage = $pacientes->isEmpty() ? "No se encontró ningún paciente con ese nombre." : null;
-
-        return view('Pacientes.PacientesIndex', compact('pacientes', 'noResultsMessage', 'search'));
+        return view('Pacientes.PacientesIndex', compact('pacientes', 'search'));
     }
 
 

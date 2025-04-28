@@ -49,4 +49,8 @@ class Paciente extends Model
     {
         return $this->belongsTo(Doctores::class, 'doctor_id');
     }
+    public function secretaria()
+    {
+        return $this->belongsTo(Secretarias::class,'doctor_id');
+    }
 }
