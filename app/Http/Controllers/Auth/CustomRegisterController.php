@@ -16,7 +16,7 @@ class CustomRegisterController
     {
         $captchaCode = $this->generateCaptcha();
         Session::put('captcha_code', $captchaCode);
-        
+
         return view('auth.register', ['captchaText' => $captchaCode]);
     }
 
@@ -32,6 +32,10 @@ class CustomRegisterController
 
     public function register(Request $request)
     {
+        $UserCaptcha = $request->input('captcha');
+        $InputCaptcha = $request->input('captchaText');
+
+
         try {
             // Validar los datos
             $validator = Validator::make($request->all(), [
@@ -51,21 +55,22 @@ class CustomRegisterController
                 // Regenerar CAPTCHA para el nuevo intento
                 $newCaptcha = $this->generateCaptcha();
                 Session::put('captcha_code', $newCaptcha);
-                
+
                 return back()
                     ->withErrors($validator)
                     ->withInput()
                     ->with('captchaText', $newCaptcha);
             }
 
-            // Crear el usuario
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password),
-                'comments' => $request->comments,
-            ]);
+                // Crear el usuario
+                $user = User::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'phone' => $request->phone,
+                    'password' => Hash::make($request->password),
+                    'comments' => $request->comments,
+                ]);
+
 
             // Limpiar el CAPTCHA de la sesión
             Session::forget('captcha_code');
@@ -73,16 +78,16 @@ class CustomRegisterController
             // Autenticar al usuario
             Auth::login($user);
 
+
             return redirect()->route('welcome')
                 ->with('success', '¡Cuenta creada con éxito! Un administrador revisará tu solicitud y te asignará los permisos correspondientes.');
-
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error en el registro: ' . $e->getMessage());
-            
+
             // Regenerar CAPTCHA por si acaso
             $newCaptcha = $this->generateCaptcha();
             Session::put('captcha_code', $newCaptcha);
-            
+
             return back()
                 ->with('error', 'Hubo un error al procesar tu registro. Por favor, intenta nuevamente.')
                 ->with('captchaText', $newCaptcha)
@@ -94,7 +99,7 @@ class CustomRegisterController
     {
         $newCaptcha = $this->generateCaptcha();
         Session::put('captcha_code', $newCaptcha);
-        
+
         return response()->json([
             'captcha' => $newCaptcha,
             'status' => 'success'
@@ -105,7 +110,7 @@ class CustomRegisterController
     {
         $inputCaptcha = strtoupper($request->input('captcha'));
         $sessionCaptcha = strtoupper(Session::get('captcha_code'));
-        
+
         return response()->json([
             'isValid' => $inputCaptcha === $sessionCaptcha
         ]);

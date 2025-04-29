@@ -264,86 +264,90 @@
                 </div>
             </div>
 
-           <!-- Sección derecha (Formulario) -->
-<div class="w-1/2 p-6">
-    <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
-    @if (session('success'))
-        <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
-            {{ session('success') }}
-        </div>
-    @endif
+            <!-- Sección derecha (Formulario) -->
+            <div class="w-1/2 p-6">
+                <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
+                @if (session('success'))
+                    <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-    <form method="POST" action="{{ route('register') }}" class="space-y-4">
-        @csrf
+                <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                    @csrf
 
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
-            <input type="text" name="name"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md" value="{{ old('name') }}"
-                required>
-        </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
+                        <input type="text" name="name"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="{{ old('name') }}"
+                            required>
+                    </div>
 
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Correo Electrónico</label>
-            <input type="email" name="email"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md" value="{{ old('email') }}"
-                required>
-        </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Correo Electrónico</label>
+                        <input type="email" name="email"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" value="{{ old('email') }}"
+                            required>
+                    </div>
 
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
-            <input type="password" name="password"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
-        </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
+                        <input type="password" name="password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
 
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
-            <input type="password" name="password_confirmation"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
-        </div>
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
+                        <input type="password" name="password_confirmation"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                    </div>
 
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Celular</label>
-            <input type="tel" name="phone"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-500"
-                value="{{ old('phone') }}" required>
-        </div>
-        
-        <!-- Campo de Comentarios -->
-        <div>
-            <label class="block text-sm text-gray-700 mb-2">Comentarios</label>
-            <textarea name="comments"
-                class="w-full px-3 py-2 border border-gray-300 rounded-md 
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Celular</label>
+                        <input type="tel" name="phone"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-500"
+                            value="{{ old('phone') }}" required>
+                    </div>
+
+                    <!-- Campo de Comentarios -->
+                    <div>
+                        <label class="block text-sm text-gray-700 mb-2">Comentarios</label>
+                        <textarea name="comments"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md 
                 @error('comments') border-red-500 @enderror"
-                rows="4" placeholder="Cuéntenos sobre su negocio">{{ old('comments') }}</textarea>
-            @error('comments')
-                <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-            @enderror
-        </div>
-                    
-<!-- CAPTCHA Section -->
-<div class="mt-4">
-    <label class="block text-sm text-gray-700 mb-2">Código de verificación:</label>
-    <div class="flex items-center mb-2">
-        <div class="border border-gray-300 rounded-md p-2 bg-gray-100 font-mono text-lg select-none" id="captchaText" style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
-            {{ $captchaText ?? '' }}
-        </div>
-        <button type="button" onclick="refreshCaptcha()" class="ml-2 text-blue-500">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
-            </svg>
-        </button>
-    </div>
-    <input type="text" name="captcha" required 
-           class="w-full px-3 py-2 border border-gray-300 rounded-md @error('captcha') border-red-500 @enderror"
-           id="captchaInput"
-           placeholder="Ingrese el código mostrado"
-           onkeyup="validateCaptcha(this.value)">
-    <div id="captchaStatus" class="mt-1 text-sm"></div>
-    @error('captcha')
-        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-    @enderror
-</div>
+                            rows="4" placeholder="Cuéntenos sobre su negocio">{{ old('comments') }}</textarea>
+                        @error('comments')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- CAPTCHA Section -->
+                    <div class="mt-4">
+                        <label class="block text-sm text-gray-700 mb-2">Código de verificación:</label>
+                        <div class="flex items-center mb-2">
+                            <div  name="captchaText" class="border border-gray-300 rounded-md p-2 bg-gray-100 font-mono text-lg select-none"
+                                id="captchaText"
+                                style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
+                                {{ $captchaText ?? '' }}
+                            </div>
+                            <button type="button" onclick="refreshCaptcha()" class="ml-2 text-blue-500">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path fill-rule="evenodd"
+                                        d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z"
+                                        clip-rule="evenodd" />
+                                </svg>
+                            </button>
+                        </div>
+                        <input type="text" name="captcha" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md @error('captcha') border-red-500 @enderror"
+                            id="captchaInput" placeholder="Ingrese el código mostrado"
+                            onkeyup="validateCaptcha(this.value)">
+                        <div id="captchaStatus" class="mt-1 text-sm"></div>
+                        @error('captcha')
+                            <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
 
                     <button type="submit" class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
                         CREAR CUENTA
@@ -378,37 +382,39 @@
                 }
 
                 fetch('/validate-captcha', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({ captcha: value })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const input = document.getElementById('captchaInput');
-                    const status = document.getElementById('captchaStatus');
-                    
-                    if (data.isValid) {
-                        input.classList.remove('border-red-500');
-                        input.classList.add('border-green-500');
-                        status.textContent = '✓ Código correcto';
-                        status.classList.remove('text-red-500');
-                        status.classList.add('text-green-500');
-                    } else {
-                        input.classList.remove('border-green-500');
-                        input.classList.add('border-red-500');
-                        status.textContent = '✗ Código incorrecto';
-                        status.classList.remove('text-green-500');
-                        status.classList.add('text-red-500');
-                    }
-                });
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            captcha: value
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const input = document.getElementById('captchaInput');
+                        const status = document.getElementById('captchaStatus');
+
+                        if (data.isValid) {
+                            input.classList.remove('border-red-500');
+                            input.classList.add('border-green-500');
+                            status.textContent = '✓ Código correcto';
+                            status.classList.remove('text-red-500');
+                            status.classList.add('text-green-500');
+                        } else {
+                            input.classList.remove('border-green-500');
+                            input.classList.add('border-red-500');
+                            status.textContent = '✗ Código incorrecto';
+                            status.classList.remove('text-green-500');
+                            status.classList.add('text-red-500');
+                        }
+                    });
             }
         </script>
         <script>
             let captchaValid = false;
-        
+
             function refreshCaptcha() {
                 fetch('/refresh-captcha')
                     .then(response => response.json())
@@ -421,7 +427,7 @@
                         updateSubmitButton();
                     });
             }
-        
+
             function validateCaptcha(value) {
                 if (value.length === 0) {
                     document.getElementById('captchaInput').classList.remove('border-green-500', 'border-red-500');
@@ -430,39 +436,41 @@
                     updateSubmitButton();
                     return;
                 }
-        
+
                 fetch('/validate-captcha', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({ captcha: value })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const input = document.getElementById('captchaInput');
-                    const status = document.getElementById('captchaStatus');
-                    
-                    if (data.isValid) {
-                        input.classList.remove('border-red-500');
-                        input.classList.add('border-green-500');
-                        status.textContent = '✓ Código correcto';
-                        status.classList.remove('text-red-500');
-                        status.classList.add('text-green-500');
-                        captchaValid = true;
-                    } else {
-                        input.classList.remove('border-green-500');
-                        input.classList.add('border-red-500');
-                        status.textContent = '✗ Código incorrecto';
-                        status.classList.remove('text-green-500');
-                        status.classList.add('text-red-500');
-                        captchaValid = false;
-                    }
-                    updateSubmitButton();
-                });
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        },
+                        body: JSON.stringify({
+                            captcha: value
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const input = document.getElementById('captchaInput');
+                        const status = document.getElementById('captchaStatus');
+
+                        if (data.isValid) {
+                            input.classList.remove('border-red-500');
+                            input.classList.add('border-green-500');
+                            status.textContent = '✓ Código correcto';
+                            status.classList.remove('text-red-500');
+                            status.classList.add('text-green-500');
+                            captchaValid = true;
+                        } else {
+                            input.classList.remove('border-green-500');
+                            input.classList.add('border-red-500');
+                            status.textContent = '✗ Código incorrecto';
+                            status.classList.remove('text-green-500');
+                            status.classList.add('text-red-500');
+                            captchaValid = false;
+                        }
+                        updateSubmitButton();
+                    });
             }
-        
+
             function updateSubmitButton() {
                 const submitButton = document.getElementById('submitButton');
                 if (captchaValid) {
@@ -475,12 +483,12 @@
                     submitButton.classList.add('bg-gray-500');
                 }
             }
-        
+
             // Inicializar el botón al cargar la página
             document.addEventListener('DOMContentLoaded', function() {
                 updateSubmitButton();
             });
-        
+
             // Validar el formulario antes de enviar
             document.querySelector('form').addEventListener('submit', function(e) {
                 if (!captchaValid) {

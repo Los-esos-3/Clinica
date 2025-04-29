@@ -8,16 +8,25 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    // Configuración para entorno de producción
-    build: {
-        // Asegura que los manifests y assets se generen correctamente
-        manifest: true,
-        outDir: 'public/build',
-        rollupOptions: {
-            output: {
-                manualChunks: undefined,
-            },
+    server: {
+        host: '192.168.1.99',
+        hmr: {
+            host: '192.168.1.99'
         },
     },
-    
+    build: {
+        // Habilitar minificación
+        minify: 'terser',
+        // Dividir el código en chunks más pequeños
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['@/vendor'],
+                }
+            }
+        },
+        // Comprimir assets
+        assetsInlineLimit: 4096,
+        chunkSizeWarningLimit: 1000,
+    }
 });

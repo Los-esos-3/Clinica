@@ -318,6 +318,16 @@ color: black !important; /* Cambia el color a negro */
 font-weight: bold;
 }
 
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start
+{
+cursor:pointer;
+}
+
+.fc-toolbar-title
+{
+margin-left:1px !important;
+}
+
 /* Cambiar color de los nombres de los días de la semana */
 .fc-col-header-cell a {
 color: black !important; /* Cambia el color del texto a negro */

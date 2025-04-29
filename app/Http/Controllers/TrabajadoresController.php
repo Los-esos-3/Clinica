@@ -10,4 +10,8 @@ class TrabajadoresController
    {
     return view("Trabajadores.index");
    }
+   public function create()
+   {
+      return view('Trabajadores.create');
+   }
 }

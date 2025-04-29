@@ -8,8 +8,11 @@ export default {
         './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
         './vendor/laravel/jetstream/**/*.blade.php',
         './storage/framework/views/*.php',
-        './resources/views/**/*.blade.php',
+        './resources/views/**/*.blade.php', 
+        './resources/**/*.js',       
+        './resources/**/*.vue',
         './resources/views/Expedientes.blade.php',
+        './resources/views/Trabajadores/Index.blade.php'
     ],
 
     theme: {

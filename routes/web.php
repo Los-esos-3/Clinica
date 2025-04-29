@@ -205,6 +205,7 @@ Route::get('/contactenos', function () {
 })->name('contactenos.form');
 
 Route::get('/Trabajadores',[TrabajadoresController::class, 'index'])->name("Trabajadores.index");
+Route::get('/Trabajadores/create',[TrabajadoresController::class,'create'])->name('Trabajadores.create');
 
     
 Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'])->name('register');
