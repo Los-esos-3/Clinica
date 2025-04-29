@@ -19,6 +19,5 @@ export default defineConfig({
             },
         },
     },
-    // Configura la base URL para los assets
-    base: process.env.APP_URL ? '' : '/build/',
+    
 });

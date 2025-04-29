@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\VerificationCodeMail;
@@ -26,9 +27,9 @@ class CustomRegisterController
         return view('auth.register');
 }
 
-    protected function validator(array $data)
+    protected function validator(array $request)
     {
-        return Validator::make($data, [
+        return Validator::make($request, [
             'name' => ['required', 'string', 'max:255'],
             'number' => ['required', 'integer', 'numeric', 'digits:10', 'unique:users'],
             'email' => [
@@ -57,7 +58,7 @@ class CustomRegisterController
         ]);
     }
 
-    protected function create(array $data)
+    protected function create(array $request)
     {
         // Generar un código de verificación de 6 dígitos
         $verificationCode = sprintf('%06d', mt_rand(1, 999999));
@@ -66,11 +67,11 @@ class CustomRegisterController
 
         // Crear el usuario con el código de verificación
         $user = User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'number' => $data['number'],
-            'password' => Hash::make($data['password']),
-            'comments' => $data['comments'] ?? null,
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'number' => $request['number'],
+            'password' => Hash::make($request['password']),
+            'comments' => $request['comments'] ?? null,
             // 'verification_code' => $verificationCode,
             // 'email_verified_at' => null,
         ]);
@@ -96,7 +97,6 @@ class CustomRegisterController
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'captcha' => 'required|captcha',
             'number' => 'required|numeric',
             'comments' => "nullable",
         ]);
@@ -105,13 +105,15 @@ class CustomRegisterController
             return back()->withErrors($validator)->withInput();
         }
 
-        // Procesar el formulario de registro
-        User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+           // Crear el usuario con el código de verificación
+           $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'number' => $request['number'],
+            'password' => Hash::make($request['password']),
+            'comments' => $request['comments'] ?? null,
+            
         ]);
-
         return redirect()->route('dashboard')->with('success', 'Cuenta creada exitosamente.');
     }
 
@@ -121,7 +123,7 @@ class CustomRegisterController
     //     'password' => 'required|string|min:8',
     //     'captcha' => 'required|string',
     //     'number' => 'required|string',
-    //     'comments' => $data['comments'] ?? null,
+    //     'comments' => $request['comments'] ?? null,
     // ]);
 
     // if ($request->input('captcha') !== session('captcha')) {

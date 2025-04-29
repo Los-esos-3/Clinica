@@ -185,7 +185,7 @@
                     const doctorSelect = document.getElementById('doctor_id');
                     if (doctorSelect) {
                         doctorSelect.value = doctorId;
-                        doctorSelect.disabled = true; // Deshabilitar el campo para evitar cambios
+
                     }
                 }
             });

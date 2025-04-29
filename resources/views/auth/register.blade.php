@@ -275,7 +275,7 @@
 
                 <form method="POST" action="{{ route('register') }}" class="space-y-4">
                     @csrf
-
+                    @method('POST')
                     <div>
                         <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
                         <input type="text" name="name"
