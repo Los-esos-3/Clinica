@@ -1,44 +1,48 @@
 <x-guest-layout>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
-        <div class="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-            <div>
-                <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-                    Verifica tu correo electrónico
-                </h2>
-                <p class="mt-2 text-center text-sm text-gray-600">
-                    Hemos enviado un código de 6 dígitos a {{ $email }}
-                </p>
-            </div>
+    <div class="flex justify-center items-center min-h-screen bg-gray-100">
+        <div class="w-full max-w-md bg-white shadow-md rounded-lg p-8">
+            <h2 class="text-2xl font-bold mb-6 text-center">Verifica tu Correo Electrónico</h2>
+            
+            @if (session('success'))
+                <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                    {{ session('success') }}
+                </div>
+            @endif
 
-            <form class="mt-8 space-y-6" action="{{ route('verificar.email') }}" method="POST">
+            @if (session('error'))
+                <div class="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                    {{ session('error') }}
+                </div>
+            @endif
+
+            <form method="POST" action="{{ route('verificar.email') }}" class="space-y-4">
                 @csrf
-                <input type="hidden" name="email" value="{{ $email }}">
                 
                 <div>
-                    <label for="code" class="sr-only">Código de verificación</label>
-                    <input id="code" name="code" type="text" required 
-                           class="appearance-none rounded-md relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                           placeholder="Ingresa el código de 6 dígitos">
-                    @error('code')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                    <label class="block text-sm text-gray-700 mb-2">Código de Verificación</label>
+                    <input type="text" name="verification_code" 
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md" 
+                           placeholder="Ingresa el código de 6 dígitos"
+                           required>
+                    @error('verification_code')
+                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <div>
-                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                        Verificar código
-                    </button>
-                </div>
-            </form>
+                <input type="hidden" name="email" value="{{ session('registered_email') }}">
 
-            <div class="text-center">
-                <p class="text-sm text-gray-600">
+                <button type="submit" 
+                        class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition-colors duration-300">
+                    Verificar Código
+                </button>
+
+                <p class="text-sm text-gray-600 text-center mt-4">
                     ¿No recibiste el código? 
-                    <a href="{{ route('register') }}" class="font-medium text-blue-600 hover:text-blue-500">
+                    <a href="{{ route('register') }}" class="text-blue-500 hover:underline">
                         Volver al registro
                     </a>
                 </p>
-            </div>
+            </form>
         </div>
     </div>
 </x-guest-layout> 
