@@ -19,6 +19,7 @@ return new class extends Migration
         $table->string('email')->unique();
         $table->string('direccion');
         $table->string('ciudad');
+        $table->string('estado');
         $table->string('pais');
         $table->string('horario');
         $table->text('descripcion');

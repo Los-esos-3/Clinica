@@ -15,6 +15,7 @@ class Empresa extends Model
         'email',
         'direccion',
         'ciudad',
+        'estado',
         'pais',
         'horario',
         'descripcion'

@@ -83,6 +83,13 @@
                                         </div>
 
                                         <div class="mb-3">
+                                            <label for="estado" class="form-label font-semibold">Estado</label>
+                                            <input type="text" id="estado" name="estado"
+                                                class="form-control @error('estado') is-invalid @enderror"
+                                                placeholder="Ejemplo: Monterrey" required>
+                                        </div>
+
+                                        <div class="mb-3">
                                             <label for="ciudad" class="form-label font-semibold">Ciudad</label>
                                             <input type="text" id="ciudad" name="ciudad"
                                                 class="form-control @error('ciudad') is-invalid @enderror"
@@ -194,7 +201,7 @@
                                             </svg>
                                         </div>
                                         <span class="text-gray-700 font-medium">
-                                            {{ $empresa->direccion }}, {{ $empresa->ciudad }}, {{ $empresa->pais }}
+                                            {{ $empresa->direccion }}, {{ $empresa->ciudad }},{{$empresa->estado}}, {{ $empresa->pais }}
                                         </span>
                                     </div>
                                 </div>
@@ -469,10 +476,11 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const paisInput = document.getElementById('pais');
+            const estadoInput = document.getElementById('estado');
             const ciudadInput = document.getElementById('ciudad');
 
             // Verificar si los campos están vacíos
-            if (!paisInput.value && !ciudadInput.value) {
+            if (!paisInput.value && !ciudadInput.value && !estadoInput.value) {
                 async function obtenerUbicacion() {
                     try {
                         const response = await fetch('https://ipapi.co/json/');
@@ -480,7 +488,8 @@
 
                         // Rellenar los campos solo si están vacíos
                         if (!paisInput.value) paisInput.value = data.country_name || '';
-                        if (!ciudadInput.value) ciudadInput.value = data.region || '';
+                        if (!ciudadInput.value) ciudadInput.value = data.city || '';
+                        if(!estadoInput.value) estadoInput.value =data.region ||'';
                     } catch (error) {
                         console.error('Error al obtener la ubicación:', error);
                         alert(
@@ -502,48 +511,6 @@
             value = value.slice(0, 10);
             e.target.value = value;
         });
-
-        const ciudadesPorPais = {
-            'México': ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Cancún',
-                'Mérida', 'Querétaro'
-            ],
-            'España': ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Bilbao',
-                'Alicante'
-            ],
-            'Colombia': ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Cúcuta', 'Bucaramanga', 'Pereira',
-                'Santa Marta', 'Ibagué'
-            ],
-            'Argentina': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán',
-                'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'
-            ],
-            'Chile': ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Antofagasta', 'Temuco', 'Rancagua', 'Talca',
-                'Arica', 'Puerto Montt'
-            ],
-            'Perú': ['Lima', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura', 'Cusco', 'Huancayo', 'Tacna', 'Ica',
-                'Pucallpa'
-            ],
-            'Ecuador': ['Quito', 'Guayaquil', 'Cuenca', 'Machala', 'Manta', 'Portoviejo', 'Ambato', 'Riobamba', 'Loja',
-                'Ibarra'
-            ],
-            'Venezuela': ['Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana', 'Barcelona',
-                'Maturín', 'Petare', 'Mérida'
-            ],
-            'Bolivia': ['La Paz', 'Santa Cruz de la Sierra', 'Cochabamba', 'Sucre', 'Oruro', 'Potosí', 'Tarija',
-                'Trinidad', 'Cobija', 'Riberalta'
-            ],
-            'Paraguay': ['Asunción', 'Ciudad del Este', 'San Lorenzo', 'Luque', 'Capiatá', 'Lambaré',
-                'Fernando de la Mora', 'Limpio', 'Ñemby', 'Encarnación'
-            ],
-            'Uruguay': ['Montevideo', 'Salto', 'Paysandú', 'Las Piedras', 'Rivera', 'Maldonado', 'Tacuarembó', 'Melo',
-                'Mercedes', 'Artigas'
-            ],
-            'Costa Rica': ['San José', 'Alajuela', 'Cartago', 'Heredia', 'Liberia', 'Limón', 'Puntarenas', 'Quesada',
-                'San Isidro', 'Turrialba'
-            ],
-            'Panamá': ['Ciudad de Panamá', 'San Miguelito', 'Tocumen', 'David', 'Arraiján', 'Colón', 'La Chorrera',
-                'Santiago', 'Chitré', 'Penonomé'
-            ]
-        };
 
         // Función para actualizar las ciudades según el país seleccionado
         document.getElementById('pais').addEventListener('change', function() {

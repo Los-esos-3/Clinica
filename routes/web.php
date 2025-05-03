@@ -73,6 +73,11 @@ Route::middleware(['auth', 'role:Secretaria'])->group(function () {
 
 //Rutas de Admin
 Route::middleware(['auth', 'role:Admin'])->group(function () {
+    Route::get('/Trabajadores', [TrabajadoresController::class, 'index'])->name("Trabajadores.index");
+    Route::get('/Trabajadores/create', [TrabajadoresController::class, 'create'])->name('Trabajadores.create');
+    Route::post('/Trabajadores/create',[TrabajadoresController::class,'store'])->name('Trabajadores.store');
+    Route::get('/Trabajadores/{id}/edit',[TrabajadoresController::class, 'edit'])->name('Trabajadores.edit');
+    Route::delete('/Trabajadores/{id}', [TrabajadoresController::class, 'destroy'])->name('Trabajadores.destroy');
     Route::resource('ingresos', IngresoController::class);
     Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
     Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
@@ -99,8 +104,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
 });
 //fin de las rutas de admin
 
-Route::middleware(["auth", 'permission:editar doctores'])->group(function()
-{
+Route::middleware(["auth", 'permission:editar doctores'])->group(function () {
     Route::get('/doctores/{id}/edit', [DoctoresController::class, 'edit'])->name('doctores.edit');
     Route::put('/doctores/{id}', [DoctoresController::class, 'update'])->name('doctores.update');
     Route::delete('/doctores/{id}', [DoctoresController::class, 'destroy'])->name('doctores.destroy');
@@ -185,12 +189,12 @@ Route::get('/expedientes/citas', [ExpedientesController::class, 'getCitas']);
 Route::resource('secretarias', SecretariasController::class);
 
 
-    Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard']);
-    
+Route::get('/secretaria/dashboard', [SecretariasController::class, 'dashboard']);
 
-    Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
 
-    Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
+Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
+
+Route::post('/citas', [CitaController::class, 'store'])->name('citas.store');
 
 
 Route::get('/citas', [CitaController::class, 'index'])->name('citas.index');
@@ -204,10 +208,9 @@ Route::get('/contactenos', function () {
     return view('contactenos');
 })->name('contactenos.form');
 
-Route::get('/Trabajadores',[TrabajadoresController::class, 'index'])->name("Trabajadores.index");
-Route::get('/Trabajadores/create',[TrabajadoresController::class,'create'])->name('Trabajadores.create');
 
-    
+
+
 Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [CustomRegisterController::class, 'register'])->name('register.submit');
 Route::get('/verificar-email', [CustomRegisterController::class, 'verifyForm'])->name('verificar.email.view');

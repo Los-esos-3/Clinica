@@ -66,6 +66,15 @@
                             value="{{ old('pais', $empresa->pais) }}" required>
                     </div>
 
+                    {{-- Estado --}}
+                    <div class="mb-3">
+                        <label for="estado" class="form-label font-semibold">Estado</label>
+                        <input type="text" id="estado" name="estado"
+                        value="{{old('estado', $empresa->estado)}}"
+                            class="form-control @error('estado') is-invalid @enderror"
+                            placeholder="Ejemplo: Monterrey" required>
+                    </div>
+
                     <!-- Ciudad -->
                     <div class="mb-3">
                         <label for="ciudad" class="form-label font-semibold">Ciudad</label>
@@ -185,49 +194,6 @@
     </style>
 
     <script>
-        // Objeto con las ciudades por país
-        const ciudadesPorPais = {
-            'México': ['Ciudad de México', 'Guadalajara', 'Monterrey', 'Puebla', 'Tijuana', 'León', 'Juárez', 'Cancún',
-                'Mérida', 'Querétaro'
-            ],
-            'España': ['Madrid', 'Barcelona', 'Valencia', 'Sevilla', 'Zaragoza', 'Málaga', 'Murcia', 'Palma', 'Bilbao',
-                'Alicante'
-            ],
-            'Colombia': ['Bogotá', 'Medellín', 'Cali', 'Barranquilla', 'Cartagena', 'Cúcuta', 'Bucaramanga', 'Pereira',
-                'Santa Marta', 'Ibagué'
-            ],
-            'Argentina': ['Buenos Aires', 'Córdoba', 'Rosario', 'Mendoza', 'La Plata', 'San Miguel de Tucumán',
-                'Mar del Plata', 'Salta', 'Santa Fe', 'San Juan'
-            ],
-            'Chile': ['Santiago', 'Valparaíso', 'Concepción', 'La Serena', 'Antofagasta', 'Temuco', 'Rancagua', 'Talca',
-                'Arica', 'Puerto Montt'
-            ],
-            'Perú': ['Lima', 'Arequipa', 'Trujillo', 'Chiclayo', 'Piura', 'Cusco', 'Huancayo', 'Tacna', 'Ica',
-                'Pucallpa'
-            ],
-            'Ecuador': ['Quito', 'Guayaquil', 'Cuenca', 'Machala', 'Manta', 'Portoviejo', 'Ambato', 'Riobamba', 'Loja',
-                'Ibarra'
-            ],
-            'Venezuela': ['Caracas', 'Maracaibo', 'Valencia', 'Barquisimeto', 'Maracay', 'Ciudad Guayana', 'Barcelona',
-                'Maturín', 'Petare', 'Mérida'
-            ],
-            'Bolivia': ['La Paz', 'Santa Cruz de la Sierra', 'Cochabamba', 'Sucre', 'Oruro', 'Potosí', 'Tarija',
-                'Trinidad', 'Cobija', 'Riberalta'
-            ],
-            'Paraguay': ['Asunción', 'Ciudad del Este', 'San Lorenzo', 'Luque', 'Capiatá', 'Lambaré',
-                'Fernando de la Mora', 'Limpio', 'Ñemby', 'Encarnación'
-            ],
-            'Uruguay': ['Montevideo', 'Salto', 'Paysandú', 'Las Piedras', 'Rivera', 'Maldonado', 'Tacuarembó', 'Melo',
-                'Mercedes', 'Artigas'
-            ],
-            'Costa Rica': ['San José', 'Alajuela', 'Cartago', 'Heredia', 'Liberia', 'Limón', 'Puntarenas', 'Quesada',
-                'San Isidro', 'Turrialba'
-            ],
-            'Panamá': ['Ciudad de Panamá', 'San Miguelito', 'Tocumen', 'David', 'Arraiján', 'Colón', 'La Chorrera',
-                'Santiago', 'Chitré', 'Penonomé'
-            ]
-        };
-
         // Función para actualizar las ciudades
         function actualizarCiudades() {
             const paisSelect = document.getElementById('pais');
@@ -257,67 +223,5 @@
 
         // Inicializar ciudades al cargar la página
         window.addEventListener('load', actualizarCiudades);
-
-        // Buscador de usuarios
-        document.getElementById('search_button').addEventListener('click', function() {
-            const searchValue = document.getElementById('search_user').value;
-
-            if (!searchValue) {
-                alert('Por favor, ingresa un nombre para buscar.');
-                return;
-            }
-
-            fetch(`/buscar-usuarios?nombre=${searchValue}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error en la búsqueda');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    const userResultsDiv = document.getElementById('user_results');
-                    userResultsDiv.innerHTML = ''; // Limpiar resultados anteriores
-
-                    if (data.length > 0) {
-                        data.forEach(user => {
-                            const userDiv = document.createElement('div');
-                            userDiv.classList.add('flex', 'items-center', 'justify-between', 'border',
-                                'p-2', 'my-1');
-                            userDiv.innerHTML = `
-                                <span>${user.name}</span>
-                                <button type="button" class="ml-2 bg-green-500 text-white px-2 py-1 rounded" onclick="addUser(${user.id}, '${user.name}')">Agregar</button>
-                            `;
-                            userResultsDiv.appendChild(userDiv);
-                        });
-                    } else {
-                        userResultsDiv.innerHTML = '<p>No se encontraron usuarios.</p>';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Hubo un problema al buscar usuarios.');
-                });
-        });
-
-        // Función para agregar un usuario a la lista de seleccionados
-        function addUser(userId, userName) {
-            const selectedUsersDiv = document.getElementById('selected_users');
-
-            // Verificar si el usuario ya está en la lista
-            const existingUser = selectedUsersDiv.querySelector(`input[value="${userId}"]`);
-            if (existingUser) {
-                alert('Este usuario ya ha sido agregado.');
-                return;
-            }
-
-            // Crear un nuevo elemento para el usuario seleccionado
-            const userItem = document.createElement('div');
-            userItem.classList.add('flex', 'items-center', 'justify-between', 'border', 'p-2', 'my-1', 'bg-green-100');
-            userItem.innerHTML = `
-                <span>${userName}</span>
-                <input type="checkbox" name="usuarios[]" value="${userId}" checked>
-            `;
-            selectedUsersDiv.appendChild(userItem);
-        }
     </script>
 </x-app-layout>

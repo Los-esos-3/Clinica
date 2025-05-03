@@ -194,6 +194,14 @@ class ClinicaController
         ]);
 
         $paciente = Paciente::findOrFail($id);
+        
+        if ($request->hasFile('foto_perfil')) {
+            $imagen = $request->file('foto_perfil');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('images'), $nombreImagen);
+            $validatedData['foto_perfil'] = $nombreImagen;
+        }
+
         $paciente->update($request->all());
 
         return redirect()->route('Pacientes.PacientesView');

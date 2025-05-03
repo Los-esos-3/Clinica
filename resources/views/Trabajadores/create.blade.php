@@ -1,160 +1,166 @@
-<!DOCTYPE html>
-<html lang="es">
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="text-xl font-semibold leading-tight text-gray-800">
+            {{ __('Alta de Trabajador') }}
+        </h2>
+    </x-slot>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        /* Estilos generales */
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
+    <div class="py-12">
+        <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
+            <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
+                <div class="p-6">
+                    <form id="workerForm" method="POST" action="{{ route('Trabajadores.store') }}"
+                        enctype="multipart/form-data">
+                        @csrf
+                        @method('POST')
+                        <div class="flex">
+                            <!-- Columna izquierda: Foto de perfil -->
+                            <div class="w-1/4">
+                                <label for="foto_perfil" class="block text-sm font-medium text-gray-700">Foto de
+                                    Perfil</label>
+                                <div id="drop-area"
+                                    class="border-2 border-dashed border-gray-300 p-4 rounded-lg text-center h-auto cursor-pointer">
+                                    <!-- Texto inicial -->
+                                    <p id="drop-text">Arrastra y suelta una imagen aquí o haz clic para seleccionar</p>
 
-        .container {
-            max-width: 500px;
-            width: 100%;
-            padding: 2rem;
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
+                                    <!-- Contenedor de la vista previa -->
+                                    <div id="imagePreview" class="mt-2 hidden">
+                                        <img id="preview" class="w-32 h-32 object-cover rounded-lg shadow-md">
+                                    </div>
 
-        h2 {
-            text-align: center;
-            color: #1e293b;
-            margin-bottom: 1rem;
-        }
+                                    <!-- Input oculto para seleccionar la imagen -->
+                                    <input type="file" name="foto_perfil" id="foto_perfil" accept="image/*"
+                                        onchange="previewImage(this)" class="hidden">
+                                </div>
 
-        p {
-            text-align: center;
-            color: #64748b;
-            margin-bottom: 2rem;
-        }
+                                @error('foto_perfil')
+                                    <p class="mt-1 text-sm text-red-500">{{ $message }}</p>
+                                @enderror
+                            </div>
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+                            <!-- Columna derecha: Campos de texto -->
+                            <div class="w-3/4 pl-4">
+                                <div class="mb-4">
+                                    <label for="name" class="block text-sm font-medium text-gray-700">Nombre
+                                        completo</label>
+                                    <input type="text" name="name" id="name"
+                                        placeholder="Ejemplo: Juan Pérez"
+                                        class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required />
+                                </div>
 
-        label {
-            display: block;
-            font-size: 0.875rem;
-            color: #334155;
-            margin-bottom: 0.5rem;
-        }
+                                <div class="mb-4">
+                                    <label for="email" class="block text-sm font-medium text-gray-700">Correo
+                                        electrónico</label>
+                                    <input type="email" name="email" id="email"
+                                        placeholder="Ejemplo: juan.perez@example.com"
+                                        class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required />
+                                </div>
 
-        input[type="text"],
-        input[type="email"],
-        input[type="password"],
-        select {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #d1d5db;
-            border-radius: 4px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
+                                <div class="mb-4">
+                                    <label for="tel" class="block text-sm font-medium text-gray-700">Número de
+                                        teléfono</label>
+                                    <input type="tel" name="tel" id="tel"
+                                        placeholder="Ejemplo: 8682571245"
+                                        class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required />
+                                </div>
+                            </div>
+                        </div>
 
-        input[type="text"]:focus,
-        input[type="email"]:focus,
-        input[type="password"]:focus,
-        select:focus {
-            outline: none;
-            border-color: #3b82f6;
-        }
+                        <div class="mb-4">
+                            <label for="password" class="block text-sm font-medium text-gray-700">Contraseña</label>
+                            <input type="password" name="password" id="password" placeholder="********"
+                                class="block w-full p-2 mt-1 border border-gray-400 rounded-md" required />
+                        </div>
 
-        button {
-            width: 100%;
-            padding: 0.75rem;
-            background-color: #3b82f6;
-            color: #ffffff;
-            font-size: 1rem;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
+                        <div class="mb-4">
+                            <label for="password_confirmation" class="block text-sm font-medium text-gray-700">Confirmar
+                                contraseña</label>
+                            <input type="password" name="password_confirmation" id="password_confirmation"
+                                placeholder="********" class="block w-full p-2 mt-1 border border-gray-400 rounded-md"
+                                required />
+                        </div>
 
-        button:hover {
-            background-color: #2563eb;
-        }
+                        <div class="mb-4">
+                            <label for="rol" class="block text-sm font-medium text-gray-700">Rol</label>
+                            <select name="rol" id="rol"
+                                class="block w-full p-2 mt-1 border border-gray-400 rounded-md">
+                                <option value="">Seleccione un rol</option>
+                                @foreach ($roles as $role)       
+                                    <option value="{{ $role->name }}">{{ $role->name }}</option>
+                                @endforeach 
+                            </select>
+                        </div>
 
-        .error {
-            color: #ef4444;
-            font-size: 0.875rem;
-            margin-top: 0.5rem;
-        }
-    </style>
-</head>
-
-<body>
-
-
-    <div class="container">
-        <h2>Alta de Trabajador</h2>
-        <p>Completa el formulario para registrar un nuevo trabajador.</p>
-
-        <form id="workerForm">
-            <!-- Nombre -->
-            <div class="form-group">
-                <label for="name">Nombre completo</label>
-                <input type="text" id="name" name="name" placeholder="Ejemplo: Juan Pérez" required>
+                        <div class="flex justify-end">
+                            <button type="submit"
+                                class="inline-flex items-center px-4 py-2 text-xs font-semibold tracking-widest text-white uppercase transition bg-blue-500 border border-transparent rounded-md hover:bg-blue-600 active:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 disabled:opacity-25">
+                                Crear
+                            </button>
+                            <a href="{{ route('Trabajadores.index') }}"
+                                class="inline-flex items-center px-4 py-2 ml-2 text-xs font-semibold tracking-widest text-gray-700 uppercase transition bg-gray-200 border border-transparent rounded-md hover:bg-gray-300 active:bg-gray-400 focus:outline-none focus:border-gray-400 focus:ring focus:ring-gray-200 disabled:opacity-25">
+                                Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-
-            <!-- Correo Electrónico -->
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input type="email" id="email" name="email" placeholder="Ejemplo: juan.perez@example.com"
-                    required>
-            </div>
-
-            <!-- Contraseña -->
-            <div class="form-group">
-                <label for="password">Contraseña</label>
-                <input type="password" id="password" name="password" placeholder="********" required>
-            </div>
-
-            <!-- Confirmar Contraseña -->
-            <div class="form-group">
-                <label for="password_confirmation">Confirmar contraseña</label>
-                <input type="password" id="password_confirmation" name="password_confirmation" placeholder="********"
-                    required>
-            </div>
-
-            <!-- Rol -->
-            <div class="form-group">
-                <label for="role">Rol</label>
-                <select id="role" name="role" required>
-                    <option value="">Seleccione un rol</option>
-                    <option value="Doctor">Doctor</option>
-                    <option value="Secretaria">Secretaria</option>
-                </select>
-            </div>
-
-            <!-- Botón de Envío -->
-            <button type="submit">Registrar Trabajador</button>
-        </form>
+        </div>
     </div>
-    </div>
-    </div>
+</x-app-layout>
 
-    <script>
-        // Validación básica del formulario
-        document.getElementById('workerForm').addEventListener('submit', function(event) {
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('password_confirmation').value;
+<script>
+    // Validación básica del formulario
+    document.getElementById('workerForm').addEventListener('submit', function(event) {
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('password_confirmation').value;
 
-            if (password !== confirmPassword) {
-                event.preventDefault();
-                alert('Las contraseñas no coinciden.');
-            }
-        });
-    </script>
-</body>
+        if (password !== confirmPassword) {
+            event.preventDefault();
+            alert('Las contraseñas no coinciden.');
+        }
+    });
 
-</html>
+    // Función para previsualizar la imagen seleccionada
+    function previewImage(input) {
+        const dropText = document.getElementById('drop-text');
+        const imagePreview = document.getElementById('imagePreview');
+        const preview = document.getElementById('preview');
+
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                dropText.classList.add('hidden');
+                imagePreview.classList.remove('hidden');
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Permitir arrastrar y soltar imágenes
+    const dropArea = document.getElementById('drop-area');
+    const fileInput = document.getElementById('foto_perfil');
+
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+        dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+
+    function preventDefaults(e) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    dropArea.addEventListener('drop', handleDrop, false);
+
+    function handleDrop(e) {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        if (files.length) {
+            fileInput.files = files;
+            previewImage(fileInput);
+        }
+    }
+</script>

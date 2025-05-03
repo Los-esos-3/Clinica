@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('empresa_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrain()->onDelete('cascade');
+            $table->foreignId('trabajador_id')->constrained('trabajadores')->onDelete('cascade'); // Especificar 'trabajadores' si no sigue la convención
             $table->string('nombre_completo');
             $table->date('fecha_nacimiento')->nullable();
             $table->enum('genero', ['Masculino', 'Femenino', 'Otro'])->nullable();
