@@ -56,7 +56,6 @@
         }
 
         button {
-            width: 100%;
             padding: 0.75rem;
             background-color: #3b82f6;
             color: #ffffff;
@@ -155,66 +154,117 @@
                     <div class="py-12">
                         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div class="gridtarjetas">
-                            @foreach ($trabajadores as $trabajador)
-                                <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden">
-                                    <div class="doctor-header flex items-center p-6 border-b">
-                                        @if ($trabajador->foto_perfil)
-                                            <img src="{{ asset('storage/' . $trabajador->foto_perfil) }}"
-                                                alt="Foto de {{ $trabajador->nombre }}"
-                                                class="w-24 h-24 object-cover rounded-full">
-                                        @else
-                                            <div
-                                                class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
-                                                <svg class="w-16 h-16 text-gray-400" fill="none"
-                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                                                </svg>
+                                @foreach ($trabajadores as $trabajador)
+                                    <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden">
+                                        <div class="doctor-header flex items-center p-6 border-b">
+                                            @if ($trabajador->foto_perfil)
+                                                <img src="{{ asset('storage/' . $trabajador->foto_perfil) }}"
+                                                    alt="Foto de {{ $trabajador->nombre }}"
+                                                    class="w-24 h-24 object-cover rounded-full">
+                                            @else
+                                                <div
+                                                    class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
+                                                    <svg class="w-16 h-16 text-gray-400" fill="none"
+                                                        stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                            stroke-width="2"
+                                                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                                    </svg>
+                                                </div>
+                                            @endif
+                                            <div class="ml-4">
+                                                <h3 class="text-lg mb-2 font-semibold">{{ $trabajador->nombre }}</h3>
+                                                <p class="text-gray-600">{{ $trabajador->correo }}</p>
                                             </div>
-                                        @endif
-                                        <div class="ml-4">
-                                            <h3 class="text-lg mb-2 font-semibold">{{ $trabajador->nombre }}</h3>
-                                            <p class="text-gray-600">{{ $trabajador->correo }}</p>
                                         </div>
-                                    </div>
 
-                                    <div class="doctor-content p-6">
-                                        <h4 class="Subtitulo">Información Personal</h4>
-                                        <p><strong>Teléfono:</strong> {{ $trabajador->tel ?? 'No proporcionado' }}</p>
-                                        <p><strong>Rol:</strong> {{ $trabajador->rol }}</p>
-                                        <p><strong>Empresa:</strong>
-                                            {{ $trabajador->empresa?->nombre ?? 'Sin empresa' }}</p>
-                                    </div>
+                                        <div class="doctor-content p-6">
+                                            <h4 class="Subtitulo">Información Personal</h4>
+                                            <p><strong>Teléfono:</strong> {{ $trabajador->tel ?? 'No proporcionado' }}
+                                            </p>
+                                            <p><strong>Rol:</strong> {{ $trabajador->rol }}</p>
+                                            <p><strong>Empresa:</strong>
+                                                {{ $trabajador->empresa?->nombre ?? 'Sin empresa' }}</p>
+                                        </div>
 
-                                    <div class="SeccionBtn">
-                                        <a href="{{ route('Trabajadores.edit', $trabajador->id) }}"
-                                            class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg no-underline hover:no-underline">
-                                            Editar
-                                        </a>
-                                        <form action="{{ route('Trabajadores.destroy', $trabajador->id) }}"
-                                            method="POST"
-                                            onsubmit="return confirm('¿Estás seguro de eliminar este trabajador?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit"
+                                        <div class="SeccionBtn">
+                                            <a href="{{ route('Trabajadores.edit', $trabajador->id) }}"
+                                                class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg no-underline hover:no-underline">
+                                                Editar
+                                            </a>
+
+                                            <button onclick="toggleModal('modal-delete-trabajadores-{{ $trabajador->id }}')"
                                                 class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg">
                                                 Eliminar
                                             </button>
-                                        </form>
+                                           
+                                        </div>
                                     </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-            </div>
-            @endif
-            <div>
-                {{-- Paginación --}}
-                {{ $trabajadores->links() }}
+                @endif
+
+
+
+                <!-- Modal de Confirmación -->
+                <div id="modal-delete-trabajadores-{{ $trabajador->id }}"
+                    class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+                    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+                        <!-- Título del Modal -->
+                        <h3 class="text-xl font-semibold mb-4">Confirmar Eliminación</h3>
+
+                        <!-- Mensaje de Confirmación -->
+                        <p class="text-gray-600 mb-6">¿Estás seguro de que deseas eliminar a {{ $trabajador->nombre }}
+                            de trabajadores? Esta
+                            acción no se puede deshacer.</p>
+
+                        <!-- Botones de Acción -->
+                        <div class="flex justify-end gap-4">
+                            <!-- Botón para Cancelar -->
+                            <button onclick="toggleModal('modal-delete-trabajadores-{{ $trabajador->id }}')"
+                                class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                                Cancelar
+                            </button>
+
+                            <!-- Botón para Confirmar -->
+                            <form action="{{ route('Trabajadores.destroy', $trabajador->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="bg-[rgb(55,65,81)]  text-white px-4 py-2 rounded-lg">Eliminar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Script para Manejar el Modal -->
+                <script>
+                    // Función para abrir el modal de confirmación
+                    function openConfirmDeleteModal() {
+                        document.getElementById('confirm-delete-modal').classList.remove('hidden');
+                    }
+
+                    // Función para cerrar el modal de confirmación
+                    function closeConfirmDeleteModal() {
+                        document.getElementById('confirm-delete-modal').classList.add('hidden');
+                    }
+
+                    // Función para confirmar la eliminación
+                    function confirmDelete() {
+                        // Aquí puedes agregar la lógica para eliminar el elemento
+                        alert('Elemento eliminado correctamente.');
+                        closeConfirmDeleteModal(); // Cierra el modal después de eliminar
+                    }
+                </script>
+
+                <div>
+                    {{-- Paginación --}}
+                    {{ $trabajadores->links() }}
+                </div>
             </div>
         </div>
-    </div>
     </div>
 </body>
 

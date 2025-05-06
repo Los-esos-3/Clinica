@@ -226,7 +226,7 @@
         color: white;
         transition: transform 0.3s ease-in-out;
         overflow-y: auto;
-        z-index: 999;
+        z-index: 49;
         box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
     }
 

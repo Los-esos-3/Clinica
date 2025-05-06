@@ -34,9 +34,6 @@ class TrabajadoresController
 
     public function store(Request $request)
     {
-        Log::info('Entró al método');
-        Log::info($request->all());
-
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -50,8 +47,6 @@ class TrabajadoresController
             Log::error('Error de validación: ' . $e->getMessage());
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
-        Log::info('Todos los datos validados');
-        Log::info($validated);
 
         // Crear el usuario
         $user = User::create([
@@ -105,20 +100,20 @@ class TrabajadoresController
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador creado exitosamente.');
     }
 
-    public function edit(Trabajadores $trabajador)
+    public function edit(Trabajadores $trabajador, $id)
     {
         // Obtener los roles permitidos
         $allowedRoles = ['Doctor', 'Secretaria', 'Admin'];
         $roles = Role::whereIn('name', $allowedRoles)->get();
+        $trabajador = Trabajadores::findOrFail($id);
 
         return view('Trabajadores.edit', compact('trabajador', 'roles'));
     }
 
-    public function update(Request $request, Trabajadores $trabajador)
+    public function update(Request $request, Trabajadores $trabajador, $id)
     {
-        Log::info('Entró al método update');
-        Log::info($request->all());
-
+        $trabajador = Trabajadores::findOrFail($id);
+        
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
@@ -134,7 +129,8 @@ class TrabajadoresController
         }
 
         // Actualizar el usuario asociado
-        $user = $trabajador->user;
+        $user = User::find($trabajador->user_id);
+
         $user->update([
             'name' => $validated['name'],
             'email' => $validated['email'],
@@ -174,8 +170,10 @@ class TrabajadoresController
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador actualizado exitosamente.');
     }
 
-    public function destroy(Trabajadores $trabajador)
+    public function destroy(Trabajadores $trabajador, $id)
     {
+        $trabajador = Trabajadores::findOrFail($id);
+    
         // Eliminar registros relacionados en las tablas doctores o secretarias
         if ($trabajador->rol === 'Doctor') {
             Doctores::where('trabajador_id', $trabajador->id)->delete();
@@ -183,11 +181,11 @@ class TrabajadoresController
             Secretarias::where('trabajador_id', $trabajador->id)->delete();
         }
 
-        // Eliminar el usuario asociado
-        $trabajador->user->delete();
-
         // Eliminar el trabajador
         $trabajador->delete();
+
+        // Eliminar el usuario asociado
+        $trabajador->user->delete();
 
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador eliminado exitosamente.');
     }

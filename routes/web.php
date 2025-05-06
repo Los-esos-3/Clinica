@@ -78,6 +78,7 @@ Route::middleware(['auth', 'role:Admin'])->group(function () {
     Route::post('/Trabajadores/create',[TrabajadoresController::class,'store'])->name('Trabajadores.store');
     Route::get('/Trabajadores/{id}/edit',[TrabajadoresController::class, 'edit'])->name('Trabajadores.edit');
     Route::delete('/Trabajadores/{id}', [TrabajadoresController::class, 'destroy'])->name('Trabajadores.destroy');
+    Route::put('/Trabajadores/{id}',[TrabajadoresController::class,'update'])->name('Trabajadores.update');
     Route::resource('ingresos', IngresoController::class);
     Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
     Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');

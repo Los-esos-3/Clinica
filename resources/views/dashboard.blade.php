@@ -1,4 +1,5 @@
 <x-app-layout>
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,6 +47,13 @@
             .fc-event-title {
                 font-weight: bold;
             }
+
+            .container-arrow {
+                position: absolute;
+                top: 20px;
+                margin-right: 90%;
+            }
+            
         </style>
 
     </head>
@@ -60,14 +68,54 @@
 
                     <div class="flex-grow bg-gray-100 transition-all duration-300 ml-0 md:ml-64" id="content">
 
-                        <div class="flex justify-between items-center p-3">
-                            <!-- Botón de menú -->
-                            <button id="toggle-sidebar" class="menu-button   p-3">
-                                <i class="fa-solid fa-bars fa-lg"></i>
-                            </button>
-                        
-                           
-                        </div>
+                        {{-- <div class="flex justify-between items-center p-3">
+
+                            <div class="absolute -inset-4 rounded-full bg-white bg-opacity-20 animate-pulse"
+                                style="top: 30px; left: 40px; transform: translate(-50%, -50%); z-index: 52;">
+                                <!-- Botón de menú --> --}}
+                                <button id="toggle-sidebar" class="menu-button p-3">
+                                    <i class="fa-solid fa-bars fa-lg"></i>
+                                </button>
+                            {{-- </div> --}}
+
+                            {{-- <!-- Agrega esto en tu HTML, preferiblemente cerca del botón de hamburguesa -->
+                            <div id="tutorial-overlay"
+                                class="fixed inset-0 bg-black bg-opacity-75 z-50  flex items-center justify-center">
+                                <div class="relative">
+
+                                    <!-- Tooltip centrado -->
+                                    <div class="absolute w-64 bg-white p-4 rounded-lg shadow-xl"
+                                        style="min-width: 300px; top: -350px; right: 550px ;">
+                                        <div class="flex flex-col">
+                                            <h3 class="font-bold text-gray-800 mb-2">Bienvenido a nuestro software</h3>
+                                            <p class="text-sm text-gray-600 mb-2">Primera para empezar a optimizar tu consultorio, necesitas conocer
+                                                tu entorno de trabajo
+                                            </p>
+                                            <p class="text-sm text-gray-600 font-semibold mb-2">Barra lateral de opciones</p>
+                                            <p class="text-sm text-gray-600 mb-4">Has click en el icono para poder abrir la barra y moverte entre las opciones que ofrecemos</p>
+
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span>1/1</span>
+                                                <button id="close-tutorial"
+                                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                                                    Entendido
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <!-- Flecha que apunta al ícono -->
+                                        <div style="top: -16px; left: -0px; rotate: 248deg;" class="absolute right-full top-1/2 transform -translate-y-1/2 mr-2">
+                                            <svg width="20" height="30" viewBox="0 0 20 30" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M20 15L0 0V30L20 15Z" fill="white" />
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div> --}}
 
                         <div class="p-6">
                             <!-- Calendario -->
@@ -149,7 +197,6 @@
                             </div>
                         </div>
 
-
                         <!-- Modal para mostrar detalles de la cita -->
                         <div id="detalleCitaModal"
                             class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden overflow-y-auto h-full w-full z-50">
@@ -157,7 +204,8 @@
                                 <div class="absolute top-0 right-0 pt-4 pr-4">
                                     <button id="closeDetalleModalBtn"
                                         class="text-gray-400 hover:text-gray-500 transition-colores duration-200">
-                                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg class="h-6 w-6" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                                 d="M6 18L18 6M6 6l12 12" />
                                         </svg>
@@ -175,10 +223,7 @@
 
                             </div>
                         </div>
-
-
                     </div>
-                </div>
                 </div>
             @else
                 @role('Doctor')
