@@ -190,7 +190,7 @@
         flex-direction: column;
         justify-content: center;
         /* Centra verticalmente los elementos */
-        height: 60%;
+        height: 60% !important;
         /* Asegura que ocupe toda la altura del sidebar */
     }
 

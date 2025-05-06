@@ -114,31 +114,22 @@ class ClinicaController
         // Asignar el user_id del usuario autenticado
         $validatedData['user_id'] = $user->id;
 
-        // Verificar si el usuario es un doctor o una secretaria
         if ($user->hasRole('Doctor')) {
-            // Si es un doctor, asignar el paciente al doctor
             $doctor = $user->doctor;
             if ($doctor) {
                 $validatedData['doctor_id'] = $doctor->id;
-            } else {
-                // Si el doctor no tiene un registro en la tabla doctores, asignar null
-                $validatedData['doctor_id'] = null;
+                
+                // Buscar la secretaria asociada a este doctor
+                $secretaria = Secretarias::where('doctor_id', $doctor->id)->first();
+                $validatedData['secretaria_id'] = $secretaria ? $secretaria->id : null;
             }
-            // El doctor no tiene una secretaria asociada
-            $validatedData['secretaria_id'] = null;
         } elseif ($user->hasRole('Secretaria')) {
-            // Si es una secretaria, obtener el doctor que la asignó (si existe)
             $secretaria = $user->secretaria;
-            if ($secretaria && $secretaria->doctor) {
-                $validatedData['doctor_id'] = $secretaria->doctor->id;
-            } else {
-                // Si la secretaria no tiene un doctor asignado, asignar null
-                $validatedData['doctor_id'] = null;
+            if ($secretaria) {
+                $validatedData['secretaria_id'] = $secretaria->id;
+                $validatedData['doctor_id'] = $secretaria->doctor_id;
             }
-            // Asignar la secretaria al paciente
-            $validatedData['secretaria_id'] = $secretaria ? $secretaria->id : null;
         } else {
-            // Si no es doctor ni secretaria, redirigir con un error
             return redirect()->back()->with('error', 'No tienes permisos para crear pacientes.');
         }
 

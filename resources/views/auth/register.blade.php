@@ -1,4 +1,5 @@
 <x-guest-layout>
+    @vite(['resources/css/app.css','resources/js/app.js'])
     <div class="flex justify-center items-center min-h-screen bg-gray-100">
         <div class="w-full max-w-5xl bg-white shadow-md rounded-lg p-8 flex">
             <!-- Sección izquierda -->
