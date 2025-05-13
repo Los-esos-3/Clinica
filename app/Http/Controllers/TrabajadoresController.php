@@ -81,6 +81,7 @@ class TrabajadoresController
         if ($validated['rol'] === 'Doctor') {
             Doctores::create([
                 'trabajador_id' => $trabajador->id, // Pasar el ID del trabajador
+                'foto_perfil'=>$validated['foto_perfil'],
                 'especialidad' => 'General', // Puedes personalizar esto
                 'user_id' => $user->id, // Pasar el user_id del trabajador
                 'email'=> $validated['email'],
@@ -90,6 +91,7 @@ class TrabajadoresController
         } elseif ($validated['rol'] === 'Secretaria') {
             Secretarias::create([
                 'trabajador_id' => $trabajador->id,
+                'foto_perfil'=>$validated['foto_perfil'],
                 'user_id' => $user->id, // Pasar el user_id del trabajador
                 'nombre_completo' => $validated['name'],
                 'email'=> $validated['email'],

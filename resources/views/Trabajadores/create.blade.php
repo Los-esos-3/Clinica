@@ -17,7 +17,9 @@
                             <!-- Columna izquierda: Foto de perfil -->
                             <div class="w-1/4">
                                 <label for="foto_perfil" class="block text-sm font-medium text-gray-700">Foto de
-                                    Perfil</label>
+                                    Perfil
+                                </label>
+
                                 <div id="drop-area"
                                     class="border-2 border-dashed border-gray-300 p-4 rounded-lg text-center h-auto cursor-pointer">
                                     <!-- Texto inicial -->
@@ -85,9 +87,9 @@
                             <select name="rol" id="rol"
                                 class="block w-full p-2 mt-1 border border-gray-400 rounded-md">
                                 <option value="">Seleccione un rol</option>
-                                @foreach ($roles as $role)       
+                                @foreach ($roles as $role)
                                     <option value="{{ $role->name }}">{{ $role->name }}</option>
-                                @endforeach 
+                                @endforeach
                             </select>
                         </div>
 
@@ -142,6 +144,11 @@
     // Permitir arrastrar y soltar imágenes
     const dropArea = document.getElementById('drop-area');
     const fileInput = document.getElementById('foto_perfil');
+
+    // Activar el input file al hacer clic en el área de drop
+    dropArea.addEventListener('click', () => {
+        fileInput.click();
+    });
 
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropArea.addEventListener(eventName, preventDefaults, false);

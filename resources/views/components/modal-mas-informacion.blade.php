@@ -67,7 +67,7 @@
                                         </p>
                                         <p class="text-lg">
                                             <strong>Fecha y hora:</strong> 
-                                            {{ (new DateTime($consulta->fecha_hora))->format('Y-m-d  h:i A' ) }} 
+                                            {{ (new DateTime($consulta->fecha_hora))->format('Y-m-d - h:i A' ) }} 
 
                                           
                                         </p>

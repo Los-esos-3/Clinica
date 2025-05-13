@@ -1,55 +1,64 @@
 <x-app-layout>
-    <x-slot name="header">
-        <div class="flex items-center">
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                {{ __('Profile') }}
-            </h2>
-            <ul class="flex">
-                <li>
-                    <a href="{{ route('welcome') }}" 
-                       class="inline-block border-b-2 rounded-t-lg no-underline text-zinc-950 hover:text-indigo-600 transition-colors duration-200">
-                        INICIO 
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </x-slot>
+    <div class="min-h-screen flex">
+        <aside>
+            <x-sidebar :user="Auth::user()" />
+        </aside>
 
-    <div>
-        <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-            @if (Laravel\Fortify\Features::canUpdateProfileInformation())
-                @livewire('profile.update-profile-information-form')
+        <div class="flex-grow bg-gray-100 transition-all duration-300 ml-0 md:ml-64" id="content">
 
-                <x-section-border />
-            @endif
+            <div class="flex items-center justify-between bg-gray-300 p-3  border">
 
-            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
-                <div class="mt-10 sm:mt-0">
-                    @livewire('profile.update-password-form')
+
+
+                <div class="flex items-center gap-16">
+                    <button id="toggle-sidebar">
+                        <i class="fas fa-bars"></i>
+                    </button>
+
+                    <h2 class="text-xl pt-1.5 font-semibold leading-tight text-gray-800">
+                        {{ __('Perfil') }}
+                    </h2>
                 </div>
-
-                <x-section-border />
-            @endif
-
-            @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
-                <div class="mt-10 sm:mt-0">
-                    @livewire('profile.two-factor-authentication-form')
-                </div>
-
-                <x-section-border />
-            @endif
-
-            <div class="mt-10 sm:mt-0">
-                @livewire('profile.logout-other-browser-sessions-form')
             </div>
 
-            @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
-                <x-section-border />
+                <div class="bg-white">
+                    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+                        @if (Laravel\Fortify\Features::canUpdateProfileInformation())
+                            @livewire('profile.update-profile-information-form')
 
-                <div class="mt-10 sm:mt-0">
-                    @livewire('profile.delete-user-form')
+                            <x-section-border />
+                        @endif
+
+                        @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::updatePasswords()))
+                            <div class="mt-10 sm:mt-0">
+                                @livewire('profile.update-password-form')
+                            </div>
+
+                            <x-section-border />
+                        @endif
+
+                        @if (Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+                            <div class="mt-10 sm:mt-0">
+                                @livewire('profile.two-factor-authentication-form')
+                            </div>
+
+                            <x-section-border />
+                        @endif
+
+                        <div class="mt-10 sm:mt-0">
+                            @livewire('profile.logout-other-browser-sessions-form')
+                        </div>
+
+                        @if (Laravel\Jetstream\Jetstream::hasAccountDeletionFeatures())
+                            <x-section-border />
+
+                            <div class="mt-10 sm:mt-0">
+                                @livewire('profile.delete-user-form')
+                            </div>
+                        @endif
+                    </div>
                 </div>
-            @endif
+            </div>
         </div>
     </div>
 </x-app-layout>

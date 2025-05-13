@@ -8,25 +8,25 @@ export default defineConfig({
             refresh: true,
         }),
     ],
-    // server: {
-    //     host: '192.168.1.99',
-    //     hmr: {
-    //         host: '192.168.1.99'
-    //     },
-    // },
-    // build: {
-    //     // Habilitar minificación
-    //     minify: 'terser',
-    //     // Dividir el código en chunks más pequeños
-    //     rollupOptions: {
-    //         output: {
-    //             manualChunks: {
-    //                 vendor: ['@/vendor'],
-    //             }
-    //         }
-    //     },
-    //     // Comprimir assets
-    //     assetsInlineLimit: 4096,
-    //     chunkSizeWarningLimit: 1000,
-    // }
+    server: {
+        host: '192.168.1.99',
+        hmr: {
+            host: '192.168.1.99'
+        },
+    },
+    build: {
+        // Habilitar minificación
+        minify: 'terser',
+        // Dividir el código en chunks más pequeños
+        rollupOptions: {
+            output: {
+                manualChunks: {
+                    vendor: ['@/vendor'],
+                }
+            }
+        },
+        // Comprimir assets
+        assetsInlineLimit: 4096,
+        chunkSizeWarningLimit: 1000,
+    }
 });
