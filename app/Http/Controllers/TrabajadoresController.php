@@ -20,12 +20,12 @@ class TrabajadoresController
 {
     public function index()
     {
-      $trabajadores = Trabajadores::with('user', 'empresa')->paginate(9); // Paginación de 9 elementos por página
-      return view("Trabajadores.index", compact('trabajadores'));
+        $trabajadores = Trabajadores::with('user', 'empresa')->paginate(9); // Paginación de 9 elementos por página
+        return view("Trabajadores.index", compact('trabajadores'));
     }
 
     public function create()
-    {  
+    {
         // Filtrar solo los roles permitidos
         $allowedRoles = ['Doctor', 'Secretaria', 'Admin'];
         $roles = Role::whereIn('name', $allowedRoles)->get();
@@ -50,10 +50,10 @@ class TrabajadoresController
 
         // Crear el usuario
         $user = User::create([
-            'name' => $validated['name'], // Usar 'name' en lugar de 'nombre'
-            'email' => $validated['email'], // Usar 'email' en lugar de 'correo'
+            'name' => $validated['name'],
+            'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'empresa_id' => Auth::user()->empresa_id, // Asignar la misma empresa que el admin
+            'empresa_id' => Auth::user()->empresa_id,
         ]);
 
         // Asignar el rol al usuario
@@ -67,41 +67,40 @@ class TrabajadoresController
 
         // Crear el trabajador
         $trabajador = Trabajadores::create([
-            'nombre' => $validated['name'], // Usar 'name' en lugar de 'nombre'
+            'nombre' => $validated['name'],
             'foto_perfil' => $fotoPerfilPath,
             'user_id' => $user->id,
-            'correo' => $validated['email'], // Usar 'email' en lugar de 'correo'
+            'correo' => $validated['email'],
             'password' => Hash::make($validated['password']),
-            'tel' => $validated['tel'] ?? null, // Teléfono opcional
+            'tel' => $validated['tel'] ?? null,
             'rol' => $validated['rol'],
-            'empresa_id' => Auth::user()->empresa_id, // Asignar la misma empresa que el admin
+            'empresa_id' => Auth::user()->empresa_id,
         ]);
 
         // Crear registro en la tabla correspondiente (doctor o secretaria)
         if ($validated['rol'] === 'Doctor') {
             Doctores::create([
-                'trabajador_id' => $trabajador->id, // Pasar el ID del trabajador
-                'foto_perfil'=>$validated['foto_perfil'],
-                'especialidad' => 'General', // Puedes personalizar esto
-                'user_id' => $user->id, // Pasar el user_id del trabajador
-                'email'=> $validated['email'],
+                'trabajador_id' => $trabajador->id,
+                'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
+                'especialidad' => 'General',
+                'user_id' => $user->id,
+                'email' => $validated['email'],
                 'nombre_completo' => $validated['name'],
-                'empresa_id' => Auth::user()->empresa_id, // Asignar la misma empresa que el admin
+                'empresa_id' => Auth::user()->empresa_id,
             ]);
         } elseif ($validated['rol'] === 'Secretaria') {
             Secretarias::create([
                 'trabajador_id' => $trabajador->id,
-                'foto_perfil'=>$validated['foto_perfil'],
-                'user_id' => $user->id, // Pasar el user_id del trabajador
+                'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
+                'user_id' => $user->id,
                 'nombre_completo' => $validated['name'],
-                'email'=> $validated['email'],
-                'empresa_id' => Auth::user()->empresa_id, // Asignar la misma empresa que el admin
+                'email' => $validated['email'],
+                'empresa_id' => Auth::user()->empresa_id,
             ]);
         }
 
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador creado exitosamente.');
     }
-
     public function edit(Trabajadores $trabajador, $id)
     {
         // Obtener los roles permitidos
@@ -115,14 +114,14 @@ class TrabajadoresController
     public function update(Request $request, Trabajadores $trabajador, $id)
     {
         $trabajador = Trabajadores::findOrFail($id);
-        
+
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
-                'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validar como imagen
-                'email' => 'required|string|email|max:255|unique:users,email,' . $trabajador->user_id, // Validar correo único
-                'tel' => 'nullable|string|max:15', // Validar teléfono
-                'password' => 'nullable|string|min:8|confirmed', // Contraseña opcional
+                'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'email' => 'required|string|email|max:255|unique:users,email,' . $trabajador->user_id,
+                'tel' => 'nullable|string|max:15',
+                'password' => 'nullable|string|min:8|confirmed',
                 'rol' => 'required|exists:roles,name',
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
@@ -138,6 +137,9 @@ class TrabajadoresController
             'email' => $validated['email'],
             'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
         ]);
+
+        // Obtener el rol anterior para comparar
+        $oldRole = $user->getRoleNames()->first();
 
         // Actualizar el rol del usuario
         $user->syncRoles([$validated['rol']]);
@@ -156,17 +158,35 @@ class TrabajadoresController
             'rol' => $validated['rol'],
         ]);
 
-        // Actualizar el registro en la tabla correspondiente (doctor o secretaria)
+        // Manejo de roles específicos (Doctor/Secretaria)
+        if ($validated['rol'] !== $oldRole) {
+            // Si el rol cambió, eliminar registros antiguos
+            if ($oldRole === 'Doctor') {
+                Doctores::where('trabajador_id', $trabajador->id)->delete();
+            } elseif ($oldRole === 'Secretaria') {
+                Secretarias::where('trabajador_id', $trabajador->id)->delete();
+            }
+        }
+
+        // Crear o actualizar registro según el nuevo rol
         if ($validated['rol'] === 'Doctor') {
-            Doctores::where('trabajador_id', $trabajador->id)->update([
+            $doctor = Doctores::firstOrNew(['trabajador_id' => $trabajador->id]);
+            $doctor->fill([
                 'nombre_completo' => $validated['name'],
                 'email' => $validated['email'],
-            ]);
+                'user_id' => $user->id,
+            ])->save();
         } elseif ($validated['rol'] === 'Secretaria') {
-            Secretarias::where('trabajador_id', $trabajador->id)->update([
+            $secretaria = Secretarias::firstOrNew(['trabajador_id' => $trabajador->id]);
+            $secretaria->fill([
                 'nombre_completo' => $validated['name'],
                 'email' => $validated['email'],
-            ]);
+                'user_id' => $user->id,
+            ])->save();
+        } else {
+            // Para otros roles (Admin), eliminar registros específicos si existen
+            Doctores::where('trabajador_id', $trabajador->id)->delete();
+            Secretarias::where('trabajador_id', $trabajador->id)->delete();
         }
 
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador actualizado exitosamente.');
@@ -175,7 +195,7 @@ class TrabajadoresController
     public function destroy(Trabajadores $trabajador, $id)
     {
         $trabajador = Trabajadores::findOrFail($id);
-    
+
         // Eliminar registros relacionados en las tablas doctores o secretarias
         if ($trabajador->rol === 'Doctor') {
             Doctores::where('trabajador_id', $trabajador->id)->delete();

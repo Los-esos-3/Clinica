@@ -16,7 +16,7 @@
     <style>
         body {
             font-family: 'Figtree', sans-serif;
-            background-color: #f9fafb;
+            background-color: #f2f4f7;
             color: #000;
             margin: 0;
             padding: 0;
@@ -239,14 +239,12 @@
 
 
         .hero {
-            background-color: #f9f9f9;
+            background-color: #f2f4f7;
             padding: 60px 0;
         }
 
         .hero .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 50px;
         }
 
         .hero-content {
@@ -257,6 +255,12 @@
             /* Alinea los elementos verticalmente al centro */
             justify-content: space-between;
             /* Espacia los elementos */
+        }
+
+        .hero-content-last {
+            display: flex;
+            align-items: center;
+            justify-content: space-between !important;
         }
 
         .hero-text {
@@ -282,6 +286,12 @@
             flex-wrap: wrap;
             gap: 10px;
             /* Espacio entre las imágenes */
+        }
+
+        .hero-images-last {
+            display: flex;
+            flex-wrap: wrap;
+
         }
 
         .hero-images img {
@@ -323,7 +333,7 @@
         }
 
         .features {
-            background-color: #ffffff;
+            background-color: #f2f4f7;
             padding: 40px 0;
         }
 
@@ -340,7 +350,7 @@
         .feature {
             display: flex;
             align-items: center;
-            background-color: #f0f0f0;
+            background-color: #ffffff;
             padding: 15px;
             border-radius: 8px;
             width: 90%;
@@ -365,15 +375,6 @@
             height: 50px;
             object-fit: contain;
             transition: filter 0.4s ease;
-        }
-
-        .feature:hover img {
-            filter: brightness(0) invert(1);
-        }
-        .feature:hover {
-            background: linear-gradient(135deg, #a7d3e0 0%, #003366 100%);
-            color: #ffffff;
-            transform: scale(1.02);
         }
 
         .user-avatar {
@@ -487,21 +488,6 @@
             height: 100%;
             overflow: auto;
             background-color: rgba(0, 0, 0, 0.4);
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #a7d3e0, #003366);
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 2em;
-            border-radius: 25px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: .4s ease-in-out;
-            color: white;
         }
 
         .close {
@@ -633,9 +619,8 @@
         .content {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+
             padding: 25px;
-            gap: 20px;
             margin-top: 0;
             /* Reduce el margen superior del contenedor */
         }
@@ -678,23 +663,6 @@
             /* Espaciado interno reducido */
         }
 
-        .content-img {
-            flex: 1;
-            /* Ajusta el espacio de la imagen */
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .hero-content {
-            display: flex;
-            flex-direction: row-reverse;
-            /* Invierte el orden de los elementos */
-            align-items: center;
-            /* Alinea los elementos verticalmente al centro */
-            justify-content: space-between;
-            /* Espacia los elementos */
-        }
-
         .hero-text {
             flex: 1;
             max-width: 50%;
@@ -712,25 +680,68 @@
             margin-bottom: 20px;
         }
 
-        .hero-images {
-            display: flex;
-            flex: 1;
-            flex-wrap: wrap;
-            gap: 10px;
-            /* Espacio entre las imágenes */
-        }
-
-        .hero-images img {
-            border-radius: 10px;
-            box-shadow: 0 4px 8px #3a4f7c(0, 0, 0, 0.1);
-            max-width: 100%;
-            height: auto;
-        }
-
         .image-column {
             display: flex;
             flex-direction: column;
             gap: 20px;
+        }
+
+
+
+
+
+        .content-img {
+            width: 100%;
+            max-width: 500px;
+            /* Ajusta este valor según el ancho deseado */
+            margin-left: 20px;
+            /* Espacio entre el texto y el formulario */
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #a7d3e0, #003366);
+            padding: 2.5em;
+            /* Más padding para hacerlo más grande */
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: .4s ease-in-out;
+            color: white;
+        }
+
+        .field {
+            padding: 0.8em;
+            /* Más padding para los campos */
+            margin-bottom: 1.2em;
+            /* Más espacio entre campos */
+        }
+
+        .input-field {
+            font-size: 1.1em;
+            /* Texto más grande */
+        }
+
+        .button1,
+        .button2 {
+            padding: 0.9em 1.5em;
+            /* Botones más grandes */
+            font-size: 1.1em;
+        }
+
+        .button3 {
+            font-size: 1em;
+        }
+
+        /* Ajusta el diseño responsive */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .content-img {
+                margin-left: 0;
+                margin-top: 30px;
+                max-width: 100%;
+            }
         }
     </style>
 </head>
@@ -758,57 +769,10 @@
                 @if (Route::has('login'))
                     @auth
                         <li>
-                            @if (Auth::user()->hasAnyRole(['Root','Admin', 'Doctor', 'Secretaria']))
+                            @if (Auth::user()->hasAnyRole(['Root', 'Admin', 'Doctor', 'Secretaria']))
                                 <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Agenda</a>
                             @endif
-
-                            <!-- Ajustar margen aquí -->
-
-                            <div class="user-avatar" onclick="toggleUserMenu()">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="22" height="22">
-                                    <path
-                                        d="M224 256A128 128 0 1 0 224 0a128 128 0 1 0 0 256zm-45.7 48C79.8 304 0 383.8 0 482.3C0 498.7 13.3 512 29.7 512l388.6 0c16.4 0 29.7-13.3 29.7-29.7C448 383.8 368.2 304 269.7 304l-91.4 0z" />
-                                </svg>
-                            </div>
-
-                            <!-- Menú desplegable para cerrar sesión -->
-                            <div id="user-dropdown" class="user-dropdown" style="display: none;">
-                                <span
-                                    style="color: black; text-align: center; display: block;">{{ Auth::user()->name }}</span>
-                                <div style="height: 1px; background-color: black; margin: 8px 0;"></div>
-                                <!-- Línea personalizada -->
-
-                                <x-dropdown-link href="{{ route('profile.show') }}"
-                                    style="color: black; text-align: center; display: block; padding: 8px 0;">
-                                    {{ __('Profile') }}
-
-                                </x-dropdown-link>
-                                <a href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                document.getElementById('logout-form').submit();"
-                                    style="color: black; text-align: center; display: block; margin: 0; padding: 8px 0;">
-                                    <!-- Ajustar color y centrado -->
-                                    Salir de la cuenta
-                                </a>
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                    @csrf
-                                </form>
-                            </div>
-                        </li>
-                    @else
-                        <li>
-                            <!-- Cambiar el ícono por la palabra "Ingresar" -->
-                            <a href="#" id="toggle-auth-links">Ingresa</a>
-
-                            <!-- Enlaces de autenticación que se muestran/ocultan -->
-                            <div id="auth-links" style="display: none;">
-                                <a href="{{ route('login') }}">Log in</a>
-
-                                @if (Route::has('register'))
-                                    <a href="{{ route('register') }}">Registro</a>
-                                @endif
-                            </div>
-                        </li>
+                        </li>      
                     @endauth
                 @endif
             </ul>
@@ -824,11 +788,57 @@
                 mejorar la atención desde cualquier lugar.</h2>
         </div>
 
-        <div class="content-img">
-            <img src="{{ asset('images/Doctorviendolaptop.jpg') }}" alt="Doctor viendo una computadora"
-                style="width: 550px; height: auto;">
-        </div>
+        @if (Auth::check())
+            <div class="content-img">
+                <img src="{{ asset('images/Doctorviendolaptop.jpg') }}" alt="Doctor viendo una computadora"
+                    style="width: 500px; height: auto;">
+            </div>
+        @else
+            <div class="content-img">
+                <div class="modal-content">
+                    <h2>Iniciar Sesión</h2>
+                    @if ($errors->any())
+                        <div class="error-message"
+                            style="color: red; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
+                            {{ $errors->first() }}
+                        </div>
+                    @endif
+                    <form action="{{ route('login') }}" method="POST" class="form">
+                        @csrf
+                        <div class="field">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z">
+                                </path>
+                            </svg>
+                            <input type="email" id="email" name="email" class="input-field"
+                                placeholder="Correo electrónico" required>
+                        </div>
+                        <div class="field">
+                            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                fill="currentColor" viewBox="0 0 16 16">
+                                <path
+                                    d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z">
+                                </path>
+                            </svg>
+                            <input type="password" id="password" name="password" class="input-field"
+                                placeholder="Contraseña" required>
+                        </div>
+                        <div class="btn">
+                            <button type="submit" class="button1">Iniciar Sesión</button>
+                            <button type="button" onclick="window.location.href='{{ route('register') }}'"
+                                class="button2">Registrarse</button>
+                        </div>
+                        <button type="button" class="button3">Olvidé mi contraseña</button>
+                    </form>
+                </div>
+            </div>
+        @endif
+
+
     </div>
+
 
 
     <section class="hero">
@@ -847,7 +857,7 @@
                 </div>
                 <div class="hero-images">
                     <div class="image-column">
-                        <img src="images/Doctorarubia.jpg" alt="Doctora de pelo rubio" />
+                        <img src="images/Doctorarubia.jpg" width="450px" alt="Doctora de pelo rubio" />
                     </div>
                 </div>
             </div>
@@ -859,19 +869,19 @@
 
     <section class="hero">
         <div class="container">
-            <div class="hero-content">
+            <div class="hero-content-last">
                 <div class="hero-text">
                     <h2>Pasarás menos tiempo usando el expediente clínico electrónico</h2>
                     <p>Expemed es un sistema de gestión de expedientes clínicos que combina todas las
                         funcionalidades esenciales con la potencia de la tecnología moderna. Es intuitivo, accesible
                         desde cualquier dispositivo con conexión a internet, y permite la creación, el envío y el
-                        intercambio de expedientes de manera eficiente. Con Kaizen Software, dedicas más tiempo a tus
+                        intercambio de expedientes de manera eficiente. Con Expemed Software, dedicas más tiempo a tus
                         pacientes y menos a la administración, facilitando el trabajo en equipo y la comunicación
                         con tus compañeros o pacientes.</p>
                     <ul class="features-list">
                     </ul>
                 </div>
-                <div class="hero-images">
+                <div class="hero-images-last">
                     <div class="image-column">
                         <img src="images/Chicadenaranja.jpg" alt="naranjachica" />
                     </div>
@@ -887,7 +897,8 @@
             <div class="feature">
                 <div class="feature-content">
                     <h3 class="feature-title">Gestión Eficiente de Expedientes</h3>
-                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.</p>
+                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.
+                    </p>
                 </div>
                 <img src="images/icons8-grupo-50.png" alt="Icono de Gestión de Expedientes">
             </div>
@@ -915,48 +926,6 @@
         </div>
     </section>
 
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Iniciar Sesión</h2>
-            @if ($errors->any())
-                <div class="error-message"
-                    style="color: red; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 5px; padding: 10px; margin-bottom: 10px;">
-                    {{ $errors->first() }}
-                </div>
-            @endif
-            <form action="{{ route('login') }}" method="POST" class="form">
-                @csrf
-                <div class="field">
-                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        fill="currentColor" viewBox="0 0 16 16">
-                        <path
-                            d="M13.106 7.222c0-2.967-2.249-5.032-5.482-5.032-3.35 0-5.646 2.318-5.646 5.702 0 3.493 2.235 5.708 5.762 5.708.862 0 1.689-.123 2.304-.335v-.862c-.43.199-1.354.328-2.29.328-2.926 0-4.813-1.88-4.813-4.798 0-2.844 1.921-4.881 4.594-4.881 2.735 0 4.608 1.688 4.608 4.156 0 1.682-.554 2.769-1.416 2.769-.492 0-.772-.28-.772-.76V5.206H8.923v.834h-.11c-.266-.595-.881-.964-1.6-.964-1.4 0-2.378 1.162-2.378 2.823 0 1.737.957 2.906 2.379 2.906.8 0 1.415-.39 1.709-1.087h.11c.081.67.703 1.148 1.503 1.148 1.572 0 2.57-1.415 2.57-3.643zm-7.177.704c0-1.197.54-1.907 1.456-1.907.93 0 1.524.738 1.524 1.907S8.308 9.84 7.371 9.84c-.895 0-1.442-.725-1.442-1.914z">
-                        </path>
-                    </svg>
-                    <input type="email" id="email" name="email" class="input-field"
-                        placeholder="Correo electrónico" required>
-                </div>
-                <div class="field">
-                    <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                        fill="currentColor" viewBox="0 0 16 16">
-                        <path
-                            d="M8 1a2 2 0 0 1 2 2v4H6V3a2 2 0 0 1 2-2zm3 6V3a3 3 0 0 0-6 0v4a2 2 0 0 0-2 2v5a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z">
-                        </path>
-                    </svg>
-                    <input type="password" id="password" name="password" class="input-field"
-                        placeholder="Contraseña" required>
-                </div>
-                <div class="btn">
-                    <button type="submit" class="button1">Iniciar Sesión</button>
-                    <button type="button" onclick="window.location.href='{{ route('register') }}'"
-                        class="button2">Registrarse</button>
-                </div>
-                <button type="button" class="button3">Olvidé mi contraseña</button>
-            </form>
-        </div>
-    </div>
-
     <div id="successModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="document.getElementById('successModal').style.display='none'">&times;</span>
@@ -967,22 +936,16 @@
 
     <footer>
         <div class="footer-copyright">
-            <p>&copy; 2023 Todos los derechos reservados por WD3.</p>
+            @php
+                $year = date('Y');
+            @endphp
+            <p>&copy; {{ $year }} Todos los derechos reservados por WD3.</p>
         </div>
     </footer>
 </body>
 
 </html>
 
-<script>
-    document.getElementById('toggle-auth-links').addEventListener('click', function(event) {
-        event.preventDefault(); // Evitar el comportamiento predeterminado del enlace
-        var modal = document.getElementById('loginModal');
-        var body = document.body;
-        modal.style.display = 'block'; // Mostrar el modal
-        body.classList.add('modal-open');
-    });
-</script>
 
 <script>
     function toggleUserMenu() {

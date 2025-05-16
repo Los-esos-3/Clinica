@@ -9,6 +9,7 @@
             <x-application-logo></x-application-logo>
         </div>
 
+
         <!-- Menú principal -->
         <ul
             class="sidebar-menu {{ Auth::user()->hasAnyRole(['Admin', 'Root']) ? 'admin-menu' : 'doctor-secretaria-menu' }}">
@@ -31,7 +32,7 @@
 
 
                 <li><a href="{{ route('Trabajadores.index') }}"><img class="img-secretary"
-                    src="{{ asset('images/human.png') }}" /> <span>Trabajadores</span></a></li>
+                            src="{{ asset('images/human.png') }}" /> <span>Trabajadores</span></a></li>
 
 
                 <li><a href="{{ route('empresas.index') }}"><i class="fas fa-building"></i><span>Empresa</span></a>
@@ -47,7 +48,37 @@
         </ul>
 
         <div class="role-container">
-            <label for="">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
+
+            @php
+                $now = now();
+                $trialEnds = \Carbon\Carbon::parse(auth()->user()->trial_ends_at);
+
+                if ($trialEnds->isPast()) {
+                    $tiempoRestante = 'Finalizado';
+                    $color = 'text-red-600';
+                } else {
+                    $diferencia = $trialEnds->diff($now);
+
+                    if ($diferencia->d > 0) {
+                        $tiempoRestante = $diferencia->d . ' días';
+                        $color = $diferencia->d <= 5 ? 'text-yellow-600' : 'text-blue-600';
+                    } elseif ($diferencia->h > 0) {
+                        $tiempoRestante = $diferencia->h . ' horas';
+                        $color = 'text-orange-600';
+                    } else {
+                        $tiempoRestante = $diferencia->i . ' minutos';
+                        $color = 'text-red-600';
+                    }
+                }
+            @endphp
+
+            <div>
+                <span class="text-sm font-medium text-white">Tiempo restante:</span>
+                <span class="text-lg font-bold {{ $color }}">
+                    {{ $tiempoRestante }}
+                </span>
+            </div>
+            <label class="text-white">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
         </div>
 
         <!-- Contenedor para el usuario -->
@@ -60,6 +91,7 @@
                 @else
                     <i class="fa-solid fa-2xs profile-icon fa-circle-user"></i>
                 @endif
+
                 <!-- Nombre del usuario -->
                 <p class="username">{{ explode(' ', $user->name)[0] }}</p>
             </div>

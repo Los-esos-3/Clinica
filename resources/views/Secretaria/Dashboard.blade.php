@@ -57,6 +57,10 @@
                         <i class="fa-solid fa-bars fa-lg"></i>
                     </button>
 
+
+
+                   
+
                     <!-- Botón "Nueva Cita" -->
                     <button id="openNewCitaModalBtn"
                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
@@ -266,32 +270,79 @@
                 const newCitaForm = document.getElementById('newCitaForm');
 
                 if (newCitaForm) {
-                    newCitaForm.addEventListener('submit', function(event) {
+                    newCitaForm.addEventListener('submit', async function(event) {
                         event.preventDefault();
 
-                        let formData = new FormData(this);
+                        // Mostrar loader
+                        const submitButton = this.querySelector('button[type="submit"]');
+                        const originalText = submitButton.textContent;
+                        submitButton.disabled = true;
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
 
-                        fetch("{{ route('citas.store') }}", {
+                        try {
+                            let formData = new FormData(this);
+
+                            // Convertir FormData a objeto para poder manipularlo
+                            let formObject = {};
+                            formData.forEach((value, key) => {
+                                formObject[key] = value;
+                            });
+
+                            // Validación adicional en el cliente
+                            if (new Date(formObject.fecha + 'T' + formObject.hora_fin) <= new Date(
+                                    formObject.fecha + 'T' + formObject.hora_inicio)) {
+                                throw new Error('La hora de fin debe ser posterior a la hora de inicio');
+                            }
+
+                            const response = await fetch("{{ route('citas.store') }}", {
                                 method: "POST",
-                                body: formData,
                                 headers: {
-                                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Cita creada correctamente',
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
+                                    "Content-Type": "application/json",
+                                    "Accept": "application/json",
+                                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]')
+                                        .value
+                                },
+                                body: JSON.stringify(formObject)
+                            });
 
-                                newCitaModal.classList.add(
-                                    'hidden'); // Cierra el modal después de guardar la cita
-                                location.reload(); // Recarga la página para actualizar el calendario
-                            })
-                            .catch(error => console.error("Error:", error));
+                            const data = await response.json();
+
+                            if (!response.ok) {
+                                throw new Error(data.message || 'Error al crear la cita');
+                            }
+
+                            // Mostrar notificación de éxito
+                            Swal.fire({
+                                icon: 'success',
+                                title: '¡Cita creada!',
+                                text: data.message,
+                                showConfirmButton: false,
+                                timer: 2000
+                            });
+
+                            // Cerrar modal y recargar calendario
+                            document.getElementById('newCitaModal').classList.add('hidden');
+
+                            // Si estás usando FullCalendar, actualiza el calendario
+                            if (typeof calendar !== 'undefined') {
+                                calendar.refetchEvents();
+                            } else {
+                                location.reload();
+                            }
+
+                        } catch (error) {
+                            console.error("Error:", error);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: error.message || 'Ocurrió un error al crear la cita',
+                                confirmButtonText: 'Entendido'
+                            });
+                        } finally {
+                            // Restaurar botón
+                            submitButton.disabled = false;
+                            submitButton.textContent = originalText;
+                        }
                     });
                 }
                 // -------------------- INICIALIZAR FULLCALENDAR --------------------

@@ -24,6 +24,7 @@
                 box-shadow: none;
                 /* Eliminar la sombra */
             }
+
             .fc-event {
                 background-color: #e0e0e0;
                 /* Color gris claro para los eventos */
@@ -74,6 +75,27 @@
                     min-width: auto;
                 }
             }
+
+            /* Estilos para el tutorial de la barra lateral */
+            #sidebar-tutorial-overlay .absolute {
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 90%;
+                max-width: 500px;
+            }
+
+            .sidebar-tutorial-indicator {
+                width: 10px;
+                height: 10px;
+                border-radius: 50%;
+                background-color: #d1d5db;
+                display: inline-block;
+            }
+
+            .sidebar-tutorial-indicator.active {
+                background-color: #3b82f6;
+            }
         </style>
 
     </head>
@@ -95,7 +117,6 @@
                                     <i class="fa-solid fa-bars fa-lg"></i>
                                 </button>
                             </div>
-
 
                             <div id="tutorial-btn"
                                 class="absolute -inset-4 rounded-full h-10 w-10 bg-white bg-opacity-20 animate-pulse"
@@ -146,6 +167,45 @@
                                 </div>
                             </div>
 
+                            <!-- Agrega esto después del primer tutorial-overlay -->
+                            <div id="sidebar-tutorial-overlay" class="fixed inset-0 hidden bg-black bg-opacity-75 z-50">
+                                <div class="relative w-full h-full">
+                                    <!-- Tooltip para las opciones de la barra lateral -->
+                                    <div id="sidebar-tooltip" class="absolute bg-white p-4 rounded-lg shadow-xl hidden"
+                                        style="min-width: 300px; max-width: 90%;">
+                                        <div class="flex flex-col">
+                                            <h3 id="sidebar-tooltip-title" class="font-bold text-gray-800 mb-2"></h3>
+                                            <p id="sidebar-tooltip-content" class="text-sm text-gray-600 mb-4"></p>
+
+                                            <!-- Indicadores de progreso -->
+                                            <div class="flex justify-center space-x-2 mb-4">
+                                                ${tutorialSteps.map((_, i) => `
+                                                <span class="sidebar-tutorial-indicator ${i === 0 ? 'active' : ''}"
+                                                    data-step="${i}"></span>
+                                                `).join('')}
+                                            </div>
+
+                                            <div class="flex justify-between items-center text-sm">
+                                                <button id="prev-sidebar-tutorial"
+                                                    class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition hidden">
+                                                    Anterior
+                                                </button>
+                                                <button id="next-sidebar-tutorial"
+                                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                                                    Siguiente
+                                                </button>
+                                                <button id="close-sidebar-tutorial"
+                                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition hidden">
+                                                    Finalizar
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- Flecha que apunta al elemento actual -->
+                                        <div id="sidebar-tooltip-arrow"
+                                            class="absolute w-6 h-6 transform rotate-45 bg-white"></div>
+                                    </div>
+                                </div>
+                            </div>
 
                         </div>
 
@@ -498,6 +558,251 @@ font-weight: bold;
             // Mostrar SOLO el botón con resaltador durante el tutorial
             document.getElementById('tutorial-btn').classList.remove('hidden');
             document.getElementById('normal-btn').classList.add('hidden');
+
+            document.getElementById('toggle-sidebar').addEventListener('click', function() {
+
+            });
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Configuración del tutorial de la barra lateral
+                const tutorialSteps = [{
+                        title: "Inicio",
+                        content: "Esta es la página principal del dashboard donde puedes ver un resumen de actividades.",
+                        selector: "[data-tutorial='inicio']"
+                    },
+                    {
+                        title: "Calendario",
+                        content: "Aquí puedes gestionar todas las citas y eventos de la clínica. Podrás crear, editar y cancelar citas médicas.",
+                        selector: "[data-tutorial='calendario']"
+                    },
+                    {
+                        title: "Pacientes",
+                        content: "Administra los registros de pacientes, historiales médicos y toda la información relevante de cada paciente.",
+                        selector: "[data-tutorial='pacientes']"
+                    },
+                    {
+                        title: "Doctores",
+                        content: "Gestiona la información de los doctores, sus especialidades, horarios y disponibilidad.",
+                        selector: "[data-tutorial='doctores']"
+                    },
+                    {
+                        title: "Secretarías",
+                        content: "Configura las opciones relacionadas con el personal administrativo y sus permisos.",
+                        selector: "[data-tutorial='secretarias']"
+                    },
+                    {
+                        title: "Trabajadores",
+                        content: "Administra toda la información del personal de la clínica, incluyendo horarios y asignaciones.",
+                        selector: "[data-tutorial='trabajadores']"
+                    },
+                    {
+                        title: "Empresa",
+                        content: "Configura los datos generales de la clínica o empresa, como información de contacto y configuración.",
+                        selector: "[data-tutorial='empresa']"
+                    },
+                    {
+                        title: "Perfil",
+                        content: "Actualiza tu información personal, cambia tu contraseña y configura tus preferencias de cuenta.",
+                        selector: "[data-tutorial='perfil']"
+                    },
+                    {
+                        title: "Rol Actual",
+                        content: "Aquí puedes ver y cambiar tu rol de acceso si tienes los permisos necesarios. Cada rol tiene diferentes privilegios.",
+                        selector: "[data-tutorial='rol']"
+                    }
+                ];
+
+                let currentStep = 0;
+                const sidebarTutorialOverlay = document.getElementById('sidebar-tutorial-overlay');
+                const sidebarTooltip = document.getElementById('sidebar-tooltip');
+                const sidebarTooltipTitle = document.getElementById('sidebar-tooltip-title');
+                const sidebarTooltipContent = document.getElementById('sidebar-tooltip-content');
+                const prevButton = document.getElementById('prev-sidebar-tutorial');
+                const nextButton = document.getElementById('next-sidebar-tutorial');
+                const closeButton = document.getElementById('close-sidebar-tutorial');
+                const sidebarTooltipArrow = document.getElementById('sidebar-tooltip-arrow');
+
+                // Función para mostrar el paso actual del tutorial
+                function showTutorialStep(stepIndex) {
+                    const step = tutorialSteps[stepIndex];
+                    const targetElement = document.querySelector(step.selector);
+
+                    if (!targetElement) {
+                        console.error("Elemento no encontrado:", step.selector);
+                        return;
+                    }
+
+                    // Remover highlight de todos los elementos
+                    document.querySelectorAll('[data-tutorial]').forEach(el => {
+                        el.classList.remove('tutorial-highlight');
+                        el.style.zIndex = '';
+                    });
+
+                    // Aplicar highlight al elemento actual
+                    targetElement.classList.add('tutorial-highlight');
+                    targetElement.style.zIndex = '100';
+
+                    // Mostrar el overlay y el tooltip
+                    sidebarTutorialOverlay.classList.remove('hidden');
+                    sidebarTooltip.classList.remove('hidden');
+
+                    // Actualizar contenido
+                    sidebarTooltipTitle.textContent = step.title;
+                    sidebarTooltipContent.textContent = step.content;
+
+                    // Posicionar el tooltip cerca del elemento objetivo
+                    positionTooltip(targetElement);
+
+                    // Actualizar botones
+                    prevButton.classList.toggle('hidden', stepIndex === 0);
+                    nextButton.classList.toggle('hidden', stepIndex === tutorialSteps.length - 1);
+                    closeButton.classList.toggle('hidden', stepIndex !== tutorialSteps.length - 1);
+
+                    // Actualizar indicadores de progreso
+                    updateProgressIndicators(stepIndex);
+                }
+
+                // Función para actualizar los indicadores de progreso
+                function updateProgressIndicators(currentIndex) {
+                    document.querySelectorAll('.sidebar-tutorial-indicator').forEach((indicator,
+                        index) => {
+                        if (index <= currentIndex) {
+                            indicator.classList.add('active');
+                        } else {
+                            indicator.classList.remove('active');
+                        }
+                    });
+                }
+
+                // Función para posicionar el tooltip
+                function positionTooltip(targetElement) {
+                    const rect = targetElement.getBoundingClientRect();
+                    const tooltipWidth = sidebarTooltip.offsetWidth;
+                    const tooltipHeight = sidebarTooltip.offsetHeight;
+                    const arrowSize = 12;
+                    const padding = 20;
+
+                    // Posicionar a la derecha del elemento por defecto
+                    let left = rect.right + padding;
+                    let top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+                    let arrowPosition = 'right';
+
+                    // Ajustar si se sale de la pantalla a la derecha
+                    if (left + tooltipWidth > window.innerWidth) {
+                        left = rect.left - tooltipWidth - padding;
+                        arrowPosition = 'left';
+                    }
+
+                    // Ajustar si se sale por arriba o abajo
+                    if (top < padding) {
+                        top = padding;
+                    } else if (top + tooltipHeight > window.innerHeight - padding) {
+                        top = window.innerHeight - tooltipHeight - padding;
+                    }
+
+                    sidebarTooltip.style.left = `${left}px`;
+                    sidebarTooltip.style.top = `${top}px`;
+
+                    // Posicionar la flecha
+                    sidebarTooltipArrow.style.display = 'block';
+
+                    if (arrowPosition === 'right') {
+                        sidebarTooltipArrow.style.left = 'auto';
+                        sidebarTooltipArrow.style.right = `-${arrowSize/2}px`;
+                        sidebarTooltipArrow.style.top = `${tooltipHeight/2 - arrowSize/2}px`;
+                        sidebarTooltipArrow.style.transform = 'rotate(45deg)';
+                    } else {
+                        sidebarTooltipArrow.style.left = `-${arrowSize/2}px`;
+                        sidebarTooltipArrow.style.right = 'auto';
+                        sidebarTooltipArrow.style.top = `${tooltipHeight/2 - arrowSize/2}px`;
+                        sidebarTooltipArrow.style.transform = 'rotate(45deg)';
+                    }
+                }
+
+                // Evento para abrir el tutorial de la barra lateral
+                document.getElementById('toggle-sidebar').addEventListener('click', function() {
+                    if (!localStorage.getItem('sidebarTutorialCompleted') && !
+                        sidebarTutorialOverlay.classList.contains('hidden')) {
+                        return;
+                    }
+
+                    if (!localStorage.getItem('sidebarTutorialCompleted')) {
+                        // Mostrar el sidebar si está oculto
+                        const sidebar = document.getElementById('sidebar');
+                        if (sidebar.classList.contains('closed')) {
+                            sidebar.classList.remove('closed');
+                        }
+
+                        // Iniciar el tutorial después de un pequeño retraso para que el sidebar se abra
+                        setTimeout(() => {
+                            currentStep = 0;
+                            showTutorialStep(currentStep);
+                            document.body.classList.add('overflow-hidden');
+                        }, 300);
+                    }
+                });
+
+                // Navegación del tutorial
+                nextButton.addEventListener('click', function() {
+                    if (currentStep < tutorialSteps.length - 1) {
+                        currentStep++;
+                        showTutorialStep(currentStep);
+                    }
+                });
+
+                prevButton.addEventListener('click', function() {
+                    if (currentStep > 0) {
+                        currentStep--;
+                        showTutorialStep(currentStep);
+                    }
+                });
+
+                closeButton.addEventListener('click', function() {
+                    closeSidebarTutorial();
+                });
+
+                // Cerrar tutorial haciendo clic fuera del tooltip
+                sidebarTutorialOverlay.addEventListener('click', function(e) {
+                    if (e.target === sidebarTutorialOverlay) {
+                        closeSidebarTutorial();
+                    }
+                });
+
+                // Función para cerrar el tutorial
+                function closeSidebarTutorial() {
+                    sidebarTutorialOverlay.classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                    localStorage.setItem('sidebarTutorialCompleted', 'true');
+
+                    // Remover highlight de todos los elementos
+                    document.querySelectorAll('[data-tutorial]').forEach(el => {
+                        el.classList.remove('tutorial-highlight');
+                        el.style.zIndex = '';
+                    });
+                }
+
+                // Inicializar indicadores de progreso
+                function initProgressIndicators() {
+                    const indicatorsContainer = document.createElement('div');
+                    indicatorsContainer.className = 'flex justify-center space-x-2 mb-4';
+
+                    tutorialSteps.forEach((_, index) => {
+                        const indicator = document.createElement('span');
+                        indicator.className =
+                            `sidebar-tutorial-indicator ${index === 0 ? 'active' : ''}`;
+                        indicator.dataset.step = index;
+                        indicatorsContainer.appendChild(indicator);
+                    });
+
+                    sidebarTooltip.insertBefore(indicatorsContainer, sidebarTooltip.querySelector(
+                        '.flex.justify-between'));
+                }
+
+                // Llamar a la inicialización cuando el DOM esté listo
+                initProgressIndicators();
+            });
+
         } else {
             // Si ya completó el tutorial, mostrar SOLO el botón normal
             document.getElementById('tutorial-btn').classList.add('hidden');
@@ -531,6 +836,8 @@ font-weight: bold;
                 tooltip.style.transform = 'translateX(-50%)';
             }
         }
+
+
 
         // Ejecutar al cargar y al redimensionar
         positionTooltip();

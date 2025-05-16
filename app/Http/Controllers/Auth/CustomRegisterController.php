@@ -62,15 +62,20 @@ class CustomRegisterController
                     ->with('captchaText', $newCaptcha);
             }
 
-                // Crear el usuario
-                $user = User::create([
-                    'name' => $request->name,
-                    'email' => $request->email,
-                    'phone' => $request->phone,
-                    'password' => Hash::make($request->password),
-                    'comments' => $request->comments,
-                ]);
+            // Crear el usuario
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'phone' => $request->phone,
+                'password' => Hash::make($request->password),
+                'comments' => $request->comments,
+                'trial_ends_at' => now()->addDays(30), // Fecha de fin de prueba
+                'trial_ended' => false // Campo adicional para control
+            ]);
 
+            $user->assignRole('Admin');
+
+            $user->assignRole('Trial');
 
             // Limpiar el CAPTCHA de la sesión
             Session::forget('captcha_code');
@@ -79,8 +84,10 @@ class CustomRegisterController
             Auth::login($user);
 
 
+
+
             return redirect()->route('welcome')
-                ->with('success', '¡Cuenta creada con éxito! Un administrador revisará tu solicitud y te asignará los permisos correspondientes.');
+                ->with('success', '¡Listo! 🎉 Tu cuenta ha sido creada con éxito.  Ahora solo falta un pequeño paso: nuestro equipo revisará tu solicitud y te dará acceso a todo lo que necesitas. ⏳✨  Mientras tanto, ¡prepárate para empezar! Pronto tendrás todo listo para explorar y trabajar. 🚀  ¿Preguntas? No dudes en contactarnos. ¡Estamos aquí para ayudarte! 😊');
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error en el registro: ' . $e->getMessage());
 

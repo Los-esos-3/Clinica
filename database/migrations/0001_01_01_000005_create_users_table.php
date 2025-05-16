@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('number')->default('N/A');
             $table->string('password');
+            $table->timestamp('trial_ends_at')->nullable();
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('comments')->nullable();

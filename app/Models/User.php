@@ -32,7 +32,7 @@ class User extends Authenticatable
         'role',
         'empresa_id',
         'comments',
-
+        'trial_ends_at' // Asegúrate de que esté aquí
     ];
 
     /**
@@ -70,7 +70,7 @@ class User extends Authenticatable
     }
     public function doctor()
     {
-        return $this->hasOne(Doctores::class,'user_id');
+        return $this->hasOne(Doctores::class, 'user_id');
     }
     public function pacientes()
     {
