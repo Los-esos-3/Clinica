@@ -686,10 +686,6 @@
             gap: 20px;
         }
 
-
-
-
-
         .content-img {
             width: 100%;
             max-width: 500px;
@@ -769,10 +765,12 @@
                 @if (Route::has('login'))
                     @auth
                         <li>
-                            @if (Auth::user()->hasAnyRole(['Root', 'Admin', 'Doctor', 'Secretaria']))
+                            @if (Auth::user()->hasAnyRole(['Admin', 'Doctor', 'Secretaria']))
                                 <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Agenda</a>
+                            @elseif (Auth::user()->hasRole('Root'))
+                                <a href="{{ url('/dashboardAdmin') }}" style="margin-right: 15px;">Dashboard</a>
                             @endif
-                        </li>      
+                        </li>
                     @endauth
                 @endif
             </ul>
@@ -927,7 +925,7 @@
     </section>
 
     <div id="successModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content">Mi local
             <span class="close" onclick="document.getElementById('successModal').style.display='none'">&times;</span>
             <h2>Registro Exitoso</h2>
             <p>{{ session('success') }}</p>
