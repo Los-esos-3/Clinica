@@ -87,7 +87,8 @@ class EmpresaController
         }
 
         return redirect()->route('empresas.index')
-            ->with('success', 'Empresa registrada exitosamente.');
+        ->with('empresa_guardada', true); // <- Esta clave la usaremos en la vista para mostrar el modal
+    
     }
 
     public function update(Request $request, $id)

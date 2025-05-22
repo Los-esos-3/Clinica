@@ -2,6 +2,8 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <div class="flex justify-center items-center min-h-screen bg-gray-100">
         <div class="w-full max-w-5xl bg-white shadow-md rounded-lg p-8 flex">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
             <!-- Sección izquierda -->
             <div class="w-1/2 p-6">
                 <h2 class="text-2xl font-bold mb-4">Estás a un paso de modernizar tu consultorio.</h2>
@@ -29,11 +31,7 @@
                             loading="lazy">
                         <span>Portal Paciente</span>
                     </div>
-                    <div class="flex items-center space-x-2">
-                        <img src="{{ asset('images/facturacion-icon.png') }}" class="w-6 h-6" alt="Facturación"
-                            loading="lazy">
-                        <span>Facturación</span>
-                    </div>
+               
                     <div class="flex items-center space-x-2">
                         <img src="{{ asset('images/seguridad-icon.png') }}" class="w-6 h-6" alt="Seguridad"
                             loading="lazy">
@@ -291,16 +289,25 @@
                             required>
                     </div>
 
-                    <div>
+                    <div class="relative">
                         <label class="block text-sm text-gray-700 mb-2">Contraseña</label>
-                        <input type="password" name="password"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                        <input type="password" name="password" id="password"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md pr-10" required>
+                        <span onclick="togglePassword('password', this)"
+                            class="absolute right-3 top-9 cursor-pointer text-gray-500">
+                            <i class="fa-solid fa-eye"></i>
+                        </span>
                     </div>
-
-                    <div>
+                    
+                    <!-- Campo: Confirmar Contraseña -->
+                    <div class="relative mt-4">
                         <label class="block text-sm text-gray-700 mb-2">Confirmar Contraseña</label>
-                        <input type="password" name="password_confirmation"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-md" required>
+                        <input type="password" name="password_confirmation" id="password_confirmation"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md pr-10" required>
+                        <span onclick="togglePassword('password_confirmation', this)"
+                            class="absolute right-3 top-9 cursor-pointer text-gray-500">
+                            <i class="fa-solid fa-eye"></i>
+                        </span>
                     </div>
 
                     <div>
@@ -363,7 +370,6 @@
                 </form>
             </div>
         </div>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script>
             function refreshCaptcha() {
                 fetch('/refresh-captcha')
@@ -501,6 +507,22 @@
                     document.getElementById('captchaStatus').classList.add('text-red-500');
                 }
             });
+        </script>
+        <script>
+            function togglePassword(id, el) {
+                const input = document.getElementById(id);
+                const icon = el.querySelector('i');
+        
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.remove("fa-eye");
+                    icon.classList.add("fa-eye-slash");
+                } else {
+                    input.type = "password";
+                    icon.classList.remove("fa-eye-slash");
+                    icon.classList.add("fa-eye");
+                }
+            }
         </script>
     </div>
 </x-guest-layout>
