@@ -118,15 +118,16 @@
                                 </button>
                             </div>
 
+                            <!-- Botón de menú (fuera del modal) -->
                             <div id="tutorial-btn"
-                                class="absolute -inset-4 rounded-full h-10 w-10 bg-white bg-opacity-20 animate-pulse"
-                                style="top: 30px; left: 35px; transform: translate(-50%, -50%); z-index: 52;">
-                                <!-- Botón de menú -->
-                                <button id="toggle-sidebar" class="menu-button p-2.5">
-                                    <i class="fa-solid fa-bars fa-lg"></i>
-                                </button>
-                            </div>
-
+                            class="absolute -inset-4 rounded-full h-10 w-10 bg-white bg-opacity-20 animate-pulse"
+                            style="top: 30px; left: 35px; transform: translate(-50%, -50%); z-index: 52;">
+                            <!-- Botón de menú -->
+                            <button id="toggle-sidebar" class="menu-button p-2.5">
+                                <i class="fa-solid fa-bars fa-lg"></i>
+                            </button>
+                        </div>
+                        
                             <!-- Agrega esto en tu HTML, preferiblemente cerca del botón de hamburguesa -->
                             <div id="tutorial-overlay"
                                 class="fixed inset-0 hidden bg-black bg-opacity-75 z-50 flex items-center justify-center">
@@ -327,6 +328,8 @@
                     <x-dashboard-secretaria-component></x-dashboard-secretaria-component>
                 @endrole
             @endif
+
+        
         </x-app-layout>
     </body>
 
@@ -844,3 +847,4 @@ font-weight: bold;
         window.addEventListener('resize', positionTooltip);
     });
 </script>
+
