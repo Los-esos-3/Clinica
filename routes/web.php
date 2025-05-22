@@ -47,9 +47,15 @@ Route::middleware(['auth', 'trial'])->group(function () {
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     // Redirección para usuarios sin rol
     Route::get('/check-role', function () {
-        if (Auth::user()->roles->isNotEmpty()) {
-            return redirect()->route('dashboard');
+        if (Auth::user()->hasRole('Root')) {
+            return redirect()->route('dashboardAdmin');
         }
+        // }elseif(Auth::user()->hasRole('Root'))
+        // {
+        //     return redirect()->route('roles');
+
+        // }
+
         return redirect()->route('welcome');
     })->name('check-role');
 
@@ -57,6 +63,18 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
 });
 
+Route::middleware(['auth','role:Root'])->group(function()
+{
+    route::get('dashboardAdmin',[RoleController::class, 'index'])->name('dashboardAdmin');
+
+
+       Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
+        Route::resource('roles', RoleController::class);
+        Route::get('/roles/assign/{user}', [RoleController::class, 'assignRole'])->name('roles.assign');
+        Route::post('/roles/assign/{user}', [RoleController::class, 'storeAssignedRole'])
+            ->name('users.assign.role');
+    });
+});
 
     //Rutas para secretaria
     Route::middleware(['auth', 'role:Secretaria'])->group(function () {
@@ -119,7 +137,6 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::delete('/doctores/{id}', [DoctoresController::class, 'destroy'])->name('doctores.destroy');
     });
 
-    // Route::get('/pacientes/filter', [ClinicaController::class, 'filterPatients'])->name('pacientes.filter');
 
     //Rutas De Doctor
     Route::middleware(['auth', 'role:Doctor'])->group(function () {
@@ -177,13 +194,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::resource('doctores', DoctoresController::class);
     });
 
-    Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
-        Route::resource('roles', RoleController::class);
-        Route::get('/roles/assign/{user}', [RoleController::class, 'assignRole'])->name('roles.assign');
-        Route::post('/roles/assign/{user}', [RoleController::class, 'storeAssignedRole'])
-            ->name('users.assign.role');
-    });
-
+ 
     Route::middleware(['auth', 'role:Doctor'])->group(function () {
         Route::get('/doctor/secretarias', [SecretariasDoctorController::class, 'index'])->name('Doctor.Secretaria');
         Route::post('/doctor/secretarias/asignar', [SecretariasDoctorController::class, 'asignarSecretaria'])->name('Doctor.Secretaria.Asignar');

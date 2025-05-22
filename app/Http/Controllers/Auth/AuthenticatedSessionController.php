@@ -24,12 +24,15 @@ class AuthenticatedSessionController
 
         $user = Auth::user();
 
-        if ($user->roles->isEmpty()) {
+        if (Auth::user()->HAsAnyRole('Admin','Doctor','Secretaria')) {
             // Usuario sin roles, redirigir a welcome
-            return redirect()->route('welcome');
+            return redirect()->route('dahsboard');
+        }elseif(Auth::user()->hasRole('Root'))
+        {
+            return redirect()->route('dashboardAdmin');
         }
         // Usuario con roles, redirigir al dashboard
-        return redirect()->intended(route('dashboard'));
+        return redirect()->intended(route('welcome'));
     }
 
     public function destroy(Request $request)

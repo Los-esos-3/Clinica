@@ -15,7 +15,7 @@ class PermissionsAssignate extends Seeder
     public function run(): void
     {
         $rolRoot = Role::create(['name'=>'Root']);
-        $rolRoot->givePermissionTo(Permission::all());
+        $rolRoot->givePermissionTo(['ver roles','crear roles', 'editar roles', 'eliminar roles']);
    
        
         $rolAdmin = Role::create(['name' => 'Admin']);

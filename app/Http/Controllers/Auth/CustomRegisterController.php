@@ -32,9 +32,9 @@ class CustomRegisterController
 
     public function register(Request $request)
     {
+        Log::info('Entro al metodo');
         $UserCaptcha = $request->input('captcha');
         $InputCaptcha = $request->input('captchaText');
-
 
         try {
             // Validar los datos
@@ -51,6 +51,8 @@ class CustomRegisterController
                 }],
             ]);
 
+            Log::info('Pidio y valido los datos');
+            Log::info($request->all());
             if ($validator->fails()) {
                 // Regenerar CAPTCHA para el nuevo intento
                 $newCaptcha = $this->generateCaptcha();
@@ -61,6 +63,7 @@ class CustomRegisterController
                     ->withInput()
                     ->with('captchaText', $newCaptcha);
             }
+            Log::info('Comprobo el captcha y lo regenero');
 
             // Crear el usuario
             $user = User::create([
@@ -73,21 +76,23 @@ class CustomRegisterController
                 'trial_ended' => false // Campo adicional para control
             ]);
 
+            Log::info('creo el usuario');
+            Log::info($user);
+
             $user->assignRole('Admin');
 
-            $user->assignRole('Trial');
-
-            // Limpiar el CAPTCHA de la sesión
-            Session::forget('captcha_code');
+            Log::info('Asigno el rol de admin al usuario');
 
             // Autenticar al usuario
             Auth::login($user);
+            Log::info('Autentico al usuario');
 
-
-
+            // Limpiar el CAPTCHA de la sesión
+            Session::forget('captcha_code');
+            Log::info('Limpio el captcha de la sesion');
 
             return redirect()->route('welcome')
-                ->with('success', '¡Listo! 🎉 Tu cuenta ha sido creada con éxito.  Ahora solo falta un pequeño paso: nuestro equipo revisará tu solicitud y te dará acceso a todo lo que necesitas. ⏳✨  Mientras tanto, ¡prepárate para empezar! Pronto tendrás todo listo para explorar y trabajar. 🚀  ¿Preguntas? No dudes en contactarnos. ¡Estamos aquí para ayudarte! 😊');
+                ->with('success', '¡Listo! 🎉 Tu cuenta ha sido creada con éxito.');
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error en el registro: ' . $e->getMessage());
 
