@@ -1,5 +1,5 @@
 <x-app-layout>
-    @if (Auth::user()->hasAnyRole(['Root', 'Admin']))
+    @if (Auth::user()->hasRole([ 'Admin']))
 
         <div>
             <div x-data="{ activeTab: 'doctor' }">

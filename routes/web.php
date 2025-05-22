@@ -3,6 +3,7 @@
 use App\Http\Controllers\ClinicaController;
 use App\Http\Controllers\ExpedientesController;
 use App\Http\Controllers\ExpedienteController;
+use App\Http\Controllers\MercadoPagoController;
 use App\Http\Controllers\SecretariasDoctorController;
 use App\Http\Controllers\TrabajadoresController;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,7 @@ Route::get('/contactenos', function () {
 //Fin
 
 Route::get('/plans', function () {
-    return view('plans'); // Asegúrate de tener esta vista
+    return view('plans.index'); // Asegúrate de tener esta vista
 })->name('plans');
 
 
@@ -41,40 +42,39 @@ Route::get('/plans', function () {
 
 Route::middleware(['auth', 'trial'])->group(function () {
 
-    
-
-// Grupo de rutas autenticadas
-Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
-    // Redirección para usuarios sin rol
-    Route::get('/check-role', function () {
-        if (Auth::user()->hasRole('Root')) {
-            return redirect()->route('dashboardAdmin');
-        }
-        // }elseif(Auth::user()->hasRole('Root'))
-        // {
-        //     return redirect()->route('roles');
-
-        // }
-
-        return redirect()->route('welcome');
-    })->name('check-role');
-
-    // Definición PRINCIPAL del dashboard
-    Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
-});
-
-Route::middleware(['auth','role:Root'])->group(function()
-{
-    route::get('dashboardAdmin',[RoleController::class, 'index'])->name('dashboardAdmin');
 
 
-       Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
-        Route::resource('roles', RoleController::class);
-        Route::get('/roles/assign/{user}', [RoleController::class, 'assignRole'])->name('roles.assign');
-        Route::post('/roles/assign/{user}', [RoleController::class, 'storeAssignedRole'])
-            ->name('users.assign.role');
+    // Grupo de rutas autenticadas
+    Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
+        // Redirección para usuarios sin rol
+        Route::get('/check-role', function () {
+            if (Auth::user()->hasRole('Root')) {
+                return redirect()->route('dashboardAdmin');
+            }
+            // }elseif(Auth::user()->hasRole('Root'))
+            // {
+            //     return redirect()->route('roles');
+
+            // }
+
+            return redirect()->route('welcome');
+        })->name('check-role');
+
+        // Definición PRINCIPAL del dashboard
+        Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
     });
-});
+
+    Route::middleware(['auth', 'role:Root'])->group(function () {
+        route::get('dashboardAdmin', [RoleController::class, 'index'])->name('dashboardAdmin');
+
+
+        Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
+            Route::resource('roles', RoleController::class);
+            Route::get('/roles/assign/{user}', [RoleController::class, 'assignRole'])->name('roles.assign');
+            Route::post('/roles/assign/{user}', [RoleController::class, 'storeAssignedRole'])
+                ->name('users.assign.role');
+        });
+    });
 
     //Rutas para secretaria
     Route::middleware(['auth', 'role:Secretaria'])->group(function () {
@@ -99,6 +99,13 @@ Route::middleware(['auth','role:Root'])->group(function()
 
     //Rutas de Admin
     Route::middleware(['auth', 'role:Admin'])->group(function () {
+
+        Route::post('/subscribe', [MercadoPagoController::class, 'createSubscription'])->name('subscribe');
+        Route::get('/subscription/success', [MercadoPagoController::class, 'success'])->name('subscription.success');
+        Route::get('/subscription/failure', [MercadoPagoController::class, 'failure'])->name('subscription.failure');
+        Route::get('/subscription/pending', [MercadoPagoController::class, 'pending'])->name('subscription.pending');
+        Route::post('/mercadopago/notification', [MercadoPagoController::class, 'handleNotification'])->name('mp.notification');
+
         Route::get('/Trabajadores', [TrabajadoresController::class, 'index'])->name("Trabajadores.index");
         Route::get('/Trabajadores/create', [TrabajadoresController::class, 'create'])->name('Trabajadores.create');
         Route::post('/Trabajadores/create', [TrabajadoresController::class, 'store'])->name('Trabajadores.store');
@@ -187,14 +194,13 @@ Route::middleware(['auth','role:Root'])->group(function()
     });
     Route::group(['middleware' => ['auth', 'permission:ver empresas']], function () {
         Route::resource('empresas', EmpresaController::class);
-        Route::get('/buscar-usuarios', [EmpresaController::class, 'buscarUsuarios']);
     });
 
     Route::group(['middleware' => ['auth', 'permission: ver doctores']], function () {
         Route::resource('doctores', DoctoresController::class);
     });
 
- 
+
     Route::middleware(['auth', 'role:Doctor'])->group(function () {
         Route::get('/doctor/secretarias', [SecretariasDoctorController::class, 'index'])->name('Doctor.Secretaria');
         Route::post('/doctor/secretarias/asignar', [SecretariasDoctorController::class, 'asignarSecretaria'])->name('Doctor.Secretaria.Asignar');
@@ -221,12 +227,6 @@ Route::middleware(['auth','role:Root'])->group(function()
     Route::delete('/citas/{id}', [CitaController::class, 'destroy'])->name('citas.destroy');
 
     Route::get('/citas/{id}', [CitaController::class, 'show']);
-
-    Route::post('/quejas/enviar', [ComplaintController::class, 'submit'])->name('complaints.submit');
-    Route::get('/contactenos', function () {
-        return view('contactenos');
-    })->name('contactenos.form');
-
 });
 
 
@@ -242,3 +242,8 @@ Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'
 Route::get('/refresh-captcha', [CustomRegisterController::class, 'refreshCaptcha'])->name('refresh.captcha');
 
 Route::post('/validate-captcha', [CustomRegisterController::class, 'validateCaptcha'])->name('validate.captcha');
+
+Route::post('/quejas/enviar', [ComplaintController::class, 'submit'])->name('complaints.submit');
+Route::get('/contactenos', function () {
+    return view('contactenos');
+})->name('contactenos.form');

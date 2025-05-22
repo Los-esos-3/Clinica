@@ -252,10 +252,10 @@
             <h2 class="text-3xl font-bold mb-4">¿Tienes dudas sobre qué plan elegir?</h2>
             <p class="text-xl mb-6">Nuestro equipo está listo para ayudarte a encontrar la mejor solución para tu
                 consultorio.</p>
-            <button
+            <a href="{{ url('/contactenos') }}"
                 class="bg-white text-blue-800 font-bold py-3 px-8 rounded-lg hover:bg-gray-100 transition duration-300">
                 Contáctanos
-            </button>
+            </a>
         </div>
     </main>
 </body>

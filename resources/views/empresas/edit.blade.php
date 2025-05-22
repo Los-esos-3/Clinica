@@ -7,7 +7,7 @@
         </div>
     </x-slot>
 
-    <div class="container py-6">
+    <div class="containerDelForm">
         <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
             <!-- Cabecera con logo actual -->
             <div class="p-8 text-center bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500">
@@ -70,9 +70,9 @@
                     <div class="mb-3">
                         <label for="estado" class="form-label font-semibold">Estado</label>
                         <input type="text" id="estado" name="estado"
-                        value="{{old('estado', $empresa->estado)}}"
-                            class="form-control @error('estado') is-invalid @enderror"
-                            placeholder="Ejemplo: Monterrey" required>
+                            value="{{ old('estado', $empresa->estado) }}"
+                            class="form-control @error('estado') is-invalid @enderror" placeholder="Ejemplo: Monterrey"
+                            required>
                     </div>
 
                     <!-- Ciudad -->
@@ -118,6 +118,44 @@
     </div>
 
     <style>
+        .containerDelForm {
+            width: 100%;
+            padding-right: var(--bs-gutter-x, .75rem);
+            padding-left: var(--bs-gutter-x, .75rem);
+            margin-right: auto;
+            margin-left: auto;
+        }
+
+        @media (min-width: 640px) {
+            .containerDelForm {
+                max-width: 640px;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .containerDelForm {
+                max-width: 768px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .containerDelForm {
+                max-width: 768px;
+            }
+        }
+
+        @media (min-width: 1280px) {
+            .containerDelForm {
+               max-width: 768px;
+            }
+        }
+
+        @media (min-width: 1536px) {
+            .containerDelForm {
+                max-width: 768px;
+            }
+        }
+
         .form-control {
             @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm;
         }

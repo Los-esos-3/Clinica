@@ -60,7 +60,7 @@ class SecretariasController
     {
         $validated = $request->validate([
             'nombre_completo' => 'required|string|max:255',
-            'fecha_nacimiento' => 'required|date',
+            'fecha_nacimiento' => 'nullable|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
             'telefono' => 'nullable|string|max:15',
             'email' => 'nullable|email|unique:secretarias',
@@ -106,8 +106,8 @@ class SecretariasController
     {
         $secretaria = Secretarias::findOrFail($id);
         $validated = $request->validate([
-            'nombre_completo' => 'required|string|max:255',
-            'fecha_nacimiento' => 'required|date',
+             'nombre_completo' => 'required|string|max:255',
+            'fecha_nacimiento' => 'nullable|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
             'telefono' => 'nullable|string|max:15',
             'email' => 'nullable|email|unique:secretarias',

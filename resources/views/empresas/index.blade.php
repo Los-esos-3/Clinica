@@ -35,11 +35,37 @@
                                         enctype="multipart/form-data">
                                         @csrf
 
+                                        <div class="mb-6">
+                                            <label for="logo"
+                                                class="flex justify-center font-semibold text-gray-700">Logo de la
+                                                Empresa</label>
+
+                                            <!-- Contenedor de preview y upload -->
+                                            <div class="flex justify-center items-center py-6 gap-6">
+                                                <!-- Preview del logo (inicialmente oculto) -->
+                                                <div id="logoPreviewContainer" class="hidden">
+                                                    <div class="relative">
+                                                        <img id="logoPreview"
+                                                            class="w-32 h-32 rounded-full object-cover border-2 border-gray-200 shadow-sm">
+                                                        <button type="button" onclick="removeLogo()"
+                                                            class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4"
+                                                                viewBox="0 0 20 20" fill="currentColor">
+                                                                <path fill-rule="evenodd"
+                                                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                                                    clip-rule="evenodd" />
+                                                            </svg>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="mb-3">
                                             <label for="logo" class="form-label font-semibold">Logo</label>
                                             <input type="file"
                                                 class="form-control @error('logo') is-invalid @enderror" id="logo"
-                                                name="logo" accept="image/*" Esto permite solo imágenes -->
+                                                name="logo" accept="image/*"   onchange="previewLogo(this)">
                                             <div id="logoPreview" class="mt-2 hidden">
                                                 <img id="preview" class="w-32 h-32 object-cover rounded-lg">
                                             </div>
@@ -201,7 +227,8 @@
                                             </svg>
                                         </div>
                                         <span class="text-gray-700 font-medium">
-                                            {{ $empresa->direccion }}, {{ $empresa->ciudad }},{{$empresa->estado}}, {{ $empresa->pais }}
+                                            {{ $empresa->direccion }}, {{ $empresa->ciudad }},{{ $empresa->estado }},
+                                            {{ $empresa->pais }}
                                         </span>
                                     </div>
                                 </div>
@@ -474,6 +501,56 @@
 
     <!-- Agregar este script para el horario personalizado -->
     <script>
+        function previewLogo(input) {
+            const previewContainer = document.getElementById('logoPreviewContainer');
+            const preview = document.getElementById('logoPreview');
+            const fileName = document.getElementById('logoFileName');
+
+            if (input.files && input.files[0]) {
+                // Validar tamaño del archivo (max 2MB)
+                if (input.files[0].size > 2 * 1024 * 1024) {
+                    alert('El archivo es demasiado grande. El tamaño máximo permitido es 2MB.');
+                    input.value = '';
+                    return;
+                }
+
+                // Validar tipo de archivo
+                const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!validTypes.includes(input.files[0].type)) {
+                    alert('Formato de archivo no válido. Por favor sube una imagen JPG, PNG o GIF.');
+                    input.value = '';
+                    return;
+                }
+
+                // Mostrar preview
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.src = e.target.result;
+                    previewContainer.classList.remove('hidden');
+                    fileName.textContent = input.files[0].name;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function removeLogo() {
+            const input = document.getElementById('logo');
+            const previewContainer = document.getElementById('logoPreviewContainer');
+            const fileName = document.getElementById('logoFileName');
+
+            input.value = '';
+            previewContainer.classList.add('hidden');
+            fileName.textContent = 'Ningún archivo seleccionado';
+        }
+
+        // Si hay un error de validación y ya había una imagen seleccionada
+        document.addEventListener('DOMContentLoaded', function() {
+            const logoInput = document.getElementById('logo');
+            if (logoInput.files.length > 0) {
+                previewLogo(logoInput);
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', function() {
             const paisInput = document.getElementById('pais');
             const estadoInput = document.getElementById('estado');
@@ -489,11 +566,12 @@
                         // Rellenar los campos solo si están vacíos
                         if (!paisInput.value) paisInput.value = data.country_name || '';
                         if (!ciudadInput.value) ciudadInput.value = data.city || '';
-                        if(!estadoInput.value) estadoInput.value =data.region ||'';
+                        if (!estadoInput.value) estadoInput.value = data.region || '';
                     } catch (error) {
                         console.error('Error al obtener la ubicación:', error);
                         alert(
-                            'No se pudo obtener la ubicación automáticamente. Por favor, ingrésela manualmente.');
+                            'No se pudo obtener la ubicación automáticamente. Por favor, ingrésela manualmente.'
+                        );
                     }
                 }
 

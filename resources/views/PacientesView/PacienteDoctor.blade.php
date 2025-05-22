@@ -4,6 +4,13 @@
             <x-sidebar :user="Auth::user()" />
         </aside>
 
+        @if (Auth::user()->hasRole('Admin'))
+            @if (!Auth::user()->empresa)
+                <x-overlay-empresa />
+            @endif
+        @endif
+
+
         <div class="flex-grow bg-gray-100 transition-all duration-300 ml-0 md:ml-64" id="content">
 
             <div class="flex items-center justify-between bg-gray-300 p-3 mb-6 border">

@@ -25,11 +25,12 @@
         header {
             background: linear-gradient(to right, #a7d3e0, #003366);
             color: #fff;
-            padding: 10px 30px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: relative;
+            flex-wrap: wrap;
         }
 
         .header-title {
@@ -37,12 +38,12 @@
             font-weight: 400;
             color: #fff;
             text-align: left;
-            margin-left: 20px;
+            margin-left: 0;
             transition: transform 0.3s ease;
         }
 
         .header-title .kaiser {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: bold;
             color: #fff;
             text-transform: uppercase;
@@ -51,13 +52,17 @@
             display: block;
         }
 
+        header nav {
+            width: auto;
+        }
+
         header nav ul {
             list-style-type: none;
             padding: 0;
             margin: 0;
             display: flex;
             align-items: center;
-            gap: 40px;
+            gap: 20px;
         }
 
         header nav ul li {
@@ -67,11 +72,11 @@
         header nav ul li a {
             color: #fff;
             text-decoration: none;
-            padding: 10px 15px;
+            padding: 8px 12px;
             display: inline-block;
             transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease;
-            /* Transiciones más suaves */
             border-radius: 20px;
+            font-size: 14px;
         }
 
         header nav ul li a:hover {
@@ -120,231 +125,135 @@
             display: block;
         }
 
-        @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            header nav ul {
-                flex-direction: column;
-                gap: 20px;
-                margin-top: 20px;
-            }
-
-            header .header-logo {
-                margin-bottom: 15px;
-            }
-
-            #auth-links {
-                right: auto;
-                left: 50%;
-                transform: translateX(-50%);
-            }
-        }
-
-
-
-        .content h1 {
-            font-size: 3rem;
-            margin: 0 0 20px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .content p {
-            font-size: 1.5rem;
-            max-width: 800px;
-            text-align: center;
-        }
-
-        footer {
-            background-color: #003366;
-            color: #fff;
-            padding: 10px 20px;
+        .content {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
             align-items: center;
-        }
-
-        .footer-container {
-            display: flex;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-            width: 100%;
-        }
-
-        .footer-column {
-            width: 30%;
-            margin: 0;
-            text-align: left;
-        }
-
-        .footer-column h4 {
+            padding: 20px;
             margin-top: 0;
-            border-bottom: 2px solid #88c8de;
-            padding-bottom: 5px;
+            flex-direction: row;
+        }
+        .content-text
+        {
+            flex:1;
         }
 
-        .footer-column ul {
-            list-style: none;
-            margin: 0;
-            padding: 0;
+        .content-text h1 {
+            text-align: left;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.8rem;
+            line-height: 1.4;
+            color: #0A1B43;
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+            margin-top: 0;
+            padding: 10px 0;
         }
 
-        .footer-column li {
-            margin-bottom: 10px;
+        .content-text h2 {
+            text-align: left;
+            font-family: 'Lato', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.4;
+            color: #3E5485;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
+            padding: 5px 0;
         }
-
-        .footer-column a {
-            color: #fff;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        .footer-column a:hover {
-            color: #ccc;
-        }
-
-        .footer-copyright {
-            background-color: #002244;
-            padding: 10px;
-            text-align: center;
-            clear: both;
-            width: 100%;
-        }
-
-        .footer-opening-hours {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            margin: 20px 0;
-        }
-
-        .footer-opening-hours h4 {
-            margin: 0 10px 0 0;
-        }
-
-        .footer-opening-hours p {
-            margin: 0 10px;
-        }
-
-        .footer-column li {
-            margin-bottom: 30px;
-        }
-
 
         .hero {
             background-color: #f2f4f7;
-            padding: 60px 0;
+            padding: 30px 0;
         }
 
-        .hero .container {
+        .container {
             padding: 0 50px;
+            
+            margin: 0 auto;
         }
 
         .hero-content {
             display: flex;
             flex-direction: row-reverse;
-            /* Invierte el orden de los elementos */
             align-items: center;
-            /* Alinea los elementos verticalmente al centro */
             justify-content: space-between;
-            /* Espacia los elementos */
+            gap: 5%;
         }
 
         .hero-content-last {
             display: flex;
             align-items: center;
-            justify-content: space-between !important;
+            justify-content: space-between;
+            gap: 5%;
         }
 
         .hero-text {
             flex: 1;
-            max-width: 50%;
         }
 
         .hero-text h2 {
-            font-size: 36px;
+            font-size: 1.6rem;
             color: #0A1B43;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .hero-text p {
-            font-size: 16px;
+            font-size: 1rem;
             color: #3E5485;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         .hero-images {
             display: flex;
-            flex: 1;
             flex-wrap: wrap;
-            gap: 10px;
-            /* Espacio entre las imágenes */
+            gap: 5%;
         }
 
         .hero-images-last {
             display: flex;
             flex-wrap: wrap;
-
         }
 
-        .hero-images img {
+        .hero-images img, .hero-images-last img {
             border-radius: 10px;
-            box-shadow: 0 4px 8px #3a4f7c(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(58, 79, 124, 0.1);
             max-width: 100%;
             height: auto;
         }
 
-
         .features-list {
-            text-align: center;
+            text-align: left;
             list-style: none;
             padding: 0;
         }
 
         .features-list li {
-            font-size: 16px;
+            font-size: 14px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
         .features-list li .icon-check {
-            font-size: 18px;
+            font-size: 16px;
             color: #00aaff;
+            margin-right: 5px;
         }
-
 
         .image-column {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-        }
-
-        .middle-image {
-            margin-top: 15px;
+            gap: 15px;
         }
 
         .features {
             background-color: #f2f4f7;
-            padding: 40px 0;
+            padding: 30px 0;
         }
 
         .features .container {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: center;
             align-items: flex-start;
-            max-width: 1100px;
-            margin: 0 auto;
-            gap: 20px;
+            gap: 15px;
         }
 
         .feature {
@@ -353,8 +262,7 @@
             background-color: #ffffff;
             padding: 15px;
             border-radius: 8px;
-            width: 90%;
-            max-width: 500px;
+            width: 40%;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             transition: background 0.4s ease, color 0.4s ease, transform 0.4s ease;
         }
@@ -368,147 +276,40 @@
             color: #333;
             font-weight: bold;
             margin-bottom: 5px;
+            font-size: 1rem;
+        }
+
+        .feature p {
+            font-size: 0.9rem;
         }
 
         .feature img {
-            width: 50px;
-            height: 50px;
+            width: 40px;
+            height: 40px;
             object-fit: contain;
             transition: filter 0.4s ease;
         }
 
-        .user-avatar {
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .user-dropdown {
-            position: absolute;
-            z-index: 1;
-            background-color: white;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-            padding: 10px;
-            border-radius: 5px;
-            top: 50px;
-            right: 0;
-        }
-
-        .user-dropdown span {
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .card {
-            width: fit-content;
-            height: fit-content;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 25px 25px;
-            gap: 20px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
-        }
-
-        .socialContainer {
-            width: 52px;
-            height: 52px;
-            border-radius: 5px;
-            background-color: rgb(44, 44, 44);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            transition-duration: 0.3s;
-        }
-
-        /* instagram*/
-        .containerOne:hover {
-            background-color: #d62976;
-            transition-duration: 0.3s;
-        }
-
-        /* Tiktok*/
-        .containerTwo:hover {
-            background-color: #25f4ee;
-            transition-duration: 0.3s;
-        }
-
-        /* Facebook*/
-        .containerThree:hover {
-            background-color: #1877f2;
-            transition-duration: 0.3s;
-        }
-
-        /* Whatsapp*/
-        .containerFour:hover {
-            background-color: green;
-            transition-duration: 0.3s;
-        }
-
-        .socialContainer:active {
-            transform: scale(0.9);
-            transition-duration: 0.3s;
-        }
-
-        .socialSvg {
-            width: 20px;
-        }
-
-        .largeIcon {
-            width: 27px;
-        }
-
-        .socialSvg path {
-            fill: rgb(255, 255, 255);
-        }
-
-        .socialContainer:hover .socialSvg {
-            animation: slide-in-top 0.3s both;
-        }
-
-        @keyframes slide-in-top {
-            0% {
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
+        .content-img {
             width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.4);
+            max-width: 400px;
+            margin-left: 0;
         }
 
-        .close {
-            color: #fff;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close:hover,
-        .close:focus {
-            color: #000;
-            text-decoration: none;
-            cursor: pointer;
+        .modal-content {
+            background: linear-gradient(135deg, #a7d3e0, #003366);
+            padding: 1.8em;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: .4s ease-in-out;
+            color: white;
         }
 
         .modal-content h2 {
             text-align: center;
-            margin: 0.5em 0 1.5em;
+            margin: 0.5em 0 1.2em;
             color: #fff;
-            font-size: 1.5em;
+            font-size: 1.3em;
         }
 
         .field {
@@ -523,8 +324,8 @@
         }
 
         .input-icon {
-            height: 1.3em;
-            width: 1.3em;
+            height: 1.2em;
+            width: 1.2em;
             fill: #666;
         }
 
@@ -534,36 +335,28 @@
             outline: none;
             width: 100%;
             color: #333;
-            font-size: 1em;
+            font-size: 0.9em;
         }
 
         .input-field::placeholder {
             color: #999;
         }
 
-        .input-field:-webkit-autofill,
-        .input-field:-webkit-autofill:hover,
-        .input-field:-webkit-autofill:focus {
-            -webkit-box-shadow: 0 0 0px 1000px white inset;
-            -webkit-text-fill-color: #333;
-        }
-
         .btn {
             display: flex;
             flex-direction: column;
             gap: 1em;
-            margin-top: 2em;
+            margin-top: 1.5em;
         }
 
-        .button1,
-        .button2 {
+        .button1, .button2 {
             padding: 0.7em 1.5em;
             border-radius: 25px;
             border: none;
             outline: none;
             transition: .3s ease-in-out;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.9em;
             width: 100%;
         }
 
@@ -596,147 +389,176 @@
             background-color: transparent;
             color: white;
             cursor: pointer;
-            font-size: 1em;
+            font-size: 0.9em;
             text-decoration: underline;
         }
 
-        .button3:hover {
-            color: #ccc;
-        }
-
-        body.modal-open {
-            overflow: hidden;
+        .modal-overlay {
+            display: none;
             position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-        }
-
-        .modal {
-            overflow-y: auto;
-            max-height: 100vh;
-        }
-
-        .content {
-            display: flex;
+            background-color: rgba(0, 0, 0, 0.75);
+            justify-content: center;
             align-items: center;
-
-            padding: 25px;
-            margin-top: 0;
-            /* Reduce el margen superior del contenedor */
+            z-index: 9999;
         }
 
-        .content-text h1 {
-            flex: 2;
-            /* Hace que el texto ocupe más espacio */
-            text-align: left;
-            font-family: 'Lato', sans-serif;
-            /* Tipografía moderna */
-            font-size: 2 rem;
-            /* Tamaño del texto reducido */
-            line-height: 1.4;
-            /* Espaciado entre líneas */
-            color: #0A1B43;
-            /* Color del texto */
-            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
-            /* Sombra ligera */
-            margin-top: 0;
-            /* Reduce o elimina el margen superior */
-            padding: 20px;
-            /* Espaciado interno */
-        }
-
-        .content-text h2 {
-            flex: 2;
-            /* Hace que el texto ocupe más espacio */
-            text-align: left;
-            font-family: 'Lato', sans-serif;
-            /* Tipografía moderna */
-            font-size: 1.3rem;
-            /* Tamaño del texto reducido */
-            line-height: 1.4;
-            /* Espaciado entre líneas */
-            color: #3E5485;
-            /* Color del texto */
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
-            /* Sombra ligera */
-            padding: 10px;
-            /* Espaciado interno reducido */
-        }
-
-        .hero-text {
-            flex: 1;
-            max-width: 50%;
-        }
-
-        .hero-text h2 {
-            font-size: 36px;
-            color: #0A1B43;
-            margin-bottom: 20px;
-        }
-
-        .hero-text p {
-            font-size: 16px;
-            color: #3E5485;
-            margin-bottom: 20px;
-        }
-
-        .image-column {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .content-img {
-            width: 100%;
-            max-width: 500px;
-            /* Ajusta este valor según el ancho deseado */
-            margin-left: 20px;
-            /* Espacio entre el texto y el formulario */
-        }
-
-        .modal-content {
+        .modal-content-success {
             background: linear-gradient(135deg, #a7d3e0, #003366);
-            padding: 2.5em;
-            /* Más padding para hacerlo más grande */
-            border-radius: 25px;
+            padding: 2rem;
+            border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: .4s ease-in-out;
-            color: white;
+            max-width: 90%;
+            width: 320px;
+            text-align: center;
         }
 
-        .field {
-            padding: 0.8em;
-            /* Más padding para los campos */
-            margin-bottom: 1.2em;
-            /* Más espacio entre campos */
+        .hidden {
+            display: none !important;
         }
 
-        .input-field {
-            font-size: 1.1em;
-            /* Texto más grande */
+        .close {
+            color: #fff;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        .button1,
-        .button2 {
-            padding: 0.9em 1.5em;
-            /* Botones más grandes */
-            font-size: 1.1em;
+        .close:hover,
+        .close:focus {
+            color: #ccc;
+            text-decoration: none;
         }
 
-        .button3 {
-            font-size: 1em;
+        footer {
+            background-color: #003366;
+            color: #fff;
+            padding: 10px 20px;
         }
 
-        /* Ajusta el diseño responsive */
+        .footer-copyright {
+            background-color: #002244;
+            padding: 10px;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Media queries para distintos tamaños de pantalla */
         @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .header-title {
+                margin-bottom: 10px;
+                margin-left: 0;
+                text-align: center;
+                width: 100%;
+            }
+
+            header nav {
+                width: 100%;
+            }
+
+            header nav ul {
+                justify-content: center;
+                gap: 10px;
+            }
+
             .content {
                 flex-direction: column;
+                padding: 15px;
+            }
+
+            .content-text h1 {
+                font-size: 1.5rem;
+                padding: 5px 0;
+            }
+
+            .content-text h2 {
+                font-size: 1rem;
             }
 
             .content-img {
                 margin-left: 0;
-                margin-top: 30px;
+                margin-top: 20px;
+            }
+
+            .hero-content, .hero-content-last {
+                flex-direction: column;
+            }
+
+            .hero-text {
+                flex: none;
                 max-width: 100%;
+                text-align: center;
+            }
+
+            .hero-text h2 {
+                font-size: 1.4rem;
+                text-align: center;
+            }
+
+            .features-list li {
+                justify-content: center;
+            }
+
+            .hero-images, .hero-images-last {
+                justify-content: center;
+                margin-top: 15px;
+            }
+
+            .feature {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-title .kaiser {
+                font-size: 20px;
+            }
+
+            header nav ul li a {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+
+            .content-text h1 {
+                font-size: 1.3rem;
+            }
+
+            .content-text h2 {
+                font-size: 0.9rem;
+            }
+
+            .modal-content {
+                padding: 1.5em;
+            }
+
+            .button1, .button2, .button3 {
+                font-size: 0.85em;
+            }
+
+            .feature {
+                padding: 10px;
+            }
+
+            .feature-title {
+                font-size: 0.9rem;
+            }
+
+            .feature p {
+                font-size: 0.8rem;
+            }
+
+            .feature img {
+                width: 35px;
+                height: 35px;
             }
         }
     </style>
@@ -766,9 +588,9 @@
                     @auth
                         <li>
                             @if (Auth::user()->hasAnyRole(['Admin', 'Doctor', 'Secretaria']))
-                                <a href="{{ url('/dashboard') }}" style="margin-right: 15px;">Agenda</a>
+                                <a href="{{ url('/dashboard') }}">Agenda</a>
                             @elseif (Auth::user()->hasRole('Root'))
-                                <a href="{{ url('/dashboardAdmin') }}" style="margin-right: 15px;">Dashboard</a>
+                                <a href="{{ url('/dashboardAdmin') }}">Dashboard</a>
                             @endif
                         </li>
                     @endauth
@@ -776,8 +598,6 @@
             </ul>
         </nav>
     </header>
-
-
 
     <div class="content">
         <div class="content-text">
@@ -789,7 +609,7 @@
         @if (Auth::check())
             <div class="content-img">
                 <img src="{{ asset('images/Doctorviendolaptop.jpg') }}" alt="Doctor viendo una computadora"
-                    style="width: 500px; height: auto;">
+                    style="width: 100%; height: auto;">
             </div>
         @else
             <div class="content-img">
@@ -833,37 +653,30 @@
                 </div>
             </div>
         @endif
-
-
     </div>
-
-
 
     <section class="hero">
         <div class="container">
             <div class="hero-content">
                 <div class="hero-text">
-                    <h2 style="text-align: center">Innovamos en nuestros expedientes clínicos</h2>
+                    <h2>Innovamos en nuestros expedientes clínicos</h2>
                     <p>Transforma la forma en que gestionas tus expedientes clínicos con nuestra solución digital
                         avanzada. Simplificamos tus procesos, mejoramos la accesibilidad y garantizamos un manejo seguro
                         y eficiente de la información médica, todo desde una plataforma centralizada.</p>
                     <ul class="features-list">
-                        <li><i class="icon-check"></i> Tecnología de última generación</li>
-                        <li><i class="icon-check"></i> Expedientes rápidos</li>
-                        <li><i class="icon-check"></i> Especialistas capacitados en nuestro sistema</li>
+                        <li><i class="icon-check">✓</i> Tecnología de última generación</li>
+                        <li><i class="icon-check">✓</i> Expedientes rápidos</li>
+                        <li><i class="icon-check">✓</i> Especialistas capacitados en nuestro sistema</li>
                     </ul>
                 </div>
                 <div class="hero-images">
                     <div class="image-column">
-                        <img src="images/Doctorarubia.jpg" width="450px" alt="Doctora de pelo rubio" />
+                        <img src="images/Doctorarubia.jpg" width="350px" height="350px" alt="Doctora de pelo rubio" />
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </section>
-
-
 
     <section class="hero">
         <div class="container">
@@ -876,27 +689,22 @@
                         intercambio de expedientes de manera eficiente. Con Expemed Software, dedicas más tiempo a tus
                         pacientes y menos a la administración, facilitando el trabajo en equipo y la comunicación
                         con tus compañeros o pacientes.</p>
-                    <ul class="features-list">
-                    </ul>
                 </div>
                 <div class="hero-images-last">
                     <div class="image-column">
-                        <img src="images/Chicadenaranja.jpg" alt="naranjachica" />
+                        <img src="images/Chicadenaranja.jpg" width="350px" height="350px" alt="naranjachica" />
                     </div>
                 </div>
             </div>
         </div>
-        </div>
     </section>
-
 
     <section class="features">
         <div class="container">
             <div class="feature">
                 <div class="feature-content">
                     <h3 class="feature-title">Gestión Eficiente de Expedientes</h3>
-                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.
-                    </p>
+                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.</p>
                 </div>
                 <img src="images/icons8-grupo-50.png" alt="Icono de Gestión de Expedientes">
             </div>
@@ -912,21 +720,21 @@
                     <h3 class="feature-title">Asesoría Médica Especializada</h3>
                     <p>Accede a un equipo de expertos que te brindan apoyo y asesoría en el uso del sistema.</p>
                 </div>
-                <img src="images/icons8-bata-de-laboratorio-médicos-50.png" alt="">
+                <img src="images/icons8-bata-de-laboratorio-médicos-50.png" alt="Icono de Asesoría Médica">
             </div>
             <div class="feature">
                 <div class="feature-content">
                     <h3 class="feature-title">Atención Personalizada</h3>
                     <p>Recibe soporte técnico y atención a cualquier inconveniente que surja en el uso del software.</p>
                 </div>
-                <img src="images/icons8-24-7-signo-abierto-64.png" alt="">
+                <img src="images/icons8-24-7-signo-abierto-64.png" alt="Icono de Atención Personalizada">
             </div>
         </div>
     </section>
 
-    <div id="successModal" class="modal">
-        <div class="modal-content">Mi local
-            <span class="close" onclick="document.getElementById('successModal').style.display='none'">&times;</span>
+    <div id="successModal" class="modal-overlay hidden">
+        <div class="modal-content-success">
+            <span class="close" onclick="document.getElementById('successModal').classList.add('hidden')">&times;</span>
             <h2>Registro Exitoso</h2>
             <p>{{ session('success') }}</p>
         </div>
@@ -940,54 +748,46 @@
             <p>&copy; {{ $year }} Todos los derechos reservados por WD3.</p>
         </div>
     </footer>
+
+    <script>
+        function toggleUserMenu() {
+            var dropdown = document.getElementById('user-dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        }
+
+        // Cerrar el menú al hacer clic fuera
+        document.addEventListener('click', function(event) {
+            var dropdown = document.getElementById('user-dropdown');
+            var avatar = document.querySelector('.user-avatar');
+
+            if (dropdown && avatar && !avatar.contains(event.target) && !dropdown.contains(event.target)) {
+                dropdown.style.display = 'none';
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Verifica si hay un mensaje de éxito en la sesión
+            @if(session('success'))
+                document.getElementById('successModal').classList.remove('hidden');
+            @endif
+            
+            var successModal = document.getElementById('successModal');
+            var span = document.getElementsByClassName("close")[0];
+
+            if (span && successModal) {
+                span.onclick = function() {
+                    successModal.classList.add('hidden');
+                }
+
+                // Cerrar el modal al hacer clic fuera
+                window.onclick = function(event) {
+                    if (event.target == successModal) {
+                        successModal.classList.add('hidden');
+                    }
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
-
-
-<script>
-    function toggleUserMenu() {
-        var dropdown = document.getElementById('user-dropdown');
-        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-    }
-
-    // Cerrar el menú al hacer clic fuera
-    document.addEventListener('click', function(event) {
-        var dropdown = document.getElementById('user-dropdown');
-        var avatar = document.querySelector('.user-avatar');
-
-        if (!avatar.contains(event.target) && !dropdown.contains(event.target)) {
-            dropdown.style.display = 'none';
-        }
-    });
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var modal = document.getElementById('loginModal');
-        var successModal = document.getElementById('successModal');
-        var span = document.getElementsByClassName("close")[0];
-        var body = document.body;
-
-        // Mostrar el modal de éxito si hay un mensaje de éxito
-        @if (session('success'))
-            successModal.style.display = "block";
-            body.classList.add('modal-open');
-        @endif
-
-        span.onclick = function() {
-            modal.style.display = "none";
-            successModal.style.display = "none";
-            body.classList.remove('modal-open');
-        }
-
-        // Cerrar el modal al hacer clic fuera
-        window.onclick = function(event) {
-            if (event.target == modal || event.target == successModal) {
-                modal.style.display = "none";
-                successModal.style.display = "none";
-                body.classList.remove('modal-open');
-            }
-        }
-    });
-</script>
