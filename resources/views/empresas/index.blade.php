@@ -31,7 +31,7 @@
                                         </div>
                                     @endif
 
-                                    <form method="POST" action="{{ route('empresas.store') }}"
+                                    <form method="POST" autocomplete="on" action="{{ route('empresas.store') }}"
                                         enctype="multipart/form-data">
                                         @csrf
 

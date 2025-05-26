@@ -25,7 +25,7 @@
 
             <!-- Formulario de edición -->
             <div class="p-8">
-                <form method="POST" action="{{ route('empresas.update', $empresa->id) }}"
+                <form method="POST" autocomplete="on" action="{{ route('empresas.update', $empresa->id) }}"
                     enctype="multipart/form-data">
                     @csrf
                     @method('PUT')

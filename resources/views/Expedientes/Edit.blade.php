@@ -19,7 +19,7 @@
                         </div>
                     @endif
 
-                    <form method="POST" action="{{ route('Expedientes.update', $expediente->id) }}">
+                    <form method="POST" autocomplete="on" action="{{ route('Expedientes.update', $expediente->id) }}">
                         @csrf
                         @method('PUT')
 

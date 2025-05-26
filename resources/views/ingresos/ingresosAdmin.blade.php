@@ -178,7 +178,7 @@
                 <button class="dropbtn">{{ Auth::user()->name }}</button>
                 <div class="dropdown-content">
                     <a href="{{ route('profile.show') }}">Perfil</a>
-                    <form method="POST" action="{{ route('logout') }}">
+                    <form method="POST" autocomplete="on" action="{{ route('logout') }}">
                         @csrf
                         <a href="{{ route('logout') }}" onclick="event.preventDefault(); this.closest('form').submit();">Cerrar Sesión</a>
                     </form>

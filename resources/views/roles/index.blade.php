@@ -245,7 +245,7 @@
                     <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('welcome') }}"><i class="fa-solid fa-house  mr-2"></i><span>Inicio</span></a>
                 </div>
 
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" autocomplete="on" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="logout-button">
                         <i class="fas fa-sign-out-alt"></i>

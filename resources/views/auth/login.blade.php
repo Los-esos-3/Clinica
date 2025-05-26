@@ -96,7 +96,7 @@
             </div>
             <h2 class="text-2xl font-bold text-center mb-4">Iniciar Sesión</h2>
 
-            <form method="POST" action="{{ route('login') }}" id="login-form">
+            <form method="POST" action="{{ route('login') }}" id="login-form" autocomplete="on">
                 @csrf
                 <div class="mb-4 input-field" id="email-field">
                     <input type="email" name="email" id="email" placeholder="Correo electrónico" required>

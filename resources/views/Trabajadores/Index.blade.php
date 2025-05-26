@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="flex items-center ml-4">
-                    <form method="GET" action="" class="flex items-center ml-4">
+                    <form method="GET" autocomplete="on" action="" class="flex items-center ml-4">
                         <div class="relative flex">
                             <input type="text" name="search" placeholder="Buscar" value="{{ request('search') }}"
                                 class="border rounded-l px-4 py-2" style="width: 300px;">

@@ -9,7 +9,7 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
                 <div class="p-6">
-                    <form method="POST" action="{{ route('Expedientes.store') }}">
+                    <form method="POST" autocomplete="on" action="{{ route('Expedientes.store') }}">
                         @csrf
                         <div class="mb-4">
                             <label for="numero_expediente" class="block text-sm font-medium text-gray-700">Número de

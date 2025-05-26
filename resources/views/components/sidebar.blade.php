@@ -116,7 +116,7 @@
             </div>
             <!-- Botón de salir -->
             <div>
-                <form method="POST" action="{{ route('logout') }}">
+                <form method="POST" autocomplete="on" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit"><i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></button>
                 </form>
