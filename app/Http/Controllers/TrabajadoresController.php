@@ -60,14 +60,13 @@ class TrabajadoresController
 
 
         try {
-            $admin = Auth::user();
             // Crear el usuario
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'empresa_id' => Auth::user()->empresa_id,
-                'trial_end_at' =>$admin->trial_end_at,
+                'trial_end_at' =>Auth::user()->trial_end_at,
             ]);
 
             // Asignar el rol al usuario
