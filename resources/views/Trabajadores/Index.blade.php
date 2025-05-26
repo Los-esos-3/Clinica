@@ -96,12 +96,106 @@
             grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 2.5rem;
         }
+
+        .overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.92);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(6px);
+}
+
+.hidden {
+    display: none;
+}
+
+.welcome-modal {
+    background: #ffffff;
+    width: 90%;
+    max-width: 420px;
+    padding: 1.5rem 1.5rem 2rem;
+    border-radius: 0.75rem;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    animation: fadeIn 0.4s ease-out;
+    border: 1px solid #e5e7eb;
+}
+
+.welcome-modal .title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.welcome-modal .message {
+    font-size: 0.95rem;
+    color: #374151;
+    line-height: 1.5;
+    margin-bottom: 1.8rem;
+    text-align: left;
+}
+
+.welcome-button {
+    display: inline-block;
+    background-color: #2563eb;
+    color: white;
+    padding: 0.6rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.welcome-button:hover {
+    background-color: #1d4ed8;
+    box-shadow: 0 6px 18px rgba(30, 64, 175, 0.5);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
     </style>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
+
 <body>
+  <!-- Modal de Bienvenida -->
+  <div id="welcomeOverlay" class="overlay hidden">
+    <div class="welcome-modal">
+        <h2 class="title">👋 ¡Bienvenido al Espacio de Trabajadores!</h2>
+        <p class="message">
+            ¡Felicitaciones! Has dado el primer paso hacia la digitalización de tu clínica.<br><br>
+
+            En este espacio podrás:<br>
+            • Registrar y gestionar tu personal médico y administrativo<br>
+            • Asignar roles y permisos específicos a cada miembro<br>
+            • Mantener un registro ordenado de especialidades y áreas<br><br>
+
+            Comienza registrando a tus trabajadores para construir un equipo sólido y profesional.
+            Una buena gestión del personal es clave para el éxito de tu clínica.
+        </p>
+        <a href="{{ route('Trabajadores.create') }}" class="welcome-button">
+            <i class="fas fa-user-plus mr-2"></i> Comenzar a registrar trabajadores
+        </a>
+    </div>
+</div>
+
     <div class="min-h-screen flex">
         <aside>
             <x-sidebar :user="Auth::user()" />
@@ -264,6 +358,16 @@
                         closeConfirmDeleteModal(); // Cierra el modal después de eliminar
                     }
                 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        if (!localStorage.getItem("welcomeShown")) {
+            document.getElementById("welcomeOverlay").classList.remove("hidden");
+            localStorage.setItem("welcomeShown", "true");
+        }
+    });
+</script>
+
 
                 <div>
                     {{-- Paginación --}}
