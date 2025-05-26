@@ -18,15 +18,24 @@ use App\Models\Trabajadores;
 
 class TrabajadoresController
 {
+   
+
     public function index()
     {
         $user = Auth::user();
 
-        // $trabajadores = Trabajadores::with('user', 'empresa')->paginate(9); // Paginación de 9 elementos por página
+        // Verificar si el usuario tiene una empresa asociada
         if ($user->empresa_id) {
-                $trabajadores = Trabajadores::where('empresa_id', $user->empresa_id)->pluck('id')->paginate(9);
+            // Obtener los trabajadores asociados a la misma empresa, cargando relaciones y paginando
+            $trabajadores = Trabajadores::with('user', 'empresa') // Cargar relaciones para evitar problemas N+1
+                ->where('empresa_id', $user->empresa_id)
+                ->paginate(9); // Paginación de 9 elementos por página
+        } else {
+            // Si el usuario no tiene una empresa asociada, devolver una colección vacía
+            $trabajadores = collect([])->paginate(9);
         }
-     return view('Trabajadores.index',compact('trabajadores')); // Nota: minúsculas
+
+        return view('Trabajadores.index', compact('trabajadores')); // Nota: minúsculas
     }
 
     public function create()
