@@ -24,7 +24,7 @@ class TrabajadoresController
 
         // $trabajadores = Trabajadores::with('user', 'empresa')->paginate(9); // Paginación de 9 elementos por página
         if ($user->empresa_id) {
-                $trabajadores = Trabajadores::were('empresa_id', $user->empresa_id)->pluck('id')->paginate(9);
+                $trabajadores = Trabajadores::where('empresa_id', $user->empresa_id)->pluck('id')->paginate(9);
         }
      return view('Trabajadores.index',compact('trabajadores')); // Nota: minúsculas
     }
