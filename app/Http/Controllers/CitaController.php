@@ -139,7 +139,7 @@ class CitaController
 
                 $pacientes = Paciente::where('secretaria_id', $secretaria->id)->get();
 
-                return view('Secretaria.dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
+                return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
             }
 
             return redirect()->back()->with('error', 'No se encontraron citas para esta secretaria.');
