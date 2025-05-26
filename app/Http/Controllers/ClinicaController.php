@@ -89,7 +89,7 @@ class ClinicaController
 
     public function create()
     {
-        return view('pacientes.create');
+        return view('Pacientes.Create');
     }
 
     public function store(Request $request)
