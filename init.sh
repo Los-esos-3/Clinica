@@ -14,13 +14,12 @@ until nc -z -v -w30 $DB_HOST $DB_PORT; do
   sleep 5
 done
 
-    echo "Iniciando migraciones:"
-    php artisan migrate --force
+    # echo "Iniciando migraciones:"
+    # php artisan migrate --force
 
-    # Ejecutar seeders solo si se aplicaron migraciones
-    echo "Ejecutando seeders:"
-    php artisan db:seed --class=Permissions --force
-    php artisan db:seed --class=PermissionsAssignate --force
+    # echo "Ejecutando seeders:"
+    # php artisan db:seed --class=Permissions --force
+    # php artisan db:seed --class=PermissionsAssignate --force
     
 
 
