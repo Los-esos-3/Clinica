@@ -13,6 +13,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.0",
+        "mercadopago/dx-php": "3.0.8",
         "mews/captcha": "3.4",
         "psy/psysh": "^0.12.4",
         "spatie/laravel-permission": "^6.10"

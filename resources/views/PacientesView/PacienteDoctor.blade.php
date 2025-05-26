@@ -4,6 +4,13 @@
             <x-sidebar :user="Auth::user()" />
         </aside>
 
+        @if (Auth::user()->hasRole('Admin'))
+            @if (!Auth::user()->empresa)
+                <x-overlay-empresa />
+            @endif
+        @endif
+
+
         <div class="flex-grow bg-gray-100 transition-all duration-300 ml-0 md:ml-64" id="content">
 
             <div class="flex items-center justify-between bg-gray-300 p-3 mb-6 border">
@@ -23,7 +30,7 @@
 
 
                 <div class="flex items-center ml-4">
-                    <form method="GET" action="{{ route('Pacientes.PacientesView') }}" class="flex items-center ml-4">
+                    <form method="GET" autocomplete="on" action="{{ route('Pacientes.PacientesView') }}" class="flex items-center ml-4">
                         <div class="relative flex">
                             <input type="text" name="search" placeholder="Buscar" value="{{ request('search') }}"
                                 class="border rounded-l px-4 py-2" style="width: 300px;">

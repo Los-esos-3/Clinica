@@ -15,7 +15,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('verificar.email') }}" class="space-y-4">
+            <form method="POST" action="{{ route('verificar.email') }}" autocomplete="on" class="space-y-4">
                 @csrf
                 
                 <div>

@@ -25,7 +25,7 @@
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="p-6 bg-white border-b border-gray-200">
                             <!-- Formulario para asignar una secretaria -->
-                            <form method="POST" action="{{ route('Doctor.Secretaria.Asignar') }}">
+                            <form method="POST" autocomplete="on" action="{{ route('Doctor.Secretaria.Asignar') }}">
                                 @csrf
                                 <div class="mb-4">
                                     <label for="secretaria_id" class="block text-sm font-medium text-gray-700">
@@ -52,7 +52,7 @@
                                     @foreach ($secretariasAsignadas as $secretaria)
                                         <li class="flex items-center justify-between p-4 border-b">
                                             <span>{{ $secretaria->user->name }}</span>
-                                            <form method="POST"
+                                            <form method="POST" autocomplete="on"
                                                 action="{{ route('Doctor.Secretaria.Desasignar', $secretaria->id) }}">
                                                 @csrf
                                                 @method('DELETE')

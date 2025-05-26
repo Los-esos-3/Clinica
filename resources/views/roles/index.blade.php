@@ -222,6 +222,11 @@
                 min-width: 100%;
             }
         }
+
+        .pagination {
+            justify-content: end;
+            margin-right: 30px;
+        }
     </style>
 
     <div class="min-h-screen bg-gray-100">
@@ -236,7 +241,11 @@
             <div class="nav-right">
                 <div class="current-date" id="current-date"></div>
 
-                <form method="POST" action="{{ route('logout') }}">
+                <div>
+                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('welcome') }}"><i class="fa-solid fa-house  mr-2"></i><span>Inicio</span></a>
+                </div>
+
+                <form method="POST" autocomplete="on" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="logout-button">
                         <i class="fas fa-sign-out-alt"></i>

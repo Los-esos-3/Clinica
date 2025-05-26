@@ -9,7 +9,7 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
                 <div class="p-6">
-                    <form method="POST" action="{{ route('consultas.update', $consulta->id) }}">
+                    <form method="POST" autocomplete="on" action="{{ route('consultas.update', $consulta->id) }}">
                         @csrf
                         @method('PUT')
 

@@ -9,7 +9,7 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="overflow-hidden bg-white shadow-md sm:rounded-lg">
                 <div class="p-6">
-                    <form method="POST" action="{{ route('Pacientes.update', $paciente->id) }}" enctype="multipart/form-data">
+                    <form method="POST" autocomplete="on" action="{{ route('Pacientes.update', $paciente->id) }}" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
 

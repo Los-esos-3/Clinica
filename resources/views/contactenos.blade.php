@@ -235,7 +235,7 @@
                 </div>
             @endif
 
-            <form method="POST" action="{{ route('complaints.submit') }}">               
+            <form method="POST" action="{{ route('complaints.submit') }}" autocomplete="on">               
                  @csrf
                 <div class="form-row">
                     <div class="form-col">

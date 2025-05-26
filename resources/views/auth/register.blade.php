@@ -1,5 +1,5 @@
 <x-guest-layout>
-    @vite(['resources/css/app.css','resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <div class="flex justify-center items-center min-h-screen bg-gray-100">
         <div class="w-full max-w-5xl bg-white shadow-md rounded-lg p-8 flex">
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -272,7 +272,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('register') }}" class="space-y-4">
+                <form method="POST" action="{{ route('register') }}" autocomplete="on" class="space-y-4">
                     @csrf
 
                     <div>
@@ -333,7 +333,8 @@
                     <div class="mt-4">
                         <label class="block text-sm text-gray-700 mb-2">Código de verificación:</label>
                         <div class="flex items-center mb-2">
-                            <div  name="captchaText" class="border border-gray-300 rounded-md p-2 bg-gray-100 font-mono text-lg select-none"
+                            <div name="captchaText"
+                                class="border border-gray-300 rounded-md p-2 bg-gray-100 font-mono text-lg select-none"
                                 id="captchaText"
                                 style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none;">
                                 {{ $captchaText ?? '' }}
@@ -385,6 +386,8 @@
                 if (value.length === 0) {
                     document.getElementById('captchaInput').classList.remove('border-green-500', 'border-red-500');
                     document.getElementById('captchaStatus').textContent = '';
+                    captchaValid = false;
+                    updateSubmitButton();
                     return;
                 }
 
@@ -395,7 +398,7 @@
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                         },
                         body: JSON.stringify({
-                            captcha: value
+                            captcha: value.toUpperCase() // Convertir a mayúsculas antes de enviar
                         })
                     })
                     .then(response => response.json())

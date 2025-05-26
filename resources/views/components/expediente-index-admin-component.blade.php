@@ -74,7 +74,7 @@
                 <button class="bg-gray-600 rounded px-4 py-2">{{ Auth::user()->name }}</button>
                 <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg hidden">
                     <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Perfil</a>
-                    <form method="POST" action="{{ route('logout') }}" class="block">
+                    <form method="POST" action="{{ route('logout') }}" autocomplete="on" class="block">
                         @csrf
                         <button type="submit" class="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200">Cerrar Sesión</button>
                     </form>
