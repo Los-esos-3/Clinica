@@ -66,7 +66,7 @@ class TrabajadoresController
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'empresa_id' => Auth::user()->empresa_id,
-                'trial_end_at' =>Auth::user()->trial_end_at,
+                'trial_ends_at' =>Auth::user()->trial_ends_at,
             ]);
 
             // Asignar el rol al usuario
