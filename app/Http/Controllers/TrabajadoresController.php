@@ -60,12 +60,14 @@ class TrabajadoresController
 
 
         try {
+            $admin = Auth::user();
             // Crear el usuario
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'empresa_id' => Auth::user()->empresa_id,
+                'trial_end_at' =>$admin->trial_end_at,
             ]);
 
             // Asignar el rol al usuario
@@ -87,7 +89,7 @@ class TrabajadoresController
                 'tel' => $validated['tel'] ?? null,
                 'rol' => $validated['rol'],
                 'empresa_id' => Auth::user()->empresa_id,
-            ]);
+           ]);
 
             // Crear registro en la tabla correspondiente (doctor o secretaria)
             if ($validated['rol'] === 'Doctor') {
