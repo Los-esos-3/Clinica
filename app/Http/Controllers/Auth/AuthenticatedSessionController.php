@@ -25,8 +25,7 @@ class AuthenticatedSessionController
         $user = Auth::user();
 
         if (Auth::user()->HAsAnyRole('Admin','Doctor','Secretaria')) {
-            // Usuario sin roles, redirigir a welcome
-            return redirect()->route('dahsboard');
+            return redirect()->route('dashboard');
         }elseif(Auth::user()->hasRole('Root'))
         {
             return redirect()->route('dashboardAdmin');
