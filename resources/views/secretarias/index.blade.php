@@ -322,30 +322,7 @@
                                         Ver más información
                                     </button>
 
-                                    <!-- Información Adicional (oculta por defecto) -->
-                                    <div id="infoAdicional{{ $secretaria->id }}" class="info-adicional">
-                                        <!-- Información Laboral -->
-                                        <div class="info-section">
-                                            <h4 class="font-semibold text-gray-700 mb-2">Información Laboral</h4>
-                                            <p><span class="font-medium">Departamento:</span> {!! $secretaria->departamento ?: '<span class="text-red-500">No proporcionado</span>' !!}
-                                            </p>
-                                            <p><span class="font-medium">Experiencia Laboral:</span>
-                                                {!! $secretaria->experiencia_laboral ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
-                                            <p><span class="font-medium">Idiomas:</span> {!! $secretaria->idiomas ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
-                                        </div>
-
-
-
-                                        <!-- Contacto de Emergencia -->
-                                        <div class="info-section">
-                                            <h4 class="font-semibold text-gray-700 mb-2">Contacto de Emergencia</h4>
-                                            <p><span class="font-medium">Nombre:</span> {!! $secretaria->contacto_emergencia_nombre ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
-                                            <p><span class="font-medium">Relación:</span> {!! $secretaria->contacto_emergencia_relacion ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
-                                            <p><span class="font-medium">Teléfono:</span> {!! $secretaria->contacto_emergencia_telefono ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
-                                        </div>
-
-                                        <!-- Botones de Acción -->
-                                        <div class="flex justify-end space-x-2 mt-4">
+                                      <div class="flex justify-center space-x-6 mt-4">
                                             <a href="{{ route('secretarias.edit', $secretaria->id) }}"
                                                 class="editBtn transform hover:scale-110 transition-transform duration-200">
                                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -393,6 +370,31 @@
                                                 </svg>
                                             </button>
                                         </div>
+
+                                    <!-- Información Adicional (oculta por defecto) -->
+                                    <div id="infoAdicional{{ $secretaria->id }}" class="info-adicional">
+                                        <!-- Información Laboral -->
+                                        <div class="info-section">
+                                            <h4 class="font-semibold text-gray-700 mb-2">Información Laboral</h4>
+                                            <p><span class="font-medium">Departamento:</span> {!! $secretaria->departamento ?: '<span class="text-red-500">No proporcionado</span>' !!}
+                                            </p>
+                                            <p><span class="font-medium">Experiencia Laboral:</span>
+                                                {!! $secretaria->experiencia_laboral ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                            <p><span class="font-medium">Idiomas:</span> {!! $secretaria->idiomas ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                        </div>
+
+
+
+                                        <!-- Contacto de Emergencia -->
+                                        <div class="info-section">
+                                            <h4 class="font-semibold text-gray-700 mb-2">Contacto de Emergencia</h4>
+                                            <p><span class="font-medium">Nombre:</span> {!! $secretaria->contacto_emergencia_nombre ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                            <p><span class="font-medium">Relación:</span> {!! $secretaria->contacto_emergencia_relacion ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                            <p><span class="font-medium">Teléfono:</span> {!! $secretaria->contacto_emergencia_telefono ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
+                                        </div>
+
+                                        <!-- Botones de Acción -->
+                                      
                                     </div>
                                 </div>
                             </div>

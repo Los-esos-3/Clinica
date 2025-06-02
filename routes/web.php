@@ -51,16 +51,14 @@ Route::middleware(['auth', 'trial'])->group(function () {
             if (Auth::user()->hasRole('Root')) {
                 return redirect()->route('dashboardAdmin');
             }
-            // }elseif(Auth::user()->hasRole('Root'))
-            // {
-            //     return redirect()->route('roles');
 
-            // }
-
+            if(Auth::user()->hasAnyRole('Admin','Doctor','Secretaria'))
+            {
+                return redirect()->route('dashboard');
+            }
             return redirect()->route('welcome');
         })->name('check-role');
 
-        // Definición PRINCIPAL del dashboard
         Route::get('/dashboard', [CitaController::class, 'index'])->name('dashboard');
     });
 

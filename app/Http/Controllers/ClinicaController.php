@@ -89,7 +89,7 @@ class ClinicaController
 
     public function create()
     {
-        return view('pacientes.create');
+        return view('Pacientes.Create');
     }
 
     public function store(Request $request)
@@ -150,7 +150,7 @@ class ClinicaController
     {
         $this->authorize('editar pacientes');
         $paciente = Paciente::findOrFail($id); // Obtener el paciente por ID
-        return view('pacientes.edit', compact('paciente')); // Retornar la vista para editar el paciente
+        return view('Pacientes.Edit', compact('paciente')); // Retornar la vista para editar el paciente
     }
 
     public function show($id)

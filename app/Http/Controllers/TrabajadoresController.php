@@ -18,10 +18,24 @@ use App\Models\Trabajadores;
 
 class TrabajadoresController
 {
+
+
     public function index()
     {
-        $trabajadores = Trabajadores::with('user', 'empresa')->paginate(9); // Paginación de 9 elementos por página
-     return view('trabajadores.index',compact('trabajadores')); // Nota: minúsculas
+        $user = Auth::user();
+
+        // Verificar si el usuario tiene una empresa asociada
+        if ($user->empresa_id) {
+            // Obtener los trabajadores asociados a la misma empresa, cargando relaciones y paginando
+            $trabajadores = Trabajadores::with('user', 'empresa') // Cargar relaciones para evitar problemas N+1
+                ->where('empresa_id', $user->empresa_id)
+                ->paginate(9); // Paginación de 9 elementos por página
+        } else {
+            // Si el usuario no tiene una empresa asociada, devolver una colección vacía
+            $trabajadores = collect([])->paginate(9);
+        }
+
+        return view('Trabajadores.index', compact('trabajadores')); // Nota: minúsculas
     }
 
     public function create()
@@ -34,69 +48,72 @@ class TrabajadoresController
 
     public function store(Request $request)
     {
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validar como imagen
+            'email' => 'required|string|email|max:255|unique:users,email', // Validar correo electrónico
+            'tel' => 'nullable|string|max:15', // Validar teléfono
+            'password' => 'required|string|min:8|confirmed', // Validar contraseña
+            'rol' => 'required|exists:roles,name',
+        ]);
+
+
         try {
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
-                'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Validar como imagen
-                'email' => 'required|string|email|max:255|unique:users,email', // Validar correo electrónico
-                'tel' => 'nullable|string|max:15', // Validar teléfono
-                'password' => 'required|string|min:8|confirmed', // Validar contraseña
-                'rol' => 'required|exists:roles,name',
+            // Crear el usuario
+            $user = User::create([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'empresa_id' => Auth::user()->empresa_id,
+                'trial_ends_at' =>Auth::user()->trial_ends_at,
             ]);
+
+            // Asignar el rol al usuario
+            $user->assignRole($validated['rol']);
+
+            // Guardar la foto de perfil si existe
+            $fotoPerfilPath = null;
+            if ($request->hasFile('foto_perfil')) {
+                $fotoPerfilPath = $request->file('foto_perfil')->store('fotos_perfil', 'public');
+            }
+
+            // Crear el trabajador
+            $trabajador = Trabajadores::create([
+                'nombre' => $validated['name'],
+                'foto_perfil' => $fotoPerfilPath,
+                'user_id' => $user->id,
+                'correo' => $validated['email'],
+                'password' => Hash::make($validated['password']),
+                'tel' => $validated['tel'] ?? null,
+                'rol' => $validated['rol'],
+                'empresa_id' => Auth::user()->empresa_id,
+           ]);
+
+            // Crear registro en la tabla correspondiente (doctor o secretaria)
+            if ($validated['rol'] === 'Doctor') {
+                Doctores::create([
+                    'trabajador_id' => $trabajador->id,
+                    'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
+                    'especialidad' => 'General',
+                    'user_id' => $user->id,
+                    'email' => $validated['email'],
+                    'nombre_completo' => $validated['name'],
+                    'empresa_id' => Auth::user()->empresa_id,
+                ]);
+            } elseif ($validated['rol'] === 'Secretaria') {
+                Secretarias::create([
+                    'trabajador_id' => $trabajador->id,
+                    'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
+                    'user_id' => $user->id,
+                    'nombre_completo' => $validated['name'],
+                    'email' => $validated['email'],
+                    'empresa_id' => Auth::user()->empresa_id,
+                ]);
+            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Error de validación: ' . $e->getMessage());
             return redirect()->back()->withErrors($e->errors())->withInput();
-        }
-
-        // Crear el usuario
-        $user = User::create([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'empresa_id' => Auth::user()->empresa_id,
-        ]);
-
-        // Asignar el rol al usuario
-        $user->assignRole($validated['rol']);
-
-        // Guardar la foto de perfil si existe
-        $fotoPerfilPath = null;
-        if ($request->hasFile('foto_perfil')) {
-            $fotoPerfilPath = $request->file('foto_perfil')->store('fotos_perfil', 'public');
-        }
-
-        // Crear el trabajador
-        $trabajador = Trabajadores::create([
-            'nombre' => $validated['name'],
-            'foto_perfil' => $fotoPerfilPath,
-            'user_id' => $user->id,
-            'correo' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'tel' => $validated['tel'] ?? null,
-            'rol' => $validated['rol'],
-            'empresa_id' => Auth::user()->empresa_id,
-        ]);
-
-        // Crear registro en la tabla correspondiente (doctor o secretaria)
-        if ($validated['rol'] === 'Doctor') {
-            Doctores::create([
-                'trabajador_id' => $trabajador->id,
-                'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
-                'especialidad' => 'General',
-                'user_id' => $user->id,
-                'email' => $validated['email'],
-                'nombre_completo' => $validated['name'],
-                'empresa_id' => Auth::user()->empresa_id,
-            ]);
-        } elseif ($validated['rol'] === 'Secretaria') {
-            Secretarias::create([
-                'trabajador_id' => $trabajador->id,
-                'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
-                'user_id' => $user->id,
-                'nombre_completo' => $validated['name'],
-                'email' => $validated['email'],
-                'empresa_id' => Auth::user()->empresa_id,
-            ]);
         }
 
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador creado exitosamente.');
