@@ -21,7 +21,7 @@ class TrabajadoresController
     public function index()
     {
         $trabajadores = Trabajadores::with('user', 'empresa')->paginate(9); // Paginación de 9 elementos por página
-        return view("Trabajadores.index", compact('trabajadores'));
+     return view('trabajadores.index',compact('trabajadores')); // Nota: minúsculas
     }
 
     public function create()
