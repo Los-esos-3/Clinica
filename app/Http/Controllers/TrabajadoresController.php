@@ -19,24 +19,34 @@ use App\Models\Trabajadores;
 class TrabajadoresController
 {
 
-
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
+        $search = trim(strtolower($request->input('search')));
 
-        // Verificar si el usuario tiene una empresa asociada
+        // Iniciar la consulta base con relaciones
+        $query = Trabajadores::with('user', 'empresa');
+
+        // Filtrar por empresa si el usuario tiene empresa_id
         if ($user->empresa_id) {
-            // Obtener los trabajadores asociados a la misma empresa, cargando relaciones y paginando
-            $trabajadores = Trabajadores::with('user', 'empresa') // Cargar relaciones para evitar problemas N+1
-                ->where('empresa_id', $user->empresa_id)
-                ->paginate(9); // Paginación de 9 elementos por página
-        } else {
-            // Si el usuario no tiene una empresa asociada, devolver una colección vacía
-            $trabajadores = collect([])->paginate(9);
+            $query->where('empresa_id', $user->empresa_id);
         }
 
-        return view('Trabajadores.index', compact('trabajadores')); // Nota: minúsculas
+        // Aplicar búsqueda si existe
+        if ($search) {
+            $query->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%'])
+                    ->orWhere('correo', 'LIKE', '%' . $search . '%')
+                    ->orWhere('rol', 'LIKE', '%'. $search. '%');
+            });
+        }
+
+        // Finalmente aplicar paginación
+        $trabajadores = $query->paginate(9);
+
+        return view('Trabajadores.index', compact('trabajadores', 'search'));
     }
+
 
     public function create()
     {
@@ -66,7 +76,7 @@ class TrabajadoresController
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'empresa_id' => Auth::user()->empresa_id,
-                'trial_ends_at' =>Auth::user()->trial_ends_at,
+                'trial_ends_at' => Auth::user()->trial_ends_at,
             ]);
 
             // Asignar el rol al usuario
@@ -88,7 +98,7 @@ class TrabajadoresController
                 'tel' => $validated['tel'] ?? null,
                 'rol' => $validated['rol'],
                 'empresa_id' => Auth::user()->empresa_id,
-           ]);
+            ]);
 
             // Crear registro en la tabla correspondiente (doctor o secretaria)
             if ($validated['rol'] === 'Doctor') {
