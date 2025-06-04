@@ -276,7 +276,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('register') }}" autocomplete="on" class="space-y-4">
+                <form method="POST" action="{{ route('register.submit') }}" autocomplete="on" class="space-y-4">
                     @csrf
 
                     <div>
@@ -362,9 +362,12 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
-                        CREAR CUENTA
-                    </button>
+                    <button formaction="{{ route('enviar.codigo') }}" formmethod="POST"
+                    class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
+                    CREAR CUENTA
+                </button>
+                
+                    
 
 
                     <p class="text-sm text-gray-600 text-center mt-4">

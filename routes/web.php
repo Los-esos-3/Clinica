@@ -21,7 +21,6 @@ use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\Auth\CustomRegisterController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\VerificacionController;
-
 //Rutas para usuarios
 Route::get('/', function () {
     return view('welcome');
@@ -229,18 +228,17 @@ Route::middleware(['auth', 'trial'])->group(function () {
     Route::get('/citas/{id}', [CitaController::class, 'show']);
 });
 
+Route::get('/verificacion', function () {
+    return view('verificacion');
+})->name('verificacion');
 
+Route::post('/verificar-codigo', [VerificacionController::class, 'verificarCodigo'])->name('verificar.codigo');
+Route::post('/enviar-codigo', [VerificacionController::class, 'enviarCodigo'])->name('enviar.codigo');
 
 
 Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [CustomRegisterController::class, 'register'])->name('register.submit');
-Route::get('/verificar-email', [CustomRegisterController::class, 'verifyForm'])->name('verificar.email.view');
-Route::post('/verificar-email', [CustomRegisterController::class, 'verifyCode'])->name('verificar.email');
 Route::post('/refresh-captcha', [CustomRegisterController::class, 'refreshCaptcha'])->name('refresh.captcha');
-
-Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'])->name('register');
-Route::get('/refresh-captcha', [CustomRegisterController::class, 'refreshCaptcha'])->name('refresh.captcha');
-
 Route::post('/validate-captcha', [CustomRegisterController::class, 'validateCaptcha'])->name('validate.captcha');
 
 Route::post('/quejas/enviar', [ComplaintController::class, 'submit'])->name('complaints.submit');

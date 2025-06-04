@@ -33,7 +33,10 @@ class User extends Authenticatable
         'empresa_id',
         'comments',
         'trial_ends_at',
-        'registration_source' // Asegúrate de que esté aquí
+        'registration_source', // Asegúrate de que esté aquí
+        'verification_code',
+        'email_verified_at'
+
     ];
 
     /**

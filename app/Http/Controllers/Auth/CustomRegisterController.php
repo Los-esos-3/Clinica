@@ -20,7 +20,7 @@ class CustomRegisterController
         return view('auth.register', ['captchaText' => $captchaCode]);
     }
 
-     protected function generateCaptcha()
+    protected function generateCaptcha()
     {
         $characters = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
         $captchaCode = '';
@@ -32,9 +32,6 @@ class CustomRegisterController
 
     public function register(Request $request)
     {
-        $UserCaptcha = $request->input('captcha');
-        $InputCaptcha = $request->input('captchaText');
-
         try {
             // Validar los datos
             $validator = Validator::make($request->all(), [
@@ -43,6 +40,9 @@ class CustomRegisterController
                 'phone' => ['required', 'string', 'regex:/^[0-9+\-\s()]{7,15}$/'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'comments' => ['nullable', 'string', 'max:500'],
+                'selected_plan' => ['required', 'string', 'in:basico,popular,premium'],
+                'plan_days' => ['required', 'integer', 'min:1'],
+                'plan_price' => ['required', 'numeric', 'min:0'],
                 'captcha' => ['required', 'string', function ($attribute, $value, $fail) {
                     if ($value !== Session::get('captcha_code')) {
                         $fail('El código de verificación no es correcto.');
@@ -51,7 +51,6 @@ class CustomRegisterController
             ]);
 
             if ($validator->fails()) {
-                // Regenerar CAPTCHA para el nuevo intento
                 $newCaptcha = $this->generateCaptcha();
                 Session::put('captcha_code', $newCaptcha);
 
@@ -60,6 +59,12 @@ class CustomRegisterController
                     ->withInput()
                     ->with('captchaText', $newCaptcha);
             }
+            // Guardar los datos del formulario temporalmente en sesión
+            Session::put('registration_data', $request->all());
+
+
+            return redirect()->route('verificacion.enviar', ['email' => $request->email]);
+            $planExpiresAt = now()->addDays($request->plan_days);
 
             // Crear el usuario
             $user = User::create([
@@ -71,10 +76,9 @@ class CustomRegisterController
                 'comments' => $request->comments,
                 'trial_ends_at' => now()->addDays(30), // Fecha de fin de prueba
                 'trial_ended' => false, // Campo adicional para control
-
+                'selected_plan' => $request->selected_plan,
+                'plan_expires_at' => $planExpiresAt,
             ]);
-
-            Log::info('Teléfono recibido:', ['phone' => $request->phone]);
 
 
             $user->syncRoles('Admin');
@@ -85,7 +89,8 @@ class CustomRegisterController
             // Limpiar el CAPTCHA de la sesión
             Session::forget('captcha_code');
 
-            return redirect()->route('dashboard');
+            return redirect()->route('dashboard')
+                ->with('success', '¡Registro exitoso! Tu plan ' . ucfirst($request->selected_plan) . ' está activo hasta ' . $planExpiresAt->format('d/m/Y'));
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error en el registro: ' . $e->getMessage());
 
@@ -113,8 +118,8 @@ class CustomRegisterController
 
     public function validateCaptcha(Request $request)
     {
-        $inputCaptcha = strtoupper($request->input('captcha'));
-        $sessionCaptcha = strtoupper(Session::get('captcha_code'));
+        $inputCaptcha = $request->input('captcha');
+        $sessionCaptcha = Session::get('captcha_code');
 
         return response()->json([
             'isValid' => $inputCaptcha === $sessionCaptcha

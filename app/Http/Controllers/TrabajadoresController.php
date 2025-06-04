@@ -31,7 +31,6 @@ class TrabajadoresController
         if ($user->empresa_id) {
             $query->where('empresa_id', $user->empresa_id);
         }
-
         // Aplicar búsqueda si existe
         if ($search) {
             $query->where(function ($q) use ($search) {
