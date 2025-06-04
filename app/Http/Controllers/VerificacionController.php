@@ -10,9 +10,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Mail\CodigoVerificacionMail;
+use Illuminate\Support\Facades\Route;
 
 class VerificacionController 
 {
+    public function index(Request $request)
+    {
+        $this->enviarCodigo($request);
+
+        return view('verificacion');
+    }
     public function enviarCodigo(Request $request)
     {
         $request->validate([
@@ -37,9 +44,6 @@ class VerificacionController
         // Envío del correo al usuario que se está registrando
         Mail::to($request->email)->send(new CodigoVerificacionMail($codigo));
 
-
-        // Redirige a la vista para ingresar el código
-        return redirect()->route('verificacion')->with('status', 'Código enviado a tu correo.');
     }
 
     public function verificarCodigo(Request $request)
@@ -62,17 +66,14 @@ class VerificacionController
             }
     
             // Crear el usuario
-            $planExpiresAt = now()->addDays($registrationData['plan_days']);
-    
+          
             $user = User::create([
                 'name' => $registrationData['name'],
                 'email' => $registrationData['email'],
                 'phone' => $registrationData['phone'],
                 'password' => Hash::make($registrationData['password']),
                 'comments' => $registrationData['comments'] ?? null,
-                'selected_plan' => $registrationData['selected_plan'],
-                'plan_expires_at' => $planExpiresAt,
-                'trial_ends_at' => $planExpiresAt,
+                'trial_ends_at' => now()->addDay(30),
                 'trial_ended' => false
             ]);
     

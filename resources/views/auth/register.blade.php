@@ -278,7 +278,6 @@
 
                 <form method="POST" action="{{ route('register.submit') }}" autocomplete="on" class="space-y-4">
                     @csrf
-
                     <div>
                         <label class="block text-sm text-gray-700 mb-2">Tu Nombre completo</label>
                         <input type="text" name="name"
@@ -362,7 +361,7 @@
                         @enderror
                     </div>
 
-                    <button formaction="{{ route('enviar.codigo') }}" formmethod="POST"
+                    <button type="submit"
                     class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
                     CREAR CUENTA
                 </button>
