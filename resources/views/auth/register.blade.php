@@ -46,10 +46,9 @@
                         <!-- Plan Básico -->
                         <div class="relative group w-full">
                             <div
-                                class="absolute -inset-1 bg-gradient-to-r from-blue-300 to-blue-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500">
-                            </div>
+                                class="absolute -inset-1 bg-gradient-to-r from-blue-300 to-blue-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
                             <div
-                                class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-blue-400 hover:shadow-lg active:scale-95">
+                                class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-blue-400 hover:shadow-lg active:scale-95 cursor-pointer plan-option" data-plan="basico" data-days="30" data-price="150">
                                 <div class="flex items-center">
                                     <div
                                         class="h-12 w-12 bg-blue-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
@@ -111,10 +110,9 @@
                         <!-- Plan Popular -->
                         <div class="relative group w-full">
                             <div
-                                class="absolute -inset-1 bg-gradient-to-r from-purple-300 to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500">
-                            </div>
+                                class="absolute -inset-1 bg-gradient-to-r from-purple-300 to-purple-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
                             <div
-                                class="relative bg-white border-2 border-purple-500 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:shadow-lg active:scale-95">
+                                class="relative bg-white border-2 border-purple-500 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:shadow-lg active:scale-95 cursor-pointer plan-option" data-plan="popular" data-days="180" data-price="699">
                                 <div class="absolute -top-3 right-4">
                                     <span
                                         class="bg-gradient-to-r from-purple-400 to-purple-600 text-white text-sm px-4 py-1 rounded-full uppercase tracking-wider font-semibold shadow-lg">Más
@@ -189,10 +187,9 @@
                         <!-- Plan Premium -->
                         <div class="relative group w-full">
                             <div
-                                class="absolute -inset-1 bg-gradient-to-r from-pink-300 via-yellow-300 to-pink-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500">
-                            </div>
+                                class="absolute -inset-1 bg-gradient-to-r from-pink-300 via-yellow-300 to-pink-500 rounded-lg blur opacity-0 group-hover:opacity-75 transition duration-500"></div>
                             <div
-                                class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-pink-400 hover:shadow-lg active:scale-95">
+                                class="relative bg-white border-2 border-gray-200 rounded-lg p-4 transition-all duration-500 transform hover:-translate-x-2 hover:border-pink-400 hover:shadow-lg active:scale-95 cursor-pointer plan-option" data-plan="premium" data-days="365" data-price="1200">
                                 <div class="flex items-center">
                                     <div
                                         class="h-12 w-12 bg-gradient-to-r from-pink-100 to-yellow-100 rounded-full flex items-center justify-center group-hover:animate-pulse mr-4">
@@ -261,6 +258,13 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Campo oculto para el plan seleccionado -->
+                <input type="hidden" name="selected_plan" id="selected_plan" value="">
+                <input type="hidden" name="plan_days" id="plan_days" value="">
+                <input type="hidden" name="plan_price" id="plan_price" value="">
+
+            
             </div>
 
             <!-- Sección derecha (Formulario) -->
@@ -272,7 +276,7 @@
                     </div>
                 @endif
 
-                <form method="POST" action="{{ route('register') }}" autocomplete="on" class="space-y-4">
+                <form method="POST" action="{{ route('register.submit') }}" autocomplete="on" class="space-y-4">
                     @csrf
 
                     <div>
@@ -358,70 +362,25 @@
                         @enderror
                     </div>
 
-                    <button type="submit" class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
-                        CREAR CUENTA
-                    </button>
+                    <button formaction="{{ route('enviar.codigo') }}" formmethod="POST"
+                    class="w-full bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600">
+                    CREAR CUENTA
+                </button>
+                
+                    
 
 
                     <p class="text-sm text-gray-600 text-center mt-4">
                         Al dar clic en "Registrarme" estás aceptando nuestros
                         <a href="#" class="text-blue-500 underline">términos y condiciones de uso</a>.
                     </p>
+                        <!-- Mensaje de plan seleccionado -->
+                <div id="plan_message" class="mt-4 p-4 bg-blue-100 border border-blue-400 text-blue-700 rounded hidden">
+                    <p class="text-center font-semibold"></p>
+                </div>
                 </form>
             </div>
         </div>
-        <script>
-            function refreshCaptcha() {
-                fetch('/refresh-captcha')
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('captchaText').textContent = data.captcha;
-                        document.getElementById('captchaInput').value = '';
-                        document.getElementById('captchaInput').classList.remove('border-green-500', 'border-red-500');
-                        document.getElementById('captchaStatus').textContent = '';
-                    });
-            }
-
-            function validateCaptcha(value) {
-                if (value.length === 0) {
-                    document.getElementById('captchaInput').classList.remove('border-green-500', 'border-red-500');
-                    document.getElementById('captchaStatus').textContent = '';
-                    captchaValid = false;
-                    updateSubmitButton();
-                    return;
-                }
-
-                fetch('/validate-captcha', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            captcha: value.toUpperCase() // Convertir a mayúsculas antes de enviar
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        const input = document.getElementById('captchaInput');
-                        const status = document.getElementById('captchaStatus');
-
-                        if (data.isValid) {
-                            input.classList.remove('border-red-500');
-                            input.classList.add('border-green-500');
-                            status.textContent = '✓ Código correcto';
-                            status.classList.remove('text-red-500');
-                            status.classList.add('text-green-500');
-                        } else {
-                            input.classList.remove('border-green-500');
-                            input.classList.add('border-red-500');
-                            status.textContent = '✗ Código incorrecto';
-                            status.classList.remove('text-green-500');
-                            status.classList.add('text-red-500');
-                        }
-                    });
-            }
-        </script>
         <script>
             let captchaValid = false;
 
@@ -448,41 +407,41 @@
                 }
 
                 fetch('/validate-captcha', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        },
-                        body: JSON.stringify({
-                            captcha: value
-                        })
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        captcha: value
                     })
-                    .then(response => response.json())
-                    .then(data => {
-                        const input = document.getElementById('captchaInput');
-                        const status = document.getElementById('captchaStatus');
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const input = document.getElementById('captchaInput');
+                    const status = document.getElementById('captchaStatus');
 
-                        if (data.isValid) {
-                            input.classList.remove('border-red-500');
-                            input.classList.add('border-green-500');
-                            status.textContent = '✓ Código correcto';
-                            status.classList.remove('text-red-500');
-                            status.classList.add('text-green-500');
-                            captchaValid = true;
-                        } else {
-                            input.classList.remove('border-green-500');
-                            input.classList.add('border-red-500');
-                            status.textContent = '✗ Código incorrecto';
-                            status.classList.remove('text-green-500');
-                            status.classList.add('text-red-500');
-                            captchaValid = false;
-                        }
-                        updateSubmitButton();
-                    });
+                    if (data.isValid) {
+                        input.classList.remove('border-red-500');
+                        input.classList.add('border-green-500');
+                        status.textContent = '✓ Código correcto';
+                        status.classList.remove('text-red-500');
+                        status.classList.add('text-green-500');
+                        captchaValid = true;
+                    } else {
+                        input.classList.remove('border-green-500');
+                        input.classList.add('border-red-500');
+                        status.textContent = '✗ Código incorrecto';
+                        status.classList.remove('text-green-500');
+                        status.classList.add('text-red-500');
+                        captchaValid = false;
+                    }
+                    updateSubmitButton();
+                });
             }
 
             function updateSubmitButton() {
-                const submitButton = document.getElementById('submitButton');
+                const submitButton = document.querySelector('button[type="submit"]');
                 if (captchaValid) {
                     submitButton.disabled = false;
                     submitButton.classList.remove('bg-gray-500');
@@ -523,6 +482,69 @@
                     icon.classList.add("fa-eye");
                 }
             }
+        </script>
+        <script>
+            let selectedPlan = null;
+            const planOptions = document.querySelectorAll('.plan-option');
+            const planMessage = document.getElementById('plan_message');
+            const planMessageText = planMessage.querySelector('p');
+            const submitButton = document.querySelector('button[type="submit"]');
+
+            planOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover selección previa
+                    planOptions.forEach(opt => {
+                        opt.classList.remove('border-blue-500', 'border-purple-500', 'border-pink-500');
+                        opt.classList.add('border-gray-200');
+                    });
+
+                    // Marcar como seleccionado
+                    this.classList.remove('border-gray-200');
+                    if (this.dataset.plan === 'basico') {
+                        this.classList.add('border-blue-500');
+                    } else if (this.dataset.plan === 'popular') {
+                        this.classList.add('border-purple-500');
+                    } else {
+                        this.classList.add('border-pink-500');
+                    }
+
+                    // Actualizar valores
+                    selectedPlan = this.dataset.plan;
+                    document.getElementById('selected_plan').value = selectedPlan;
+                    document.getElementById('plan_days').value = this.dataset.days;
+                    document.getElementById('plan_price').value = this.dataset.price;
+
+                    // Mostrar mensaje
+                    planMessage.classList.remove('hidden');
+                    const days = parseInt(this.dataset.days);
+                    const months = Math.floor(days / 30);
+                    const years = Math.floor(days / 365);
+
+                    let message = '';
+                    if (years > 0) {
+                        message = `Has seleccionado el Plan Premium. Tu suscripción será válida por ${years} año${years > 1 ? 's' : ''}.`;
+                    } else if (months > 0) {
+                        message = `Has seleccionado el Plan ${months === 6 ? 'Popular' : 'Básico'}. Tu suscripción será válida por ${months} mes${months > 1 ? 'es' : ''}.`;
+                    } else {
+                        message = `Has seleccionado el Plan Básico. Tu suscripción será válida por ${days} días.`;
+                    }
+                    planMessageText.textContent = message;
+
+                    // Habilitar botón de envío
+                    submitButton.disabled = false;
+                    submitButton.classList.remove('bg-gray-500');
+                    submitButton.classList.add('bg-blue-500', 'hover:bg-blue-600');
+                });
+            });
+
+            // Validar el formulario antes de enviar
+            document.querySelector('form').addEventListener('submit', function(e) {
+                if (!selectedPlan) {
+                    e.preventDefault();
+                    alert('Por favor, selecciona un plan antes de continuar.');
+                    return;
+                }
+            });
         </script>
     </div>
 </x-guest-layout>

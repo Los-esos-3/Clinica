@@ -32,7 +32,9 @@ class User extends Authenticatable
         'role',
         'empresa_id',
         'comments',
-        'trial_ends_at' // Asegúrate de que esté aquí
+        'trial_ends_at',
+        'verification_code',
+        'email_verified_at'
     ];
 
     /**
