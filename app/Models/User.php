@@ -27,12 +27,13 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
-        'number',
+        'phone',
         'password',
         'role',
         'empresa_id',
         'comments',
-        'trial_ends_at' // Asegúrate de que esté aquí
+        'trial_ends_at',
+        'registration_source' // Asegúrate de que esté aquí
     ];
 
     /**

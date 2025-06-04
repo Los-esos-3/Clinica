@@ -21,51 +21,19 @@ class RoleController
     public function index()
     {
         $this->authorize('ver roles');
-        $roles = Role::all();
-          $users = User::with('roles')->paginate(10);
-        $permissions = Permission::all();
+        $users = User::where('registration_source', 'web')->with('empresa')->paginate(10);
         $empresas = Empresa::all();
 
-        $userStats = [
-            'today' => User::whereDate('created_at', today())->count(),
-            'month' => User::whereMonth('created_at', now()->month)
-                ->whereYear('created_at', now()->year)
-                ->count(),
-            'year'  => User::whereYear('created_at', now()->year)->count(),
-
-            // Opcional: Datos para gráficos o tablas
-            'monthly_registrations' => $this->getMonthlyRegistrations(),
-            'daily_registrations'  => $this->getDailyRegistrations()
-        ];
-
-        return view('roles.index', compact('roles', 'users', 'permissions', 'empresas', 'userStats'));
+        return view('roles.index', compact( 'users',  'empresas'));
     }
 
-    protected function getMonthlyRegistrations()
+    public function RolesIndex()
     {
-        return User::select(
-            DB::raw('COUNT(*) as count'),
-            DB::raw('MONTH(created_at) as month')
-        )
-            ->whereYear('created_at', now()->year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
+        $roles = Role::all();
+        $permissions = Permission::all();
+
+        return view('roles.roles',compact('roles', 'permissions'));
     }
-
-    // Método para obtener registros diarios (opcional)
-    protected function getDailyRegistrations()
-    {
-        return User::select(
-            DB::raw('COUNT(*) as count'),
-            DB::raw('DATE(created_at) as date')
-        )
-            ->whereMonth('created_at', now()->month)
-            ->groupBy('date')
-            ->orderBy('date')
-            ->get();
-    }   
-
     public function store(Request $request)
     {
         $request->validate([

@@ -239,23 +239,18 @@
             </div>
 
             <div class="nav-right">
-               
-
                 <div>
-                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('welcome') }}"><i
-                            class="fa-solid fa-house  mr-2"></i><span>Inicio</span></a>
+                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('welcome') }}"><i class="fa-solid fa-house  mr-2"></i><span>Inicio</span></a>
+                </div>
+
+                 <div>
+                     <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('dashboardRoot') }}"><i class="fa-solid fa-user-gear mr-2"></i></i><span>Clientes</span></a>
                 </div>
 
                 <div>
-                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('dashboardRoot') }}"><i
-                            class="fa-solid fa-user-gear mr-2"></i></i><span>Clientes</span></a>
+                     <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('rolesRoot.index') }}"><i class="fa-solid fa-user-gear mr-2"></i></i><span>Roles</span></a>
                 </div>
-
-                <div>
-                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('rolesRoot.index') }}"><i
-                            class="fa-solid fa-user-gear mr-2"></i></i><span>Roles</span></a>
-                </div>
-
+                
                 <form method="POST" autocomplete="on" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="logout-button">
@@ -268,68 +263,53 @@
 
         <!-- Contenido principal -->
         <div class="dashboard-content">
-            
-
-
-            <!-- Gestión de Usuarios -->
+           
+            <!-- Gestión de Roles -->
             <div class="management-section">
-                <h3 class="section-title">Gestión de Clientes</h3>
+                <h3 class="section-title">Gestión de Roles</h3>
+
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+
+                @can('crear roles')
+                    <a href="{{ route('roles.create') }}" class="btn btn-primary">
+                        Crear Nuevo Rol
+                    </a>
+                @endcan
 
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Empresa</th>
-                            <th>Dias Restantes</th>
-                            <th>Suscripcion</th>
+                            <th>Rol</th>
+                            <th>Permisos</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
+                        @foreach ($roles as $role)
                             <tr>
-                                <td>{{ $user->name }}</td>
-
+                                <td><strong>{{ $role->name }}</strong></td>
                                 <td>
-                                    @if ($user->empresa)
-                                        {{ $user->empresa->nombre }}
-                                    @else
-                                        <label class="text-red-500">No tiene empresa asociada</label>
-                                    @endif
-
-                                </td>
-
-                                <td>
-                                    @php
-                                        $now = now();
-                                        $trialEnds = \Carbon\Carbon::parse($user->trial_ends_at);
-
-                                        if ($trialEnds->isPast()) {
-                                            $tiempoRestante = 'Finalizado';
-                                        } else {
-                                            $diferencia = $trialEnds->diff($now);
-
-                                            if ($diferencia->d > 0) {
-                                                $tiempoRestante = $diferencia->d . ' días';  
-                                            } elseif ($diferencia->h > 0) {
-                                                $tiempoRestante = $diferencia->h . ' horas';
-                                            } else {
-                                                $tiempoRestante = $diferencia->i . ' minutos';
-                                            }
-                                        }
-                                    @endphp
-                                    {{ $tiempoRestante }}
+                                    @foreach ($role->permissions as $permission)
+                                        <span class="badge bg-primary">{{ $permission->name }}</span>
+                                    @endforeach
                                 </td>
                                 <td>
-                                    Basico
+                                    <a href="{{ route('roles.edit', $role->id) }}"
+                                        class="btn btn-sm btn-warning">Editar</a>
+                                    <form action="{{ route('roles.destroy', $role) }}" method="POST"
+                                        style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('¿Estás seguro?')">Eliminar</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-
-                <div class="mt-4">
-                    {{ $users->links() }}
-                </div>
             </div>
         </div>
     </div>

@@ -63,7 +63,9 @@ Route::middleware(['auth', 'trial'])->group(function () {
     });
 
     Route::middleware(['auth', 'role:Root'])->group(function () {
-        route::get('dashboardAdmin', [RoleController::class, 'index'])->name('dashboardAdmin');
+        route::get('dashboardRoot', [RoleController::class, 'index'])->name('dashboardRoot');
+
+        Route::get('rolesRoot',[RoleController::class, 'RolesIndex'])->name('rolesRoot.index');
 
 
         Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {

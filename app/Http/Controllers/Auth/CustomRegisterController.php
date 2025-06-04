@@ -20,15 +20,14 @@ class CustomRegisterController
         return view('auth.register', ['captchaText' => $captchaCode]);
     }
 
-    protected function generateCaptcha()
+     protected function generateCaptcha()
     {
-        $characters = '23456789ABCDEFGHJKLMNPQRSTUVWXYZ';
+        $characters = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
         $captchaCode = '';
         for ($i = 0; $i < 6; $i++) {
             $captchaCode .= $characters[rand(0, strlen($characters) - 1)];
         }
-        // Siempre en mayúsculas
-        return strtoupper($captchaCode);
+        return $captchaCode;
     }
 
     public function register(Request $request)
@@ -41,11 +40,11 @@ class CustomRegisterController
             $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'phone' => ['required', 'string', 'regex:/^[0-9+\-\s()]{7,15}$/'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
-                'phone' => ['required', 'string', 'max:15'],
                 'comments' => ['nullable', 'string', 'max:500'],
                 'captcha' => ['required', 'string', function ($attribute, $value, $fail) {
-                    if (strtoupper($value) !== strtoupper(Session::get('captcha_code'))) {
+                    if ($value !== Session::get('captcha_code')) {
                         $fail('El código de verificación no es correcto.');
                     }
                 }],
@@ -67,13 +66,18 @@ class CustomRegisterController
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
+                'registration_source' => 'web',
                 'password' => Hash::make($request->password),
                 'comments' => $request->comments,
                 'trial_ends_at' => now()->addDays(30), // Fecha de fin de prueba
-                'trial_ended' => false // Campo adicional para control
+                'trial_ended' => false, // Campo adicional para control
+
             ]);
 
-            $user->assignRole('Admin');
+            Log::info('Teléfono recibido:', ['phone' => $request->phone]);
+
+
+            $user->syncRoles('Admin');
 
             // Autenticar al usuario
             Auth::login($user);
