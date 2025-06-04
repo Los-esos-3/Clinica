@@ -19,34 +19,34 @@ use App\Models\Trabajadores;
 class TrabajadoresController
 {
 
-
     public function index(Request $request)
     {
         $user = Auth::user();
         $search = trim(strtolower($request->input('search')));
-    
+
         // Iniciar la consulta base con relaciones
         $query = Trabajadores::with('user', 'empresa');
-    
+
         // Filtrar por empresa si el usuario tiene empresa_id
         if ($user->empresa_id) {
             $query->where('empresa_id', $user->empresa_id);
         }
-    
         // Aplicar búsqueda si existe
         if ($search) {
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%'])
-                  ->orWhere('correo', 'LIKE', '%' . $search . '%')
-                  ->orWhere('rol', 'LIKE', '%'. $search. '%');;
+                    ->orWhere('correo', 'LIKE', '%' . $search . '%')
+                    ->orWhere('rol', 'LIKE', '%'. $search. '%');
             });
         }
-    
+
         // Finalmente aplicar paginación
         $trabajadores = $query->paginate(9);
-    
+
         return view('Trabajadores.index', compact('trabajadores', 'search'));
     }
+
+
     public function create()
     {
         // Filtrar solo los roles permitidos
@@ -75,7 +75,7 @@ class TrabajadoresController
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'empresa_id' => Auth::user()->empresa_id,
-                'trial_ends_at' =>Auth::user()->trial_ends_at,
+                'trial_ends_at' => Auth::user()->trial_ends_at,
             ]);
 
             // Asignar el rol al usuario
@@ -97,7 +97,7 @@ class TrabajadoresController
                 'tel' => $validated['tel'] ?? null,
                 'rol' => $validated['rol'],
                 'empresa_id' => Auth::user()->empresa_id,
-           ]);
+            ]);
 
             // Crear registro en la tabla correspondiente (doctor o secretaria)
             if ($validated['rol'] === 'Doctor') {
