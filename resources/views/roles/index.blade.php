@@ -239,7 +239,7 @@
             </div>
 
             <div class="nav-right">
-               
+
 
                 <div>
                     <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('welcome') }}"><i
@@ -268,7 +268,7 @@
 
         <!-- Contenido principal -->
         <div class="dashboard-content">
-            
+
 
 
             <!-- Gestión de Usuarios -->
@@ -280,8 +280,10 @@
                         <tr>
                             <th>Nombre</th>
                             <th>Empresa</th>
-                            <th>Dias Restantes</th>
+                            <th>Dias Restantes(Dias del plan + dias de prueba)</th>
                             <th>Suscripcion</th>
+                            <th>Precio de Suscripcion</th>
+                            <th>Status de pago</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -301,26 +303,33 @@
                                 <td>
                                     @php
                                         $now = now();
-                                        $trialEnds = \Carbon\Carbon::parse($user->trial_ends_at);
+                                        $totalSeconds = 0;
 
-                                        if ($trialEnds->isPast()) {
-                                            $tiempoRestante = 'Finalizado';
-                                        } else {
-                                            $diferencia = $trialEnds->diff($now);
+                                        \Carbon\Carbon::setLocale('es');
 
-                                            if ($diferencia->d > 0) {
-                                                $tiempoRestante = $diferencia->d . ' días';  
-                                            } elseif ($diferencia->h > 0) {
-                                                $tiempoRestante = $diferencia->h . ' horas';
-                                            } else {
-                                                $tiempoRestante = $diferencia->i . ' minutos';
-                                            }
+                                        if ($user->trial_ends_at) {
+                                            $totalSeconds += $now->diffInSeconds($user->trial_ends_at, false);
                                         }
+
+                                        if ($user->plan_expires_at) {
+                                            $totalSeconds += $now->diffInSeconds($user->plan_expires_at, false);
+                                        }
+
+                                        $totalTime = Carbon\CarbonInterval::seconds(abs($totalSeconds))
+                                            ->cascade()
+                                            ->forHumans(['parts' => 4]);
                                     @endphp
-                                    {{ $tiempoRestante }}
+                                    {{ $totalTime }}
                                 </td>
                                 <td>
-                                    Basico
+                                    {{ $user->selected_plan }}
+                                </td>
+                                <td>
+                                    ${{ $user->plan_price}}
+                                </td>
+
+                                <td>
+                                    Pagado
                                 </td>
                             </tr>
                         @endforeach

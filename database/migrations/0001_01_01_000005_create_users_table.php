@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->default('N/A');
             $table->string('selected_plan')->nullable();
-            $table->timestamp('plan_expires_at');
+            $table->timestamp('plan_expires_at')->nullable();
+            $table->string('plan_price')->nullable();
             $table->string('registration_source')->nullable();
             $table->string('password');
             $table->timestamp('trial_ends_at')->nullable();

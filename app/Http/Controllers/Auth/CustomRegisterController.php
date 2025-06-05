@@ -20,7 +20,7 @@ class CustomRegisterController
         return view('auth.register', ['captchaText' => $captchaCode]);
     }
 
-     protected function generateCaptcha()
+    protected function generateCaptcha()
     {
         $characters = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ';
         $captchaCode = '';
@@ -30,26 +30,30 @@ class CustomRegisterController
         return $captchaCode;
     }
 
- public function register(Request $request)
+    public function register(Request $request)
     {
         $UserCaptcha = $request->input('captcha');
         $InputCaptcha = $request->input('captchaText');
 
+
+
         try {
             // Validar los datos
-           $validator = Validator::make($request->all(), [
+            $validator = Validator::make($request->all(), [
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
                 'phone' => ['required', 'string', 'max:15'],
                 'comments' => ['nullable', 'string', 'max:500'],
+                'selected_plan' => ['required', 'string', 'in:basico,popular,premium'],
+                'plan_days' => ['required', 'string'],
+                'plan_price' => ['required', 'numeric', 'min:0'],
                 'captcha' => ['required', 'string', function ($attribute, $value, $fail) {
                     if ($value !== Session::get('captcha_code')) {
                         $fail('El código de verificación no es correcto.');
                     }
                 }],
             ]);
-
 
             if ($validator->fails()) {
                 // Regenerar CAPTCHA para el nuevo intento
@@ -62,9 +66,9 @@ class CustomRegisterController
                     ->with('captchaText', $newCaptcha);
             }
 
-             Session::put('registration_data', $request->all());
+            Session::put('registration_data', $request->all());
 
-              return redirect()->route('verificacion', ['email' => $request->email]);
+            return redirect()->route('verificacion', ['email' => $request->email]);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error en el registro: ' . $e->getMessage());
 

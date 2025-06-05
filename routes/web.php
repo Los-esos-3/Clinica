@@ -60,14 +60,12 @@ Route::get('/contactenos', function () {
 
 Route::middleware(['auth', 'trial'])->group(function () {
 
-
-
     // Grupo de rutas autenticadas
     Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
         // Redirección para usuarios sin rol
         Route::get('/check-role', function () {
             if (Auth::user()->hasRole('Root')) {
-                return redirect()->route('dashboardAdmin');
+                return redirect()->route('dashboardRoot');
             }
 
             if(Auth::user()->hasAnyRole('Admin','Doctor','Secretaria'))

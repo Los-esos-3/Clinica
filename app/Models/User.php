@@ -33,6 +33,9 @@ class User extends Authenticatable
         'empresa_id',
         'comments',
         'trial_ends_at',
+        'selected_plan',
+        'plan_expires_at',
+        'plan_price',
         'registration_source',
         'verification_code',
         'email_verified_at'

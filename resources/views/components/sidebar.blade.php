@@ -72,6 +72,7 @@
                 $now = now();
                 $trialEnds = \Carbon\Carbon::parse(auth()->user()->trial_ends_at);
 
+              
                 if ($trialEnds->isPast()) {
                     $tiempoRestante = 'Finalizado';
                     $color = 'text-red-600';
