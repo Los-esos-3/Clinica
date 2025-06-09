@@ -36,7 +36,7 @@ class TrabajadoresController
             $query->where(function ($q) use ($search) {
                 $q->whereRaw('LOWER(nombre) LIKE ?', ['%' . strtolower($search) . '%'])
                     ->orWhere('correo', 'LIKE', '%' . $search . '%')
-                    ->orWhere('rol', 'LIKE', '%'. $search. '%');
+                    ->orWhere('rol', 'LIKE', '%' . $search . '%');
             });
         }
 
@@ -153,70 +153,75 @@ class TrabajadoresController
                 'password' => 'nullable|string|min:8|confirmed',
                 'rol' => 'required|exists:roles,name',
             ]);
+
+            // Actualizar el usuario asociado
+            $user = User::find($trabajador->user_id);
+
+            $user->update([
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
+            ]);
+
+            // Obtener el rol anterior para comparar
+            $oldRole = $user->getRoleNames()->first();
+
+            // Actualizar el rol del usuario
+            $user->syncRoles([$validated['rol']]);
+
+            $fotoPerfilPath = null;
+
+            if ($request->hasFile('foto_perfil')) {
+                $fotoPerfilPath = $request->file('foto_perfil')->store('fotos_perfil', 'public');
+            }
+
+
+            // Actualizar el trabajador
+            $trabajador->update([
+                'nombre' => $validated['name'],
+                'correo' => $validated['email'],
+                'foto_perfil' => $fotoPerfilPath,
+                'tel' => $validated['tel'] ?? null,
+                'rol' => $validated['rol'],
+            ]);
+
+            // Manejo de roles específicos (Doctor/Secretaria)
+            if ($validated['rol'] !== $oldRole) {
+                // Si el rol cambió, eliminar registros antiguos
+                if ($oldRole === 'Doctor') {
+                    Doctores::where('trabajador_id', $trabajador->id)->delete();
+                } elseif ($oldRole === 'Secretaria') {
+                    Secretarias::where('trabajador_id', $trabajador->id)->delete();
+                }
+            }
+
+            // Crear o actualizar registro según el nuevo rol
+            if ($validated['rol'] === 'Doctor') {
+                $doctor = Doctores::firstOrNew(['trabajador_id' => $trabajador->id]);
+                $doctor->fill([
+                    'nombre_completo' => $validated['name'],
+                    'foto_perfil' => $fotoPerfilPath,
+                    'email' => $validated['email'],
+                    'user_id' => $user->id,
+                ])->save();
+            } elseif ($validated['rol'] === 'Secretaria') {
+                $secretaria = Secretarias::firstOrNew(['trabajador_id' => $trabajador->id]);
+                $secretaria->fill([
+                    'nombre_completo' => $validated['name'],
+                    'email' => $validated['email'],
+                    'foto_perfil' => $fotoPerfilPath,
+                    'user_id' => $user->id,
+                ])->save();
+            } else {
+                // Para otros roles (Admin), eliminar registros específicos si existen
+                Doctores::where('trabajador_id', $trabajador->id)->delete();
+                Secretarias::where('trabajador_id', $trabajador->id)->delete();
+            }
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Error de validación: ' . $e->getMessage());
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
 
-        // Actualizar el usuario asociado
-        $user = User::find($trabajador->user_id);
-
-        $user->update([
-            'name' => $validated['name'],
-            'email' => $validated['email'],
-            'password' => $validated['password'] ? Hash::make($validated['password']) : $user->password,
-        ]);
-
-        // Obtener el rol anterior para comparar
-        $oldRole = $user->getRoleNames()->first();
-
-        // Actualizar el rol del usuario
-        $user->syncRoles([$validated['rol']]);
-
-        // Guardar la nueva foto de perfil si existe
-        if ($request->hasFile('foto_perfil')) {
-            $fotoPerfilPath = $request->file('foto_perfil')->store('fotos_perfil', 'public');
-            $trabajador->update(['foto_perfil' => $fotoPerfilPath]);
-        }
-
-        // Actualizar el trabajador
-        $trabajador->update([
-            'nombre' => $validated['name'],
-            'correo' => $validated['email'],
-            'tel' => $validated['tel'] ?? null,
-            'rol' => $validated['rol'],
-        ]);
-
-        // Manejo de roles específicos (Doctor/Secretaria)
-        if ($validated['rol'] !== $oldRole) {
-            // Si el rol cambió, eliminar registros antiguos
-            if ($oldRole === 'Doctor') {
-                Doctores::where('trabajador_id', $trabajador->id)->delete();
-            } elseif ($oldRole === 'Secretaria') {
-                Secretarias::where('trabajador_id', $trabajador->id)->delete();
-            }
-        }
-
-        // Crear o actualizar registro según el nuevo rol
-        if ($validated['rol'] === 'Doctor') {
-            $doctor = Doctores::firstOrNew(['trabajador_id' => $trabajador->id]);
-            $doctor->fill([
-                'nombre_completo' => $validated['name'],
-                'email' => $validated['email'],
-                'user_id' => $user->id,
-            ])->save();
-        } elseif ($validated['rol'] === 'Secretaria') {
-            $secretaria = Secretarias::firstOrNew(['trabajador_id' => $trabajador->id]);
-            $secretaria->fill([
-                'nombre_completo' => $validated['name'],
-                'email' => $validated['email'],
-                'user_id' => $user->id,
-            ])->save();
-        } else {
-            // Para otros roles (Admin), eliminar registros específicos si existen
-            Doctores::where('trabajador_id', $trabajador->id)->delete();
-            Secretarias::where('trabajador_id', $trabajador->id)->delete();
-        }
 
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador actualizado exitosamente.');
     }
