@@ -171,7 +171,7 @@ class ClinicaController
     public function update(Request $request, $id)
     {
         $this->authorize('editar pacientes');
-        $request->validate([
+        $validatedData = $request->validate([
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'nombre' => 'required|string|max:255',
             'telefono' => 'nullable|string|max:20',
@@ -187,15 +187,20 @@ class ClinicaController
         $paciente = Paciente::findOrFail($id);
         
         if ($request->hasFile('foto_perfil')) {
+            // Eliminar la imagen anterior si existe
+            if ($paciente->foto_perfil && file_exists(public_path('images/' . $paciente->foto_perfil))) {
+                unlink(public_path('images/' . $paciente->foto_perfil));
+            }
+            
             $imagen = $request->file('foto_perfil');
             $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
             $imagen->move(public_path('images'), $nombreImagen);
             $validatedData['foto_perfil'] = $nombreImagen;
         }
 
-        $paciente->update($request->all());
+        $paciente->update($validatedData);
 
-        return redirect()->route('Pacientes.PacientesView');
+        return redirect()->route('Pacientes.PacientesView')->with('success', 'Paciente actualizado correctamente.');
     }
 
     public function destroy($id)
