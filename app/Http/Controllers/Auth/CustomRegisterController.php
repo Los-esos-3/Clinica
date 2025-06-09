@@ -50,6 +50,7 @@ class CustomRegisterController
                 }],
             ]);
 
+            dd($request->all());
             if ($validator->fails()) {
                 $newCaptcha = $this->generateCaptcha();
                 Session::put('captcha_code', $newCaptcha);

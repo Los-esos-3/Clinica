@@ -58,36 +58,44 @@ class VerificacionController
             $request->codigo == $storedCode) {
     
             if (!$registrationData) {
-                return redirect()->route('register')->with('error', 'Los datos de registro no se encontraron. Intenta registrarte nuevamente.');
+                return redirect()->route('register')
+                    ->with('error', 'Los datos de registro no se encontraron. Intenta registrarte nuevamente.');
             }
     
-            // Crear el usuario
-            $planExpiresAt = now()->addDays($registrationData['plan_days']);
+            try {
+                // Crear el usuario
+                $planExpiresAt = now()->addDays($registrationData['plan_days']);
     
-            $user = User::create([
-                'name' => $registrationData['name'],
-                'email' => $registrationData['email'],
-                'phone' => $registrationData['phone'],
-                'password' => Hash::make($registrationData['password']),
-                'comments' => $registrationData['comments'] ?? null,
-                'selected_plan' => $registrationData['selected_plan'],
-                'plan_expires_at' => $planExpiresAt,
-                'trial_ends_at' => $planExpiresAt,
-                'trial_ended' => false
-            ]);
+                $user = User::create([
+                    'name' => $registrationData['name'],
+                    'email' => $registrationData['email'],
+                    'phone' => $registrationData['phone'],
+                    'password' => Hash::make($registrationData['password']),
+                    'comments' => $registrationData['comments'] ?? null,
+                    'selected_plan' => $registrationData['selected_plan'],
+                    'plan_expires_at' => $planExpiresAt,
+                    'trial_ends_at' => $planExpiresAt,
+                    'trial_ended' => false
+                ]);
     
-            $user->assignRole('Admin'); // O el rol que tú quieras asignar
+                $user->assignRole('Admin');
     
-            Auth::login($user); // Autenticación automática
+                Auth::login($user);
     
-            // Limpia la sesión
-            Session::forget('codigo_verificacion');
-            Session::forget('codigo_timestamp');
-            Session::forget('registration_data');
+                // Limpia la sesión
+                Session::forget(['codigo_verificacion', 'codigo_timestamp', 'registration_data']);
     
-            return redirect()->route('dashboard')->with('success', 'Usuario registrado y verificado exitosamente.');
+                return redirect()->route('dashboard')
+                    ->with('success', '¡Registro exitoso! Tu plan ' . ucfirst($registrationData['selected_plan']) . ' está activo hasta ' . $planExpiresAt->format('d/m/Y'));
+            } catch (\Exception $e) {
+                Log::error('Error al crear usuario: ' . $e->getMessage());
+                return redirect()->route('register')
+                    ->with('error', 'Hubo un error al crear tu cuenta. Por favor, intenta nuevamente.');
+            }
         }
     
-        return back()->withErrors(['codigo' => 'El código es incorrecto o ha expirado.'])->withInput();
+        return back()
+            ->withErrors(['codigo' => 'El código es incorrecto o ha expirado.'])
+            ->withInput();
     }
 }
