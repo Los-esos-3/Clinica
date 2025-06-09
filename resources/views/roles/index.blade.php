@@ -289,7 +289,11 @@
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->name }}
+                                    @if ($user->id == Auth::user()->id)
+                                       <label class="text-blue-500"> (Esta cuenta)</label>
+                                    @endif
+                                </td>
 
                                 <td>
                                     @if ($user->empresa)
