@@ -36,9 +36,7 @@ Route::get('/plans', function () {
 })->name('plans');
 
 
-Route::get('/verificacion', function () {
-    return view('verificacion');
-})->name('verificacion');
+
 
 Route::get('/verificacion',[VerificacionController::class, 'index'])->name('verificacion');
 

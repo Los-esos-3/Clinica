@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Verificación de Cuenta</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100 flex items-center justify-center h-screen">
 
     <div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
@@ -18,19 +20,25 @@
             <div>
                 <label for="codigo" class="block text-sm font-medium text-gray-700">Código de verificación</label>
                 <input type="text" name="codigo" id="codigo" maxlength="6" required
-                       class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    class="mt-1 w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
 
             <button type="submit"
-                    class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300">
+                class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition duration-300">
                 Verificar Código
             </button>
         </form>
 
         <div class="text-center mt-6 text-sm text-gray-600">
-            ¿No recibiste el código? <a href="#" class="text-blue-600 hover:underline">Reenviar</a>
+             ¿No recibiste el código?
+            <form method="POST" action="{{route('enviar.codigo')}}">
+                @csrf
+                <button type="submit" class="text-blue-600 hover:underline">Reenviar</button>
+            </form>
+           
         </div>
     </div>
 
 </body>
+
 </html>

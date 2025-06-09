@@ -283,13 +283,16 @@
                             <th>Dias Restantes(Dias del plan + dias de prueba)</th>
                             <th>Suscripcion</th>
                             <th>Precio de Suscripcion</th>
-                            <th>Status de pago</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->name }}
+                                    @if ($user->id == Auth::user()->id)
+                                       <label class="text-blue-500"> (Esta cuenta)</label>
+                                    @endif
+                                </td>
 
                                 <td>
                                     @if ($user->empresa)
@@ -326,10 +329,6 @@
                                 </td>
                                 <td>
                                     ${{ $user->plan_price}}
-                                </td>
-
-                                <td>
-                                    Pagado
                                 </td>
                             </tr>
                         @endforeach

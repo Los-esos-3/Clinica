@@ -22,6 +22,7 @@ class VerificacionController
     }
     public function enviarCodigo(Request $request)
     {
+
         $request->validate([
             'email' => 'required|email',
         ]);
