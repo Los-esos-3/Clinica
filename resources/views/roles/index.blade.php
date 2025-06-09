@@ -283,7 +283,6 @@
                             <th>Dias Restantes(Dias del plan + dias de prueba)</th>
                             <th>Suscripcion</th>
                             <th>Precio de Suscripcion</th>
-                            <th>Status de pago</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -330,10 +329,6 @@
                                 </td>
                                 <td>
                                     ${{ $user->plan_price}}
-                                </td>
-
-                                <td>
-                                    Pagado
                                 </td>
                             </tr>
                         @endforeach
