@@ -391,16 +391,46 @@
             let captchaValid = false;
 
             function refreshCaptcha() {
-                fetch('/refresh-captcha')
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('captchaText').textContent = data.captcha;
+                const captchaText = document.getElementById('captchaText');
+                const refreshButton = document.querySelector('button[onclick="refreshCaptcha()"]');
+                
+                // Mostrar indicador de carga
+                refreshButton.style.pointerEvents = 'none';
+                refreshButton.style.opacity = '0.5';
+                
+                fetch('/refresh-captcha', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la respuesta del servidor');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.captcha) {
+                        captchaText.textContent = data.captcha;
                         document.getElementById('captchaInput').value = '';
                         document.getElementById('captchaInput').classList.remove('border-green-500', 'border-red-500');
                         document.getElementById('captchaStatus').textContent = '';
                         captchaValid = false;
                         updateSubmitButton();
-                    });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al refrescar el CAPTCHA:', error);
+                    alert('Error al recargar el CAPTCHA. Por favor, intente nuevamente.');
+                })
+                .finally(() => {
+                    // Restaurar el botón
+                    refreshButton.style.pointerEvents = 'auto';
+                    refreshButton.style.opacity = '1';
+                });
             }
 
             function validateCaptcha(value) {
