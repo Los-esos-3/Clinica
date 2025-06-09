@@ -280,10 +280,10 @@
                             <div class="secretary-card">
                                 <div class="secretary-header flex items-center space-x-4">
                                     @if ($secretaria->foto_perfil)
-                                        <img src="{{ asset('images/' . $secretaria->foto_perfil) }}"
-                                            alt="Foto de {{ $secretaria->nombre_completo }}"
-                                            class="w-32 h-32 object-cover rounded-full">
-                                    @else
+                                    <img src="{{ url('storage/' . $secretaria->foto_perfil) }}"
+                                         alt="Foto de {{ $secretaria->nombre_completo }}"
+                                         class="w-32 h-32 object-cover rounded-full">
+                                @else 
                                         <!-- Imagen por defecto si no hay foto -->
                                         <div
                                             class="w-32 h-32 bg-gray-200 rounded-full flex items-center justify-center">

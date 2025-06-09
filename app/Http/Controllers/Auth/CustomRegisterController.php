@@ -55,7 +55,6 @@ class CustomRegisterController
                 }],
             ]);
 
-            dd($request->all());
             if ($validator->fails()) {
                 // Regenerar CAPTCHA para el nuevo intento
                 $newCaptcha = $this->generateCaptcha();

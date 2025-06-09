@@ -129,6 +129,7 @@ class TrabajadoresController
 
         return redirect()->route('Trabajadores.index')->with('success', 'Trabajador creado exitosamente.');
     }
+
     public function edit(Trabajadores $trabajador, $id)
     {
         // Obtener los roles permitidos

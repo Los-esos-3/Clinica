@@ -23,7 +23,7 @@
                                     <!-- Mostrar imagen actual si existe -->
                                     @if ($trabajador->foto_perfil)
                                         <div id="imagePreview" class="mt-2">
-                                            <img id="preview" src="{{ asset('storage/' . $trabajador->foto_perfil) }}"
+                                            <img id="preview" src="{{ url('storage/' . $trabajador->foto_perfil) }}"
                                                 class="w-32 h-32 object-cover rounded-lg shadow-md">
                                         </div>
                                         <p id="drop-text" class="hidden">Arrastra y suelta una imagen aquí o haz clic

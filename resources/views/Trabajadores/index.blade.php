@@ -259,9 +259,9 @@
                                     <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden">
                                         <div class="doctor-header flex items-center p-6 border-b">
                                             @if ($trabajador->foto_perfil)
-                                                <img src="{{ asset('storage/' . $trabajador->foto_perfil) }}"
+                                                    <img src="{{ url('storage/' . $trabajador->foto_perfil) }}"
                                                     alt="Foto de {{ $trabajador->nombre }}"
-                                                    class="w-24 h-24 object-cover rounded-full">
+                                                    class="w-24 h-24 object-cover rounded-full">                                      
                                             @else
                                                 <div
                                                     class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">

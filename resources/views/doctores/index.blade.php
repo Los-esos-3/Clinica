@@ -254,7 +254,7 @@
                             <div class="doctor-card">
                                 <div class="doctor-header flex items-center space-x-4">
                                     @if ($doctor->foto_perfil)
-                                        <img src="{{ asset('images/' . $doctor->foto_perfil) }}"
+                                        <img src="{{ url('storage/' . $doctor->foto_perfil) }}"
                                             alt="Foto de {{ $doctor->nombre_completo }}"
                                             class="w-32 h-32 object-cover rounded-full">
                                     @else
