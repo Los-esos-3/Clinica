@@ -71,7 +71,7 @@
                                         data-name="{{ strtolower($paciente->nombre) }}">
                                         <div class="doctor-header flex items-center p-4 border-b">
                                             @if ($paciente->foto_perfil)
-                                                <img src="{{ asset('images/' . $paciente->foto_perfil) }}"
+                                                <img src="{{ url('images/' . $paciente->foto_perfil) }}"
                                                     alt="Foto de {{ $paciente->nombre }}"
                                                     class="w-24 h-24 object-cover rounded-full">
                                             @else

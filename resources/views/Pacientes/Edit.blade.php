@@ -20,10 +20,10 @@
                                     <!-- Contenedor para la imagen existente -->
                                     <div id="existing-image-container">
                                         @if ($paciente->foto_perfil)
-                                        <img src="{{ asset('images/' . $paciente->foto_perfil) }}"
-                                            alt="Foto de {{ $paciente->nombre }}"
-                                            class="w-24 h-24 object-cover rounded-full">
-                                    @else
+                                            <img src="{{ url('images/' . $paciente->foto_perfil) }}"
+                                                alt="Foto de {{ $paciente->nombre }}"
+                                                class="w-24 h-24 object-cover rounded-full">
+                                         @else
                                         <div
                                             class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
                                             <svg class="w-16 h-16 text-gray-400" fill="none"
