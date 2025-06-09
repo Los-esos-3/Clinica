@@ -32,6 +32,11 @@ class CustomRegisterController
 
     public function register(Request $request)
     {
+        $UserCaptcha = $request->input('captcha');
+        $InputCaptcha = $request->input('captchaText');
+
+
+
         try {
             // Validar los datos
             $validator = Validator::make($request->all(), [
@@ -41,7 +46,7 @@ class CustomRegisterController
                 'phone' => ['required', 'string', 'max:15'],
                 'comments' => ['nullable', 'string', 'max:500'],
                 'selected_plan' => ['required', 'string', 'in:basico,popular,premium'],
-                'plan_days' => ['required', 'integer', 'min:1'],
+                'plan_days' => ['required', 'string'],
                 'plan_price' => ['required', 'numeric', 'min:0'],
                 'captcha' => ['required', 'string', function ($attribute, $value, $fail) {
                     if ($value !== Session::get('captcha_code')) {
@@ -52,6 +57,7 @@ class CustomRegisterController
 
             dd($request->all());
             if ($validator->fails()) {
+                // Regenerar CAPTCHA para el nuevo intento
                 $newCaptcha = $this->generateCaptcha();
                 Session::put('captcha_code', $newCaptcha);
 
@@ -60,37 +66,10 @@ class CustomRegisterController
                     ->withInput()
                     ->with('captchaText', $newCaptcha);
             }
- // Guardar los datos del formulario temporalmente en sesión
- Session::put('registration_data', $request->all());
 
- // Redirigir al envío del código
- return redirect()->route('verificacion.enviar', ['email' => $request->email]);
-            // Calcular la fecha de expiración del plan
-            $planExpiresAt = now()->addDays($request->plan_days);
+            Session::put('registration_data', $request->all());
 
-            // Crear el usuario
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password),
-                'comments' => $request->comments,
-                'selected_plan' => $request->selected_plan,
-                'plan_expires_at' => $planExpiresAt,
-                'trial_ends_at' => $planExpiresAt,
-                'trial_ended' => false
-            ]);
-
-            $user->assignRole('Admin');
-
-            // Autenticar al usuario
-            Auth::login($user);
-
-            // Limpiar el CAPTCHA de la sesión
-            Session::forget('captcha_code');
-
-            return redirect()->route('dashboard')
-                ->with('success', '¡Registro exitoso! Tu plan ' . ucfirst($request->selected_plan) . ' está activo hasta ' . $planExpiresAt->format('d/m/Y'));
+            return redirect()->route('verificacion', ['email' => $request->email]);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('Error en el registro: ' . $e->getMessage());
 
@@ -104,6 +83,7 @@ class CustomRegisterController
                 ->withInput();
         }
     }
+
 
     public function refreshCaptcha()
     {

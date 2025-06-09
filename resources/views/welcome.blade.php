@@ -590,7 +590,7 @@
                             @if (Auth::user()->hasAnyRole(['Admin', 'Doctor', 'Secretaria']))
                                 <a href="{{ url('/dashboard') }}">Agenda</a>
                             @elseif (Auth::user()->hasRole('Root'))
-                                <a href="{{ url('/dashboardAdmin') }}">Dashboard</a>
+                                <a href="{{ url('/dashboardRoot') }}">Dashboard</a>
                             @endif
                         </li>
                     @endauth

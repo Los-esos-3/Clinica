@@ -239,23 +239,18 @@
             </div>
 
             <div class="nav-right">
-
-
                 <div>
-                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('welcome') }}"><i
-                            class="fa-solid fa-house  mr-2"></i><span>Inicio</span></a>
+                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('welcome') }}"><i class="fa-solid fa-house  mr-2"></i><span>Inicio</span></a>
+                </div>
+
+                 <div>
+                     <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('dashboardRoot') }}"><i class="fa-solid fa-user-gear mr-2"></i></i><span>Clientes</span></a>
                 </div>
 
                 <div>
-                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('dashboardRoot') }}"><i
-                            class="fa-solid fa-user-gear mr-2"></i></i><span>Clientes</span></a>
+                     <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('rolesRoot.index') }}"><i class="fa-solid fa-user-gear mr-2"></i></i><span>Roles</span></a>
                 </div>
-
-                <div>
-                    <a class="list-none no-underline gap-1 text-gray-500" href="{{ route('rolesRoot.index') }}"><i
-                            class="fa-solid fa-user-gear mr-2"></i></i><span>Roles</span></a>
-                </div>
-
+                
                 <form method="POST" autocomplete="on" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="logout-button">
@@ -268,77 +263,53 @@
 
         <!-- Contenido principal -->
         <div class="dashboard-content">
-
-
-
-            <!-- Gestión de Usuarios -->
+           
+            <!-- Gestión de Roles -->
             <div class="management-section">
-                <h3 class="section-title">Gestión de Clientes</h3>
+                <h3 class="section-title">Gestión de Roles</h3>
+
+                @if (session('success'))
+                    <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+
+                @can('crear roles')
+                    <a href="{{ route('roles.create') }}" class="btn btn-primary">
+                        Crear Nuevo Rol
+                    </a>
+                @endcan
 
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Empresa</th>
-                            <th>Dias Restantes(Dias del plan + dias de prueba)</th>
-                            <th>Suscripcion</th>
-                            <th>Precio de Suscripcion</th>
-                            <th>Status de pago</th>
+                            <th>Rol</th>
+                            <th>Permisos</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($users as $user)
+                        @foreach ($roles as $role)
                             <tr>
-                                <td>{{ $user->name }}</td>
-
+                                <td><strong>{{ $role->name }}</strong></td>
                                 <td>
-                                    @if ($user->empresa)
-                                        {{ $user->empresa->nombre }}
-                                    @else
-                                        <label class="text-red-500">No tiene empresa asociada</label>
-                                    @endif
-
-                                </td>
-
-                                <td>
-                                    @php
-                                        $now = now();
-                                        $totalSeconds = 0;
-
-                                        \Carbon\Carbon::setLocale('es');
-
-                                        if ($user->trial_ends_at) {
-                                            $totalSeconds += $now->diffInSeconds($user->trial_ends_at, false);
-                                        }
-
-                                        if ($user->plan_expires_at) {
-                                            $totalSeconds += $now->diffInSeconds($user->plan_expires_at, false);
-                                        }
-
-                                        $totalTime = Carbon\CarbonInterval::seconds(abs($totalSeconds))
-                                            ->cascade()
-                                            ->forHumans(['parts' => 4]);
-                                    @endphp
-                                    {{ $totalTime }}
+                                    @foreach ($role->permissions as $permission)
+                                        <span class="badge bg-primary">{{ $permission->name }}</span>
+                                    @endforeach
                                 </td>
                                 <td>
-                                    {{ $user->selected_plan }}
-                                </td>
-                                <td>
-                                    ${{ $user->plan_price}}
-                                </td>
-
-                                <td>
-                                    Pagado
+                                    <a href="{{ route('roles.edit', $role->id) }}"
+                                        class="btn btn-sm btn-warning">Editar</a>
+                                    <form action="{{ route('roles.destroy', $role) }}" method="POST"
+                                        style="display: inline;">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger"
+                                            onclick="return confirm('¿Estás seguro?')">Eliminar</button>
+                                    </form>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-
-                <div class="mt-4">
-                    {{ $users->links() }}
-                </div>
             </div>
         </div>
     </div>

@@ -73,9 +73,11 @@ class TrabajadoresController
             $user = User::create([
                 'name' => $validated['name'],
                 'email' => $validated['email'],
+                'phone' => $validated['tel'],
                 'password' => Hash::make($validated['password']),
                 'empresa_id' => Auth::user()->empresa_id,
                 'trial_ends_at' => Auth::user()->trial_ends_at,
+                'registration_source' => 'admin',
             ]);
 
             // Asignar el rol al usuario

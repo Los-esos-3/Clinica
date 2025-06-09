@@ -10,9 +10,16 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Mail\CodigoVerificacionMail;
+use Illuminate\Support\Facades\Route;
 
-class VerificacionController 
+class VerificacionController
 {
+    public function index(Request $request)
+    {
+        $this->enviarCodigo($request);
+
+        return view('verificacion');
+    }
     public function enviarCodigo(Request $request)
     {
         $request->validate([
@@ -36,10 +43,6 @@ class VerificacionController
 
         // Envío del correo al usuario que se está registrando
         Mail::to($request->email)->send(new CodigoVerificacionMail($codigo));
-
-
-        // Redirige a la vista para ingresar el código
-        return redirect()->route('verificacion')->with('status', 'Código enviado a tu correo.');
     }
 
     public function verificarCodigo(Request $request)
@@ -47,55 +50,60 @@ class VerificacionController
         $request->validate([
             'codigo' => 'required|numeric',
         ]);
-    
+
+      
+
         $storedCode = Session::get('codigo_verificacion');
         $storedTimestamp = Session::get('codigo_timestamp');
         $registrationData = Session::get('registration_data');
-    
+
         // Verifica si el código es válido y no ha expirado
-        if ($storedCode && $storedTimestamp &&
+        if (
+            $storedCode && $storedTimestamp &&
             (now()->timestamp - $storedTimestamp) < 1800 &&
-            $request->codigo == $storedCode) {
-    
+            $request->codigo == $storedCode
+        ) {
+
             if (!$registrationData) {
                 return redirect()->route('register')
                     ->with('error', 'Los datos de registro no se encontraron. Intenta registrarte nuevamente.');
             }
-    
-            try {
-                // Crear el usuario
-                $planExpiresAt = now()->addDays($registrationData['plan_days']);
-    
-                $user = User::create([
-                    'name' => $registrationData['name'],
-                    'email' => $registrationData['email'],
-                    'phone' => $registrationData['phone'],
-                    'password' => Hash::make($registrationData['password']),
-                    'comments' => $registrationData['comments'] ?? null,
-                    'selected_plan' => $registrationData['selected_plan'],
-                    'plan_expires_at' => $planExpiresAt,
-                    'trial_ends_at' => $planExpiresAt,
-                    'trial_ended' => false
-                ]);
-    
-                $user->assignRole('Admin');
-    
-                Auth::login($user);
-    
-                // Limpia la sesión
-                Session::forget(['codigo_verificacion', 'codigo_timestamp', 'registration_data']);
-    
-                return redirect()->route('dashboard')
-                    ->with('success', '¡Registro exitoso! Tu plan ' . ucfirst($registrationData['selected_plan']) . ' está activo hasta ' . $planExpiresAt->format('d/m/Y'));
-            } catch (\Exception $e) {
-                Log::error('Error al crear usuario: ' . $e->getMessage());
-                return redirect()->route('register')
-                    ->with('error', 'Hubo un error al crear tu cuenta. Por favor, intenta nuevamente.');
-            }
+
+
+            // Obtener los datos del formulario
+            $requestData = $registrationData;
+
+            $planDays = (int) $registrationData['plan_days']; 
+
+        
+            $planExpiresAt = now()->addDays($planDays);
+
+            $user = User::create([
+                'name' => $registrationData['name'],
+                'email' => $registrationData['email'],
+                'phone' => $registrationData['phone'],
+                'password' => Hash::make($registrationData['password']),
+                'comments' => $registrationData['comments'] ?? null,
+                'registration_source' => 'web',
+                'selected_plan' => $registrationData['selected_plan'],
+                'plan_expires_at' => $planExpiresAt,
+                'plan_price' =>$registrationData['plan_price'],
+                'trial_ends_at' => now()->addDay(30),
+                'trial_ended' => false
+            ]);
+
+            $user->assignRole('Admin'); // O el rol que tú quieras asignar
+
+            Auth::login($user); // Autenticación automática
+
+            // Limpia la sesión
+            Session::forget('codigo_verificacion');
+            Session::forget('codigo_timestamp');
+            Session::forget('registration_data');
+
+            return redirect()->route('dashboard')->with('success', 'Usuario registrado y verificado exitosamente.');
         }
-    
-        return back()
-            ->withErrors(['codigo' => 'El código es incorrecto o ha expirado.'])
-            ->withInput();
+
+        return back()->withErrors(['codigo' => 'El código es incorrecto o ha expirado.'])->withInput();
     }
 }
