@@ -169,11 +169,11 @@ class TrabajadoresController
             // Actualizar el rol del usuario
             $user->syncRoles([$validated['rol']]);
 
-            $fotoPerfilPath = null;
-
+            $fotoPerfilPath = $trabajador->foto_perfil;
             if ($request->hasFile('foto_perfil')) {
                 $fotoPerfilPath = $request->file('foto_perfil')->store('fotos_perfil', 'public');
             }
+
 
 
             // Actualizar el trabajador

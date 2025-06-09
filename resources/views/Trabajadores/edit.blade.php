@@ -36,7 +36,7 @@
                                         </div>
                                     @endif
 
-                                    <input type="file" name="foto_perfil" id="foto_perfil" accept="image/*"
+                                    <input value="{{old('foto_perfil', $trabajador->foto_perfil)}}" type="file" name="foto_perfil" id="foto_perfil" accept="image/*"
                                         onchange="previewImage(this)" class="hidden">
                                 </div>
                                 @error('foto_perfil')
