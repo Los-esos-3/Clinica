@@ -286,6 +286,7 @@
                             </th>
                             <th>Suscripcion</th>
                             <th>Precio de Suscripcion</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -340,6 +341,16 @@
                                 </td>
                                 <td>
                                     ${{ $user->plan_price }}
+                                </td>
+                                <td>
+                                    <div class="flex space-x-2">
+                                        <button class="bg-gray-300 hover:bg-blue-600 text-white p-2 rounded-lg transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50" title="Enviar Correo">
+                                            <i class="fas fa-envelope"></i>
+                                        </button>
+                                        <button class="bg-gray-300 hover:bg-blue-600 text-white p-2 rounded-lg transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-50" title="Historial de Pagos">
+                                            <i class="fas fa-file-invoice-dollar"></i>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach
