@@ -26,9 +26,6 @@ return new class extends Migration
             $table->foreignId('current_team_id')->nullable();
             $table->string('comments')->nullable();
             
-            // Definir 'role' antes de la clave foránea
-            $table->unsignedBigInteger('role')->default('4'); 
-            $table->foreign('role')->references('id')->on('roles')->onDelete('cascade');
         
             $table->string('profile_photo_path', 2048)->nullable();
             $table->unsignedBigInteger('empresa_id')->nullable();

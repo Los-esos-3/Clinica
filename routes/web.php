@@ -81,6 +81,8 @@ Route::middleware(['auth', 'trial'])->group(function () {
 
         Route::get('rolesRoot',[RoleController::class, 'RolesIndex'])->name('rolesRoot.index');
 
+        Route::post('enviarRecordatorio/{id}',[RoleController::class,'RecordatorioCorreo'])->name('enviar.recordatorio');
+
 
         Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
             Route::resource('roles', RoleController::class);

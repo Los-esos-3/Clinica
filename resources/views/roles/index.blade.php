@@ -1,4 +1,5 @@
 <x-app-layout>
+
     <style>
         * {
             margin: 0;
@@ -282,10 +283,10 @@
                             <th>Correo</th>
                             <th>Numero</th>
                             <th>Empresa</th>
-                            <th>Dias Restantes
-                            </th>
+                            <th>Dias Restantes</th>
                             <th>Suscripcion</th>
                             <th>Precio de Suscripcion</th>
+                            <th>Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -341,6 +342,26 @@
                                 <td>
                                     ${{ $user->plan_price }}
                                 </td>
+
+                                <td>
+                                    <div class="flex gap-6 h-[3rem]">
+
+                                        <form method="POST" action="{{route('enviar.recordatorio', $user->id)}}">
+                                            @csrf
+                                            <Button type="submit" class="bg-gray-300 p-2 h[60px] w-[60px] rounded">
+                                                <i class="fa-solid fa-envelope"></i>
+                                            </Button>
+                                        </form>
+
+
+
+                                        <Button class="bg-gray-300 p-2 h[60px] w-[60px]  rounded">
+                                            <i class="fa-solid fa-dollar-sign"></i>
+                                        </Button>
+
+                                    </div>
+                                </td>
+
                             </tr>
                         @endforeach
                     </tbody>

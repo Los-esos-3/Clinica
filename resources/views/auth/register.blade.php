@@ -37,7 +37,7 @@
                             loading="lazy">
                         <span>Seguridad de tu información</span>
                     </div>
-                </div>                                                                                                                                                                                                                                                                          
+                </div>
 
                 <!-- Nueva sección de planes -->
                 <div class="mt-6">
@@ -270,11 +270,22 @@
             <!-- Sección derecha (Formulario) -->
             <div class="w-1/2 p-6">
                 <h2 class="text-2xl font-bold mb-6">Regístrate Gratis por 30 días</h2>
-                @if (session('success'))
-                    <div class="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
-                        {{ session('success') }}
+                @if ($errors->any())
+                    <div class="text-red-500 text-sm mb-4">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
                 @endif
+
+                @if (session('error'))
+                    <div class="text-red-500 text-sm mb-4">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
 
                 <form method="POST" action="{{ route('register.submit') }}" autocomplete="on" class="space-y-4">
                     @csrf
@@ -362,7 +373,7 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-md @error('captcha') border-red-500 @enderror"
                             id="captchaInput" placeholder="Ingrese el código mostrado"
                             onkeyup="validateCaptcha(this.value)">
-                            
+
                         <div id="captchaStatus" class="mt-1 text-sm"></div>
 
                         @error('captcha')
@@ -395,44 +406,44 @@
             function refreshCaptcha() {
                 const captchaText = document.getElementById('captchaText');
                 const refreshButton = document.querySelector('button[onclick="refreshCaptcha()"]');
-                
+
                 // Mostrar indicador de carga
                 refreshButton.style.pointerEvents = 'none';
                 refreshButton.style.opacity = '0.5';
-                
+
                 fetch('/refresh-captcha', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Error en la respuesta del servidor');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.captcha) {
-                        captchaText.textContent = data.captcha;
-                        document.getElementById('captchaInput').value = '';
-                        document.getElementById('captchaInput').classList.remove('border-green-500', 'border-red-500');
-                        document.getElementById('captchaStatus').textContent = '';
-                        captchaValid = false;
-                        updateSubmitButton();
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al refrescar el CAPTCHA:', error);
-                    alert('Error al recargar el CAPTCHA. Por favor, intente nuevamente.');
-                })
-                .finally(() => {
-                    // Restaurar el botón
-                    refreshButton.style.pointerEvents = 'auto';
-                    refreshButton.style.opacity = '1';
-                });
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Error en la respuesta del servidor');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.captcha) {
+                            captchaText.textContent = data.captcha;
+                            document.getElementById('captchaInput').value = '';
+                            document.getElementById('captchaInput').classList.remove('border-green-500', 'border-red-500');
+                            document.getElementById('captchaStatus').textContent = '';
+                            captchaValid = false;
+                            updateSubmitButton();
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error al refrescar el CAPTCHA:', error);
+                        alert('Error al recargar el CAPTCHA. Por favor, intente nuevamente.');
+                    })
+                    .finally(() => {
+                        // Restaurar el botón
+                        refreshButton.style.pointerEvents = 'auto';
+                        refreshButton.style.opacity = '1';
+                    });
             }
 
             function validateCaptcha(value) {
@@ -522,7 +533,7 @@
             }
         </script>
 
-        
+
         <script>
             let selectedPlan = null;
             const planOptions = document.querySelectorAll('.plan-option');
