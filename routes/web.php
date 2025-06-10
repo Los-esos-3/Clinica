@@ -32,7 +32,7 @@ Route::get('/contactenos', function () {
 //Fin
 
 Route::get('/plans', function () {
-    return view('plans.index'); // Asegúrate de tener esta vista
+    return view('plans'); // Asegúrate de tener esta vista
 })->name('plans');
 
 

@@ -37,11 +37,11 @@
                             loading="lazy">
                         <span>Seguridad de tu información</span>
                     </div>
-                </div>
+                </div>                                                                                                                                                                                                                                                                          
 
                 <!-- Nueva sección de planes -->
                 <div class="mt-6">
-                    <h3 class="text-xl font-bold text-center mb-6 text-gray-800">Planes de Suscripción:</h3>
+                    <h3 class="text-xl font-bold text-center mb-6 text-gray-800">Seleccione un plan:</h3>
                     <div class="flex flex-col space-y-4 max-w-xl mx-auto">
                         <!-- Plan Básico -->
                         <div class="relative group w-full">
@@ -362,7 +362,9 @@
                             class="w-full px-3 py-2 border border-gray-300 rounded-md @error('captcha') border-red-500 @enderror"
                             id="captchaInput" placeholder="Ingrese el código mostrado"
                             onkeyup="validateCaptcha(this.value)">
+                            
                         <div id="captchaStatus" class="mt-1 text-sm"></div>
+
                         @error('captcha')
                             <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
                         @enderror

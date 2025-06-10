@@ -9,22 +9,25 @@
             <x-application-logo></x-application-logo>
         </div>
 
-        <div class="overlay hidden fixed inset-0 bg-opacity-70 z-[9999] flex items-center justify-center"
-        id="overlay">
-       <div class="overlay-content bg-white text-gray-800 p-8 rounded-lg shadow-2xl max-w-md w-full text-left relative z-[10000]">
-           <h3 class="text-2xl font-extrabold mb-4 text-blue-600">Configura tu Empresa</h3>
-           <p class="mb-4 leading-relaxed">
-               ¡Bienvenido a tu nuevo sistema de gestión médica! Para comenzar a usar todas las funciones del sistema, es necesario configurar los datos de tu empresa.
-           </p>
-           <p class="mb-6 leading-relaxed text-gray-700">
-               Por favor, dirígete al menú lateral y haz clic en la opción <strong>"Empresa"</strong> para iniciar la configuración.
-           </p>
-           <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md text-sm italic">
-               <p><i class="fas fa-info-circle mr-2"></i> Este paso es importante para personalizar tu sistema y prepararlo para tu consultorio.</p>
-           </div>
-       </div>
-   </div>
-   
+        <div class="overlay hidden fixed inset-0 bg-opacity-70 z-[9999] flex items-center justify-center" id="overlay">
+            <div
+                class="overlay-content bg-white text-gray-800 p-8 rounded-lg shadow-2xl max-w-md w-full text-left relative z-[10000]">
+                <h3 class="text-2xl font-extrabold mb-4 text-blue-600">Configura tu Empresa</h3>
+                <p class="mb-4 leading-relaxed">
+                    ¡Bienvenido a tu nuevo sistema de gestión médica! Para comenzar a usar todas las funciones del
+                    sistema, es necesario configurar los datos de tu empresa.
+                </p>
+                <p class="mb-6 leading-relaxed text-gray-700">
+                    Por favor, dirígete al menú lateral y haz clic en la opción <strong>"Empresa"</strong> para iniciar
+                    la configuración.
+                </p>
+                <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md text-sm italic">
+                    <p><i class="fas fa-info-circle mr-2"></i> Este paso es importante para personalizar tu sistema y
+                        prepararlo para tu consultorio.</p>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Menú principal -->
         <ul
@@ -51,11 +54,11 @@
                             src="{{ asset('images/human.png') }}" /> <span>Trabajadores</span></a></li>
 
 
-                            <li>
-                                <a href="{{ route('empresas.index') }}" id="empresa-link">
-                                    <i class="fas fa-building"></i><span>Empresa</span>
-                                </a>
-                            </li>
+                <li>
+                    <a href="{{ route('empresas.index') }}" id="empresa-link">
+                        <i class="fas fa-building"></i><span>Empresa</span>
+                    </a>
+                </li>
             @endif
 
             @if (Auth::user()->hasRole('Root'))
@@ -70,32 +73,26 @@
 
             @php
                 $now = now();
-                $trialEnds = \Carbon\Carbon::parse(auth()->user()->trial_ends_at);
+                $totalSeconds = 0;
 
-              
-                if ($trialEnds->isPast()) {
-                    $tiempoRestante = 'Finalizado';
-                    $color = 'text-red-600';
-                } else {
-                    $diferencia = $trialEnds->diff($now);
+                \Carbon\Carbon::setLocale('es');
 
-                    if ($diferencia->d > 0) {
-                        $tiempoRestante = $diferencia->d . ' días';
-                        $color = $diferencia->d <= 5 ? 'text-yellow-600' : 'text-blue-600';
-                    } elseif ($diferencia->h > 0) {
-                        $tiempoRestante = $diferencia->h . ' horas';
-                        $color = 'text-orange-600';
-                    } else {
-                        $tiempoRestante = $diferencia->i . ' minutos';
-                        $color = 'text-red-600';
-                    }
+                if ($user->trial_ends_at) {
+                    $totalSeconds += $now->diffInSeconds($user->trial_ends_at, false);
                 }
+
+                if ($user->plan_expires_at) {
+                    $totalSeconds += $now->diffInSeconds($user->plan_expires_at, false);
+                }
+
+                $totalTime = Carbon\CarbonInterval::seconds(abs($totalSeconds))
+                    ->cascade()
+                    ->forHumans(['parts' => 4]);
             @endphp
 
             <div>
                 <span class="text-sm font-medium text-white">Tiempo restante:</span>
-                <span class="text-lg font-bold {{ $color }}">
-                    {{ $tiempoRestante }}
+                  {{ $totalTime }}
                 </span>
             </div>
             <label class="text-white">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
@@ -399,7 +396,8 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+        z-index: 1000;
+        /* Asegúrate de que esté por encima de otros elementos */
     }
 
     .overlay-content {
@@ -410,15 +408,18 @@
         max-width: 400px;
         width: 90%;
     }
-    #empresa-link {
-    position: relative;
-    z-index: 99999; /* Muy alto */
-    pointer-events: auto !important; /* Forzar que siempre sea clickeable */
-}
-.hidden {
-    display: none !important;
-}
 
+    #empresa-link {
+        position: relative;
+        z-index: 99999;
+        /* Muy alto */
+        pointer-events: auto !important;
+        /* Forzar que siempre sea clickeable */
+    }
+
+    .hidden {
+        display: none !important;
+    }
 </style>
 
 
@@ -525,7 +526,7 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const overlay = document.getElementById('overlay');
         const empresaLink = document.getElementById('empresa-link');
 
@@ -536,11 +537,10 @@
         }
 
         // Al hacer clic en "Empresa", ocultar overlay y recordar que ya fue visto
-        empresaLink.addEventListener('click', function () {
+        empresaLink.addEventListener('click', function() {
             localStorage.setItem('overlayShown', 'true'); // Marca como visto
             overlay.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
         });
     });
 </script>
-

@@ -279,8 +279,11 @@
                     <thead>
                         <tr>
                             <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Numero</th>
                             <th>Empresa</th>
-                            <th>Dias Restantes(Dias del plan + dias de prueba)</th>
+                            <th>Dias Restantes
+                            </th>
                             <th>Suscripcion</th>
                             <th>Precio de Suscripcion</th>
                         </tr>
@@ -290,8 +293,16 @@
                             <tr>
                                 <td>{{ $user->name }}
                                     @if ($user->id == Auth::user()->id)
-                                       <label class="text-blue-500"> (Esta cuenta)</label>
+                                        <label class="text-blue-500"> (Esta cuenta)</label>
                                     @endif
+                                </td>
+
+                                <td>
+                                    {{ $user->email }}
+                                </td>
+
+                                <td>
+                                    {{ $user->phone }}
                                 </td>
 
                                 <td>
@@ -328,7 +339,7 @@
                                     {{ $user->selected_plan }}
                                 </td>
                                 <td>
-                                    ${{ $user->plan_price}}
+                                    ${{ $user->plan_price }}
                                 </td>
                             </tr>
                         @endforeach
