@@ -21,6 +21,7 @@ use App\Http\Controllers\SecretariasController;
 use App\Http\Controllers\Auth\CustomRegisterController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\VerificacionController;
+use App\Http\Controllers\PagoController;
 //Rutas para usuarios
 Route::get('/', function () {
     return view('welcome');
@@ -245,4 +246,11 @@ Route::middleware(['auth', 'trial'])->group(function () {
     Route::get('/citas/{id}', [CitaController::class, 'show']);
 });
 
+
+
+// Rutas de pago protegidas por autenticación
+Route::middleware(['auth'])->group(function () {
+    Route::get('/pago/verificar', [PagoController::class, 'verificar'])->name('pagos.verificar');
+    Route::post('/pago/guardar', [PagoController::class, 'store'])->name('pagos.store');
+});
 

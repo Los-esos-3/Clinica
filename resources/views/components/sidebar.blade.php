@@ -1,4 +1,5 @@
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -92,12 +93,14 @@
 
             <div>
                 <span class="text-sm font-medium text-white">Tiempo restante:</span>
-                  {{ $totalTime }}
+                {{ $totalTime }}
                 </span>
             </div>
+            
             <label class="text-white">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
         </div>
 
+       
         <!-- Contenedor para el usuario -->
         <div class="user-container">
             <div class="name-space">
@@ -115,7 +118,7 @@
             <!-- Botón de salir -->
             <div>
                 <form method="POST" autocomplete="on" action="{{ route('logout') }}">
-                    @csrf
+                    @csrf   
                     <button type="submit"><i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></button>
                 </form>
             </div>
@@ -420,6 +423,7 @@
     .hidden {
         display: none !important;
     }
+
 </style>
 
 
@@ -544,3 +548,5 @@
         });
     });
 </script>
+
+
