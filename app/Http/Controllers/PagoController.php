@@ -60,6 +60,9 @@ class PagoController
             ]);
             Log::info('creo el pago');
 
+            $user = Auth::user();
+            Auth::login($user); // Autenticación automática
+
             return redirect()->route('dashboard')
                 ->with('success', 'Pago registrado correctamente');
 

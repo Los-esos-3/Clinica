@@ -227,11 +227,11 @@
                 button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
                 button.disabled = true;
 
-                window.location.href = "{{ route('dashboard') }}";
+                
                 // Generar PDF primero
                 generarPDF().then(() => {
                     // Después de generar el PDF, enviar el formulario
-                    this.submit();
+                  window.location.href = "{{ route('dashboard') }}";
                 }).catch(error => {
                     console.error('Error al generar PDF:', error);
                     button.innerHTML = originalText;
