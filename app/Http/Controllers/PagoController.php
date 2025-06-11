@@ -60,9 +60,8 @@ class PagoController
             ]);
             Log::info('creo el pago');
 
-            // Redirigir con mensaje de éxito
             return redirect()->route('dashboard')
-                ->with('success', 'Pago registrado correctamente. Referencia: ' . $validated['referencia']);
+                ->with('success', 'Pago registrado correctamente');
 
         } catch (\Exception $e) {
             DB::rollBack();
