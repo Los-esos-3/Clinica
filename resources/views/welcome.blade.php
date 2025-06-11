@@ -13,6 +13,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         body {
             font-family: 'Figtree', sans-serif;
@@ -321,6 +322,7 @@
             border: 1px solid #ccc;
             background-color: #fff;
             margin-bottom: 1em;
+            position: relative;
         }
 
         .input-icon {
@@ -445,6 +447,18 @@
             padding: 10px;
             text-align: center;
             font-size: 0.9rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            cursor: pointer;
+            color: #666;
+            padding: 5px;
+        }
+
+        .password-toggle:hover {
+            color: #333;
         }
 
         /* Media queries para distintos tamaños de pantalla */
@@ -642,6 +656,9 @@
                             </svg>
                             <input type="password" id="password" name="password" class="input-field"
                                 placeholder="Contraseña" required>
+                            <span onclick="togglePassword('password', this)" class="password-toggle">
+                                <i class="fa-solid fa-eye"></i>
+                            </span>
                         </div>
                         <div class="btn">
                             <button type="submit" class="button1">Iniciar Sesión</button>
@@ -786,6 +803,41 @@
                     }
                 }
             }
+        });
+
+        function togglePassword(id, iconElement) {
+            const input = document.getElementById(id);
+            const icon = iconElement.querySelector('i');
+        
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            function togglePassword(id, iconElement) {
+                const input = document.getElementById(id);
+                const icon = iconElement.querySelector('i');
+            
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = "password";
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            }
+
+            // Hacer la función togglePassword disponible globalmente
+            window.togglePassword = togglePassword;
         });
     </script>
 </body>
