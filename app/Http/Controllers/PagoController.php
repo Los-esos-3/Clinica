@@ -26,6 +26,9 @@ class PagoController
 
     public function store(Request $request)
     {
+        if (!Auth::check()) {
+            return redirect()->route('dashboard')->with('error', 'Debes iniciar sesión para realizar esta acción.');
+        }
 
         Log::info('Entro al metodo');
         // Limpiar y preparar los datos
