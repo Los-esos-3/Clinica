@@ -91,8 +91,6 @@ class ConsultaController
             'estado' => 'required|in:Completada,Pendiente,Cancelada',
         ]);
 
-        Log::info($request->all());
-
         $consulta = Consulta::findOrFail($id);
         $consulta->update($validatedData);
 

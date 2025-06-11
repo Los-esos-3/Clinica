@@ -36,10 +36,14 @@ Route::get('/plans', function () {
     return view('plans'); // Asegúrate de tener esta vista
 })->name('plans');
 
+Route::get('/pago', [PagoController::class, 'index'])->name('verificar.index');
+Route::get('/pago/verificar', [PagoController::class, 'verificar'])->name('pagos.verificar');
+Route::post('/pago/guardar', [PagoController::class, 'store'])->name('pagos.store');
 
 
 
-Route::get('/verificacion',[VerificacionController::class, 'index'])->name('verificacion');
+
+Route::get('/verificacion', [VerificacionController::class, 'index'])->name('verificacion');
 
 Route::post('/verificar-codigo', [VerificacionController::class, 'verificarCodigo'])->name('verificar.codigo');
 Route::post('/enviar-codigo', [VerificacionController::class, 'enviarCodigo'])->name('enviar.codigo');
@@ -47,6 +51,8 @@ Route::get('/register', [CustomRegisterController::class, 'showRegistrationForm'
 Route::post('/register', [CustomRegisterController::class, 'register'])->name('register.submit');
 Route::post('/refresh-captcha', [CustomRegisterController::class, 'refreshCaptcha'])->name('refresh.captcha');
 Route::post('/validate-captcha', [CustomRegisterController::class, 'validateCaptcha'])->name('validate.captcha');
+
+
 
 Route::post('/quejas/enviar', [ComplaintController::class, 'submit'])->name('complaints.submit');
 Route::get('/contactenos', function () {
@@ -67,8 +73,7 @@ Route::middleware(['auth', 'trial'])->group(function () {
                 return redirect()->route('dashboardRoot');
             }
 
-            if(Auth::user()->hasAnyRole('Admin','Doctor','Secretaria'))
-            {
+            if (Auth::user()->hasAnyRole('Admin', 'Doctor', 'Secretaria')) {
                 return redirect()->route('dashboard');
             }
             return redirect()->route('welcome');
@@ -80,9 +85,9 @@ Route::middleware(['auth', 'trial'])->group(function () {
     Route::middleware(['auth', 'role:Root'])->group(function () {
         route::get('dashboardRoot', [RoleController::class, 'index'])->name('dashboardRoot');
 
-        Route::get('rolesRoot',[RoleController::class, 'RolesIndex'])->name('rolesRoot.index');
+        Route::get('rolesRoot', [RoleController::class, 'RolesIndex'])->name('rolesRoot.index');
 
-        Route::post('enviarRecordatorio/{id}',[RoleController::class,'RecordatorioCorreo'])->name('enviar.recordatorio');
+        Route::post('enviarRecordatorio/{id}', [RoleController::class, 'RecordatorioCorreo'])->name('enviar.recordatorio');
 
 
         Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
@@ -116,12 +121,6 @@ Route::middleware(['auth', 'trial'])->group(function () {
 
     //Rutas de Admin
     Route::middleware(['auth', 'role:Admin'])->group(function () {
-
-        Route::post('/subscribe', [MercadoPagoController::class, 'createSubscription'])->name('subscribe');
-        Route::get('/subscription/success', [MercadoPagoController::class, 'success'])->name('subscription.success');
-        Route::get('/subscription/failure', [MercadoPagoController::class, 'failure'])->name('subscription.failure');
-        Route::get('/subscription/pending', [MercadoPagoController::class, 'pending'])->name('subscription.pending');
-        Route::post('/mercadopago/notification', [MercadoPagoController::class, 'handleNotification'])->name('mp.notification');
 
         Route::get('/Trabajadores', [TrabajadoresController::class, 'index'])->name("Trabajadores.index");
         Route::get('/Trabajadores/create', [TrabajadoresController::class, 'create'])->name('Trabajadores.create');
@@ -245,12 +244,3 @@ Route::middleware(['auth', 'trial'])->group(function () {
 
     Route::get('/citas/{id}', [CitaController::class, 'show']);
 });
-
-
-
-// Rutas de pago protegidas por autenticación
-Route::middleware(['auth'])->group(function () {
-    Route::get('/pago/verificar', [PagoController::class, 'verificar'])->name('pagos.verificar');
-    Route::post('/pago/guardar', [PagoController::class, 'store'])->name('pagos.store');
-});
-

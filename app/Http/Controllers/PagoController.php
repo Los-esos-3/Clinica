@@ -8,72 +8,69 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
-class PagoController extends BaseController
+class PagoController 
 {
-    use AuthorizesRequests, ValidatesRequests;
-
-    public function verificar()
+    public function index()
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        $registrationData = Session::get('registration_data');
+        
+        if (!$registrationData) {
+            return redirect()->route('register')->with('error', 'No se encontraron datos de registro.');
         }
-        return view('pagos.verificar');
+        
+        return view('pagos.verificar', compact('registrationData'));
     }
 
     public function store(Request $request)
     {
-        if (!Auth::check()) {
-            return response()->json([
-                'message' => 'No autenticado. Por favor inicia sesión.'
-            ], 401);
-        }
 
-        $request->validate([
+        Log::info('Entro al metodo');
+        // Limpiar y preparar los datos
+        $request->merge([
+            'precio' => str_replace(['$', ','], '', $request->precio),
+            'fecha' => Carbon::parse($request->fecha)->format('Y-m-d H:i:s'),
+        ]);
+
+        Log::info('Termino de terminar la convercion de precio y fecha');
+
+        // Validar los datos
+        $validated = $request->validate([
             'plan' => 'required|string',
             'precio' => 'required|numeric',
             'referencia' => 'required|string|unique:pagos,referencia',
-            'fecha' => 'required|date'
+            'fecha' => 'required|date',
         ]);
 
-        try {
-            DB::beginTransaction();
+        Log::inf('Termino las validaciones con exito');
 
+        try {
+
+            Log::info('inicio el Try');
+            
+            // Crear el pago
             $pago = Pago::create([
                 'user_id' => Auth::id(),
-                'plan' => $request->plan,
-                'precio' => $request->precio,
-                'referencia' => $request->referencia,
-                'fecha_generacion' => Carbon::parse($request->fecha)
+                'plan' => $validated['plan'],
+                'precio' => $validated['precio'],
+                'referencia' => $validated['referencia'],
+                'fecha_generacion' => $validated['fecha'],
             ]);
+            Log::info('creo el pago');
 
-            // Actualizar el estado del usuario
-            $user = Auth::user();
-            $user->update([
-                'plan_activo' => true,
-                'plan_actual' => $request->plan,
-                'fecha_activacion' => now()
-            ]);
-
-            DB::commit();
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Pago guardado correctamente',
-                'pago' => $pago,
-                'redirect' => route('dashboard')
-            ]);
+            // Redirigir con mensaje de éxito
+            return redirect()->route('dashboard')
+                ->with('success', 'Pago registrado correctamente. Referencia: ' . $validated['referencia']);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al guardar el pago',
-                'error' => $e->getMessage()
-            ], 500);
+            Log::error('Error al guardar el pago: ' . $e->getMessage());
+
+            return back()
+                ->withInput()
+                ->with('error', 'Error al procesar el pago: ' . $e->getMessage());
         }
     }
 }

@@ -35,13 +35,6 @@ class VerificacionController
         Session::put('codigo_timestamp', now()->timestamp);
         Session::put('email_verificacion', $request->email);
 
-        // Log para depuración
-        Log::info('Nuevo código generado', [
-            'email' => $request->email,
-            'codigo' => $codigo,
-            'timestamp' => now()->timestamp
-        ]);
-
         // Envío del correo al usuario que se está registrando
         Mail::to($request->email)->send(new CodigoVerificacionMail($codigo));
     }
@@ -93,7 +86,7 @@ class VerificacionController
                 'trial_ended' => false
             ]);
 
-            $user->assignRole('Admin'); // O el rol que tú quieras asignar
+             $user->assignRole('Admin'); 
 
             Auth::login($user); // Autenticación automática
 
@@ -102,8 +95,12 @@ class VerificacionController
             Session::forget('codigo_timestamp');
             Session::forget('registration_data');
 
-            return redirect()->route('dashboard')->with('success', 'Usuario registrado y verificado exitosamente.');
+               $requestData = $registrationData;
+              Session::put('registration_data', $requestData);
+
+             return redirect()->route('verificar.index')->with($requestData);
         }
+        
 
         return back()->withErrors(['codigo' => 'El código es incorrecto o ha expirado.'])->withInput();
     }

@@ -125,8 +125,6 @@ class EmpresaController
         // Actualizar la empresa
         $empresa->update($data);
 
-        Log::info('Actualizo la empresa');
-
         // Procesar usuarios seleccionados
         if ($request->has('usuarios')) {
             // Desasociar usuarios que ya no están en la lista
@@ -144,7 +142,7 @@ class EmpresaController
             }
         }
 
-        Log::info('Asocio el user con la empresa');
+
 
         return redirect()->route('empresas.index')->with('success', 'Empresa actualizada correctamente.');
     }
