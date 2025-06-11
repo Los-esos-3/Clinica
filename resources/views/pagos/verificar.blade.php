@@ -167,6 +167,8 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         generarPDF();
+                    } else {
+                        window.location.href = "{{ route('dashboard') }}";
                     }
                 });
             </script>
@@ -217,6 +219,7 @@
 
             // Manejar el envío del formulario
             document.getElementById('pagoForm').addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevenir el envío inmediato
                 const button = document.getElementById('submitButton');
                 const originalText = button.innerHTML;
 
@@ -224,65 +227,77 @@
                 button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
                 button.disabled = true;
 
-                // El formulario se enviará normalmente
-            });
-
-            function generarPDF() {
-                const ticket = document.querySelector('.ticket-container');
-
-                // Asegurarse de que el código de barras esté generado
-                const barcodeImg = document.getElementById('barcodeImage');
-                if (!barcodeImg.complete) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Espera un momento',
-                        text: 'Estamos preparando el ticket...',
-                        showConfirmButton: false,
-                        timer: 2000
-                    });
-                }
-
-                html2canvas(ticket, {
-                    scale: 2,
-                    useCORS: true,
-                    logging: false,
-                    backgroundColor: '#ffffff',
-                    onclone: function(clonedDoc) {
-                        // Asegurarse de que el código de barras esté visible en el clon
-                        const clonedBarcode = clonedDoc.getElementById('barcodeImage');
-                        if (clonedBarcode) {
-                            clonedBarcode.style.display = 'block';
-                            clonedBarcode.style.width = '100%';
-                            clonedBarcode.style.height = 'auto';
-                        }
-                    }
-                }).then(canvas => {
-                    const imgData = canvas.toDataURL('image/png', 1.0);
-                    const pdf = new jspdf.jsPDF({
-                        orientation: 'portrait',
-                        unit: 'mm',
-                        format: 'a4'
-                    });
-
-                    const imgWidth = 210; // A4 width in mm
-                    const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                    pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-
-                    // Agregar fecha y hora de generación
-                    const fecha = new Date().toLocaleString('es-ES');
-                    pdf.setFontSize(8);
-                    pdf.text(`Generado el: ${fecha}`, 10, imgHeight + 10);
-
-                    // Guardar el PDF
-                    pdf.save('ticket-oxxo.pdf');
+                // Generar PDF primero
+                generarPDF().then(() => {
+                    // Después de generar el PDF, enviar el formulario
+                    this.submit();
                 }).catch(error => {
                     console.error('Error al generar PDF:', error);
+                    button.innerHTML = originalText;
+                    button.disabled = false;
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
                         text: 'No se pudo generar el PDF. Por favor, intenta de nuevo.',
                         confirmButtonText: 'Entendido'
+                    });
+                });
+            });
+
+            function generarPDF() {
+                return new Promise((resolve, reject) => {
+                    const ticket = document.querySelector('.ticket-container');
+
+                    // Asegurarse de que el código de barras esté generado
+                    const barcodeImg = document.getElementById('barcodeImage');
+                    if (!barcodeImg.complete) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Espera un momento',
+                            text: 'Estamos preparando el ticket...',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                    }
+
+                    html2canvas(ticket, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: '#ffffff',
+                        onclone: function(clonedDoc) {
+                            // Asegurarse de que el código de barras esté visible en el clon
+                            const clonedBarcode = clonedDoc.getElementById('barcodeImage');
+                            if (clonedBarcode) {
+                                clonedBarcode.style.display = 'block';
+                                clonedBarcode.style.width = '100%';
+                                clonedBarcode.style.height = 'auto';
+                            }
+                        }
+                    }).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png', 1.0);
+                        const pdf = new jspdf.jsPDF({
+                            orientation: 'portrait',
+                            unit: 'mm',
+                            format: 'a4'
+                        });
+
+                        const imgWidth = 210; // A4 width in mm
+                        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+                        // Agregar fecha y hora de generación
+                        const fecha = new Date().toLocaleString('es-ES');
+                        pdf.setFontSize(8);
+                        pdf.text(`Generado el: ${fecha}`, 10, imgHeight + 10);
+
+                        // Guardar el PDF
+                        pdf.save('ticket-oxxo.pdf');
+                        resolve();
+                    }).catch(error => {
+                        console.error('Error al generar PDF:', error);
+                        reject(error);
                     });
                 });
             }

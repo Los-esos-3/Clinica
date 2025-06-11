@@ -44,7 +44,7 @@ class PagoController
             'fecha' => 'required|date',
         ]);
 
-        Log::inf('Termino las validaciones con exito');
+        Log::info('Termino las validaciones con exito');
 
         try {
 
