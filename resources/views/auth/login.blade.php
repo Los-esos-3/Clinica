@@ -7,6 +7,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -102,10 +103,16 @@
                     <input type="email" name="email" id="email" placeholder="Correo electrónico" required>
                     <span class="checkmark">✔</span>
                 </div>
-                <div class="mb-4 input-field" id="password-field">
-                    <input type="password" name="password" id="password" placeholder="Contraseña" required maxlength="18">
-                    <span class="checkmark">✔</span>
+                <div class="mb-4 input-field relative" id="password-field">
+                    <input type="password" name="password" id="password" placeholder="Contraseña" required maxlength="18"
+                        class="w-full px-3 py-2 pr-12 border border-gray-300 rounded-md">
+                    
+                    <span onclick="togglePassword('password', this)"
+                        class="absolute right-3 top-2/4 transform -translate-y-1/2 cursor-pointer text-gray-500">
+                        <i class="fa-solid fa-eye"></i>
+                    </span>
                 </div>
+                
                 <div class="flex justify-between items-center mb-6">
                     <label for="remember_me" class="text-sm">
                         <input type="checkbox" name="remember" id="remember_me" class="mr-2"> Recordarme
@@ -123,7 +130,23 @@
             </form>
         </div>
     </div>
-
+    <script>
+        function togglePassword(id, iconElement) {
+            const input = document.getElementById(id);
+            const icon = iconElement.querySelector('i');
+        
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = "password";
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+        </script>
+        
     <script>
         const emailInput = document.getElementById('email');
         const passwordInput = document.getElementById('password');
