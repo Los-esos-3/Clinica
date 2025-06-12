@@ -63,9 +63,11 @@ class PagoController
             ]);
             Log::info('creo el pago');
 
-            // Redirigir con mensaje de éxito
+            $user = Auth::user();
+            Auth::login($user); // Autenticación automática
+
             return redirect()->route('dashboard')
-                ->with('success', 'Pago registrado correctamente. Referencia: ' . $validated['referencia']);
+                ->with('success', 'Pago registrado correctamente');
 
         } catch (\Exception $e) {
             DB::rollBack();

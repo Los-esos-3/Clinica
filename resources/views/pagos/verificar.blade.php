@@ -227,8 +227,21 @@
                     button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
                     button.disabled = true;
 
-                    // Enviar el formulario
-                    this.submit();
+                
+                // Generar PDF primero
+                generarPDF().then(() => {
+                    // Después de generar el PDF, enviar el formulario
+                  window.location.href = "{{ route('dashboard') }}";
+                }).catch(error => {
+                    console.error('Error al generar PDF:', error);
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'No se pudo generar el PDF. Por favor, intenta de nuevo.',
+                        confirmButtonText: 'Entendido'
+                    });
                 });
             });
 
