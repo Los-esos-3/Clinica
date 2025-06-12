@@ -284,6 +284,7 @@
                             <th>Numero</th>
                             <th>Empresa</th>
                             <th>Dias Restantes</th>
+                            <th>Fecha de creacion del cliente</th>
                             <th>Suscripcion</th>
                             <th>Precio de Suscripcion</th>
                             <th>Acciones</th>
@@ -336,6 +337,12 @@
                                     @endphp
                                     {{ $totalTime }}
                                 </td>
+
+                                 <td>
+                                    {{$user->created_at}}
+                                </td>
+
+
                                 <td>
                                     {{ $user->selected_plan }}
                                 </td>
