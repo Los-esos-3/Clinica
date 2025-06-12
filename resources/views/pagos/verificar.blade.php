@@ -38,6 +38,7 @@
                         <!-- Formulario de Pago -->
                         <form method="POST" action="{{ route('pagos.store') }}" id="pagoForm">
                             @csrf
+                            <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <!-- Campos ocultos con los datos -->
                             <input type="hidden" name="plan"
                                 value="{{ Auth::user()->selected_plan ?? 'Plan Básico' }}">
@@ -149,49 +150,12 @@
             </div>
         </div>
 
-        @if (session('success'))
-            <script>
-                Swal.fire({
-                    title: '¡Éxito!',
-                    html: `
-            <div class="text-left">
-                <p class="mb-2"><strong>Referencia:</strong> {{ session('success') }}</p>
-                <p class="mb-2"><strong>Plan:</strong> {{ old('plan') }}</p>
-                <p class="mb-2"><strong>Monto:</strong> ${{ number_format(old('precio'), 2) }} MXN</p>
-            </div>
-        `,
-                    icon: 'success',
-                    confirmButtonText: 'Descargar Ticket',
-                    showCancelButton: true,
-                    cancelButtonText: 'Ir al Dashboard'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        generarPDF();
-                    } else {
-                        window.location.href = "{{ route('dashboard') }}";
-                    }
-                });
-            </script>
-        @endif
-
-        @if ($errors->any())
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: '{{ $errors->first() }}',
-                    confirmButtonText: 'Reintentar'
-                });
-            </script>
-        @endif
-
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                // Generar referencia y código de barras
+                // Referencia y código de barras
                 const referencia = document.getElementById('codigoRef').innerText;
                 document.getElementById('formReferencia').value = referencia;
-
-                // Generar código de barras
+            
                 try {
                     JsBarcode("#barcodeImage", referencia, {
                         format: "CODE128",
@@ -204,8 +168,7 @@
                 } catch (error) {
                     console.error('Error al generar código de barras:', error);
                 }
-
-                // Configurar fecha
+            
                 const fecha = new Date();
                 document.getElementById('modalFecha').innerText = fecha.toLocaleString('es-ES', {
                     year: 'numeric',
@@ -216,58 +179,56 @@
                 });
                 document.getElementById('formFecha').value = fecha.toISOString();
             });
-
-            // Manejar el envío del formulario
+            
+            // Manejo del envío del formulario
             document.getElementById('pagoForm').addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevenir el envío inmediato
+                e.preventDefault(); // Prevenir envío inmediato
+            
                 const button = document.getElementById('submitButton');
-                const originalText = button.innerHTML;
-
-                // Mostrar spinner y deshabilitar botón
                 button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
                 button.disabled = true;
 
-                
-                // Generar PDF primero
-                generarPDF().then(() => {
-                    // Después de generar el PDF, enviar el formulario
-                  window.location.href = "{{ route('dashboard') }}";
-                }).catch(error => {
-                    console.error('Error al generar PDF:', error);
-                    button.innerHTML = originalText;
+                // Primero enviamos el formulario
+                fetch(this.action, {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Si el pago se guardó correctamente, generamos el PDF
+                        return generarPDF().then(() => {
+                            window.location.href = data.redirect;
+                        });
+                    } else {
+                        throw new Error(data.message || 'Error al procesar el pago');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    button.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Confirmar y Generar Ticket';
                     button.disabled = false;
                     Swal.fire({
                         icon: 'error',
                         title: 'Error',
-                        text: 'No se pudo generar el PDF. Por favor, intenta de nuevo.',
-                        confirmButtonText: 'Entendido'
+                        text: 'Hubo un error al procesar el pago. Por favor, recargue nuevamente la pagina si persiste el error.'
                     });
                 });
             });
-
+            
             function generarPDF() {
                 return new Promise((resolve, reject) => {
                     const ticket = document.querySelector('.ticket-container');
-
-                    // Asegurarse de que el código de barras esté generado
-                    const barcodeImg = document.getElementById('barcodeImage');
-                    if (!barcodeImg.complete) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Espera un momento',
-                            text: 'Estamos preparando el ticket...',
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
-                    }
-
+            
                     html2canvas(ticket, {
                         scale: 2,
                         useCORS: true,
                         logging: false,
                         backgroundColor: '#ffffff',
                         onclone: function(clonedDoc) {
-                            // Asegurarse de que el código de barras esté visible en el clon
                             const clonedBarcode = clonedDoc.getElementById('barcodeImage');
                             if (clonedBarcode) {
                                 clonedBarcode.style.display = 'block';
@@ -282,27 +243,25 @@
                             unit: 'mm',
                             format: 'a4'
                         });
-
-                        const imgWidth = 210; // A4 width in mm
+            
+                        const imgWidth = 210;
                         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
+            
                         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-
-                        // Agregar fecha y hora de generación
+            
                         const fecha = new Date().toLocaleString('es-ES');
                         pdf.setFontSize(8);
                         pdf.text(`Generado el: ${fecha}`, 10, imgHeight + 10);
-
-                        // Guardar el PDF
+            
                         pdf.save('ticket-oxxo.pdf');
                         resolve();
                     }).catch(error => {
-                        console.error('Error al generar PDF:', error);
                         reject(error);
                     });
                 });
             }
-        </script>
+            </script>
+            
     </x-app-layout>
 </body>
 

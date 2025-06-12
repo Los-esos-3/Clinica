@@ -26,29 +26,28 @@ class PagoController
 
     public function store(Request $request)
     {
-
-        Log::info('Entro al metodo');
-        // Limpiar y preparar los datos
-        $request->merge([
-            'precio' => str_replace(['$', ','], '', $request->precio),
-            'fecha' => Carbon::parse($request->fecha)->format('Y-m-d H:i:s'),
-        ]);
-
-        Log::info('Termino de terminar la convercion de precio y fecha');
-
-        // Validar los datos
-        $validated = $request->validate([
-            'plan' => 'required|string',
-            'precio' => 'required|numeric',
-            'referencia' => 'required|string|unique:pagos,referencia',
-            'fecha' => 'required|date',
-        ]);
-
-        Log::info('Termino las validaciones con exito');
-
+        Log::info('Iniciando proceso de guardado de pago');
+        
         try {
+            // Limpiar y preparar los datos
+            $request->merge([
+                'precio' => str_replace(['$', ','], '', $request->precio),
+                'fecha' => Carbon::parse($request->fecha)->format('Y-m-d H:i:s'),
+            ]);
 
-            Log::info('inicio el Try');
+            Log::info('Datos preparados:', $request->all());
+
+            // Validar los datos
+            $validated = $request->validate([
+                'plan' => 'required|string',
+                'precio' => 'required|numeric',
+                'referencia' => 'required|string|unique:pagos,referencia',
+                'fecha' => 'required|date',
+            ]);
+
+            Log::info('Datos validados correctamente');
+
+            DB::beginTransaction();
             
             // Crear el pago
             $pago = Pago::create([
@@ -58,21 +57,34 @@ class PagoController
                 'referencia' => $validated['referencia'],
                 'fecha_generacion' => $validated['fecha'],
             ]);
-            Log::info('creo el pago');
 
+            Log::info('Pago creado exitosamente:', ['pago_id' => $pago->id]);
+
+            // Actualizar el usuario con el plan seleccionado
             $user = Auth::user();
-            Auth::login($user); // Autenticación automática
+            $user->selected_plan = $validated['plan'];
+            $user->plan_price = $validated['precio'];
+            $user->save();
 
-            return redirect()->route('dashboard')
-                ->with('success', 'Pago registrado correctamente');
+            Log::info('Usuario actualizado con el plan');
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Pago registrado correctamente',
+                'redirect' => route('dashboard')
+            ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error al guardar el pago: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
 
-            return back()
-                ->withInput()
-                ->with('error', 'Error al procesar el pago: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al procesar el pago: ' . $e->getMessage()
+            ], 500);
         }
     }
 }
