@@ -11,23 +11,30 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 
-class PagoController 
+class PagoController
 {
     public function index()
     {
+
         $registrationData = Session::get('registration_data');
-        
+
         if (!$registrationData) {
             return redirect()->route('register')->with('error', 'No se encontraron datos de registro.');
         }
-        
-        return view('pagos.verificar', compact('registrationData'));
+
+        // Si viene con ?reload=true, actualiza datos antes de mostrar la vista
+        if (request('reload')) {
+          return redirect()->route('verificar.index');
+        }
+
+
+        return view('pagos.verificar');
     }
 
     public function store(Request $request)
     {
-        Log::info('Iniciando proceso de guardado de pago');
-        
+
+
         try {
             // Limpiar y preparar los datos
             $request->merge([
@@ -35,7 +42,7 @@ class PagoController
                 'fecha' => Carbon::parse($request->fecha)->format('Y-m-d H:i:s'),
             ]);
 
-            Log::info('Datos preparados:', $request->all());
+
 
             // Validar los datos
             $validated = $request->validate([
@@ -45,10 +52,10 @@ class PagoController
                 'fecha' => 'required|date',
             ]);
 
-            Log::info('Datos validados correctamente');
+
 
             DB::beginTransaction();
-            
+
             // Crear el pago
             $pago = Pago::create([
                 'user_id' => Auth::id(),
@@ -58,7 +65,7 @@ class PagoController
                 'fecha_generacion' => $validated['fecha'],
             ]);
 
-            Log::info('Pago creado exitosamente:', ['pago_id' => $pago->id]);
+
 
             // Actualizar el usuario con el plan seleccionado
             $user = Auth::user();
@@ -66,7 +73,7 @@ class PagoController
             $user->plan_price = $validated['precio'];
             $user->save();
 
-            Log::info('Usuario actualizado con el plan');
+
 
             DB::commit();
 
@@ -75,7 +82,6 @@ class PagoController
                 'message' => 'Pago registrado correctamente',
                 'redirect' => route('dashboard')
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Error al guardar el pago: ' . $e->getMessage());
