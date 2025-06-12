@@ -38,7 +38,6 @@
                         <!-- Formulario de Pago -->
                         <form method="POST" action="{{ route('pagos.store') }}" id="pagoForm">
                             @csrf
-                            <meta name="csrf-token" content="{{ csrf_token() }}">
                             <!-- Campos ocultos con los datos -->
                             <input type="hidden" name="plan"
                                 value="{{ Auth::user()->selected_plan ?? 'Plan Básico' }}">
@@ -216,16 +215,17 @@
                     minute: '2-digit'
                 });
                 document.getElementById('formFecha').value = fecha.toISOString();
+            });
 
-                // Manejar el envío del formulario
-                document.getElementById('pagoForm').addEventListener('submit', function(e) {
-                    e.preventDefault();
-                    const button = document.getElementById('submitButton');
-                    const originalText = button.innerHTML;
+            // Manejar el envío del formulario
+            document.getElementById('pagoForm').addEventListener('submit', function(e) {
+                e.preventDefault(); // Prevenir el envío inmediato
+                const button = document.getElementById('submitButton');
+                const originalText = button.innerHTML;
 
-                    // Mostrar spinner y deshabilitar botón
-                    button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
-                    button.disabled = true;
+                // Mostrar spinner y deshabilitar botón
+                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
+                button.disabled = true;
 
                 
                 // Generar PDF primero
@@ -248,84 +248,58 @@
             function generarPDF() {
                 return new Promise((resolve, reject) => {
                     const ticket = document.querySelector('.ticket-container');
-                    const referencia = document.getElementById('codigoRef').innerText;
 
-                    // 1. Crear un canvas temporal para el código de barras
-                    const tempCanvas = document.createElement('canvas');
-                    tempCanvas.width = 300; // Mismas dimensiones que el canvas visible
-                    tempCanvas.height = 150;
-
-                    let barcodeDataUrl = '';
-
-                    // 2. Dibujar el código de barras en el canvas temporal
-                    try {
-                        JsBarcode(tempCanvas, referencia, {
-                            format: "CODE128",
-                            width: 2,
-                            height: 100,
-                            displayValue: true,
-                            fontSize: 20,
-                            margin: 10,
-                            background: "#ffffff",
-                            lineColor: "#000000"
+                    // Asegurarse de que el código de barras esté generado
+                    const barcodeImg = document.getElementById('barcodeImage');
+                    if (!barcodeImg.complete) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Espera un momento',
+                            text: 'Estamos preparando el ticket...',
+                            showConfirmButton: false,
+                            timer: 2000
                         });
-                        // 3. Obtener el dataURL del canvas temporal
-                        barcodeDataUrl = tempCanvas.toDataURL('image/png');
-                        console.log('Barcode DataURL generada (temporal):', barcodeDataUrl.substring(0, 100) + '...');
-                    } catch (error) {
-                        console.error('Error al generar código de barras en canvas temporal:', error);
-                        reject(error);
-                        return; // Salir si hay error al generar barcode
                     }
 
-                    // Retardo mínimo para asegurar que el DOM esté estable antes de la captura
-                    setTimeout(() => {
-                        html2canvas(ticket, {
-                            scale: 2,
-                            useCORS: true,
-                            logging: false,
-                            backgroundColor: '#ffffff',
-                            onclone: function(clonedDoc) {
-                                // 4. Reemplazar el canvas visible con una imagen en el DOM clonado
-                                const clonedBarcodeElement = clonedDoc.getElementById('barcodeImage');
-                                if (clonedBarcodeElement && barcodeDataUrl) {
-                                    const img = clonedDoc.createElement('img');
-                                    img.src = barcodeDataUrl;
-                                    img.style.display = 'block';
-                                    img.style.width = '100%'; // Ajustar al ancho del contenedor original
-                                    img.style.height = 'auto';
-                                    img.style.backgroundColor = '#ffffff';
-
-                                    // Reemplazar el canvas con la imagen en el DOM clonado
-                                    clonedBarcodeElement.parentNode.replaceChild(img, clonedBarcodeElement);
-                                }
+                    html2canvas(ticket, {
+                        scale: 2,
+                        useCORS: true,
+                        logging: false,
+                        backgroundColor: '#ffffff',
+                        onclone: function(clonedDoc) {
+                            // Asegurarse de que el código de barras esté visible en el clon
+                            const clonedBarcode = clonedDoc.getElementById('barcodeImage');
+                            if (clonedBarcode) {
+                                clonedBarcode.style.display = 'block';
+                                clonedBarcode.style.width = '100%';
+                                clonedBarcode.style.height = 'auto';
                             }
-                        }).then(canvas => {
-                            const imgData = canvas.toDataURL('image/png', 1.0);
-                            const pdf = new jspdf.jsPDF({
-                                orientation: 'portrait',
-                                unit: 'mm',
-                                format: 'a4'
-                            });
-
-                            const imgWidth = 210; // A4 width in mm
-                            const imgHeight = (canvas.height * imgWidth) / canvas.width;
-
-                            pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-
-                            // Agregar fecha y hora de generación
-                            const fecha = new Date().toLocaleString('es-ES');
-                            pdf.setFontSize(8);
-                            pdf.text(`Generado el: ${fecha}`, 10, imgHeight + 10);
-
-                            // Guardar el PDF
-                            pdf.save('ticket-oxxo.pdf');
-                            resolve();
-                        }).catch(error => {
-                            console.error('Error al generar PDF:', error);
-                            reject(error);
+                        }
+                    }).then(canvas => {
+                        const imgData = canvas.toDataURL('image/png', 1.0);
+                        const pdf = new jspdf.jsPDF({
+                            orientation: 'portrait',
+                            unit: 'mm',
+                            format: 'a4'
                         });
-                    }, 50); // Retardo de 50ms, solo para estabilidad general
+
+                        const imgWidth = 210; // A4 width in mm
+                        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+                        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+
+                        // Agregar fecha y hora de generación
+                        const fecha = new Date().toLocaleString('es-ES');
+                        pdf.setFontSize(8);
+                        pdf.text(`Generado el: ${fecha}`, 10, imgHeight + 10);
+
+                        // Guardar el PDF
+                        pdf.save('ticket-oxxo.pdf');
+                        resolve();
+                    }).catch(error => {
+                        console.error('Error al generar PDF:', error);
+                        reject(error);
+                    });
                 });
             }
         </script>
