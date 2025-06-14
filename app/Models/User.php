@@ -96,4 +96,8 @@ class User extends Authenticatable
     {
         return $this->hasOne(Secretarias::class, 'user_id');
     }
+    public function pagos()
+    {
+        return $this->hasMany(Pago::class);
+    }
 }

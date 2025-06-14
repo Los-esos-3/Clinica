@@ -338,8 +338,8 @@
                                     {{ $totalTime }}
                                 </td>
 
-                                 <td>
-                                    {{$user->created_at}}
+                                <td>
+                                    {{ $user->created_at }}
                                 </td>
 
 
@@ -353,22 +353,22 @@
                                 <td>
                                     <div class="flex gap-6 h-[3rem]">
 
-                                        <form method="POST" action="{{route('enviar.recordatorio', $user->id)}}">
+                                        <form method="POST" action="{{ route('enviar.recordatorio', $user->id) }}">
                                             @csrf
-                                            <Button type="submit" class="bg-gray-300 p-2 h[60px] w-[60px] rounded">
+                                            <Button type="submit" class="bg-gray-300 p-2 h-[50px] w-[60px] rounded">
                                                 <i class="fa-solid fa-envelope"></i>
                                             </Button>
                                         </form>
 
 
-
-                                        <Button class="bg-gray-300 p-2 h[60px] w-[60px]  rounded">
+                                        <Button onclick="toggleModal('modal-pagos-usuario-{{ $user->id }}')"
+                                            class="bg-gray-300 p-2 h-[50px] w-[60px]  rounded">
                                             <i class="fa-solid fa-dollar-sign"></i>
                                         </Button>
 
+                                        <x-modal-pagos-usuario :user="$user" />
                                     </div>
                                 </td>
-
                             </tr>
                         @endforeach
                     </tbody>

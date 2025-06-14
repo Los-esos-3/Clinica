@@ -13,5 +13,11 @@ class Pago extends Model
         'referencia',
         'fecha_generacion'
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
 
