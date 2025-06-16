@@ -201,7 +201,7 @@ class TrabajadoresController
                 $doctor->fill([
                     'nombre_completo' => $validated['name'],
                     'foto_perfil' => $fotoPerfilPath,
-                    'email' => $validated['email'],
+                    'email' => $trabajador['correo'],
                     'empresa_id' => Auth::user()->empresa_id,
                     'user_id' => $user->id,
                 ])->save();
@@ -209,7 +209,7 @@ class TrabajadoresController
                 $secretaria = Secretarias::firstOrNew(['trabajador_id' => $trabajador->id]);
                 $secretaria->fill([
                     'nombre_completo' => $validated['name'],
-                    'email' => $validated['email'],
+                    'email' => $trabajador['correo'],
                     'foto_perfil' => $fotoPerfilPath,
                     'empresa_id' => Auth::user()->empresa_id,
                     'user_id' => $user->id,
