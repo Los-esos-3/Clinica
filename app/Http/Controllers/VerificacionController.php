@@ -98,7 +98,7 @@ class VerificacionController
                $requestData = $registrationData;
               Session::put('registration_data', $requestData);
 
-             return redirect()->route('verificar.index')->with($requestData);
+             return redirect()->route('verificar.index', ['reload' => true])->with('reloaded', true)->with($requestData);
         }
         
 

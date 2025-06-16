@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\RecordatorioDeDias;
+use App\Models\Pago;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -30,10 +31,10 @@ class RoleController
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'Admin');
             })
+            ->with('pagos') // Cargar los pagos relacionados
             ->paginate(10);
 
-
-        return view('roles.index', compact('users',  'empresas'));
+        return view('roles.index', compact('users', 'empresas'));
     }
 
     public function RecordatorioCorreo($userId)
@@ -41,8 +42,8 @@ class RoleController
         // Obtener el usuario
         $user = User::findOrFail($userId);
 
-  
-         $expirationDate = $user->plan_expires_at; // Suponemos que esta fecha está almacenada en la base de datos
+
+        $expirationDate = $user->plan_expires_at; // Suponemos que esta fecha está almacenada en la base de datos
         // $remainingDays = now()->diffInDays($expirationDate);
 
 

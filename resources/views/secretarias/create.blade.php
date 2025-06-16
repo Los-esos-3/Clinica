@@ -109,7 +109,7 @@
                                         class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
                                         <option value="">Selecciona una empresa</option>
                                         @foreach ($empresas as $empresa)
-                                            <option value="{{Auth::user()->empresa->nombre}}">{{ $empresa->nombre }}</option>
+                                            <option value="{{ $empresa->id }}">{{ $empresa->nombre }}</option>
                                         @endforeach
                                     </select>
                                 </div>

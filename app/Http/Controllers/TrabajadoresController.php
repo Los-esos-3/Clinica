@@ -202,6 +202,7 @@ class TrabajadoresController
                     'nombre_completo' => $validated['name'],
                     'foto_perfil' => $fotoPerfilPath,
                     'email' => $validated['email'],
+                    'empresa_id' => Auth::user()->empresa_id,
                     'user_id' => $user->id,
                 ])->save();
             } elseif ($validated['rol'] === 'Secretaria') {
@@ -210,6 +211,7 @@ class TrabajadoresController
                     'nombre_completo' => $validated['name'],
                     'email' => $validated['email'],
                     'foto_perfil' => $fotoPerfilPath,
+                    'empresa_id' => Auth::user()->empresa_id,
                     'user_id' => $user->id,
                 ])->save();
             } else {

@@ -125,7 +125,7 @@ class DoctoresController
             'genero' => 'required|in:Masculino,Femenino,Otro',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'telefono' => 'nullable|string|max:15',
-            'email' => 'nullable|email|unique:users,email,' . $doctor->user_id, // Validar email único en users
+            'email' => 'nullable|email', 
             'domicilio' => 'nullable|string',
             'nacionalidad' => 'nullable|string',
             'especialidad_medica' => 'nullable|string',
@@ -133,11 +133,12 @@ class DoctoresController
             'titulo' => 'nullable|string',
             'año_graduacion' => 'nullable|integer',
             'años_experiencia' => 'nullable|integer',
+            'hospitales_previos' => 'nullable|string',
+            'idiomas' => 'nullable|string',
             'contacto_emergencia_nombre' => 'nullable|string',
             'contacto_emergencia_relacion' => 'nullable|string',
             'contacto_emergencia_telefono' => 'nullable|string',
             'area_departamento' => 'nullable|string',
-            'empresa_id' => 'required|exists:empresas,id',
         ]);
 
         // Actualizar el usuario asociado al doctor
@@ -145,7 +146,7 @@ class DoctoresController
         $user->update([
             'nombre_completo' => $validated['nombre_completo'],
             'email' => $validated['email'],
-            'empresa_id' => $validated['empresa_id'],
+            'empresa_id' => Auth::user()->empresa_id,
         ]);
 
         // Actualizar la foto de perfil si se proporciona

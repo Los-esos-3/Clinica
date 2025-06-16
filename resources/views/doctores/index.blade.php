@@ -197,7 +197,7 @@
             <x-sidebar :user="Auth::user()" />
         </aside>
 
-         @if (Auth::user()->hasRole('Admin'))
+        @if (Auth::user()->hasRole('Admin'))
             @if (!Auth::user()->empresa)
                 <x-overlay-empresa />
             @endif
@@ -237,15 +237,16 @@
                         </div>
                     </form>
                 </div>
-
-                <a href="{{ route('doctores.create') }}"
-                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    <button>
-                        Agregar Doctor
-                    </button>
-                </a>
             </div>
 
+
+            @if ($doctores->isEmpty())
+                <div class="flex justify-center justify-items-center items-center min-h-[500px]">
+                    <h4 class="text-red-500 text-center">No hay doctores creados 
+                        <p>(Si desea crear uno, vaya al apartado de Trabajadores y asigne el rol de doctor)</p>
+                    </h4>
+                </div>
+            @else
             <!-- Grid de tarjetas de doctores -->
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -383,6 +384,8 @@
                     </div>
                 </div>
             </div>
+
+            @endif
 
             <script>
                 function toggleInfo(doctorId) {

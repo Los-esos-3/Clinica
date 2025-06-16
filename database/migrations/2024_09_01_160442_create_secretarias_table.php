@@ -26,7 +26,6 @@ return new class extends Migration
             $table->string('nacionalidad')->nullable();
             $table->string('foto_perfil')->nullable(); 
             $table->string('departamento')->nullable();
-            $table->json('experiencia_laboral')->nullable(); 
             $table->string('contacto_emergencia_nombre')->nullable();
             $table->string('contacto_emergencia_relacion')->nullable();
             $table->string('contacto_emergencia_telefono')->nullable();

@@ -155,7 +155,7 @@
                 // Referencia y código de barras
                 const referencia = document.getElementById('codigoRef').innerText;
                 document.getElementById('formReferencia').value = referencia;
-            
+
                 try {
                     JsBarcode("#barcodeImage", referencia, {
                         format: "CODE128",
@@ -168,7 +168,7 @@
                 } catch (error) {
                     console.error('Error al generar código de barras:', error);
                 }
-            
+
                 const fecha = new Date();
                 document.getElementById('modalFecha').innerText = fecha.toLocaleString('es-ES', {
                     year: 'numeric',
@@ -179,50 +179,50 @@
                 });
                 document.getElementById('formFecha').value = fecha.toISOString();
             });
-            
+
             // Manejo del envío del formulario
             document.getElementById('pagoForm').addEventListener('submit', function(e) {
                 e.preventDefault(); // Prevenir envío inmediato
-            
+
                 const button = document.getElementById('submitButton');
                 button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
                 button.disabled = true;
 
                 // Primero enviamos el formulario
                 fetch(this.action, {
-                    method: 'POST',
-                    body: new FormData(this),
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        // Si el pago se guardó correctamente, generamos el PDF
-                        return generarPDF().then(() => {
-                            window.location.href = data.redirect;
+                        method: 'POST',
+                        body: new FormData(this),
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Si el pago se guardó correctamente, generamos el PDF
+                            return generarPDF().then(() => {
+                                window.location.href = data.redirect;
+                            });
+                        } else {
+                            throw new Error(data.message || 'Error al procesar el pago');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        button.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Confirmar y Generar Ticket';
+                        button.disabled = false;
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Hubo un error al procesar el pago. Por favor, recargue nuevamente la pagina si persiste el error.'
                         });
-                    } else {
-                        throw new Error(data.message || 'Error al procesar el pago');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    button.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Confirmar y Generar Ticket';
-                    button.disabled = false;
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Hubo un error al procesar el pago. Por favor, recargue nuevamente la pagina si persiste el error.'
                     });
-                });
             });
-            
+
             function generarPDF() {
                 return new Promise((resolve, reject) => {
                     const ticket = document.querySelector('.ticket-container');
-            
+
                     html2canvas(ticket, {
                         scale: 2,
                         useCORS: true,
@@ -243,16 +243,16 @@
                             unit: 'mm',
                             format: 'a4'
                         });
-            
+
                         const imgWidth = 210;
                         const imgHeight = (canvas.height * imgWidth) / canvas.width;
-            
+
                         pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
-            
+
                         const fecha = new Date().toLocaleString('es-ES');
                         pdf.setFontSize(8);
                         pdf.text(`Generado el: ${fecha}`, 10, imgHeight + 10);
-            
+
                         pdf.save('ticket-oxxo.pdf');
                         resolve();
                     }).catch(error => {
@@ -260,8 +260,24 @@
                     });
                 });
             }
-            </script>
-            
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Obtener la ruta actual
+                const currentPath = window.location.pathname;
+
+                // Verificar si ya se ha recargado esta ruta en la sesión actual
+                if (!sessionStorage.getItem(`reloaded-${currentPath}`)) {
+                    // Marcar que esta ruta se está recargando
+                    sessionStorage.setItem(`reloaded-${currentPath}`, 'true');
+
+                    // Recargar la página automáticamente
+                    window.location.reload();
+                }
+            });
+        </script>
+
     </x-app-layout>
 </body>
 
