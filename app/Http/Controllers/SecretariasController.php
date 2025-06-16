@@ -8,6 +8,7 @@ use App\Models\Paciente;
 use App\Models\Empresa;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,6 +59,7 @@ class SecretariasController
 
     public function store(Request $request)
     {
+    
         $validated = $request->validate([
             'nombre_completo' => 'required|string|max:255',
             'fecha_nacimiento' => 'nullable|date',
@@ -75,6 +77,7 @@ class SecretariasController
             'idiomas' => 'nullable|string',
             'empresa_id' => 'required|exists:empresas,id',
         ]);
+
 
         if ($request->hasFile('foto_perfil')) {
             $imagen = $request->file('foto_perfil');
@@ -110,7 +113,7 @@ class SecretariasController
             'fecha_nacimiento' => 'nullable|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
             'telefono' => 'nullable|string|max:15',
-            'email' => 'nullable|email|unique:secretarias',
+            'email' => 'nullable|email',
             'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
@@ -120,8 +123,9 @@ class SecretariasController
             'contacto_emergencia_relacion' => 'nullable|string',
             'contacto_emergencia_telefono' => 'nullable|string',
             'idiomas' => 'nullable|string',
-            'empresa_id' => 'required|exists:empresas,id',
         ]);
+
+         $validated['empresa_id'] = Auth::user()->empresa_id;
 
         if ($request->hasFile('foto_perfil')) {
             // Eliminar foto anterior si existe

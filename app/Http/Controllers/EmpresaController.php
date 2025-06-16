@@ -87,7 +87,7 @@ class EmpresaController
         }
 
         return redirect()->route('empresas.index')
-        ->with('empresa_guardada', true); // <- Esta clave la usaremos en la vista para mostrar el modal
+        ->with('empresa_guardada', true); 
     
     }
 

@@ -155,7 +155,7 @@
                         </div>
 
                         <!-- Empresa -->
-                        <div class="mb-4">
+                        {{-- <div class="mb-4">
                             <label for="empresa_id" class="block text-sm font-medium text-gray-700">Empresa <label class="pl-5 text-red-500">*Obligatorio*</label></label>
                             <select name="empresa_id" id="empresa_id" required class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
                                 <option value="">Selecciona una empresa</option>
@@ -165,7 +165,7 @@
                                     </option>
                                 @endforeach
                             </select>
-                        </div>
+                        </div> --}}
 
                         <!-- Botones de Acción -->
                         <div class="flex justify-end space-x-3">

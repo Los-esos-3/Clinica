@@ -263,15 +263,15 @@
                         </div>
                     </form>
                 </div>
-
-                <a href="{{ route('secretarias.create') }}"
-                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
-                    <button>
-                        Agregar Secretaria
-                    </button>
-                </a>
             </div>
 
+                @if ($secretarias->isEmpty())
+                <div class="flex justify-center justify-items-center items-center min-h-[500px]">
+                    <h4 class="text-red-500 text-center">No hay secretarias creados 
+                        <p>(Si desea crear uno, vaya al apartado de Trabajadores y asigne el rol de secretaria)</p>
+                    </h4>
+                </div>
+            @else
             <!-- Grid de tarjetas de secretarias -->
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -378,8 +378,6 @@
                                             <h4 class="font-semibold text-gray-700 mb-2">Información Laboral</h4>
                                             <p><span class="font-medium">Departamento:</span> {!! $secretaria->departamento ?: '<span class="text-red-500">No proporcionado</span>' !!}
                                             </p>
-                                            <p><span class="font-medium">Experiencia Laboral:</span>
-                                                {!! $secretaria->experiencia_laboral ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
                                             <p><span class="font-medium">Idiomas:</span> {!! $secretaria->idiomas ?: '<span class="text-red-500">No proporcionado</span>' !!}</p>
                                         </div>
 
@@ -402,6 +400,7 @@
                     </div>
                 </div>
             </div>
+            @endif
         </div>
     </div>
 
