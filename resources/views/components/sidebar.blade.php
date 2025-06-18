@@ -14,10 +14,6 @@
             <div
                 class="overlay-content bg-white text-gray-800 p-8 rounded-lg shadow-2xl max-w-md w-full text-left relative z-[10000]">
                 <h3 class="text-2xl font-extrabold mb-4 text-blue-600">Configura tu Empresa</h3>
-                <p class="mb-4 leading-relaxed">
-                    ¡Bienvenido a tu nuevo sistema de gestión médica! Para comenzar a usar todas las funciones del
-                    sistema, es necesario configurar los datos de tu empresa.
-                </p>
                 <p class="mb-6 leading-relaxed text-gray-700">
                     Por favor, dirígete al menú lateral y haz clic en la opción <strong>"Empresa"</strong> para iniciar
                     la configuración.
@@ -96,11 +92,11 @@
                 {{ $totalTime }}
                 </span>
             </div>
-            
+
             <label class="text-white">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
         </div>
 
-       
+
         <!-- Contenedor para el usuario -->
         <div class="user-container">
             <div class="name-space">
@@ -118,7 +114,7 @@
             <!-- Botón de salir -->
             <div>
                 <form method="POST" autocomplete="on" action="{{ route('logout') }}">
-                    @csrf   
+                    @csrf
                     <button type="submit"><i title="Cerrar Sesión" class="fas fa-sign-out-alt"></i></button>
                 </form>
             </div>
@@ -423,7 +419,6 @@
     .hidden {
         display: none !important;
     }
-
 </style>
 
 
@@ -534,8 +529,11 @@
         const overlay = document.getElementById('overlay');
         const empresaLink = document.getElementById('empresa-link');
 
-        // Mostrar overlay automáticamente si no se ha visto antes
-        if (!localStorage.getItem('overlayShown')) {
+        // Obtener el valor del atributo data-is-admin
+        const isAdmin = document.body.dataset.isAdmin === 'true';
+
+        // Mostrar el overlay solo si el usuario es Admin y no se ha mostrado antes
+        if (isAdmin && !localStorage.getItem('overlayShown')) {
             overlay.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
         }
@@ -548,5 +546,3 @@
         });
     });
 </script>
-
-
