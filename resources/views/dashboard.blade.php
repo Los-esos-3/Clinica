@@ -128,7 +128,7 @@
                             </button>
                         </div>
                         
-                            <!-- Agrega esto en tu HTML, preferiblemente cerca del botón de hamburguesa -->
+                   
                             <div id="tutorial-overlay"
                                 class="fixed inset-0 hidden bg-black bg-opacity-75 z-50 flex items-center justify-center">
                                 <div class="relative w-full h-full">
