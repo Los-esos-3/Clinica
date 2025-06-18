@@ -161,7 +161,7 @@ class CitaController
             'pacientes' => $pacientes,
             'citas' => $citas->toArray(), // Convertir a array para FullCalendar
             'doctorId' => $doctorId,
-            'isAdmin'
+            'isAdmin' => $isAdmin,
         ]);
     }
     public function getDoctores()
