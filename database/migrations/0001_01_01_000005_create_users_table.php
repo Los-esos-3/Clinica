@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('registration_source')->nullable();
             $table->string('password');
             $table->timestamp('trial_ends_at')->nullable();
+             $table->boolean('trial_used')->default(false); // Por defecto, el usuario no ha usado el período de prueba
             $table->rememberToken();
             $table->foreignId('current_team_id')->nullable();
             $table->string('comments')->nullable();

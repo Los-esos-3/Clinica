@@ -65,7 +65,7 @@ class SecretariasController
             'fecha_nacimiento' => 'nullable|date',
             'genero' => 'required|in:Masculino,Femenino,Otro',
             'telefono' => 'nullable|string|max:15',
-            'email' => 'nullable|email|unique:secretarias',
+            'email' => 'nullable|email',
             'domicilio' => 'nullable|string',
             'nacionalidad' => 'required|string',
             'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',

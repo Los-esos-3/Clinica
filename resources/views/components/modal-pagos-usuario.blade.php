@@ -5,9 +5,9 @@
 
     <!-- Contenido del Modal -->
     <div class="fixed inset-0 flex items-center justify-center p-4">
-        <div class="w-full max-w-6xl rounded-lg bg-white shadow-xl" style="height: 80vh;">
+        <div class="w-full max-w-6xl rounded-lg bg-white shadow-xl" style="height: 90vh;">
             <!-- Encabezado -->
-            <div class="flex items-center justify-between border-b p-4">
+            <div class="flex items-center justify-between border-b p-[14px]">
                 <h3 class="text-xl font-semibold">Historial de Pagos</h3>
                 <button id="closeModal" class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
@@ -27,26 +27,57 @@
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">plan</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Precio</th>
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Referencia</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha de
+                                creacion</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha de
+                                Vencimiento del plan</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imagen del
+                                ticket</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white" id="paymentList">
                         @foreach ($user->pagos as $pago)
                             <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $pago->plan }}</td>
-                                <td>${{ number_format($pago->precio, 2) }}</td>
-                                <td>{{ $pago->referencia }}</td>
-                                <td>{{ $pago->fecha_generacion }}</td>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td class="text-center">{{ $pago->plan }}</td>
+                                <td class="text-center">${{ number_format($pago->precio, 2) }}</td>
+                                <td class="text-center">{{ $pago->referencia }}</td>
+                                <td class="text-center">{{ $pago->fecha_generacion }}</td>
+                                <td class="text-center">
+                                    @if ($pago->tipo_pago === 'prueba')
+                                        <span>{{ $user->trial_ends_at }}</span>
+                                    @else
+                                        <span>{{ $user->plan_expires_at }}</span>
+                                    @endif
+                                </td>
+                                <td class="text-center">
+                                    @if ($pago->tipo_pago === 'normal')
+                                        <a class="text-black no-underline" target="_blank" href="{{url('images/' . $pago->ticket)}}">
+                                            <button class="bg-gray-300 h-[40px] w-[70px] rounded">
+                                                <i class="fa-solid fa-image"></i>
+                                            </button>
+                                        </a>
+                                        @else
+                                        <label class="text-red-500">No hay ticket para esta transaccion</label>
+                                    @endif
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
 
+            <div class="border-[0.5px] border-gray-300"></div>
             <!-- Pie -->
-            <div class="flex justify-end border-t p-4">
+            <div class="flex justify-between mx-6 mt-2">
+                <div>
+                    <label class="text-blue-500">Pagos totales = {{ $user->pagos->count() }} </label>
+                </div>
 
+                <div>
+                    <label class="text-green-500">Dinero en total =
+                        ${{ number_format($user->pagos->sum('precio'), 2) }}</label>
+                </div>
             </div>
         </div>
     </div>

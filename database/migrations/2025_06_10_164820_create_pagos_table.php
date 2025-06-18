@@ -18,6 +18,8 @@ return new class extends Migration
             $table->decimal('precio', 8, 2);
             $table->string('referencia')->unique();
             $table->timestamp('fecha_generacion');
+            $table->enum('tipo_pago', ['prueba', 'normal']);
+            $table->string('ticket');
             $table->timestamps();
         });
         

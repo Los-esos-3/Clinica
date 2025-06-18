@@ -288,35 +288,35 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Nombre</th>
-                            <th>Correo</th>
-                            <th>Numero</th>
-                            <th>Empresa</th>
-                            <th>Dias Restantes</th>
-                            <th>Fecha de creacion del cliente</th>
-                            <th>Suscripcion</th>
-                            <th>Precio de Suscripcion</th>
-                            <th>Acciones</th>
+                            <th class="text-center">Nombre</th>
+                            <th class="text-center">Correo</th>
+                            <th class="text-center">Numero</th>
+                            <th class="text-center">Empresa</th>
+                            <th class="text-center">Dias Restantes</th>
+                            <th class="text-center">Fecha de creacion del cliente</th>
+                            <th class="text-center">Suscripcion</th>
+                            <th class="text-center">Precio de Suscripcion</th>
+                            <th class="text-center">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td>{{ $user->name }}
+                                <td class="text-center">{{ $user->name }}
                                     @if ($user->id == Auth::user()->id)
                                         <label class="text-blue-500"> (Esta cuenta)</label>
                                     @endif
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     {{ $user->email }}
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     {{ $user->phone }}
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     @if ($user->empresa)
                                         {{ $user->empresa->nombre }}
                                     @else
@@ -325,7 +325,7 @@
 
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     @php
                                         $now = now();
                                         $totalSeconds = 0;
@@ -347,19 +347,19 @@
                                     {{ $totalTime }}
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     {{ $user->created_at }}
                                 </td>
 
 
-                                <td>
+                                <td class="text-center">
                                     {{ $user->selected_plan }}
                                 </td>
-                                <td>
+                                <td class="text-center">
                                     ${{ $user->plan_price }}
                                 </td>
 
-                                <td>
+                                <td class="text-center">
                                     <div class="flex gap-6 h-[3rem]">
 
                                         <form method="POST" action="{{ route('enviar.recordatorio', $user->id) }}">

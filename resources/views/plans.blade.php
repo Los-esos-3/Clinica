@@ -60,7 +60,14 @@
             <div class="relative flex">
                 <a href="{{ route('welcome') }}" class="text-gray-600 hover:text-blue-800 px-3 py-2">Inicio</a>
                 @auth
-                    <a href="{{ url('/dashboard') }}"  class="text-gray-600 hover:text-blue-800 px-3 py-2">Agenda</a>
+                    <a href="{{ url('/dashboard') }}" class="text-gray-600 hover:text-blue-800 px-3 py-2">Agenda</a>
+
+                    <form method="POST" class="text-gray-600 hover:text-blue-800 px-3 py-2" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit">
+                            Cerrar Sesión
+                        </button>
+                    </form>
                 @else
                     <a href="{{ route('login') }}" class="text-gray-600 hover:text-blue-800 px-3 py-2">Iniciar Sesión</a>
                 @endauth

@@ -4,7 +4,7 @@
 # Verifica y actualiza esta línea
 if [ "$RAILWAY_ENVIRONMENT" = "production" ]; then
     # Asegúrate de que este dominio es exactamente el correcto
-    export APP_URL=https://expemed2.up.railway.app
+    export APP_URL=https://Expedimet.up.railway.app
 fi
 
 # Esperar a que la base de datos esté lista

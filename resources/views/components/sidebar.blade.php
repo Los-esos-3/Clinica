@@ -10,21 +10,22 @@
             <x-application-logo></x-application-logo>
         </div>
 
-        <div class="overlay hidden fixed inset-0 bg-opacity-70 z-[9999] flex items-center justify-center" id="overlay">
-            <div
-                class="overlay-content bg-white text-gray-800 p-8 rounded-lg shadow-2xl max-w-md w-full text-left relative z-[10000]">
+    {{-- Solo muestra el overlay si el usuario es Admin o Root --}}
+    @if(Auth::user()->hasAnyRole(['Admin', 'Root']))
+        <div class="overlay fixed inset-0 bg-opacity-70 z-[9999] flex items-center justify-center hidden" id="overlay">
+            <div class="overlay-content bg-white text-gray-800 p-8 rounded-lg shadow-2xl max-w-md w-full text-left relative z-[10000]">
+
                 <h3 class="text-2xl font-extrabold mb-4 text-blue-600">Configura tu Empresa</h3>
-            
                 <p class="mb-6 leading-relaxed text-gray-700">
                     Dirígete al menú lateral y haz clic en la opción <strong>"Empresa"</strong> para iniciar
                     la configuración.
                 </p>
                 <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md text-sm italic">
-                    <p><i class="fas fa-info-circle mr-2"></i> Este paso es importante para personalizar tu sistema y
-                        prepararlo para tu consultorio.</p>
+                    <p><i class="fas fa-info-circle mr-2"></i> Este paso es importante para personalizar tu sistema y prepararlo para tu consultorio.</p>
                 </div>
             </div>
         </div>
+    @endif
 
 
         <!-- Menú principal -->
@@ -51,12 +52,22 @@
                 <li><a href="{{ route('Trabajadores.index') }}"><img class="img-secretary"
                             src="{{ asset('images/human.png') }}" /> <span>Trabajadores</span></a></li>
 
-
-                <li>
-                    <a href="{{ route('empresas.index') }}" id="empresa-link">
-                        <i class="fas fa-building"></i><span>Empresa</span>
-                    </a>
-                </li>
+                                <li class="relative">
+                                    <a href="{{ route('empresas.index') }}" id="empresa-link" class="flex items-center gap-2 relative group">
+                                        <i class="fas fa-building"></i>
+                                        <span>Empresa</span>
+                                        <!-- Icono SVG como flecha -->
+                                        <svg id="flecha-empresa" 
+                                        class="tooltip-flecha hidden w-8 h-8 text-blue-600 transition-transform duration-300 ease-in-out group-hover:-translate-x-1" 
+                                        fill="none" 
+                                        stroke="currentColor" 
+                                        width="32" height="32" 
+                                        viewBox="0 0 22 22" 
+                                        xmlns="http://www.w3.org/2000/svg">
+                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8l-4 4m0 0l4 4m-4-4h14"></path>
+                                   </svg>
+                                    </a>
+                                </li>
             @endif
 
             @if (Auth::user()->hasRole('Root'))
@@ -124,6 +135,7 @@
 </div>
 
 <style>
+
     /* Estilos generales del menú */
     .sidebar-menu {
         list-style: none;
@@ -421,6 +433,26 @@
         display: none !important;
     }
 
+    .tooltip-flecha {
+        transition: transform 0.3s ease-in-out;
+        vertical-align: middle;
+        animation: pulse-flecha 1.2s infinite;
+    }
+
+    @keyframes pulse-flecha {
+        0%, 100% {
+            transform: scale(1);
+            filter: drop-shadow(0 0 0 #3B82F6);
+        }
+        50% {
+            transform: scale(1.18);
+            filter: drop-shadow(0 0 8px #3B82F6);
+        }
+    }
+
+    .tooltip-flecha:hover {
+        transform: translateX(4px);
+    }
 </style>
 
 
@@ -527,23 +559,27 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const overlay = document.getElementById('overlay');
-        const empresaLink = document.getElementById('empresa-link');
+document.addEventListener('DOMContentLoaded', function () {
+    const overlay = document.getElementById('overlay');
+    const empresaLink = document.getElementById('empresa-link');
+    const flecha = document.getElementById('flecha-empresa');
 
-        // Mostrar overlay automáticamente si no se ha visto antes
+    // Verifica si el overlay y la flecha existen (evita errores si el usuario no es Admin/Root)
+    if (overlay && flecha && empresaLink) {
+        // Solo muestra el overlay si no se ha mostrado antes
         if (!localStorage.getItem('overlayShown')) {
             overlay.classList.remove('hidden');
-            document.body.classList.add('overflow-hidden');
+            flecha.classList.remove('hidden');
         }
 
-        // Al hacer clic en "Empresa", ocultar overlay y recordar que ya fue visto
-        empresaLink.addEventListener('click', function() {
-            localStorage.setItem('overlayShown', 'true'); // Marca como visto
+        // Al hacer clic en "Empresa", oculta el overlay y la flecha
+        empresaLink.addEventListener('click', function () {
+            localStorage.setItem('overlayShown', 'true');
             overlay.classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
+            flecha.classList.add('hidden');
         });
-    });
+    }
+});
 </script>
 
 

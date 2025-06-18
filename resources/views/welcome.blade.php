@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Expemed</title>
+    <title>Expedimet</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
@@ -127,34 +127,49 @@
         }
 
         .content {
+            background-image: url("images/FondoWelcome.jpg");
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            max-width: 100%;
             display: flex;
             align-items: center;
             padding: 20px;
             margin-top: 0;
             flex-direction: row;
+            z-index: 1;
+            height: 650px;
+            margin-bottom: 80px;
         }
-        .content-text
+
+        .background-blur
         {
-            flex:1;
+            filter: blur(2px)
+        }
+        
+
+        .content-text {
+            flex: 1;
         }
 
         .content-text h1 {
             text-align: left;
             font-family: 'Lato', sans-serif;
-            font-size: 1.8rem;
+            font-size: 56px;
+            z-index: 2;
             line-height: 1.4;
-            color: #0A1B43;
+            color: white;
             text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
             margin-top: 0;
             padding: 10px 0;
-        }
+        }   
 
         .content-text h2 {
             text-align: left;
             font-family: 'Lato', sans-serif;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             line-height: 1.4;
-            color: #3E5485;
+            color: white;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
             padding: 5px 0;
         }
@@ -166,7 +181,7 @@
 
         .container {
             padding: 0 50px;
-            
+
             margin: 0 auto;
         }
 
@@ -212,7 +227,8 @@
             flex-wrap: wrap;
         }
 
-        .hero-images img, .hero-images-last img {
+        .hero-images img,
+        .hero-images-last img {
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(58, 79, 124, 0.1);
             max-width: 100%;
@@ -351,7 +367,8 @@
             margin-top: 1.5em;
         }
 
-        .button1, .button2 {
+        .button1,
+        .button2 {
             padding: 0.7em 1.5em;
             border-radius: 25px;
             border: none;
@@ -503,7 +520,8 @@
                 margin-top: 20px;
             }
 
-            .hero-content, .hero-content-last {
+            .hero-content,
+            .hero-content-last {
                 flex-direction: column;
             }
 
@@ -522,7 +540,8 @@
                 justify-content: center;
             }
 
-            .hero-images, .hero-images-last {
+            .hero-images,
+            .hero-images-last {
                 justify-content: center;
                 margin-top: 15px;
             }
@@ -554,7 +573,9 @@
                 padding: 1.5em;
             }
 
-            .button1, .button2, .button3 {
+            .button1,
+            .button2,
+            .button3 {
                 font-size: 0.85em;
             }
 
@@ -582,7 +603,7 @@
 
     <header>
         @php
-            $nombreEmpresa = 'Expedmed'; // Valor por defecto
+            $nombreEmpresa = 'Expedimet'; // Valor por defecto
 
             // Verifica si el usuario está autenticado y tiene una empresa asociada
             if (Auth::check() && Auth::user()->empresa_id) {
@@ -614,17 +635,15 @@
     </header>
 
     <div class="content">
+        <div class="background-blur"></div>
         <div class="content-text">
-            <h1>Sistema para la gestión de expedientes médicos.</h1>
-            <h2>Optimiza la gestión de tus expedientes médicos con un software diseñado para simplificar procesos y
+            <h1 class="text-white">Sistema para la gestión de expedientes médicos.</h1>
+            <h2 class="text-white">Optimiza la gestión de tus expedientes médicos con un software diseñado para
+                simplificar procesos y
                 mejorar la atención desde cualquier lugar.</h2>
         </div>
 
         @if (Auth::check())
-            <div class="content-img">
-                <img src="{{ asset('images/Doctorviendolaptop.jpg') }}" alt="Doctor viendo una computadora"
-                    style="width: 100%; height: auto;">
-            </div>
         @else
             <div class="content-img">
                 <div class="modal-content">
@@ -700,10 +719,10 @@
             <div class="hero-content-last">
                 <div class="hero-text">
                     <h2>Pasarás menos tiempo usando el expediente clínico electrónico</h2>
-                    <p>Expemed es un sistema de gestión de expedientes clínicos que combina todas las
+                    <p>Expedimet es un sistema de gestión de expedientes clínicos que combina todas las
                         funcionalidades esenciales con la potencia de la tecnología moderna. Es intuitivo, accesible
                         desde cualquier dispositivo con conexión a internet, y permite la creación, el envío y el
-                        intercambio de expedientes de manera eficiente. Con Expemed Software, dedicas más tiempo a tus
+                        intercambio de expedientes de manera eficiente. Con Expedimet Software, dedicas más tiempo a tus
                         pacientes y menos a la administración, facilitando el trabajo en equipo y la comunicación
                         con tus compañeros o pacientes.</p>
                 </div>
@@ -721,7 +740,8 @@
             <div class="feature">
                 <div class="feature-content">
                     <h3 class="feature-title">Gestión Eficiente de Expedientes</h3>
-                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.</p>
+                    <p>Facilita la organización y acceso a los expedientes médicos de tus pacientes en un solo lugar.
+                    </p>
                 </div>
                 <img src="images/icons8-grupo-50.png" alt="Icono de Gestión de Expedientes">
             </div>
@@ -751,7 +771,8 @@
 
     <div id="successModal" class="modal-overlay hidden">
         <div class="modal-content-success">
-            <span class="close" onclick="document.getElementById('successModal').classList.add('hidden')">&times;</span>
+            <span class="close"
+                onclick="document.getElementById('successModal').classList.add('hidden')">&times;</span>
             <h2>Registro Exitoso</h2>
             <p>{{ session('success') }}</p>
         </div>
@@ -784,10 +805,10 @@
 
         document.addEventListener('DOMContentLoaded', function() {
             // Verifica si hay un mensaje de éxito en la sesión
-            @if(session('success'))
+            @if (session('success'))
                 document.getElementById('successModal').classList.remove('hidden');
             @endif
-            
+
             var successModal = document.getElementById('successModal');
             var span = document.getElementsByClassName("close")[0];
 
@@ -808,7 +829,7 @@
         function togglePassword(id, iconElement) {
             const input = document.getElementById(id);
             const icon = iconElement.querySelector('i');
-        
+
             if (input.type === "password") {
                 input.type = "text";
                 icon.classList.remove('fa-eye');
@@ -824,7 +845,7 @@
             function togglePassword(id, iconElement) {
                 const input = document.getElementById(id);
                 const icon = iconElement.querySelector('i');
-            
+
                 if (input.type === "password") {
                     input.type = "text";
                     icon.classList.remove('fa-eye');

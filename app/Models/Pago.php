@@ -11,7 +11,9 @@ class Pago extends Model
         'plan',
         'precio',
         'referencia',
-        'fecha_generacion'
+        'fecha_generacion',
+        'tipo_pago',
+        'ticket'
     ];
 
 
