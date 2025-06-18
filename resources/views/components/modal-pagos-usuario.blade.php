@@ -23,15 +23,15 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">plan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Precio</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Referencia</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha de
+                            <th class=" text-centerpx-6 py-3  text-xs font-medium text-gray-500 uppercase">#</th>
+                            <th class=" text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase">plan</th>
+                            <th class="text-center px-6 py-3  text-xs font-medium text-gray-500 uppercase">Precio</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Referencia</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Fecha de
                                 creacion</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Fecha de
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Fecha de
                                 Vencimiento del plan</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Imagen del
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Imagen del
                                 ticket</th>
                         </tr>
                     </thead>
