@@ -29,8 +29,15 @@ class CitaController
         $doctores = collect(); // Inicializar como colección vacía
         $doctorId = null;
 
-        // Obtener todos los doctores (para roles como Admin/Root)
-        $doctores = Doctores::all();
+        // Obtener doctores de la misma empresa (para roles como Admin)
+        if ($user->hasRole('Admin') && $user->empresa_id) {
+            $doctores = Doctores::whereHas('user', function ($query) use ($user) {
+                $query->where('empresa_id', $user->empresa_id);
+            })->get();
+        } else {
+            // Si no hay empresa asignada, mostrar una lista vacía
+            $doctores = collect();
+        }
 
         // Lógica para el rol de Admin
         if ($user->hasRole('Admin')) {
@@ -139,18 +146,22 @@ class CitaController
 
                 $pacientes = Paciente::where('secretaria_id', $secretaria->id)->get();
 
-                return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
+                $isAdmin = Auth::check() && Auth::user()->hasRole('Admin');
+
+                return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId', 'isAdmin'));
             }
 
             return redirect()->back()->with('error', 'No se encontraron citas para esta secretaria.');
         }
 
-        // Asegurarse de que todas las variables estén definidas
+        $isAdmin = Auth::check() && Auth::user()->hasRole('Admin');
+
         return view('dashboard', [
             'doctores' => $doctores,
             'pacientes' => $pacientes,
             'citas' => $citas->toArray(), // Convertir a array para FullCalendar
-            'doctorId' => $doctorId
+            'doctorId' => $doctorId,
+            'isAdmin'
         ]);
     }
     public function getDoctores()

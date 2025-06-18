@@ -41,7 +41,7 @@
         </style>
     </head>
 
-    <body>
+    <body data-is-admin="{{ $isAdmin ? 'true' : 'false' }}">
         <div class="min-h-screen flex">
             <aside>
                 <x-sidebar :user="Auth::user()" />

@@ -30,6 +30,8 @@ class TrabajadoresController
         // Filtrar por empresa si el usuario tiene empresa_id
         if ($user->empresa_id) {
             $query->where('empresa_id', $user->empresa_id);
+        } else {
+            $query->where('id', 0); // Condición imposible para devolver una lista vacía
         }
         // Aplicar búsqueda si existe
         if ($search) {

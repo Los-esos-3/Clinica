@@ -16,7 +16,7 @@
     <div class="flex justify-center items-center h-screen">
         <div class="w-full max-w-md bg-white shadow-lg rounded-lg overflow-hidden">
             <div class="p-6">
-                <h2 class="text-2xl font-bold mb-4">Cargar Ticket de Pago</h2>
+                <h2 class="text-2xl font-bold mb-4">Cargar Una Foto del Ticket de Pago</h2>
                 
                 @if (session('success'))
                     <div class="alert alert-success">{{ session('success') }}</div>
