@@ -27,14 +27,20 @@ class RoleController
         $this->authorize('ver roles');
         $empresas = Empresa::all();
 
+
         $users = User::where('registration_source', 'web')
             ->whereHas('roles', function ($query) {
                 $query->where('name', 'Admin');
             })
-            ->with('pagos') // Cargar los pagos relacionados
+            ->with('pagos')
             ->paginate(10);
 
-        return view('roles.index', compact('users', 'empresas'));
+
+        
+        $totalPagos = Pago::whereIn('user_id', $users->pluck('id'))
+            ->sum('precio');
+
+        return view('roles.index', compact('users', 'empresas', 'totalPagos'));
     }
 
     public function RecordatorioCorreo($userId)

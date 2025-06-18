@@ -45,8 +45,6 @@ class VerificacionController
             'codigo' => 'required|numeric',
         ]);
 
-      
-
         $storedCode = Session::get('codigo_verificacion');
         $storedTimestamp = Session::get('codigo_timestamp');
         $registrationData = Session::get('registration_data');
@@ -86,7 +84,7 @@ class VerificacionController
                 'trial_ended' => false
             ]);
 
-             $user->assignRole('Admin'); 
+            //  $user->assignRole('Admin'); 
 
             Auth::login($user); // Autenticación automática
 

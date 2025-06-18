@@ -180,43 +180,9 @@
                 document.getElementById('formFecha').value = fecha.toISOString();
             });
 
-            // Manejo del envío del formulario
-            document.getElementById('pagoForm').addEventListener('submit', function(e) {
-                e.preventDefault(); // Prevenir envío inmediato
 
-                const button = document.getElementById('submitButton');
-                button.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Procesando...';
-                button.disabled = true;
-
-                // Primero enviamos el formulario
-                fetch(this.action, {
-                        method: 'POST',
-                        body: new FormData(this),
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            // Si el pago se guardó correctamente, generamos el PDF
-                            return generarPDF().then(() => {
-                                window.location.href = data.redirect;
-                            });
-                        } else {
-                            throw new Error(data.message || 'Error al procesar el pago');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        button.innerHTML = '<i class="fas fa-check-circle mr-2"></i> Confirmar y Generar Ticket';
-                        button.disabled = false;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error',
-                            text: 'Hubo un error al procesar el pago. Por favor, recargue nuevamente la pagina si persiste el error.'
-                        });
-                    });
+            document.getElementById('submitButton').addEventListener('click', function(e) {
+                return generarPDF();
             });
 
             function generarPDF() {

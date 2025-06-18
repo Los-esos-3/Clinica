@@ -37,10 +37,11 @@ Route::get('/plans', function () {
 })->name('plans');
 
 Route::get('/pago', [PagoController::class, 'index'])->name('verificar.index');
-Route::get('/pago/verificar', [PagoController::class, 'verificar'])->name('pagos.verificar');
 Route::post('/pago/guardar', [PagoController::class, 'store'])->name('pagos.store');
 
 
+Route::get('evidencia', [PagoController::class,'indexEvidencia'])->name('evidencia.index');
+Route::post('evidencia', [PagoController::class,'storeEvidencia'])->name('evidencia.store');
 
 
 Route::get('/verificacion', [VerificacionController::class, 'index'])->name('verificacion');

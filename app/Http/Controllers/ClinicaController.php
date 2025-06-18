@@ -133,7 +133,7 @@ class ClinicaController
             return redirect()->back()->with('error', 'No tienes permisos para crear pacientes.');
         }
 
-        // Manejo de la imagen
+        
         if ($request->hasFile('foto_perfil')) {
             $imagen = $request->file('foto_perfil');
             $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
