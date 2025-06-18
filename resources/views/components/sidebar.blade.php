@@ -432,7 +432,6 @@
     .hidden {
         display: none !important;
     }
-<<<<<<< HEAD
 
     .tooltip-flecha {
         transition: transform 0.3s ease-in-out;
@@ -454,8 +453,6 @@
     .tooltip-flecha:hover {
         transform: translateX(4px);
     }
-=======
->>>>>>> 069d9855e2c06744c5c4e629b33af81daaf78f53
 </style>
 
 
