@@ -3,6 +3,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
+<body data-is-admin="{{ Auth::user() && Auth::user()->hasAnyRole(['Admin', 'Root']) ? 'true' : 'false' }}">
+
 <div class="sidebar-container">
     <!-- Sidebar -->
     <div id="sidebar" class="sidebar closed">
@@ -432,7 +434,6 @@
     .hidden {
         display: none !important;
     }
-<<<<<<< HEAD
 
     .tooltip-flecha {
         transition: transform 0.3s ease-in-out;
@@ -454,8 +455,7 @@
     .tooltip-flecha:hover {
         transform: translateX(4px);
     }
-=======
->>>>>>> 069d9855e2c06744c5c4e629b33af81daaf78f53
+
 </style>
 
 
@@ -562,33 +562,40 @@
 </script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const overlay = document.getElementById('overlay');
-    const empresaLink = document.getElementById('empresa-link');
-    const flecha = document.getElementById('flecha-empresa');
-
-<<<<<<< HEAD
-    // Verifica si el overlay y la flecha existen (evita errores si el usuario no es Admin/Root)
-    if (overlay && flecha && empresaLink) {
-        // Solo muestra el overlay si no se ha mostrado antes
-        if (!localStorage.getItem('overlayShown')) {
-=======
-        // Obtener el valor del atributo data-is-admin
+    document.addEventListener('DOMContentLoaded', function () {
+        const overlay = document.getElementById('overlay');
+        const empresaLink = document.getElementById('empresa-link');
+        const flecha = document.getElementById('flecha-empresa');
         const isAdmin = document.body.dataset.isAdmin === 'true';
 
-        // Mostrar el overlay solo si el usuario es Admin y no se ha mostrado antes
+        // Verifica que los elementos existen
+        if (!overlay) {
+            console.error('No se encontró el elemento overlay');
+            return;
+        }
+        if (!empresaLink) {
+            console.error('No se encontró el enlace de empresa');
+            return;
+        }
+        if (!flecha) {
+            console.error('No se encontró la flecha de empresa');
+            return;
+        }
+
+        // Mostrar overlay solo si es admin/root y no se ha mostrado antes
         if (isAdmin && !localStorage.getItem('overlayShown')) {
->>>>>>> 069d9855e2c06744c5c4e629b33af81daaf78f53
             overlay.classList.remove('hidden');
             flecha.classList.remove('hidden');
         }
 
-        // Al hacer clic en "Empresa", oculta el overlay y la flecha
+        // Al hacer clic en Empresa, oculta el overlay y la flecha
         empresaLink.addEventListener('click', function () {
             localStorage.setItem('overlayShown', 'true');
             overlay.classList.add('hidden');
             flecha.classList.add('hidden');
         });
-    }
-});
+    });
 </script>
+
+</body>
+</html>
