@@ -564,18 +564,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const empresaLink = document.getElementById('empresa-link');
     const flecha = document.getElementById('flecha-empresa');
 
-<<<<<<< HEAD
-    // Verifica si el overlay y la flecha existen (evita errores si el usuario no es Admin/Root)
-    if (overlay && flecha && empresaLink) {
-        // Solo muestra el overlay si no se ha mostrado antes
-        if (!localStorage.getItem('overlayShown')) {
-=======
         // Obtener el valor del atributo data-is-admin
         const isAdmin = document.body.dataset.isAdmin === 'true';
 
         // Mostrar el overlay solo si el usuario es Admin y no se ha mostrado antes
         if (isAdmin && !localStorage.getItem('overlayShown')) {
->>>>>>> 069d9855e2c06744c5c4e629b33af81daaf78f53
             overlay.classList.remove('hidden');
             flecha.classList.remove('hidden');
         }
