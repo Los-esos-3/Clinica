@@ -28,7 +28,7 @@ class AuthenticatedSessionController
             return redirect()->route('dashboard');
         }elseif(Auth::user()->hasRole('Root'))
         {
-            return redirect()->route('dashboardAdmin');
+            return redirect()->route('dashboardRoot');
         }
         // Usuario con roles, redirigir al dashboard
         return redirect()->intended(route('welcome'));
