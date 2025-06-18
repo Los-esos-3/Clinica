@@ -455,10 +455,6 @@
     .tooltip-flecha:hover {
         transform: translateX(4px);
     }
-<<<<<<< HEAD
-
-=======
->>>>>>> 03b789922c2a5a48cbfd2e7484b4b770b87c76c2
 </style>
 
 
@@ -565,10 +561,19 @@
 </script>
 
 <script>
+<<<<<<< HEAD
     document.addEventListener('DOMContentLoaded', function () {
         const overlay = document.getElementById('overlay');
         const empresaLink = document.getElementById('empresa-link');
         const flecha = document.getElementById('flecha-empresa');
+=======
+document.addEventListener('DOMContentLoaded', function () {
+    const overlay = document.getElementById('overlay');
+    const empresaLink = document.getElementById('empresa-link');
+    const flecha = document.getElementById('flecha-empresa');
+
+        // Obtener el valor del atributo data-is-admin
+>>>>>>> 97d814c2b2a942c6a6e7e6d729ac27ac50933c36
         const isAdmin = document.body.dataset.isAdmin === 'true';
 
         // Verifica que los elementos existen
