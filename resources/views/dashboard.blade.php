@@ -96,6 +96,12 @@
             .sidebar-tutorial-indicator.active {
                 background-color: #3b82f6;
             }
+
+            #admin-calendar {
+    min-height: 600px; /* Aumenta la altura mínima */
+    max-width: 100%;
+    margin: 0 auto;
+}
         </style>
 
     </head>
@@ -134,12 +140,11 @@
                                 <div class="relative w-full h-full">
                                     <!-- Tooltip con posicionamiento responsivo -->
                                     <div class="absolute bg-white p-4 rounded-lg shadow-xl"
-                                        style="min-width: 300px; max-width: 90%; top: 90px !important;">
+                                        style="min-width: 280px; max-width: 400px; top: 90px !important; padding: 1.25rem;">
                                         <div class="flex flex-col">
                                             <h3 class="font-bold text-gray-800 mb-2">Bienvenido a Expedimet</h3>
                                             <p class="text-sm text-gray-600 mb-2">
-                                                Para empezar a optimizar tu consultorio, necesitas conocer tu
-                                                entorno de trabajo
+                                                Para brindarte la mejor experiencia, validaremos tu comprobante de pago. Mientras se realiza este proceso, podrás disfrutar de 30 días de acceso gratuito al sistema, permitiéndote explorar y optimizar tu consultorio sin restricciones. Nuestro equipo revisará tu información a la brevedad para garantizar un servicio seguro y confiable.
                                             </p>
                                             <p class="text-sm text-gray-600 font-semibold mb-2">Barra lateral de
                                                 opciones</p>
@@ -448,6 +453,7 @@
             });
 
             calendar.render();
+            window.myCalendar = calendar;
         }
 
         // Agregar estilos personalizados directamente en el documento
@@ -514,45 +520,19 @@ font-weight: bold;
                 }
             });
         }
+
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.addEventListener('transitionend', function() {
+                if (window.myCalendar) {
+                    window.myCalendar.updateSize();
+                }
+            });
+        }
     });
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const sidebar = document.getElementById('sidebar');
-        const content = document.getElementById('content');
-
-        // Función para actualizar los estilos del contenido
-        function updateContentStyles() {
-            if (!sidebar.classList.contains('closed')) {
-                // Si el sidebar está abierto, aplicar los estilos
-                content.classList.add('md:ml-64');
-            } else {
-                // Si el sidebar está cerrado, quitar los estilos
-                content.classList.remove('md:ml-64');
-            }
-        }
-
-        // Escuchar cambios en el estado del sidebar
-        const observer = new MutationObserver(function(mutationsList) {
-            for (let mutation of mutationsList) {
-                if (mutation.attributeName === 'class') {
-                    updateContentStyles();
-                }
-            }
-        });
-
-        // Observar cambios en las clases del sidebar
-        if (sidebar) {
-            observer.observe(sidebar, {
-                attributes: true
-            });
-        }
-
-        // Inicializar los estilos al cargar la página
-        updateContentStyles();
-    });
-
     document.addEventListener('DOMContentLoaded', function() {
         // Mostrar el tutorial solo si es la primera vez
         if (!localStorage.getItem('tutorialCompleted')) {
@@ -845,6 +825,14 @@ font-weight: bold;
         // Ejecutar al cargar y al redimensionar
         positionTooltip();
         window.addEventListener('resize', positionTooltip);
+    });
+</script>
+
+<script>
+    window.addEventListener('load', function() {
+        setTimeout(function() {
+            if (window.myCalendar) window.myCalendar.updateSize();
+        }, 200);
     });
 </script>
 
