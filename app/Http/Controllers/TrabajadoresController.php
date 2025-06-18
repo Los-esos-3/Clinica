@@ -86,7 +86,10 @@ class TrabajadoresController
             // Guardar la foto de perfil si existe
             $fotoPerfilPath = null;
             if ($request->hasFile('foto_perfil')) {
-                $fotoPerfilPath = $request->file('foto_perfil')->store('fotos_perfil', 'public');
+                $imagen = $request->file('foto_perfil');
+                $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+                // Guardar en storage/app/public/trabajadores
+                $fotoPerfilPath = $imagen->storeAs('trabajadores', $nombreImagen, 'public');
             }
 
             // Crear el trabajador
@@ -105,7 +108,7 @@ class TrabajadoresController
             if ($validated['rol'] === 'Doctor') {
                 Doctores::create([
                     'trabajador_id' => $trabajador->id,
-                    'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
+                    'foto_perfil' => $fotoPerfilPath,
                     'especialidad' => 'General',
                     'user_id' => $user->id,
                     'email' => $validated['email'],
@@ -115,7 +118,7 @@ class TrabajadoresController
             } elseif ($validated['rol'] === 'Secretaria') {
                 Secretarias::create([
                     'trabajador_id' => $trabajador->id,
-                    'foto_perfil' => $fotoPerfilPath, // Usa el valor guardado
+                    'foto_perfil' => $fotoPerfilPath,
                     'user_id' => $user->id,
                     'nombre_completo' => $validated['name'],
                     'email' => $validated['email'],
@@ -171,7 +174,10 @@ class TrabajadoresController
 
             $fotoPerfilPath = $trabajador->foto_perfil;
             if ($request->hasFile('foto_perfil')) {
-                $fotoPerfilPath = $request->file('foto_perfil')->store('fotos_perfil', 'public');
+                $imagen = $request->file('foto_perfil');
+                $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+                // Guardar en storage/app/public/trabajadores
+                $fotoPerfilPath = $imagen->storeAs('trabajadores', $nombreImagen, 'public');
             }
 
 

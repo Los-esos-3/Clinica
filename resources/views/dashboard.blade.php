@@ -136,9 +136,9 @@
                                     <div class="absolute bg-white p-4 rounded-lg shadow-xl"
                                         style="min-width: 300px; max-width: 90%; top: 90px !important;">
                                         <div class="flex flex-col">
-                                            <h3 class="font-bold text-gray-800 mb-2">Bienvenido a nuestro software</h3>
+                                            <h3 class="font-bold text-gray-800 mb-2">Bienvenido a nuestro EXPEDIMED</h3>
                                             <p class="text-sm text-gray-600 mb-2">
-                                                Primera para empezar a optimizar tu consultorio, necesitas conocer tu
+                                                Empezar a optimizar tu consultorio, necesitas conocer tu
                                                 entorno de trabajo
                                             </p>
                                             <p class="text-sm text-gray-600 font-semibold mb-2">Barra lateral de

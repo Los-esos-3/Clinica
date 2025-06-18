@@ -14,12 +14,9 @@
             <div
                 class="overlay-content bg-white text-gray-800 p-8 rounded-lg shadow-2xl max-w-md w-full text-left relative z-[10000]">
                 <h3 class="text-2xl font-extrabold mb-4 text-blue-600">Configura tu Empresa</h3>
-                <p class="mb-4 leading-relaxed">
-                    ¡Bienvenido a tu nuevo sistema de gestión médica! Para comenzar a usar todas las funciones del
-                    sistema, es necesario configurar los datos de tu empresa.
-                </p>
+            
                 <p class="mb-6 leading-relaxed text-gray-700">
-                    Por favor, dirígete al menú lateral y haz clic en la opción <strong>"Empresa"</strong> para iniciar
+                    Dirígete al menú lateral y haz clic en la opción <strong>"Empresa"</strong> para iniciar
                     la configuración.
                 </p>
                 <div class="bg-blue-50 border-l-4 border-blue-500 text-blue-700 p-3 rounded-md text-sm italic">
