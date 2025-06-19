@@ -142,7 +142,7 @@
                                     <div class="absolute bg-white p-4 rounded-lg shadow-xl"
                                         style="min-width: 280px; max-width: 400px; top: 90px !important; padding: 1.25rem;">
                                         <div class="flex flex-col">
-                                            <h3 class="font-bold text-gray-800 mb-2">Bienvenido a Expedimet</h3>
+                                            <h3 class="font-bold text-gray-800 mb-2">Bienvenido a Expedined</h3>
                                             <p class="text-sm text-gray-600 mb-2">
                                                 Para brindarte la mejor experiencia, validaremos tu comprobante de pago. Mientras se realiza este proceso, podrás disfrutar de 30 días de acceso gratuito al sistema, permitiéndote explorar y optimizar tu consultorio sin restricciones. Nuestro equipo revisará tu información a la brevedad para garantizar un servicio seguro y confiable.
                                             </p>

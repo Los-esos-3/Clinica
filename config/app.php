@@ -52,7 +52,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://Expedimet.up.railway.app'),
+    'url' => env('APP_URL', 'http://Expedined.up.railway.app'),
 
     /*
     |--------------------------------------------------------------------------

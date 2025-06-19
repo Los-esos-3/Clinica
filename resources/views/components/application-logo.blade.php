@@ -1,5 +1,5 @@
 @php
-    $nombreEmpresa = 'Expedimet'; // Valor por defecto
+    $nombreEmpresa = 'Expedined'; // Valor por defecto
 
     // Verifica si el usuario está autenticado y tiene una empresa asociada
     if (Auth::check() && Auth::user()->empresa_id) {

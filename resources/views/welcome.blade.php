@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Expedimet</title>
+    <title>Expedined</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
@@ -127,7 +127,7 @@
         }
 
         .content {
-            background-image: url("images/FondoWelcome.jpg");
+            background-image: url("images/FondoWelcome.webp");
             background-position: center;
             background-size: cover;
             background-repeat: no-repeat;
@@ -603,7 +603,7 @@
 
     <header>
         @php
-            $nombreEmpresa = 'Expedimet'; // Valor por defecto
+            $nombreEmpresa = 'Expedined'; // Valor por defecto
 
             // Verifica si el usuario está autenticado y tiene una empresa asociada
             if (Auth::check() && Auth::user()->empresa_id) {
@@ -719,10 +719,10 @@
             <div class="hero-content-last">
                 <div class="hero-text">
                     <h2>Pasarás menos tiempo usando el expediente clínico electrónico</h2>
-                    <p>Expedimet es un sistema de gestión de expedientes clínicos que combina todas las
+                    <p>Expedined es un sistema de gestión de expedientes clínicos que combina todas las
                         funcionalidades esenciales con la potencia de la tecnología moderna. Es intuitivo, accesible
                         desde cualquier dispositivo con conexión a internet, y permite la creación, el envío y el
-                        intercambio de expedientes de manera eficiente. Con Expedimet Software, dedicas más tiempo a tus
+                        intercambio de expedientes de manera eficiente. Con Expedined Software, dedicas más tiempo a tus
                         pacientes y menos a la administración, facilitando el trabajo en equipo y la comunicación
                         con tus compañeros o pacientes.</p>
                 </div>

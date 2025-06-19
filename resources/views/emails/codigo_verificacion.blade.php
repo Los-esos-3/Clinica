@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificación - Expedimet</title>
+    <title>Verificación - Expedined</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -173,7 +173,7 @@
             <h1>Verificación de Cuenta</h1>
         </div>
         <div class="content">
-            <p class="greeting">¡Bienvenido/a a Expedimet!</p>
+            <p class="greeting">¡Bienvenido/a a Expedined!</p>
 
             <p class="message">
                 Es un placer darle la bienvenida a nuestra plataforma de servicios médicos digitales. Su registro es el primer paso hacia una experiencia de salud más accesible y eficiente.
