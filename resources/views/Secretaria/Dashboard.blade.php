@@ -38,6 +38,13 @@
             .fc-event-title {
                 font-weight: bold;
             }
+
+            #admin-calendar {
+                min-height: 600px;
+                /* Aumenta la altura mínima */
+                max-width: 100%;
+                margin: 0 auto;
+            }
         </style>
     </head>
 
@@ -59,7 +66,7 @@
 
 
 
-                   
+
 
                     <!-- Botón "Nueva Cita" -->
                     <button id="openNewCitaModalBtn"
@@ -179,59 +186,6 @@
         </div>
 
 
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                // Verificar si el ID del doctor está disponible
-                const doctorId = "{{ $doctorId }}"; // Obtenido desde el controlador
-
-                if (doctorId) {
-                    // Seleccionar automáticamente el doctor en el campo <select>
-                    const doctorSelect = document.getElementById('doctor_id');
-                    if (doctorSelect) {
-                        doctorSelect.value = doctorId;
-
-                    }
-                }
-            });
-        </script>
-
-
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const sidebar = document.getElementById('sidebar');
-                const content = document.getElementById('content');
-
-                // Función para actualizar los estilos del contenido
-                function updateContentStyles() {
-                    if (!sidebar.classList.contains('closed')) {
-                        // Si el sidebar está abierto, aplicar los estilos
-                        content.classList.add('md:ml-64');
-                    } else {
-                        // Si el sidebar está cerrado, quitar los estilos
-                        content.classList.remove('md:ml-64');
-                    }
-                }
-
-                // Escuchar cambios en el estado del sidebar
-                const observer = new MutationObserver(function(mutationsList) {
-                    for (let mutation of mutationsList) {
-                        if (mutation.attributeName === 'class') {
-                            updateContentStyles();
-                        }
-                    }
-                });
-
-                // Observar cambios en las clases del sidebar
-                if (sidebar) {
-                    observer.observe(sidebar, {
-                        attributes: true
-                    });
-                }
-
-                // Inicializar los estilos al cargar la página
-                updateContentStyles();
-            });
-        </script>
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
@@ -270,81 +224,35 @@
                 const newCitaForm = document.getElementById('newCitaForm');
 
                 if (newCitaForm) {
-                    newCitaForm.addEventListener('submit', async function(event) {
+                    newCitaForm.addEventListener('submit', function(event) {
                         event.preventDefault();
 
-                        // Mostrar loader
-                        const submitButton = this.querySelector('button[type="submit"]');
-                        const originalText = submitButton.textContent;
-                        submitButton.disabled = true;
-                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+                        let formData = new FormData(this);
 
-                        try {
-                            let formData = new FormData(this);
-
-                            // Convertir FormData a objeto para poder manipularlo
-                            let formObject = {};
-                            formData.forEach((value, key) => {
-                                formObject[key] = value;
-                            });
-
-                            // Validación adicional en el cliente
-                            if (new Date(formObject.fecha + 'T' + formObject.hora_fin) <= new Date(
-                                    formObject.fecha + 'T' + formObject.hora_inicio)) {
-                                throw new Error('La hora de fin debe ser posterior a la hora de inicio');
-                            }
-
-                            const response = await fetch("{{ route('citas.store') }}", {
+                        fetch("{{ route('citas.store') }}", {
                                 method: "POST",
+                                body: formData,
                                 headers: {
-                                    "Content-Type": "application/json",
-                                    "Accept": "application/json",
-                                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]')
-                                        .value
-                                },
-                                body: JSON.stringify(formObject)
-                            });
+                                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Cita creada correctamente',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
 
-                            const data = await response.json();
-
-                            if (!response.ok) {
-                                throw new Error(data.message || 'Error al crear la cita');
-                            }
-
-                            // Mostrar notificación de éxito
-                            Swal.fire({
-                                icon: 'success',
-                                title: '¡Cita creada!',
-                                text: data.message,
-                                showConfirmButton: false,
-                                timer: 2000
-                            });
-
-                            // Cerrar modal y recargar calendario
-                            document.getElementById('newCitaModal').classList.add('hidden');
-
-                            // Si estás usando FullCalendar, actualiza el calendario
-                            if (typeof calendar !== 'undefined') {
-                                calendar.refetchEvents();
-                            } else {
-                                location.reload();
-                            }
-
-                        } catch (error) {
-                            console.error("Error:", error);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: error.message || 'Ocurrió un error al crear la cita',
-                                confirmButtonText: 'Entendido'
-                            });
-                        } finally {
-                            // Restaurar botón
-                            submitButton.disabled = false;
-                            submitButton.textContent = originalText;
-                        }
+                                newCitaModal.classList.add(
+                                    'hidden'); // Cierra el modal después de guardar la cita
+                                location.reload(); // Recarga la página para actualizar el calendario
+                            })
+                            .catch(error => console.error("Error:", error));
                     });
                 }
+
                 // -------------------- INICIALIZAR FULLCALENDAR --------------------
                 let calendarEl = document.getElementById('admin-calendar');
 
@@ -358,7 +266,7 @@
                             const detalles = `
 <p><strong>Doctor:</strong> ${info.event.extendedProps.doctor}</p>
 <p><strong>Paciente:</strong> ${info.event.title}</p>
-<p><strong>Hora Inicio:</strong> ${info.event.start.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit', hour12: true }).replace('a. m.', 'AM').replace('p. m.', 'PM')}</p>
+ <p><strong>Hora Inicio:</strong> ${info.event.start.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit', hour12: true }).replace('a. m.', 'AM').replace('p. m.', 'PM')}</p>
 <p><strong>Hora Fin:</strong> ${info.event.end.toLocaleTimeString('es-ES', { hour: 'numeric', minute: '2-digit', hour12: true }).replace('a. m.', 'AM').replace('p. m.', 'PM')}</p>
 <p><strong>Motivo:</strong> ${info.event.extendedProps.motivo}</p>
 `;
@@ -370,11 +278,11 @@
                             // Crear el formulario de eliminación para la cita seleccionada
                             const deleteFormHtml = `
 <form action="{{ route('citas.destroy', '') }}/${citaId}" method="POST">
-@csrf
-@method('DELETE')
-<button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
-Eliminar Cita
-</button>
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out">
+        Eliminar Cita
+    </button>
 </form>
 `;
 
@@ -387,6 +295,7 @@ Eliminar Cita
                     });
 
                     calendar.render();
+                    window.myCalendar = calendar;
                 }
 
                 // Agregar estilos personalizados directamente en el documento
@@ -398,7 +307,15 @@ color: black !important; /* Cambia el color a negro */
 font-weight: bold;
 }
 
+.fc-direction-ltr .fc-daygrid-event.fc-event-end, .fc-direction-rtl .fc-daygrid-event.fc-event-start
+{
+cursor:pointer;
+}
 
+.fc-toolbar-title
+{
+margin-left:1px !important;
+}
 
 /* Cambiar color de los nombres de los días de la semana */
 .fc-col-header-cell a {
@@ -445,8 +362,322 @@ font-weight: bold;
                         }
                     });
                 }
+
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) {
+                    sidebar.addEventListener('transitionend', function() {
+                        if (window.myCalendar) {
+                            window.myCalendar.updateSize();
+                        }
+                    });
+                }
             });
         </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // Mostrar el tutorial solo si es la primera vez
+                if (!localStorage.getItem('tutorialCompleted')) {
+                    document.getElementById('tutorial-overlay').classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                    // Mostrar SOLO el botón con resaltador durante el tutorial
+                    document.getElementById('tutorial-btn').classList.remove('hidden');
+                    document.getElementById('normal-btn').classList.add('hidden');
+
+                    document.getElementById('toggle-sidebar').addEventListener('click', function() {
+
+                    });
+
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        // Configuración del tutorial de la barra lateral
+                        const tutorialSteps = [{
+                                title: "Inicio",
+                                content: "Esta es la página principal del dashboard donde puedes ver un resumen de actividades.",
+                                selector: "[data-tutorial='inicio']"
+                            },
+                            {
+                                title: "Calendario",
+                                content: "Aquí puedes gestionar todas las citas y eventos de la clínica. Podrás crear, editar y cancelar citas médicas.",
+                                selector: "[data-tutorial='calendario']"
+                            },
+                            {
+                                title: "Pacientes",
+                                content: "Administra los registros de pacientes, historiales médicos y toda la información relevante de cada paciente.",
+                                selector: "[data-tutorial='pacientes']"
+                            },
+                            {
+                                title: "Doctores",
+                                content: "Gestiona la información de los doctores, sus especialidades, horarios y disponibilidad.",
+                                selector: "[data-tutorial='doctores']"
+                            },
+                            {
+                                title: "Secretarías",
+                                content: "Configura las opciones relacionadas con el personal administrativo y sus permisos.",
+                                selector: "[data-tutorial='secretarias']"
+                            },
+                            {
+                                title: "Personal",
+                                content: "Administra toda la información del personal de la clínica, incluyendo horarios y asignaciones.",
+                                selector: "[data-tutorial='Personal']"
+                            },
+                            {
+                                title: "Empresa",
+                                content: "Configura los datos generales de la clínica o empresa, como información de contacto y configuración.",
+                                selector: "[data-tutorial='empresa']"
+                            },
+                            {
+                                title: "Perfil",
+                                content: "Actualiza tu información personal, cambia tu contraseña y configura tus preferencias de cuenta.",
+                                selector: "[data-tutorial='perfil']"
+                            },
+                            {
+                                title: "Rol Actual",
+                                content: "Aquí puedes ver y cambiar tu rol de acceso si tienes los permisos necesarios. Cada rol tiene diferentes privilegios.",
+                                selector: "[data-tutorial='rol']"
+                            }
+                        ];
+
+                        let currentStep = 0;
+                        const sidebarTutorialOverlay = document.getElementById('sidebar-tutorial-overlay');
+                        const sidebarTooltip = document.getElementById('sidebar-tooltip');
+                        const sidebarTooltipTitle = document.getElementById('sidebar-tooltip-title');
+                        const sidebarTooltipContent = document.getElementById('sidebar-tooltip-content');
+                        const prevButton = document.getElementById('prev-sidebar-tutorial');
+                        const nextButton = document.getElementById('next-sidebar-tutorial');
+                        const closeButton = document.getElementById('close-sidebar-tutorial');
+                        const sidebarTooltipArrow = document.getElementById('sidebar-tooltip-arrow');
+
+                        // Función para mostrar el paso actual del tutorial
+                        function showTutorialStep(stepIndex) {
+                            const step = tutorialSteps[stepIndex];
+                            const targetElement = document.querySelector(step.selector);
+
+                            if (!targetElement) {
+                                console.error("Elemento no encontrado:", step.selector);
+                                return;
+                            }
+
+                            // Remover highlight de todos los elementos
+                            document.querySelectorAll('[data-tutorial]').forEach(el => {
+                                el.classList.remove('tutorial-highlight');
+                                el.style.zIndex = '';
+                            });
+
+                            // Aplicar highlight al elemento actual
+                            targetElement.classList.add('tutorial-highlight');
+                            targetElement.style.zIndex = '100';
+
+                            // Mostrar el overlay y el tooltip
+                            sidebarTutorialOverlay.classList.remove('hidden');
+                            sidebarTooltip.classList.remove('hidden');
+
+                            // Actualizar contenido
+                            sidebarTooltipTitle.textContent = step.title;
+                            sidebarTooltipContent.textContent = step.content;
+
+                            // Posicionar el tooltip cerca del elemento objetivo
+                            positionTooltip(targetElement);
+
+                            // Actualizar botones
+                            prevButton.classList.toggle('hidden', stepIndex === 0);
+                            nextButton.classList.toggle('hidden', stepIndex === tutorialSteps.length - 1);
+                            closeButton.classList.toggle('hidden', stepIndex !== tutorialSteps.length - 1);
+
+                            // Actualizar indicadores de progreso
+                            updateProgressIndicators(stepIndex);
+                        }
+
+                        // Función para actualizar los indicadores de progreso
+                        function updateProgressIndicators(currentIndex) {
+                            document.querySelectorAll('.sidebar-tutorial-indicator').forEach((indicator,
+                                index) => {
+                                if (index <= currentIndex) {
+                                    indicator.classList.add('active');
+                                } else {
+                                    indicator.classList.remove('active');
+                                }
+                            });
+                        }
+
+                        // Función para posicionar el tooltip
+                        function positionTooltip(targetElement) {
+                            const rect = targetElement.getBoundingClientRect();
+                            const tooltipWidth = sidebarTooltip.offsetWidth;
+                            const tooltipHeight = sidebarTooltip.offsetHeight;
+                            const arrowSize = 12;
+                            const padding = 20;
+
+                            // Posicionar a la derecha del elemento por defecto
+                            let left = rect.right + padding;
+                            let top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
+                            let arrowPosition = 'right';
+
+                            // Ajustar si se sale de la pantalla a la derecha
+                            if (left + tooltipWidth > window.innerWidth) {
+                                left = rect.left - tooltipWidth - padding;
+                                arrowPosition = 'left';
+                            }
+
+                            // Ajustar si se sale por arriba o abajo
+                            if (top < padding) {
+                                top = padding;
+                            } else if (top + tooltipHeight > window.innerHeight - padding) {
+                                top = window.innerHeight - tooltipHeight - padding;
+                            }
+
+                            sidebarTooltip.style.left = `${left}px`;
+                            sidebarTooltip.style.top = `${top}px`;
+
+                            // Posicionar la flecha
+                            sidebarTooltipArrow.style.display = 'block';
+
+                            if (arrowPosition === 'right') {
+                                sidebarTooltipArrow.style.left = 'auto';
+                                sidebarTooltipArrow.style.right = `-${arrowSize/2}px`;
+                                sidebarTooltipArrow.style.top = `${tooltipHeight/2 - arrowSize/2}px`;
+                                sidebarTooltipArrow.style.transform = 'rotate(45deg)';
+                            } else {
+                                sidebarTooltipArrow.style.left = `-${arrowSize/2}px`;
+                                sidebarTooltipArrow.style.right = 'auto';
+                                sidebarTooltipArrow.style.top = `${tooltipHeight/2 - arrowSize/2}px`;
+                                sidebarTooltipArrow.style.transform = 'rotate(45deg)';
+                            }
+                        }
+
+                        // Evento para abrir el tutorial de la barra lateral
+                        document.getElementById('toggle-sidebar').addEventListener('click', function() {
+                            if (!localStorage.getItem('sidebarTutorialCompleted') && !
+                                sidebarTutorialOverlay.classList.contains('hidden')) {
+                                return;
+                            }
+
+                            if (!localStorage.getItem('sidebarTutorialCompleted')) {
+                                // Mostrar el sidebar si está oculto
+                                const sidebar = document.getElementById('sidebar');
+                                if (sidebar.classList.contains('closed')) {
+                                    sidebar.classList.remove('closed');
+                                }
+
+                                // Iniciar el tutorial después de un pequeño retraso para que el sidebar se abra
+                                setTimeout(() => {
+                                    currentStep = 0;
+                                    showTutorialStep(currentStep);
+                                    document.body.classList.add('overflow-hidden');
+                                }, 300);
+                            }
+                        });
+
+                        // Navegación del tutorial
+                        nextButton.addEventListener('click', function() {
+                            if (currentStep < tutorialSteps.length - 1) {
+                                currentStep++;
+                                showTutorialStep(currentStep);
+                            }
+                        });
+
+                        prevButton.addEventListener('click', function() {
+                            if (currentStep > 0) {
+                                currentStep--;
+                                showTutorialStep(currentStep);
+                            }
+                        });
+
+                        closeButton.addEventListener('click', function() {
+                            closeSidebarTutorial();
+                        });
+
+                        // Cerrar tutorial haciendo clic fuera del tooltip
+                        sidebarTutorialOverlay.addEventListener('click', function(e) {
+                            if (e.target === sidebarTutorialOverlay) {
+                                closeSidebarTutorial();
+                            }
+                        });
+
+                        // Función para cerrar el tutorial
+                        function closeSidebarTutorial() {
+                            sidebarTutorialOverlay.classList.add('hidden');
+                            document.body.classList.remove('overflow-hidden');
+                            localStorage.setItem('sidebarTutorialCompleted', 'true');
+
+                            // Remover highlight de todos los elementos
+                            document.querySelectorAll('[data-tutorial]').forEach(el => {
+                                el.classList.remove('tutorial-highlight');
+                                el.style.zIndex = '';
+                            });
+                        }
+
+                        // Inicializar indicadores de progreso
+                        function initProgressIndicators() {
+                            const indicatorsContainer = document.createElement('div');
+                            indicatorsContainer.className = 'flex justify-center space-x-2 mb-4';
+
+                            tutorialSteps.forEach((_, index) => {
+                                const indicator = document.createElement('span');
+                                indicator.className =
+                                    `sidebar-tutorial-indicator ${index === 0 ? 'active' : ''}`;
+                                indicator.dataset.step = index;
+                                indicatorsContainer.appendChild(indicator);
+                            });
+
+                            sidebarTooltip.insertBefore(indicatorsContainer, sidebarTooltip.querySelector(
+                                '.flex.justify-between'));
+                        }
+
+                        // Llamar a la inicialización cuando el DOM esté listo
+                        initProgressIndicators();
+                    });
+
+                } else {
+                    // Si ya completó el tutorial, mostrar SOLO el botón normal
+                    document.getElementById('tutorial-btn').classList.add('hidden');
+                    document.getElementById('normal-btn').classList.remove('hidden');
+                }
+
+                // Cerrar el tutorial
+                document.getElementById('close-tutorial').addEventListener('click', function() {
+                    document.getElementById('tutorial-overlay').classList.add('hidden');
+                    document.body.classList.remove('overflow-hidden');
+                    // Cambiar al botón normal después de cerrar el tutorial
+                    document.getElementById('tutorial-btn').classList.add('hidden');
+                    document.getElementById('normal-btn').classList.remove('hidden');
+                    localStorage.setItem('tutorialCompleted', 'true');
+                });
+
+                // Posicionamiento dinámico en diferentes pantallas
+                function positionTooltip() {
+                    const tooltip = document.querySelector('#tutorial-overlay .absolute');
+                    const menuButton = document.querySelector('.menu-button');
+
+                    if (window.innerWidth >= 768) {
+                        // Para pantallas grandes, posición fija como en la imagen
+                        tooltip.style.top = '50px';
+                        tooltip.style.left = '70px';
+                        tooltip.style.transform = 'none';
+                    } else {
+                        // Para móviles, centrado en la pantalla
+                        tooltip.style.top = '20%';
+                        tooltip.style.left = '50%';
+                        tooltip.style.transform = 'translateX(-50%)';
+                    }
+                }
+
+
+
+                // Ejecutar al cargar y al redimensionar
+                positionTooltip();
+                window.addEventListener('resize', positionTooltip);
+            });
+        </script>
+
+        <script>
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    if (window.myCalendar) window.myCalendar.updateSize();
+                }, 200);
+            });
+        </script>
+
         <!-- Agregar SweetAlert2 para mejores alertas -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
@@ -540,31 +771,6 @@ font-weight: bold;
             }
         </style>
 
-        <script>
-            // Script para manejar el dropdown
-            const dropdownButton = document.getElementById('options-menu');
-            const dropdownMenu = document.getElementById('dropdown-menu');
-            let isOpen = false;
 
-            dropdownButton.addEventListener('click', () => {
-                isOpen = !isOpen;
-                if (isOpen) {
-                    dropdownMenu.classList.remove('hidden');
-                    dropdownButton.setAttribute('aria-expanded', 'true');
-                } else {
-                    dropdownMenu.classList.add('hidden');
-                    dropdownButton.setAttribute('aria-expanded', 'false');
-                }
-            });
-
-            // Cerrar el dropdown cuando se hace clic fuera de él
-            document.addEventListener('click', (event) => {
-                if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
-                    dropdownMenu.classList.add('hidden');
-                    dropdownButton.setAttribute('aria-expanded', 'false');
-                    isOpen = false;
-                }
-            });
-        </script>
     </body>
 </x-app-layout>

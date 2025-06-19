@@ -98,10 +98,11 @@
             }
 
             #admin-calendar {
-    min-height: 600px; /* Aumenta la altura mínima */
-    max-width: 100%;
-    margin: 0 auto;
-}
+                min-height: 600px;
+                /* Aumenta la altura mínima */
+                max-width: 100%;
+                margin: 0 auto;
+            }
         </style>
 
     </head>
@@ -126,15 +127,15 @@
 
                             <!-- Botón de menú (fuera del modal) -->
                             <div id="tutorial-btn"
-                            class="absolute -inset-4 rounded-full h-10 w-10 bg-white bg-opacity-20 animate-pulse"
-                            style="top: 30px; left: 35px; transform: translate(-50%, -50%); z-index: 52;">
-                            <!-- Botón de menú -->
-                            <button id="toggle-sidebar" class="menu-button p-2.5">
-                                <i class="fa-solid fa-bars fa-lg"></i>
-                            </button>
-                        </div>
-                        
-                   
+                                class="absolute -inset-4 rounded-full h-10 w-10 bg-white bg-opacity-20 animate-pulse"
+                                style="top: 30px; left: 35px; transform: translate(-50%, -50%); z-index: 52;">
+                                <!-- Botón de menú -->
+                                <button id="toggle-sidebar" class="menu-button p-2.5">
+                                    <i class="fa-solid fa-bars fa-lg"></i>
+                                </button>
+                            </div>
+
+
                             <div id="tutorial-overlay"
                                 class="fixed inset-0 hidden bg-black bg-opacity-75 z-50 flex items-center justify-center">
                                 <div class="relative w-full h-full">
@@ -144,7 +145,11 @@
                                         <div class="flex flex-col">
                                             <h3 class="font-bold text-gray-800 mb-2">Bienvenido a Expedined</h3>
                                             <p class="text-sm text-gray-600 mb-2">
-                                                Para brindarte la mejor experiencia, validaremos tu comprobante de pago. Mientras se realiza este proceso, podrás disfrutar de 30 días de acceso gratuito al sistema, permitiéndote explorar y optimizar tu consultorio sin restricciones. Nuestro equipo revisará tu información a la brevedad para garantizar un servicio seguro y confiable.
+                                                Para brindarte la mejor experiencia, validaremos tu comprobante de pago.
+                                                Mientras se realiza este proceso, podrás disfrutar de 30 días de acceso
+                                                gratuito al sistema, permitiéndote explorar y optimizar tu consultorio
+                                                sin restricciones. Nuestro equipo revisará tu información a la brevedad
+                                                para garantizar un servicio seguro y confiable.
                                             </p>
                                             <p class="text-sm text-gray-600 font-semibold mb-2">Barra lateral de
                                                 opciones</p>
@@ -334,7 +339,7 @@
                 @endrole
             @endif
 
-        
+
         </x-app-layout>
     </body>
 
@@ -835,4 +840,3 @@ font-weight: bold;
         }, 200);
     });
 </script>
-

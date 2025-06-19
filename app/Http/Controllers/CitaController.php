@@ -24,9 +24,9 @@ class CitaController
         $this->authorize('ver dashboard');
 
         $user = Auth::user();
-        $citas = collect(); // Inicializar como colección vacía
-        $pacientes = collect(); // Inicializar como colección vacía
-        $doctores = collect(); // Inicializar como colección vacía
+        $citas = collect();
+        $pacientes = collect();
+        $doctores = collect();
         $doctorId = null;
 
         // Obtener doctores de la misma empresa (para roles como Admin)
@@ -34,135 +34,124 @@ class CitaController
             $doctores = Doctores::whereHas('user', function ($query) use ($user) {
                 $query->where('empresa_id', $user->empresa_id);
             })->get();
-        } else {
-            // Si no hay empresa asignada, mostrar una lista vacía
-            $doctores = collect();
         }
 
         // Lógica para el rol de Admin
         if ($user->hasRole('Admin')) {
-            // Verificar si el administrador tiene una empresa asignada
             if ($user->empresa_id) {
-                // Obtener IDs de doctores de la misma empresa
-                $doctoresEmpresa = User::where('empresa_id', $user->empresa_id)
-                    ->whereHas('roles', function ($q) {
-                        $q->where('name', 'Doctor');
-                    })
+                // Obtener IDs de doctores y secretarias de la empresa
+                $doctoresIds = User::where('empresa_id', $user->empresa_id)
+                    ->whereHas('roles', fn($q) => $q->where('name', 'Doctor'))
                     ->with('doctor')
                     ->get()
                     ->pluck('doctor.id')
                     ->filter()
                     ->toArray();
 
-                // Obtener IDs de secretarias de la misma empresa
-                $secretariasEmpresa = User::where('empresa_id', $user->empresa_id)
-                    ->whereHas('roles', function ($q) {
-                        $q->where('name', 'Secretaria');
-                    })
+                $secretariasIds = User::where('empresa_id', $user->empresa_id)
+                    ->whereHas('roles', fn($q) => $q->where('name', 'Secretaria'))
                     ->with('secretaria')
                     ->get()
                     ->pluck('secretaria.id')
                     ->filter()
                     ->toArray();
 
-                // Consulta optimizada para citas
-                $citas = Cita::where(function ($query) use ($doctoresEmpresa, $secretariasEmpresa) {
-                    // Citas donde el doctor pertenece a la empresa
-                    $query->whereIn('doctor_id', $doctoresEmpresa);
-
-                    // O citas donde el paciente fue creado por un doctor o secretaria de la empresa
-                    $query->orWhereHas('paciente', function ($q) use ($doctoresEmpresa, $secretariasEmpresa) {
-                        $q->whereIn('doctor_id', $doctoresEmpresa)
-                            ->orWhereIn('secretaria_id', $secretariasEmpresa);
-                    });
-                })
+                // Consulta para citas
+                $citas = Cita::whereIn('doctor_id', $doctoresIds)
+                    ->orWhereHas('paciente', function ($q) use ($doctoresIds, $secretariasIds) {
+                        $q->whereIn('doctor_id', $doctoresIds)
+                            ->orWhereIn('secretaria_id', $secretariasIds);
+                    })
                     ->with(['paciente', 'doctor'])
                     ->get()
-                    ->map(function ($cita) {
-                        return [
-                            'id' => $cita->id,
-                            'doctor' => $cita->doctor?->nombre_completo ?? 'Sin Doctor',
-                            'title' => $cita->paciente?->nombre ?? 'Sin Paciente',
-                            'start' => $cita->fecha . 'T' . $cita->hora_inicio,
-                            'end' => $cita->fecha . 'T' . $cita->hora_fin,
-                            'motivo' => $cita->motivo,
-                            'doctor_id' => $cita->doctor_id,
-                            'paciente_id' => $cita->paciente_id
-                        ];
-                    });
+                    ->map(fn($cita) => $this->formatCita($cita));
 
-                // Obtener pacientes de la empresa
-                $pacientes = Paciente::where(function ($query) use ($doctoresEmpresa, $secretariasEmpresa) {
-                    $query->whereIn('doctor_id', $doctoresEmpresa)
-                        ->orWhereIn('secretaria_id', $secretariasEmpresa);
-                })
+                // Consulta para pacientes
+                $pacientes = Paciente::whereIn('doctor_id', $doctoresIds)
+                    ->orWhereIn('secretaria_id', $secretariasIds)
                     ->get();
             }
-
-            return view('dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
         }
-
         // Lógica para el rol de Doctor
-        if ($user->hasRole('Doctor')) {
-            $citas = Cita::where('doctor_id', $user->doctor->id)
+        elseif ($user->hasRole('Doctor')) {
+            $doctor = $user->doctor;
+            $doctorId = $doctor->id;
+
+            // Obtener doctores de la misma empresa para el select
+            $doctores = Doctores::whereHas('user', function ($query) use ($user) {
+                $query->where('empresa_id', $user->empresa_id);
+            })->get();
+
+            // Citas del doctor
+            $citas = Cita::where('doctor_id', $doctor->id)
                 ->with(['paciente', 'doctor'])
                 ->get()
-                ->map(function ($cita) {
-                    return [
-                        'id' => $cita->id,
-                        'doctor' => $cita->doctor->nombre_completo,
-                        'title' => $cita->paciente->nombre,
-                        'start' => $cita->fecha . 'T' . $cita->hora_inicio,
-                        'end' => $cita->fecha . 'T' . $cita->hora_fin,
-                        'motivo' => $cita->motivo,
-                    ];
-                });
+                ->map(fn($cita) => $this->formatCita($cita));
 
-            $pacientes = Paciente::where('doctor_id', $user->doctor->id)->get();
+            // Pacientes del doctor
+            $pacientes = Paciente::where('doctor_id', $doctor->id)->get();
 
             return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
         }
-
         // Lógica para el rol de Secretaria
-        if ($user->hasRole('Secretaria')) {
-            $secretaria = Secretarias::where('user_id', $user->id)->first();
+        elseif ($user->hasRole('Secretaria')) {
+            $secretaria = $user->secretaria;
 
-            if ($secretaria) {
-                $citas = Cita::whereHas('paciente', function ($query) use ($secretaria) {
-                    $query->where('secretaria_id', $secretaria->id);
-                })
-                    ->with(['paciente', 'doctor'])
-                    ->get()
-                    ->map(function ($cita) {
-                        return [
-                            'id' => $cita->id,
-                            'doctor' => $cita->doctor?->nombre_completo ?? 'Sin Doctor',
-                            'title' => $cita->paciente?->nombre ?? 'Sin Paciente',
-                            'start' => $cita->fecha . 'T' . $cita->hora_inicio,
-                            'end' => $cita->fecha . 'T' . $cita->hora_fin,
-                            'motivo' => $cita->motivo,
-                        ];
-                    });
+            // Obtener el doctor asociado (si existe)
+            $doctorAsociado = $secretaria->doctor; // Asumiendo que hay una relación
 
-                $pacientes = Paciente::where('secretaria_id', $secretaria->id)->get();
+            // Obtener doctores de la misma empresa para el select
+            $doctores = Doctores::whereHas('user', function ($query) use ($user) {
+                $query->where('empresa_id', $user->empresa_id);
+            })->get();
 
-        
+            // Citas: las de la secretaria + las del doctor asociado
+            $citasQuery = Cita::whereHas('paciente', function ($q) use ($secretaria, $doctorAsociado) {
+                $q->where('secretaria_id', $secretaria->id);
 
-                return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
+                if ($doctorAsociado) {
+                    $q->orWhere('doctor_id', $doctorAsociado->id);
+                }
+            });
+
+            // Si hay doctor asociado, agregar también citas donde él es el doctor
+            if ($doctorAsociado) {
+                $citasQuery->orWhere('doctor_id', $doctorAsociado->id);
             }
 
-            return redirect()->back()->with('error', 'No se encontraron citas para esta secretaria.');
+            $citas = $citasQuery->with(['paciente', 'doctor'])
+                ->get()
+                ->map(fn($cita) => $this->formatCita($cita));
+
+            // Pacientes: los de la secretaria + los del doctor asociado
+            $pacientesQuery = Paciente::where('secretaria_id', $secretaria->id);
+
+            if ($doctorAsociado) {
+                $pacientesQuery->orWhere('doctor_id', $doctorAsociado->id);
+            }
+
+            $pacientes = $pacientesQuery->get();
+            return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
         }
 
-      
-
-        return view('dashboard', [
-            'doctores' => $doctores,
-            'pacientes' => $pacientes,
-            'citas' => $citas->toArray(), // Convertir a array para FullCalendar
-            'doctorId' => $doctorId,
-        ]);
+        return view('dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
     }
+
+    // Función auxiliar para formatear citas
+    private function formatCita($cita)
+    {
+        return [
+            'id' => $cita->id,
+            'doctor' => $cita->doctor?->nombre_completo ?? 'Sin Doctor',
+            'title' => $cita->paciente?->nombre ?? 'Sin Paciente',
+            'start' => $cita->fecha . 'T' . $cita->hora_inicio,
+            'end' => $cita->fecha . 'T' . $cita->hora_fin,
+            'motivo' => $cita->motivo,
+            'doctor_id' => $cita->doctor_id,
+            'paciente_id' => $cita->paciente_id
+        ];
+    }
+
     public function getDoctores()
     {
         $doctores = Doctores::all();

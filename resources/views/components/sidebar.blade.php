@@ -56,7 +56,7 @@
 
 
                     <li><a href="{{ route('Personal.index') }}"><img class="img-secretary"
-                                src="{{ asset('images/human.png') }}" /> <span>Trabajadores</span></a></li>
+                                src="{{ asset('images/human.png') }}" /> <span>Personal de la empresa</span></a></li>
 
                     <li class="relative">
                         <a href="{{ route('empresas.index') }}" id="empresa-link"
