@@ -29,7 +29,7 @@ class Secretarias extends Model
         'contacto_emergencia_telefono',
         'idiomas',
         'empresa_id',
-        'trabajador_id'
+        'personal_id'
     ];
 
     protected $dates = [

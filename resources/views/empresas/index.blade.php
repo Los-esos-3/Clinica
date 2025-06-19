@@ -350,13 +350,13 @@
                             <h2 class="text-3xl font-bold text-gray-800 mb-3">¡Registro de Empresa Exitoso!</h2>
                             <p class="text-gray-600 text-base mb-6 leading-relaxed">
                                 La información de la empresa ha sido registrada correctamente. <br><br>
-                                Ahora te reidirigiremos al <strong>espacio de trabajadores</strong> para continuar configurando tu entorno de trabajo. <br><br>
+                                Ahora te reidirigiremos al <strong>espacio de Personal</strong> para continuar configurando tu entorno de trabajo. <br><br>
                                 Recuerda que mantener los datos actualizados ayuda a ofrecer una experiencia más profesional y eficiente.
                             </p>
                     
-                            <button onclick="window.location.href='{{ route('Trabajadores.index') }}'" 
+                            <button onclick="window.location.href='{{ route('Personal.index') }}'" 
                             class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md">
-                            Ir al panel de Trabajadores
+                            Ir al panel de Personal
                         </button>
                         </div>
                     </div>

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Permission\Traits\HasRoles;
 use Symfony\Component\Routing\Loader\Configurator\Traits\AddTrait;
 
-class Trabajadores extends Model
+class Personal extends Model
 {
     use HasFactory;
     use HasRoles;

@@ -328,23 +328,20 @@
                                 <td class="text-center">
                                     @php
                                         $now = now();
-                                        $totalSeconds = 0;
+                                        $daysRemaining = 0;
 
-                                        \Carbon\Carbon::setLocale('es');
-
+                                        // Calcular los días restantes para el período de prueba
                                         if ($user->trial_ends_at) {
-                                            $totalSeconds += $now->diffInSeconds($user->trial_ends_at, false);
+                                            $daysRemaining += floor($now->diffInDays($user->trial_ends_at, false));
                                         }
 
+                                        // Calcular los días restantes para el plan actual
                                         if ($user->plan_expires_at) {
-                                            $totalSeconds += $now->diffInSeconds($user->plan_expires_at, false);
+                                            $daysRemaining += floor($now->diffInDays($user->plan_expires_at, false));
                                         }
-
-                                        $totalTime = Carbon\CarbonInterval::seconds(abs($totalSeconds))
-                                            ->cascade()
-                                            ->forHumans(['parts' => 4]);
                                     @endphp
-                                    {{ $totalTime }}
+                                    <p>{{ $daysRemaining }} día{{ $daysRemaining != 1 ? 's' : '' }}
+                                        restante{{ $daysRemaining != 1 ? 's' : '' }}</p>
                                 </td>
 
                                 <td class="text-center">

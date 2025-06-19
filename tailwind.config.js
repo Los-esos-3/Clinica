@@ -12,7 +12,7 @@ export default {
         './resources/**/*.js',       
         './resources/**/*.vue',
         './resources/views/Expedientes.blade.php',
-        './resources/views/Trabajadores/Index.blade.php'
+        './resources/views/Personal/Index.blade.php'
     ],
 
     theme: {

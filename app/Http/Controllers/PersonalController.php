@@ -14,9 +14,9 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Models\Doctores;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Secretarias;
-use App\Models\Trabajadores;
+use App\Models\Personal;
 
-class TrabajadoresController
+class PersonalController
 {
 
     public function index(Request $request)
@@ -25,7 +25,7 @@ class TrabajadoresController
         $search = trim(strtolower($request->input('search')));
 
         // Iniciar la consulta base con relaciones
-        $query = Trabajadores::with('user', 'empresa');
+        $query = Personal::with('user', 'empresa');
 
         // Filtrar por empresa si el usuario tiene empresa_id
         if ($user->empresa_id) {
@@ -43,9 +43,9 @@ class TrabajadoresController
         }
 
         // Finalmente aplicar paginación
-        $trabajadores = $query->paginate(9);
+        $Personal = $query->paginate(9);
 
-        return view('Trabajadores.index', compact('trabajadores', 'search'));
+        return view('Personal.index', compact('Personal', 'search'));
     }
 
 
@@ -54,7 +54,7 @@ class TrabajadoresController
         // Filtrar solo los roles permitidos
         $allowedRoles = ['Doctor', 'Secretaria', 'Admin'];
         $roles = Role::whereIn('name', $allowedRoles)->get();
-        return view('Trabajadores.create', compact('roles'));
+        return view('Personal.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -86,18 +86,19 @@ class TrabajadoresController
             $user->assignRole($validated['rol']);
 
             // Guardar la foto de perfil si existe
-            $fotoPerfilPath = null;
-            if ($request->hasFile('foto_perfil')) {
-                $imagen = $request->file('foto_perfil');
-                $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-                // Guardar en storage/app/public/trabajadores
-                $fotoPerfilPath = $imagen->storeAs('trabajadores', $nombreImagen, 'public');
-            }
+            $nombreImagen = null;
+                
+        if ($request->hasFile('foto_perfil')) {
+            $imagen = $request->file('foto_perfil');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('images'), $nombreImagen);
+            $validatedData['foto_perfil'] = $nombreImagen;
+        }
 
-            // Crear el trabajador
-            $trabajador = Trabajadores::create([
+            // Crear el personal
+            $personal = Personal::create([
                 'nombre' => $validated['name'],
-                'foto_perfil' => $fotoPerfilPath,
+                'foto_perfil' => $nombreImagen,
                 'user_id' => $user->id,
                 'correo' => $validated['email'],
                 'password' => Hash::make($validated['password']),
@@ -109,8 +110,8 @@ class TrabajadoresController
             // Crear registro en la tabla correspondiente (doctor o secretaria)
             if ($validated['rol'] === 'Doctor') {
                 Doctores::create([
-                    'trabajador_id' => $trabajador->id,
-                    'foto_perfil' => $fotoPerfilPath,
+                    'personal_id' => $personal->id,
+                    'foto_perfil' => $nombreImagen,
                     'especialidad' => 'General',
                     'user_id' => $user->id,
                     'email' => $validated['email'],
@@ -119,8 +120,8 @@ class TrabajadoresController
                 ]);
             } elseif ($validated['rol'] === 'Secretaria') {
                 Secretarias::create([
-                    'trabajador_id' => $trabajador->id,
-                    'foto_perfil' => $fotoPerfilPath,
+                    'personal_id' => $personal->id,
+                    'foto_perfil' => $nombreImagen,
                     'user_id' => $user->id,
                     'nombre_completo' => $validated['name'],
                     'email' => $validated['email'],
@@ -132,35 +133,35 @@ class TrabajadoresController
             return redirect()->back()->withErrors($e->errors())->withInput();
         }
 
-        return redirect()->route('Trabajadores.index')->with('success', 'Trabajador creado exitosamente.');
+        return redirect()->route('Personal.index')->with('success', 'personal creado exitosamente.');
     }
 
-    public function edit(Trabajadores $trabajador, $id)
+    public function edit(Personal $personal, $id)
     {
         // Obtener los roles permitidos
         $allowedRoles = ['Doctor', 'Secretaria', 'Admin'];
         $roles = Role::whereIn('name', $allowedRoles)->get();
-        $trabajador = Trabajadores::findOrFail($id);
+        $personal = Personal::findOrFail($id);
 
-        return view('Trabajadores.edit', compact('trabajador', 'roles'));
+        return view('Personal.edit', compact('personal', 'roles'));
     }
 
-    public function update(Request $request, Trabajadores $trabajador, $id)
+    public function update(Request $request, Personal $personal, $id)
     {
-        $trabajador = Trabajadores::findOrFail($id);
+        $personal = Personal::findOrFail($id);
 
         try {
             $validated = $request->validate([
                 'name' => 'required|string|max:255',
                 'foto_perfil' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-                'email' => 'required|string|email|max:255|unique:users,email,' . $trabajador->user_id,
+                'email' => 'required|string|email|max:255|unique:users,email,' . $personal->user_id,
                 'tel' => 'nullable|string|max:15',
                 'password' => 'nullable|string|min:8|confirmed',
                 'rol' => 'required|exists:roles,name',
             ]);
 
             // Actualizar el usuario asociado
-            $user = User::find($trabajador->user_id);
+            $user = User::find($personal->user_id);
 
             $user->update([
                 'name' => $validated['name'],
@@ -174,21 +175,23 @@ class TrabajadoresController
             // Actualizar el rol del usuario
             $user->syncRoles([$validated['rol']]);
 
-            $fotoPerfilPath = $trabajador->foto_perfil;
-            if ($request->hasFile('foto_perfil')) {
-                $imagen = $request->file('foto_perfil');
-                $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
-                // Guardar en storage/app/public/trabajadores
-                $fotoPerfilPath = $imagen->storeAs('trabajadores', $nombreImagen, 'public');
-            }
+            $nombreImagen = $personal->foto_perfil;
+                    
+        if ($request->hasFile('foto_perfil')) {
+            $imagen = $request->file('foto_perfil');
+            $nombreImagen = time() . '_' . $imagen->getClientOriginalName();
+            $imagen->move(public_path('images'), $nombreImagen);
+            $validatedData['foto_perfil'] = $nombreImagen;
+        }
 
 
 
-            // Actualizar el trabajador
-            $trabajador->update([
+
+            // Actualizar el personal
+            $personal->update([
                 'nombre' => $validated['name'],
                 'correo' => $validated['email'],
-                'foto_perfil' => $fotoPerfilPath,
+                'foto_perfil' => $nombreImagen,
                 'tel' => $validated['tel'] ?? null,
                 'rol' => $validated['rol'],
             ]);
@@ -197,35 +200,35 @@ class TrabajadoresController
             if ($validated['rol'] !== $oldRole) {
                 // Si el rol cambió, eliminar registros antiguos
                 if ($oldRole === 'Doctor') {
-                    Doctores::where('trabajador_id', $trabajador->id)->delete();
+                    Doctores::where('personal_id', $personal->id)->delete();
                 } elseif ($oldRole === 'Secretaria') {
-                    Secretarias::where('trabajador_id', $trabajador->id)->delete();
+                    Secretarias::where('personal_id', $personal->id)->delete();
                 }
             }
 
             // Crear o actualizar registro según el nuevo rol
             if ($validated['rol'] === 'Doctor') {
-                $doctor = Doctores::firstOrNew(['trabajador_id' => $trabajador->id]);
+                $doctor = Doctores::firstOrNew(['personal_id' => $personal->id]);
                 $doctor->fill([
                     'nombre_completo' => $validated['name'],
-                    'foto_perfil' => $fotoPerfilPath,
-                    'email' => $trabajador['correo'],
+                    'foto_perfil' => $nombreImagen,
+                    'email' => $personal['correo'],
                     'empresa_id' => Auth::user()->empresa_id,
                     'user_id' => $user->id,
                 ])->save();
             } elseif ($validated['rol'] === 'Secretaria') {
-                $secretaria = Secretarias::firstOrNew(['trabajador_id' => $trabajador->id]);
+                $secretaria = Secretarias::firstOrNew(['personal_id' => $personal->id]);
                 $secretaria->fill([
                     'nombre_completo' => $validated['name'],
-                    'email' => $trabajador['correo'],
-                    'foto_perfil' => $fotoPerfilPath,
+                    'email' => $personal['correo'],
+                    'foto_perfil' => $nombreImagen,
                     'empresa_id' => Auth::user()->empresa_id,
                     'user_id' => $user->id,
                 ])->save();
             } else {
                 // Para otros roles (Admin), eliminar registros específicos si existen
-                Doctores::where('trabajador_id', $trabajador->id)->delete();
-                Secretarias::where('trabajador_id', $trabajador->id)->delete();
+                Doctores::where('personal_id', $personal->id)->delete();
+                Secretarias::where('personal_id', $personal->id)->delete();
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
             Log::error('Error de validación: ' . $e->getMessage());
@@ -233,26 +236,26 @@ class TrabajadoresController
         }
 
 
-        return redirect()->route('Trabajadores.index')->with('success', 'Trabajador actualizado exitosamente.');
+        return redirect()->route('Personal.index')->with('success', 'personal actualizado exitosamente.');
     }
 
-    public function destroy(Trabajadores $trabajador, $id)
+    public function destroy(Personal $personal, $id)
     {
-        $trabajador = Trabajadores::findOrFail($id);
+        $personal = Personal::findOrFail($id);
 
         // Eliminar registros relacionados en las tablas doctores o secretarias
-        if ($trabajador->rol === 'Doctor') {
-            Doctores::where('trabajador_id', $trabajador->id)->delete();
-        } elseif ($trabajador->rol === 'Secretaria') {
-            Secretarias::where('trabajador_id', $trabajador->id)->delete();
+        if ($personal->rol === 'Doctor') {
+            Doctores::where('personal_id', $personal->id)->delete();
+        } elseif ($personal->rol === 'Secretaria') {
+            Secretarias::where('personal_id', $personal->id)->delete();
         }
 
-        // Eliminar el trabajador
-        $trabajador->delete();
+        // Eliminar el personal
+        $personal->delete();
 
         // Eliminar el usuario asociado
-        $trabajador->user->delete();
+        $personal->user->delete();
 
-        return redirect()->route('Trabajadores.index')->with('success', 'Trabajador eliminado exitosamente.');
+        return redirect()->route('Personal.index')->with('success', 'personal eliminado exitosamente.');
     }
 }

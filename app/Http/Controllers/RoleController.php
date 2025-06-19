@@ -7,6 +7,7 @@ use App\Models\Pago;
 use Carbon\CarbonInterval;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -36,7 +37,7 @@ class RoleController
             ->paginate(10);
 
 
-        
+
         $totalPagos = Pago::whereIn('user_id', $users->pluck('id'))
             ->sum('precio');
 
@@ -49,8 +50,7 @@ class RoleController
         $user = User::findOrFail($userId);
 
 
-        $expirationDate = $user->plan_expires_at; // Suponemos que esta fecha está almacenada en la base de datos
-        // $remainingDays = now()->diffInDays($expirationDate);
+        $expirationDate = $user->plan_expires_at;
 
 
         $now = now();
@@ -88,6 +88,66 @@ class RoleController
         Mail::to($user->email)->send(new RecordatorioDeDias($data));
 
         return redirect()->route('dashboardRoot')->with('success', 'Se a enviado correctamente el correo.');
+    }
+
+    public function confirmarPago($userId)
+    {
+        // Obtener el usuario desde la base de datos
+        $user = User::find($userId);
+
+        // Verificar si el usuario existe
+        if (!$user) {
+            Log::warning('No se encontró ningún usuario con el ID: ' . $userId);
+            return redirect()->back()->with('error', 'El usuario no existe.');
+        }
+
+        // Buscar el último pago pendiente del usuario
+        $pago = Pago::where('user_id', $user->id)
+            ->where('estado', 'espera') // Asegúrate de que el pago esté pendiente
+            ->latest() // Obtener el pago más reciente
+            ->first();
+
+        // Verificar si existe un pago pendiente
+        if (!$pago) {
+            Log::warning('No se encontró ningún pago pendiente para el usuario ID: ' . $user->id);
+            return redirect()->back()->with('error', 'No se encontró ningún pago pendiente.');
+        }
+
+        try {
+            // Determinar los días del plan seleccionado
+            $planDays = 0;
+
+            if ($user->selected_plan === 'Plan Básico') {
+                $planDays = 30;
+            } elseif ($user->selected_plan === 'popular') {
+                $planDays = 183;
+            } elseif ($user->selected_plan === 'premium') {
+                $planDays = 365;
+            }
+
+            // Verificar si el plan seleccionado es válido
+            if ($planDays === 0) {
+                return redirect()->back()->with('error', 'El plan seleccionado no es válido.');
+            }
+
+            // Actualizar el estado del pago a "pagada"
+            $pago->update(['estado' => 'pagada']);
+            Log::info('Estado del pago actualizado a "pagada"');
+
+            // Calcular la nueva fecha de expiración del plan
+            $nuevaFechaExpiracion = now()->addDays($planDays);
+
+            // Actualizar la fecha de expiración del plan del usuario
+            $user->update([
+                'plan_expires_at' => $nuevaFechaExpiracion,
+            ]);
+
+            // Redirigir con un mensaje de éxito
+            return redirect()->back()->with('success', 'Pago confirmado exitosamente. El plan ha sido activado.');
+        } catch (\Exception $e) {
+            Log::error('Error al procesar el pago: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Ocurrió un error al procesar el pago.');
+        }
     }
 
     public function RolesIndex()

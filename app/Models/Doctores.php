@@ -33,7 +33,7 @@ class Doctores extends Model
         'contacto_emergencia_telefono',
         'area_departamento',
         'empresa_id',
-        'trabajador_id'
+        'personal_id'
     ];
     public function empresa()
     {

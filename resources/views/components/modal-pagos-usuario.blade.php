@@ -26,13 +26,18 @@
                             <th class=" text-centerpx-6 py-3  text-xs font-medium text-gray-500 uppercase">#</th>
                             <th class=" text-center px-6 py-3 text-xs font-medium text-gray-500 uppercase">plan</th>
                             <th class="text-center px-6 py-3  text-xs font-medium text-gray-500 uppercase">Precio</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Referencia</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Referencia
+                            </th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Fecha de
                                 creacion</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Fecha de
                                 Vencimiento del plan</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Estado</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Confirmacion
+                                del pago</th>
                             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Imagen del
                                 ticket</th>
+
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white" id="paymentList">
@@ -47,17 +52,46 @@
                                     @if ($pago->tipo_pago === 'prueba')
                                         <span>{{ $user->trial_ends_at }}</span>
                                     @else
-                                        <span>{{ $user->plan_expires_at }}</span>
+                                        @if ($pago->estado === 'pagada')
+                                            <span>{{ $user->plan_expires_at }}</span>
+                                        @else
+                                            <label>Esta por confirmarse</label>
+                                        @endif
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($pago->estado === 'pagada')
+                                        <label class="text-green-500 text-center"> {{ $pago->estado }}</label>
+                                    @else
+                                        <label class="text-orange-500 text-center"> En {{ $pago->estado }}</label>
+                                    @endif
+
+                                </td>
+                                <td class="text-center">
+                                    @if ($pago->tipo_pago === 'normal')
+                                        @if ($pago->estado === 'espera')
+                                            <form method="POST" action="{{ route('confirmar.pago', $user->id) }}">
+                                                @csrf
+                                                <button class="bg-gray-300 h-[40px] w-[70px] rounded">
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                </button>
+                                            </form>
+                                        @else
+                                            <label class="text-green-500">Ya se confirmo el pago</label>
+                                        @endif
+                                    @else
+                                        <label class="text-red-500">No se puede confirmar este pago</label>
                                     @endif
                                 </td>
                                 <td class="text-center">
                                     @if ($pago->tipo_pago === 'normal')
-                                        <a class="text-black no-underline" target="_blank" href="{{url('images/' . $pago->ticket)}}">
+                                        <a class="text-black no-underline" target="_blank"
+                                            href="{{ url('images/' . $pago->ticket) }}">
                                             <button class="bg-gray-300 h-[40px] w-[70px] rounded">
                                                 <i class="fa-solid fa-image"></i>
                                             </button>
                                         </a>
-                                        @else
+                                    @else
                                         <label class="text-red-500">No hay ticket para esta transaccion</label>
                                     @endif
                                 </td>

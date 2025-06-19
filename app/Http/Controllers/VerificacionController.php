@@ -66,7 +66,6 @@ class VerificacionController
             $requestData = $registrationData;
 
             $planDays = (int) $registrationData['plan_days']; 
-
         
             $planExpiresAt = now()->addDays($planDays);
 
@@ -78,7 +77,6 @@ class VerificacionController
                 'comments' => $registrationData['comments'] ?? null,
                 'registration_source' => 'web',
                 'selected_plan' => $registrationData['selected_plan'],
-                'plan_expires_at' => $planExpiresAt,
                 'plan_price' =>$registrationData['plan_price'],
                 'trial_ends_at' => now()->addDay(30),
                 'trial_ended' => false

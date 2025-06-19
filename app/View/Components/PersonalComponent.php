@@ -5,19 +5,15 @@ namespace App\View\Components;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use App\Models\Trabajadores;
 
-class DeleteTrabajadores extends Component
+class PersonalComponent extends Component
 {
     /**
      * Create a new component instance.
      */
-
-     public $trabajadores;
-
-    public function __construct($trabajadores)
+    public function __construct()
     {
-        $this->trabajadores = $trabajadores;
+        //
     }
 
     /**
@@ -25,6 +21,6 @@ class DeleteTrabajadores extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.delete-trabajadores');
+        return view('components.Personal-component');
     }
 }

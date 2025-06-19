@@ -5,7 +5,7 @@ use App\Http\Controllers\ExpedientesController;
 use App\Http\Controllers\ExpedienteController;
 use App\Http\Controllers\MercadoPagoController;
 use App\Http\Controllers\SecretariasDoctorController;
-use App\Http\Controllers\TrabajadoresController;
+use App\Http\Controllers\PersonalController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
@@ -90,6 +90,8 @@ Route::middleware(['auth', 'trial'])->group(function () {
 
         Route::post('enviarRecordatorio/{id}', [RoleController::class, 'RecordatorioCorreo'])->name('enviar.recordatorio');
 
+        Route::post('confirmarPago/{id}',[RoleController::class,'confirmarPago'])->name('confirmar.pago');
+
 
         Route::group(['middleware' => ['auth', 'permission:ver roles']], function () {
             Route::resource('roles', RoleController::class);
@@ -123,12 +125,12 @@ Route::middleware(['auth', 'trial'])->group(function () {
     //Rutas de Admin
     Route::middleware(['auth', 'role:Admin'])->group(function () {
 
-        Route::get('/Trabajadores', [TrabajadoresController::class, 'index'])->name("Trabajadores.index");
-        Route::get('/Trabajadores/create', [TrabajadoresController::class, 'create'])->name('Trabajadores.create');
-        Route::post('/Trabajadores/create', [TrabajadoresController::class, 'store'])->name('Trabajadores.store');
-        Route::get('/Trabajadores/{id}/edit', [TrabajadoresController::class, 'edit'])->name('Trabajadores.edit');
-        Route::delete('/Trabajadores/{id}', [TrabajadoresController::class, 'destroy'])->name('Trabajadores.destroy');
-        Route::put('/Trabajadores/{id}', [TrabajadoresController::class, 'update'])->name('Trabajadores.update');
+        Route::get('/Personal', [PersonalController::class, 'index'])->name("Personal.index");
+        Route::get('/Personal/create', [PersonalController::class, 'create'])->name('Personal.create');
+        Route::post('/Personal/create', [PersonalController::class, 'store'])->name('Personal.store');
+        Route::get('/Personal/{id}/edit', [PersonalController::class, 'edit'])->name('Personal.edit');
+        Route::delete('/Personal/{id}', [PersonalController::class, 'destroy'])->name('Personal.destroy');
+        Route::put('/Personal/{id}', [PersonalController::class, 'update'])->name('Personal.update');
         Route::resource('ingresos', IngresoController::class);
         Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');
         Route::get('/Pacientes', [ClinicaController::class, 'PacientesView'])->name('Pacientes.PacientesView');

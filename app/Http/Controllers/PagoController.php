@@ -96,7 +96,7 @@ class PagoController
 
         if (!$user->trial_used) {
             $referenciaPrueba = str_pad($user->id, 10, '0', STR_PAD_LEFT);
-    
+
             Pago::create([
                 'user_id' => $user->id,
                 'plan' => 'Tiempo de Prueba',
@@ -105,22 +105,19 @@ class PagoController
                 'fecha_generacion' => now(),
                 'tipo_pago' => 'prueba', // Asignar explícitamente el valor
                 'ticket' => 'null',
+                'estado' => 'pagada'
             ]);
 
             // Marcar el período de prueba como usado
             $user->update(['trial_used' => true]);
         }
 
-        // $ticketPath = $request->file('ticket')->store('images', 'public');
-
-         if ($request->hasFile('ticket')) {
+        if ($request->hasFile('ticket')) {
             $imagen = $request->file('ticket');
             $ticketPath = time() . '_' . $imagen->getClientOriginalName();
             $imagen->move(public_path('images'), $ticketPath);
             $request['foto_perfil'] = $ticketPath;
         }
-
-
 
         // Crear el pago normal
         Pago::create([
@@ -131,6 +128,7 @@ class PagoController
             'fecha_generacion' => $requestInfo['fecha'],
             'tipo_pago' => 'normal',
             'ticket' => $ticketPath, // Guardar la ruta del archivo
+            'estado' => 'espera'
         ]);
 
         // Actualizar el usuario con el plan seleccionado

@@ -268,7 +268,7 @@
                 @if ($secretarias->isEmpty())
                 <div class="flex justify-center justify-items-center items-center min-h-[500px]">
                     <h4 class="text-red-500 text-center">No hay secretarias creados 
-                        <p>(Si desea crear uno, vaya al apartado de Trabajadores y asigne el rol de secretaria)</p>
+                        <p>(Si desea crear uno, vaya al apartado de Personal y asigne el rol de secretaria)</p>
                     </h4>
                 </div>
             @else
@@ -280,7 +280,7 @@
                             <div class="secretary-card">
                                 <div class="secretary-header flex items-center space-x-4">
                                     @if ($secretaria->foto_perfil)
-                                    <img src="{{ url('storage/' . $secretaria->foto_perfil) }}"
+                                  <img src="{{ url('images/' . $secretaria->foto_perfil) }}"
                                          alt="Foto de {{ $secretaria->nombre_completo }}"
                                          class="w-32 h-32 object-cover rounded-full">
                                 @else 

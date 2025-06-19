@@ -595,9 +595,9 @@ font-weight: bold;
                         selector: "[data-tutorial='secretarias']"
                     },
                     {
-                        title: "Trabajadores",
+                        title: "Personal",
                         content: "Administra toda la información del personal de la clínica, incluyendo horarios y asignaciones.",
-                        selector: "[data-tutorial='trabajadores']"
+                        selector: "[data-tutorial='Personal']"
                     },
                     {
                         title: "Empresa",

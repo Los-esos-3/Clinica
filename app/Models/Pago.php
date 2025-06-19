@@ -13,7 +13,8 @@ class Pago extends Model
         'referencia',
         'fecha_generacion',
         'tipo_pago',
-        'ticket'
+        'ticket',
+        'estado'
     ];
 
 

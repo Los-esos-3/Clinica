@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('fecha_generacion');
             $table->enum('tipo_pago', ['prueba', 'normal']);
             $table->string('ticket');
+            $table->enum('estado',['pagada','espera']);
             $table->timestamps();
         });
         

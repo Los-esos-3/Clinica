@@ -243,7 +243,7 @@
             @if ($doctores->isEmpty())
                 <div class="flex justify-center justify-items-center items-center min-h-[500px]">
                     <h4 class="text-red-500 text-center">No hay doctores creados 
-                        <p>(Si desea crear uno, vaya al apartado de Trabajadores y asigne el rol de doctor)</p>
+                        <p>(Si desea crear uno, vaya al apartado de Personal y asigne el rol de doctor)</p>
                     </h4>
                 </div>
             @else
@@ -255,7 +255,7 @@
                             <div class="doctor-card">
                                 <div class="doctor-header flex items-center space-x-4">
                                     @if ($doctor->foto_perfil)
-                                        <img src="{{ url('storage/' . $doctor->foto_perfil) }}"
+                                        <img src="{{ url('images/' . $doctor->foto_perfil) }}"
                                             alt="Foto de {{ $doctor->nombre_completo }}"
                                             class="w-32 h-32 object-cover rounded-full">
                                     @else

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('empresa_id')->nullable()->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('doctor_id')->nullable()->constrained('doctores')->onDelete('cascade'); 
-            $table->foreignId('trabajador_id')->constrained('trabajadores')->onDelete('cascade'); 
+            $table->foreignId('personal_id')->constrained('Personals')->onDelete('cascade'); 
             $table->string('nombre_completo');
             $table->date('fecha_nacimiento')->nullable();
             $table->string('genero')->nullable();

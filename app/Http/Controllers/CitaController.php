@@ -146,22 +146,21 @@ class CitaController
 
                 $pacientes = Paciente::where('secretaria_id', $secretaria->id)->get();
 
-                $isAdmin = Auth::check() && Auth::user()->hasRole('Admin');
+        
 
-                return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId', 'isAdmin'));
+                return view('Secretaria.Dashboard', compact('doctores', 'pacientes', 'citas', 'doctorId'));
             }
 
             return redirect()->back()->with('error', 'No se encontraron citas para esta secretaria.');
         }
 
-        $isAdmin = Auth::check() && Auth::user()->hasRole('Admin');
+      
 
         return view('dashboard', [
             'doctores' => $doctores,
             'pacientes' => $pacientes,
             'citas' => $citas->toArray(), // Convertir a array para FullCalendar
             'doctorId' => $doctorId,
-            'isAdmin' => $isAdmin,
         ]);
     }
     public function getDoctores()

@@ -178,7 +178,7 @@
   <!-- Modal de Bienvenida -->
   <div id="welcomeOverlay" class="overlay hidden">
     <div class="welcome-modal">
-        <h2 class="title">👋 ¡Bienvenido al Espacio de Trabajadores!</h2>
+        <h2 class="title">👋 ¡Bienvenido al Espacio de Personal!</h2>
         <p class="message">
             ¡Felicitaciones! Has dado el primer paso hacia la digitalización de tu clínica.<br><br>
 
@@ -187,11 +187,11 @@
             • Asignar roles y permisos específicos a cada miembro<br>
             • Mantener un registro ordenado de especialidades y áreas<br><br>
 
-            Comienza registrando a tus trabajadores para construir un equipo sólido y profesional.
+            Comienza registrando a tus Personal para construir un equipo sólido y profesional.
             Una buena gestión del personal es clave para el éxito de tu clínica.
         </p>
-        <a href="{{ route('Trabajadores.create') }}" class="welcome-button">
-            <i class="fas fa-user-plus mr-2"></i> Comenzar a registrar trabajadores
+        <a href="{{ route('Personal.create') }}" class="welcome-button">
+            <i class="fas fa-user-plus mr-2"></i> Comenzar a registrar Personal
         </a>
     </div>
 </div>
@@ -213,12 +213,12 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <h2 class="text-xl font-semibold text-gray-800">
-                        {{ __('Trabajadores') }}
+                        {{ __('Personal') }}
                     </h2>
                 </div>
 
                 <div class="flex items-center ml-4">
-                    <form method="GET" autocomplete="on" action="{{route('Trabajadores.index')}}" class="flex items-center ml-4">
+                    <form method="GET" autocomplete="on" action="{{route('Personal.index')}}" class="flex items-center ml-4">
                         @csrf 
                         @method('GET')
                         <div class="relative flex">
@@ -238,29 +238,29 @@
                     </form>
                 </div>
 
-                <a href="{{ route('Trabajadores.create') }}"
+                <a href="{{ route('Personal.create') }}"
                     class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700">
                     <button>
-                        Agregar Trabajador
+                        Agregar personal
                     </button>
                 </a>
             </div>
 
             <div class="p-6">
-                @if ($trabajadores->isEmpty())
+                @if ($Personal->isEmpty())
                     <div class="flex justify-center justify-items-center items-center min-h-[500px]">
-                        <h4 class="text-red-500">No hay trabajadores creados</h4>
+                        <h4 class="text-red-500">No hay Personal creados</h4>
                     </div>
                 @else
                     <div class="py-12">
                         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
                             <div class="gridtarjetas">
-                                @foreach ($trabajadores as $trabajador)
+                                @foreach ($Personal as $personal)
                                     <div class="doctor-card bg-white shadow-md rounded-lg overflow-hidden">
                                         <div class="doctor-header flex items-center p-6 border-b">
-                                            @if ($trabajador->foto_perfil)
-                                                 <img src="{{ Storage::url($trabajador->foto_perfil) }}"
-                                                    alt="Foto de {{ $trabajador->nombre }}"
+                                            @if ($personal->foto_perfil)
+                                                   <img src="{{ url('images/' . $personal->foto_perfil) }}"
+                                                    alt="Foto de {{ $personal->nombre }}"
                                                     class="w-24 h-24 object-cover rounded-full">                                      
                                             @else
                                                 <div
@@ -274,28 +274,28 @@
                                                 </div>
                                             @endif
                                             <div class="ml-4">
-                                                <h3 class="text-lg mb-2 font-semibold">{{ $trabajador->nombre }}</h3>
-                                                <p class="text-gray-600">{{ $trabajador->correo }}</p>
+                                                <h3 class="text-lg mb-2 font-semibold">{{ $personal->nombre }}</h3>
+                                                <p class="text-gray-600">{{ $personal->correo }}</p>
                                             </div>
                                         </div>
 
                                         <div class="doctor-content p-6">
                                             <h4 class="Subtitulo">Información Personal</h4>
-                                            <p><strong>Teléfono:</strong> {{ $trabajador->tel ?? 'No proporcionado' }}
+                                            <p><strong>Teléfono:</strong> {{ $personal->tel ?? 'No proporcionado' }}
                                             </p>
-                                            <p><strong>Rol:</strong> {{ $trabajador->rol }}</p>
+                                            <p><strong>Rol:</strong> {{ $personal->rol }}</p>
                                             <p><strong>Empresa:</strong>
-                                                {{ $trabajador->empresa?->nombre ?? 'Sin empresa' }}</p>
+                                                {{ $personal->empresa?->nombre ?? 'Sin empresa' }}</p>
                                         </div>
 
                                         <div class="SeccionBtn">
-                                            <a href="{{ route('Trabajadores.edit', $trabajador->id) }}"
+                                            <a href="{{ route('Personal.edit', $personal->id) }}"
                                                 class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg no-underline hover:no-underline">
                                                 Editar
                                             </a>
 
                                             <button
-                                                onclick="toggleModal('modal-delete-trabajadores-{{ $trabajador->id }}')"
+                                                onclick="toggleModal('modal-delete-Personal-{{ $personal->id }}')"
                                                 class="bg-[rgb(55,65,81)] text-white px-3 py-2 rounded-lg">
                                                 Eliminar
                                             </button>
@@ -305,7 +305,7 @@
 
 
                                     <!-- Modal de Confirmación -->
-                                    <div id="modal-delete-trabajadores-{{ $trabajador->id }}"
+                                    <div id="modal-delete-Personal-{{ $personal->id }}"
                                         class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
                                         <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
                                             <!-- Título del Modal -->
@@ -313,21 +313,21 @@
 
                                             <!-- Mensaje de Confirmación -->
                                             <p class="text-gray-600 mb-6">¿Estás seguro de que deseas eliminar a
-                                                {{ $trabajador->nombre }}
-                                                de trabajadores? Esta
+                                                {{ $personal->nombre }}
+                                                de Personal? Esta
                                                 acción no se puede deshacer.</p>
 
                                             <!-- Botones de Acción -->
                                             <div class="flex justify-end gap-4">
                                                 <!-- Botón para Cancelar -->
                                                 <button
-                                                    onclick="toggleModal('modal-delete-trabajadores-{{ $trabajador->id }}')"
+                                                    onclick="toggleModal('modal-delete-Personal-{{ $personal->id }}')"
                                                     class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition-colors">
                                                     Cancelar
                                                 </button>
 
                                                 <!-- Botón para Confirmar -->
-                                                <form action="{{ route('Trabajadores.destroy', $trabajador->id) }}"
+                                                <form action="{{ route('Personal.destroy', $personal->id) }}"
                                                     method="POST">
                                                     @csrf
                                                     @method('DELETE')
@@ -378,7 +378,7 @@
 
                 <div>
                     {{-- Paginación --}}
-                    {{ $trabajadores->links() }}
+                    {{ $Personal->links() }}
                 </div>
             </div>
         </div>
