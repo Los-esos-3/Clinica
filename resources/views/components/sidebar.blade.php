@@ -85,32 +85,37 @@
                 </li>
             </ul>
 
+
             <div class="role-container">
 
-                @php
-                    $now = now();
-                    $daysRemaining = 0;
+                @if (Auth::user()->hasRole('Admin'))
+                    @php
+                        $now = now();
+                        $daysRemaining = 0;
 
-                    // Calcular los días restantes para el período de prueba
-                    if ($user->trial_ends_at) {
-                        $daysRemaining += floor($now->diffInDays($user->trial_ends_at, false));
-                    }
+                        // Calcular los días restantes para el período de prueba
+                        if ($user->trial_ends_at) {
+                            $daysRemaining += floor($now->diffInDays($user->trial_ends_at, false));
+                        }
 
-                    // Calcular los días restantes para el plan actual
-                    if ($user->plan_expires_at) {
-                        $daysRemaining += floor($now->diffInDays($user->plan_expires_at, false));
-                    }
-                @endphp
+                        // Calcular los días restantes para el plan actual
+                        if ($user->plan_expires_at) {
+                            $daysRemaining += floor($now->diffInDays($user->plan_expires_at, false));
+                        }
+                    @endphp
 
-                <div>
-                    <span class="text-sm font-medium text-white">Tiempo restante:</span>
-                    {{ $daysRemaining }} día{{ $daysRemaining != 1 ? 's' : '' }}
-                    restante{{ $daysRemaining != 1 ? 's' : '' }}
-                    </span>
-                </div>
+                    <div>
+                        <span class="text-sm font-medium text-white">Tiempo restante:</span>
+                        {{ $daysRemaining }} día{{ $daysRemaining != 1 ? 's' : '' }}
+                        restante{{ $daysRemaining != 1 ? 's' : '' }}
+                        </span>
+                    </div>
+                @endif
 
                 <label class="text-white">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
             </div>
+
+
 
             <!-- Contenedor para el usuario -->
             <div class="user-container">
