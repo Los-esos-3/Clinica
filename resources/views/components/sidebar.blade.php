@@ -56,7 +56,7 @@
 
 
                     <li><a href="{{ route('Personal.index') }}"><img class="img-secretary"
-                                src="{{ asset('images/human.png') }}" /> <span>Personal de la empresa</span></a></li>
+                                src="{{ asset('images/human.png') }}" /> <span>Trabajadores</span></a></li>
 
                     <li class="relative">
                         <a href="{{ route('empresas.index') }}" id="empresa-link"
@@ -111,7 +111,6 @@
 
                 <label class="text-white">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
             </div>
-
 
             <!-- Contenedor para el usuario -->
             <div class="user-container">
@@ -569,8 +568,6 @@
             const overlay = document.getElementById('overlay');
             const empresaLink = document.getElementById('empresa-link');
             const flecha = document.getElementById('flecha-empresa');
-
-            // Obtener el valor del atributo data-is-admin
             const isAdmin = document.body.dataset.isAdmin === 'true';
 
             // Verifica que los elementos existen
