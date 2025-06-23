@@ -75,7 +75,7 @@ class CitaController
         // Lógica para el rol de Doctor
         elseif ($user->hasRole('Doctor')) {
             $doctor = $user->doctor;
-            $doctorId = $doctor->id;
+            // $doctorId = $doctor->id;
 
             // Obtener doctores de la misma empresa para el select
             $doctores = Doctores::whereHas('user', function ($query) use ($user) {

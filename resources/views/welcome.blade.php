@@ -181,7 +181,6 @@
 
         .container {
             padding: 0 50px;
-
             margin: 0 auto;
         }
 
@@ -599,6 +598,7 @@
 
         .bg-blur-text {
             background: rgba(0, 0, 0, 0.5); /* Fondo azul oscuro más sutil */
+            margin-right: 15px;
             padding: 16px 24px;
             border-radius: 16px;
             display: inline-block;
