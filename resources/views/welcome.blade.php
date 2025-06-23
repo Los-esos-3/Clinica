@@ -138,14 +138,14 @@
             margin-top: 0;
             flex-direction: row;
             z-index: 1;
-            height: 650px;
+            height: 670px;
             margin-bottom: 80px;
         }
 
-        .background-blur
+        /* .background-blur
         {
             filter: blur(2px)
-        }
+        } */
         
 
         .content-text {
