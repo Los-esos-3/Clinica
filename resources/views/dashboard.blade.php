@@ -150,6 +150,44 @@
                             @endif
                         </div>
 
+                        <!-- Overlays y wizard de bienvenida -->
+                        <div id="tutorial-overlay" class="fixed inset-0 hidden bg-black bg-opacity-75 z-50 flex items-center justify-center">
+                            <div class="relative w-full h-full">
+                                <div class="absolute bg-white p-4 rounded-lg shadow-xl"
+                                    style="min-width: 280px; max-width: 400px; top: 90px !important; padding: 1.25rem;">
+                                    <div class="flex flex-col">
+                                        <h3 class="font-bold text-gray-800 mb-2">Bienvenido a Expedined</h3>
+                                        <p class="text-sm text-gray-600 mb-2">
+                                            Para brindarte la mejor experiencia, validaremos tu comprobante de pago.
+                                            Mientras se realiza este proceso, podrás disfrutar de 30 días de acceso
+                                            gratuito al sistema, permitiéndote explorar y optimizar tu consultorio
+                                            sin restricciones. Nuestro equipo revisará tu información a la brevedad
+                                            para garantizar un servicio seguro y confiable.
+                                        </p>
+                                        <p class="text-sm text-gray-600 font-semibold mb-2">Barra lateral de
+                                            opciones</p>
+                                        <p class="text-sm text-gray-600 mb-4">
+                                            Haz click en el icono para poder abrir la barra y moverte entre las
+                                            opciones que ofrecemos
+                                        </p>
+
+                                        <div class="flex justify-end items-center text-sm">
+                                            <button id="close-tutorial"
+                                                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
+                                                Entendido
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="absolute -right-3 top-1/2 transform -translate-y-1/2 rotate-90 md:rotate-0 md:right-full md:top-1/2 md:-mr-2">
+                                        <svg width="20" height="30" viewBox="0 0 20 30" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M20 15L0 0V30L20 15Z" fill="white" />
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="p-6">
                             <!-- Calendario -->
                             <div id="admin-calendar"></div>
@@ -469,297 +507,24 @@ font-weight: bold;
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Mostrar el tutorial solo si es la primera vez
+        // Wizard y overlays de bienvenida
         if (!localStorage.getItem('tutorialCompleted')) {
             document.getElementById('tutorial-overlay').classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
-            // Mostrar SOLO el botón con resaltador durante el tutorial
             document.getElementById('tutorial-btn').classList.remove('hidden');
             document.getElementById('normal-btn').classList.add('hidden');
-
-            document.getElementById('toggle-sidebar').addEventListener('click', function() {
-
+            document.getElementById('close-tutorial').addEventListener('click', function() {
+                document.getElementById('tutorial-overlay').classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+                document.getElementById('tutorial-btn').classList.add('hidden');
+                document.getElementById('normal-btn').classList.remove('hidden');
+                localStorage.setItem('tutorialCompleted', 'true');
             });
-
-
-            document.addEventListener('DOMContentLoaded', function() {
-                // Configuración del tutorial de la barra lateral
-                const tutorialSteps = [{
-                        title: "Inicio",
-                        content: "Esta es la página principal del dashboard donde puedes ver un resumen de actividades.",
-                        selector: "[data-tutorial='inicio']"
-                    },
-                    {
-                        title: "Calendario",
-                        content: "Aquí puedes gestionar todas las citas y eventos de la clínica. Podrás crear, editar y cancelar citas médicas.",
-                        selector: "[data-tutorial='calendario']"
-                    },
-                    {
-                        title: "Pacientes",
-                        content: "Administra los registros de pacientes, historiales médicos y toda la información relevante de cada paciente.",
-                        selector: "[data-tutorial='pacientes']"
-                    },
-                    {
-                        title: "Doctores",
-                        content: "Gestiona la información de los doctores, sus especialidades, horarios y disponibilidad.",
-                        selector: "[data-tutorial='doctores']"
-                    },
-                    {
-                        title: "Secretarías",
-                        content: "Configura las opciones relacionadas con el personal administrativo y sus permisos.",
-                        selector: "[data-tutorial='secretarias']"
-                    },
-                    {
-                        title: "Personal",
-                        content: "Administra toda la información del personal de la clínica, incluyendo horarios y asignaciones.",
-                        selector: "[data-tutorial='Personal']"
-                    },
-                    {
-                        title: "Empresa",
-                        content: "Configura los datos generales de la clínica o empresa, como información de contacto y configuración.",
-                        selector: "[data-tutorial='empresa']"
-                    },
-                    {
-                        title: "Perfil",
-                        content: "Actualiza tu información personal, cambia tu contraseña y configura tus preferencias de cuenta.",
-                        selector: "[data-tutorial='perfil']"
-                    },
-                    {
-                        title: "Rol Actual",
-                        content: "Aquí puedes ver y cambiar tu rol de acceso si tienes los permisos necesarios. Cada rol tiene diferentes privilegios.",
-                        selector: "[data-tutorial='rol']"
-                    }
-                ];
-
-                let currentStep = 0;
-                const sidebarTutorialOverlay = document.getElementById('sidebar-tutorial-overlay');
-                const sidebarTooltip = document.getElementById('sidebar-tooltip');
-                const sidebarTooltipTitle = document.getElementById('sidebar-tooltip-title');
-                const sidebarTooltipContent = document.getElementById('sidebar-tooltip-content');
-                const prevButton = document.getElementById('prev-sidebar-tutorial');
-                const nextButton = document.getElementById('next-sidebar-tutorial');
-                const closeButton = document.getElementById('close-sidebar-tutorial');
-                const sidebarTooltipArrow = document.getElementById('sidebar-tooltip-arrow');
-
-                // Función para mostrar el paso actual del tutorial
-                function showTutorialStep(stepIndex) {
-                    const step = tutorialSteps[stepIndex];
-                    const targetElement = document.querySelector(step.selector);
-
-                    if (!targetElement) {
-                        console.error("Elemento no encontrado:", step.selector);
-                        return;
-                    }
-
-                    // Remover highlight de todos los elementos
-                    document.querySelectorAll('[data-tutorial]').forEach(el => {
-                        el.classList.remove('tutorial-highlight');
-                        el.style.zIndex = '';
-                    });
-
-                    // Aplicar highlight al elemento actual
-                    targetElement.classList.add('tutorial-highlight');
-                    targetElement.style.zIndex = '100';
-
-                    // Mostrar el overlay y el tooltip
-                    sidebarTutorialOverlay.classList.remove('hidden');
-                    sidebarTooltip.classList.remove('hidden');
-
-                    // Actualizar contenido
-                    sidebarTooltipTitle.textContent = step.title;
-                    sidebarTooltipContent.textContent = step.content;
-
-                    // Posicionar el tooltip cerca del elemento objetivo
-                    positionTooltip(targetElement);
-
-                    // Actualizar botones
-                    prevButton.classList.toggle('hidden', stepIndex === 0);
-                    nextButton.classList.toggle('hidden', stepIndex === tutorialSteps.length - 1);
-                    closeButton.classList.toggle('hidden', stepIndex !== tutorialSteps.length - 1);
-
-                    // Actualizar indicadores de progreso
-                    updateProgressIndicators(stepIndex);
-                }
-
-                // Función para actualizar los indicadores de progreso
-                function updateProgressIndicators(currentIndex) {
-                    document.querySelectorAll('.sidebar-tutorial-indicator').forEach((indicator,
-                        index) => {
-                        if (index <= currentIndex) {
-                            indicator.classList.add('active');
-                        } else {
-                            indicator.classList.remove('active');
-                        }
-                    });
-                }
-
-                // Función para posicionar el tooltip
-                function positionTooltip(targetElement) {
-                    const rect = targetElement.getBoundingClientRect();
-                    const tooltipWidth = sidebarTooltip.offsetWidth;
-                    const tooltipHeight = sidebarTooltip.offsetHeight;
-                    const arrowSize = 12;
-                    const padding = 20;
-
-                    // Posicionar a la derecha del elemento por defecto
-                    let left = rect.right + padding;
-                    let top = rect.top + (rect.height / 2) - (tooltipHeight / 2);
-                    let arrowPosition = 'right';
-
-                    // Ajustar si se sale de la pantalla a la derecha
-                    if (left + tooltipWidth > window.innerWidth) {
-                        left = rect.left - tooltipWidth - padding;
-                        arrowPosition = 'left';
-                    }
-
-                    // Ajustar si se sale por arriba o abajo
-                    if (top < padding) {
-                        top = padding;
-                    } else if (top + tooltipHeight > window.innerHeight - padding) {
-                        top = window.innerHeight - tooltipHeight - padding;
-                    }
-
-                    sidebarTooltip.style.left = `${left}px`;
-                    sidebarTooltip.style.top = `${top}px`;
-
-                    // Posicionar la flecha
-                    sidebarTooltipArrow.style.display = 'block';
-
-                    if (arrowPosition === 'right') {
-                        sidebarTooltipArrow.style.left = 'auto';
-                        sidebarTooltipArrow.style.right = `-${arrowSize/2}px`;
-                        sidebarTooltipArrow.style.top = `${tooltipHeight/2 - arrowSize/2}px`;
-                        sidebarTooltipArrow.style.transform = 'rotate(45deg)';
-                    } else {
-                        sidebarTooltipArrow.style.left = `-${arrowSize/2}px`;
-                        sidebarTooltipArrow.style.right = 'auto';
-                        sidebarTooltipArrow.style.top = `${tooltipHeight/2 - arrowSize/2}px`;
-                        sidebarTooltipArrow.style.transform = 'rotate(45deg)';
-                    }
-                }
-
-                // Evento para abrir el tutorial de la barra lateral
-                document.getElementById('toggle-sidebar').addEventListener('click', function() {
-                    if (!localStorage.getItem('sidebarTutorialCompleted') && !
-                        sidebarTutorialOverlay.classList.contains('hidden')) {
-                        return;
-                    }
-
-                    if (!localStorage.getItem('sidebarTutorialCompleted')) {
-                        // Mostrar el sidebar si está oculto
-                        const sidebar = document.getElementById('sidebar');
-                        if (sidebar.classList.contains('closed')) {
-                            sidebar.classList.remove('closed');
-                        }
-
-                        // Iniciar el tutorial después de un pequeño retraso para que el sidebar se abra
-                        setTimeout(() => {
-                            currentStep = 0;
-                            showTutorialStep(currentStep);
-                            document.body.classList.add('overflow-hidden');
-                        }, 300);
-                    }
-                });
-
-                // Navegación del tutorial
-                nextButton.addEventListener('click', function() {
-                    if (currentStep < tutorialSteps.length - 1) {
-                        currentStep++;
-                        showTutorialStep(currentStep);
-                    }
-                });
-
-                prevButton.addEventListener('click', function() {
-                    if (currentStep > 0) {
-                        currentStep--;
-                        showTutorialStep(currentStep);
-                    }
-                });
-
-                closeButton.addEventListener('click', function() {
-                    closeSidebarTutorial();
-                });
-
-                // Cerrar tutorial haciendo clic fuera del tooltip
-                sidebarTutorialOverlay.addEventListener('click', function(e) {
-                    if (e.target === sidebarTutorialOverlay) {
-                        closeSidebarTutorial();
-                    }
-                });
-
-                // Función para cerrar el tutorial
-                function closeSidebarTutorial() {
-                    sidebarTutorialOverlay.classList.add('hidden');
-                    document.body.classList.remove('overflow-hidden');
-                    localStorage.setItem('sidebarTutorialCompleted', 'true');
-
-                    // Remover highlight de todos los elementos
-                    document.querySelectorAll('[data-tutorial]').forEach(el => {
-                        el.classList.remove('tutorial-highlight');
-                        el.style.zIndex = '';
-                    });
-                }
-
-                // Inicializar indicadores de progreso
-                function initProgressIndicators() {
-                    const indicatorsContainer = document.createElement('div');
-                    indicatorsContainer.className = 'flex justify-center space-x-2 mb-4';
-
-                    tutorialSteps.forEach((_, index) => {
-                        const indicator = document.createElement('span');
-                        indicator.className =
-                            `sidebar-tutorial-indicator ${index === 0 ? 'active' : ''}`;
-                        indicator.dataset.step = index;
-                        indicatorsContainer.appendChild(indicator);
-                    });
-
-                    sidebarTooltip.insertBefore(indicatorsContainer, sidebarTooltip.querySelector(
-                        '.flex.justify-between'));
-                }
-
-                // Llamar a la inicialización cuando el DOM esté listo
-                initProgressIndicators();
-            });
-
         } else {
-            // Si ya completó el tutorial, mostrar SOLO el botón normal
             document.getElementById('tutorial-btn').classList.add('hidden');
             document.getElementById('normal-btn').classList.remove('hidden');
         }
-
-        // Cerrar el tutorial
-        document.getElementById('close-tutorial').addEventListener('click', function() {
-            document.getElementById('tutorial-overlay').classList.add('hidden');
-            document.body.classList.remove('overflow-hidden');
-            // Cambiar al botón normal después de cerrar el tutorial
-            document.getElementById('tutorial-btn').classList.add('hidden');
-            document.getElementById('normal-btn').classList.remove('hidden');
-            localStorage.setItem('tutorialCompleted', 'true');
-        });
-
-        // Posicionamiento dinámico en diferentes pantallas
-        function positionTooltip() {
-            const tooltip = document.querySelector('#tutorial-overlay .absolute');
-            const menuButton = document.querySelector('.menu-button');
-
-            if (window.innerWidth >= 768) {
-                // Para pantallas grandes, posición fija como en la imagen
-                tooltip.style.top = '50px';
-                tooltip.style.left = '70px';
-                tooltip.style.transform = 'none';
-            } else {
-                // Para móviles, centrado en la pantalla
-                tooltip.style.top = '20%';
-                tooltip.style.left = '50%';
-                tooltip.style.transform = 'translateX(-50%)';
-            }
-        }
-
-
-
-        // Ejecutar al cargar y al redimensionar
-        positionTooltip();
-        window.addEventListener('resize', positionTooltip);
+        // Aquí puedes agregar lógica para otros overlays como welcomeOverlay, overlayShown, etc.
     });
 </script>
 
