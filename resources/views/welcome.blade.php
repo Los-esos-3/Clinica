@@ -142,10 +142,10 @@
             margin-bottom: 80px;
         }
 
-        /* .background-blur
+        .background-blur
         {
             filter: blur(2px)
-        } */
+        }
         
 
         .content-text {
