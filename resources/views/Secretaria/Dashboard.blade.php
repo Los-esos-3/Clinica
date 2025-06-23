@@ -124,24 +124,16 @@
                             </div>
                             <div class="mb-4">
                                 <label for="doctor_id" class="block text-sm font-medium text-gray-700">Doctor</label>
-                                <select name="doctor_id" id="doctor_id" required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
-                                    <option value="">Selecciona un doctor</option>
-                                    @foreach ($doctores as $doctor)
-                                        <option value="{{ $doctor->id }}">{{ $doctor->nombre_completo }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" id="autocomplete-doctor" placeholder="Buscar doctor..." autocomplete="off" class="mb-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" />
+                                <input type="hidden" name="doctor_id" id="doctor_id" required />
+                                <ul id="doctor-suggestions" class="absolute bg-white border border-gray-300 rounded-md shadow-lg z-50 w-[90%] hidden"></ul>
                             </div>
                             <div class="mb-4">
                                 <label for="paciente_id"
                                     class="block text-sm font-medium text-gray-700">Paciente</label>
-                                <select name="paciente_id" id="paciente_id" required
-                                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500">
-                                    <option value="">Selecciona un paciente</option>
-                                    @foreach ($pacientes as $paciente)
-                                        <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" id="autocomplete-paciente" placeholder="Buscar paciente..." autocomplete="off" class="mb-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring focus:ring-blue-500" />
+                                <input type="hidden" name="paciente_id" id="paciente_id" required />
+                                <ul id="paciente-suggestions" class="absolute bg-white border border-gray-300 rounded-md shadow-lg z-50 w-[90%] hidden"></ul>
                             </div>
                             <div class="mb-4">
                                 <label for="motivo" class="block text-sm font-medium text-gray-700">Motivo</label>
@@ -422,6 +414,71 @@ font-weight: bold;
                         }
                     });
                 }
+
+                // --- AUTOCOMPLETADO PARA DOCTORES Y PACIENTES ---
+                const doctores = [
+                    @foreach ($doctores as $doctor)
+                        { id: {{ $doctor->id }}, nombre: "{{ addslashes($doctor->nombre_completo) }}" },
+                    @endforeach
+                ];
+                const pacientes = [
+                    @foreach ($pacientes as $paciente)
+                        { id: {{ $paciente->id }}, nombre: "{{ addslashes($paciente->nombre) }}" },
+                    @endforeach
+                ];
+
+                function setupAutocomplete(inputId, suggestionsId, hiddenId, data) {
+                    const input = document.getElementById(inputId);
+                    const suggestions = document.getElementById(suggestionsId);
+                    const hidden = document.getElementById(hiddenId);
+
+                    function renderSuggestions(filtered) {
+                        suggestions.innerHTML = '';
+                        if (filtered.length === 0) {
+                            suggestions.classList.add('hidden');
+                            hidden.value = '';
+                            return;
+                        }
+                        filtered.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item.nombre;
+                            li.className = 'px-4 py-2 cursor-pointer hover:bg-blue-100';
+                            li.addEventListener('mousedown', function(e) {
+                                e.preventDefault();
+                                input.value = item.nombre;
+                                hidden.value = item.id;
+                                suggestions.classList.add('hidden');
+                            });
+                            suggestions.appendChild(li);
+                        });
+                        suggestions.classList.remove('hidden');
+                    }
+
+                    input.addEventListener('input', function() {
+                        const value = this.value.toLowerCase();
+                        if (!value) {
+                            renderSuggestions(data); // Mostrar todos si no hay texto
+                        } else {
+                            const filtered = data.filter(item => item.nombre.toLowerCase().includes(value));
+                            renderSuggestions(filtered);
+                        }
+                    });
+
+                    // Mostrar todos al hacer focus o clic
+                    input.addEventListener('focus', function() {
+                        renderSuggestions(data);
+                    });
+                    input.addEventListener('click', function() {
+                        renderSuggestions(data);
+                    });
+
+                    // Ocultar sugerencias al perder foco
+                    input.addEventListener('blur', function() {
+                        setTimeout(() => suggestions.classList.add('hidden'), 100);
+                    });
+                }
+                setupAutocomplete('autocomplete-doctor', 'doctor-suggestions', 'doctor_id', doctores);
+                setupAutocomplete('autocomplete-paciente', 'paciente-suggestions', 'paciente_id', pacientes);
             });
         </script>
 
