@@ -144,7 +144,7 @@
 
         .background-blur
         {
-            filter: blur(2px)
+            filter: blur(10px)
         }
         
 
