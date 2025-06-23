@@ -596,6 +596,15 @@
                 height: 35px;
             }
         }
+
+        .bg-blur-text {
+            background: rgba(0, 0, 0, 0.5); /* Fondo azul oscuro más sutil */
+            padding: 16px 24px;
+            border-radius: 16px;
+            display: inline-block;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            backdrop-filter: blur(2px); /* Si quieres un efecto de desenfoque */
+        }
     </style>
 </head>
 
@@ -637,10 +646,10 @@
     <div class="content">
         <div class="background-blur"></div>
         <div class="content-text">
-            <h1 class="text-white">Sistema para la gestión de expedientes médicos.</h1>
-            <h2 class="text-white">Optimiza la gestión de tus expedientes médicos con un software diseñado para
-                simplificar procesos y
-                mejorar la atención desde cualquier lugar.</h2>
+            <div class="bg-blur-text">
+                <h1 class="text-white">Sistema para la gestión de expedientes médicos.</h1>
+                <h2 class="text-white">Optimiza la gestión de tus expedientes médicos con un software diseñado para simplificar procesos y mejorar la atención desde cualquier lugar.</h2>
+            </div>
         </div>
 
         @if (Auth::check())
