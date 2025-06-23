@@ -117,7 +117,7 @@ class RoleController
             // Determinar los días del plan seleccionado
             $planDays = 0;
 
-            if ($user->selected_plan === 'Plan Básico') {
+            if ($user->selected_plan === 'basico') {
                 $planDays = 30;
             } elseif ($user->selected_plan === 'popular') {
                 $planDays = 183;
