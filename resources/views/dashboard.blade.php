@@ -117,107 +117,37 @@
 
                     <div class="flex-grow bg-gray-100 transition-all duration-300 ml-0 md:ml-64" id="content">
 
-                        <div class="flex justify-between items-center p-3">
-
+                        <div class="flex justify-between items-center p-3 relative">
                             <div id="normal-btn" class="m-0 hidden">
                                 <button id="toggle-sidebar" class="menu-button p-2.5">
                                     <i class="fa-solid fa-bars fa-lg"></i>
                                 </button>
                             </div>
-
                             <!-- Botón de menú (fuera del modal) -->
                             <div id="tutorial-btn"
-                                class="absolute -inset-4 rounded-full h-10 w-10 bg-white bg-opacity-20 animate-pulse"
-                                style="top: 30px; left: 35px; transform: translate(-50%, -50%); z-index: 52;">
-                                <!-- Botón de menú -->
+                                class="rounded-full h-10 w-10 bg-white bg-opacity-20 animate-pulse flex items-center justify-center"
+                                style="top: 30px; left: 35px; z-index: 52;">
                                 <button id="toggle-sidebar" class="menu-button p-2.5">
                                     <i class="fa-solid fa-bars fa-lg"></i>
                                 </button>
                             </div>
-
-
-                            <div id="tutorial-overlay"
-                                class="fixed inset-0 hidden bg-black bg-opacity-75 z-50 flex items-center justify-center">
-                                <div class="relative w-full h-full">
-                                    <!-- Tooltip con posicionamiento responsivo -->
-                                    <div class="absolute bg-white p-4 rounded-lg shadow-xl"
-                                        style="min-width: 280px; max-width: 400px; top: 90px !important; padding: 1.25rem;">
-                                        <div class="flex flex-col">
-                                            <h3 class="font-bold text-gray-800 mb-2">Bienvenido a Expedined</h3>
-                                            <p class="text-sm text-gray-600 mb-2">
-                                                Para brindarte la mejor experiencia, validaremos tu comprobante de pago.
-                                                Mientras se realiza este proceso, podrás disfrutar de 30 días de acceso
-                                                gratuito al sistema, permitiéndote explorar y optimizar tu consultorio
-                                                sin restricciones. Nuestro equipo revisará tu información a la brevedad
-                                                para garantizar un servicio seguro y confiable.
-                                            </p>
-                                            <p class="text-sm text-gray-600 font-semibold mb-2">Barra lateral de
-                                                opciones</p>
-                                            <p class="text-sm text-gray-600 mb-4">
-                                                Has click en el icono para poder abrir la barra y moverte entre las
-                                                opciones que ofrecemos
-                                            </p>
-
-                                            <div class="flex justify-end items-center text-sm">
-                                                <button id="close-tutorial"
-                                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                                                    Entendido
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <!-- Flecha que apunta al ícono - posición responsiva -->
-                                        <div
-                                            class="absolute -right-3 top-1/2 transform -translate-y-1/2 rotate-90 md:rotate-0 md:right-full md:top-1/2 md:-mr-2">
-                                            <svg width="20" height="30" viewBox="0 0 20 30" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M20 15L0 0V30L20 15Z" fill="white" />
-                                            </svg>
-                                        </div>
-                                    </div>
+                            @if (Auth::user()->hasRole('Admin'))
+                                @php
+                                    $now = now();
+                                    $daysRemaining = 0;
+                                    if (Auth::user()->trial_ends_at) {
+                                        $daysRemaining += floor($now->diffInDays(Auth::user()->trial_ends_at, false));
+                                    }
+                                    if (Auth::user()->plan_expires_at) {
+                                        $daysRemaining += floor($now->diffInDays(Auth::user()->plan_expires_at, false));
+                                    }
+                                @endphp
+                                <div class="absolute right-6 top-1 flex items-center space-x-2">
+                                    <span class="text-sm font-medium text-blue-700">Días restantes:</span>
+                                    <span class="font-bold text-blue-900">{{ $daysRemaining }}</span>
+                                    <span class="text-sm text-blue-700">día{{ $daysRemaining != 1 ? 's' : '' }}</span>
                                 </div>
-                            </div>
-
-                            <!-- Agrega esto después del primer tutorial-overlay -->
-                            <div id="sidebar-tutorial-overlay" class="fixed inset-0 hidden bg-black bg-opacity-75 z-50">
-                                <div class="relative w-full h-full">
-                                    <!-- Tooltip para las opciones de la barra lateral -->
-                                    <div id="sidebar-tooltip" class="absolute bg-white p-4 rounded-lg shadow-xl hidden"
-                                        style="min-width: 300px; max-width: 90%;">
-                                        <div class="flex flex-col">
-                                            <h3 id="sidebar-tooltip-title" class="font-bold text-gray-800 mb-2"></h3>
-                                            <p id="sidebar-tooltip-content" class="text-sm text-gray-600 mb-4"></p>
-
-                                            <!-- Indicadores de progreso -->
-                                            <div class="flex justify-center space-x-2 mb-4">
-                                                ${tutorialSteps.map((_, i) => `
-                                                <span class="sidebar-tutorial-indicator ${i === 0 ? 'active' : ''}"
-                                                    data-step="${i}"></span>
-                                                `).join('')}
-                                            </div>
-
-                                            <div class="flex justify-between items-center text-sm">
-                                                <button id="prev-sidebar-tutorial"
-                                                    class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition hidden">
-                                                    Anterior
-                                                </button>
-                                                <button id="next-sidebar-tutorial"
-                                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition">
-                                                    Siguiente
-                                                </button>
-                                                <button id="close-sidebar-tutorial"
-                                                    class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition hidden">
-                                                    Finalizar
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <!-- Flecha que apunta al elemento actual -->
-                                        <div id="sidebar-tooltip-arrow"
-                                            class="absolute w-6 h-6 transform rotate-45 bg-white"></div>
-                                    </div>
-                                </div>
-                            </div>
-
+                            @endif
                         </div>
 
                         <div class="p-6">

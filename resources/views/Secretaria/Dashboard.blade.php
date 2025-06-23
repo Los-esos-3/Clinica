@@ -227,29 +227,80 @@
                     newCitaForm.addEventListener('submit', function(event) {
                         event.preventDefault();
 
+                        // Validación de horario en el frontend
+                        const fecha = document.getElementById('fecha').value;
+                        const horaInicio = document.getElementById('hora_inicio').value;
+                        const horaFin = document.getElementById('hora_fin').value;
+
+                        // Convertir a objetos Date para comparar
+                        const inicio = new Date(`${fecha}T${horaInicio}`);
+                        const fin = new Date(`${fecha}T${horaFin}`);
+
+                        if (!horaInicio || !horaFin || !fecha) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Campos incompletos',
+                            });
+                            return;
+                        }
+
+                        if (fin <= inicio) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Horario incorrecto',
+                            });
+                            return;
+                        }
+
                         let formData = new FormData(this);
 
                         fetch("{{ route('citas.store') }}", {
-                                method: "POST",
-                                body: formData,
-                                headers: {
-                                    "X-CSRF-TOKEN": document.querySelector('input[name="_token"]').value
-                                }
-                            })
-                            .then(response => response.json())
-                            .then(data => {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                "X-CSRF-TOKEN": document.querySelector('input[name=\"_token\"]').value
+                            }
+                        })
+                        .then(async response => {
+                            if (response.ok) {
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Cita creada correctamente',
                                     showConfirmButton: false,
                                     timer: 1500
                                 });
-
-                                newCitaModal.classList.add(
-                                    'hidden'); // Cierra el modal después de guardar la cita
-                                location.reload(); // Recarga la página para actualizar el calendario
-                            })
-                            .catch(error => console.error("Error:", error));
+                                newCitaModal.classList.add('hidden');
+                                location.reload();
+                            } else if (response.status === 422) {
+                                const data = await response.json();
+                                let errorMsg = '';
+                                for (const key in data.errors) {
+                                    errorMsg += data.errors[key].join('<br>');
+                                }
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error de validación',
+                                    html: errorMsg,
+                                    confirmButtonText: 'Entendido'
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Ocurrió un error inesperado.',
+                                    confirmButtonText: 'Entendido'
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'No se pudo conectar con el servidor.',
+                                confirmButtonText: 'Entendido'
+                            });
+                            console.error("Error:", error);
+                        });
                     });
                 }
 

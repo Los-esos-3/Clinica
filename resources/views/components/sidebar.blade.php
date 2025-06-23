@@ -36,7 +36,6 @@
             <!-- Menú principal -->
             <ul
                 class="sidebar-menu {{ Auth::user()->hasAnyRole(['Admin', 'Root']) ? 'admin-menu' : 'doctor-secretaria-menu' }}">
-                <li><a href="{{ route('welcome') }}"><i class="fa-solid fa-house"></i><span>Inicio</span></a></li>
                 <li><a href="{{ route('dashboard') }}"><i
                             class="fa-solid fa-calendar-days"></i><span>Calendario</span></a>
                 </li>
@@ -87,30 +86,6 @@
 
 
             <div class="role-container">
-
-                @if (Auth::user()->hasRole('Admin'))
-                    @php
-                        $now = now();
-                        $daysRemaining = 0;
-
-                        // Calcular los días restantes para el período de prueba
-                        if ($user->trial_ends_at) {
-                            $daysRemaining += floor($now->diffInDays($user->trial_ends_at, false));
-                        }
-
-                        // Calcular los días restantes para el plan actual
-                        if ($user->plan_expires_at) {
-                            $daysRemaining += floor($now->diffInDays($user->plan_expires_at, false));
-                        }
-                    @endphp
-
-                    <div>
-                        <span class="text-sm font-medium text-white">Tiempo restante:</span>
-                        {{ $daysRemaining }} día{{ $daysRemaining != 1 ? 's' : '' }}
-                        restante{{ $daysRemaining != 1 ? 's' : '' }}
-                        </span>
-                    </div>
-                @endif
 
                 <label class="text-white">Rol Actual: {{ Auth::user()->getRoleNames()->first() }}</label>
             </div>
