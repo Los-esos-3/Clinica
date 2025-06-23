@@ -181,7 +181,6 @@
 
         .container {
             padding: 0 50px;
-
             margin: 0 auto;
         }
 
