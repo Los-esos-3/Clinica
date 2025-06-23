@@ -170,6 +170,7 @@
                         <div class="flex justify-center mt-4" id="deleteFormContainer">
                             <!-- Este contenedor se actualizará dinámicamente con el botón de eliminar para la cita seleccionada -->
                         </div>
+                        <!-- ola -->
 
                     </div>
                 </div>
