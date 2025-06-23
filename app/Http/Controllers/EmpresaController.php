@@ -86,7 +86,7 @@ class EmpresaController
             }
         }
 
-        return redirect()->route('empresas.index')
+        return redirect()->route('empresas.index')->with('success', 'Empresa creada correctamente')
         ->with('empresa_guardada', true); 
     
     }

@@ -31,6 +31,22 @@
                                         </div>
                                     @endif
 
+                                    @if ($errors->any())
+                                        <div class="text-red-500 text-xs md:text-sm mb-4">
+                                            <ul>
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+
+                                    @if (session('error'))
+                                        <div class="text-red-500 text-xs md:text-sm mb-4">
+                                            {{ session('error') }}
+                                        </div>
+                                    @endif
+
                                     <form method="POST" autocomplete="on" action="{{ route('empresas.store') }}"
                                         enctype="multipart/form-data">
                                         @csrf
@@ -65,7 +81,7 @@
                                             <label for="logo" class="form-label font-semibold">Logo</label>
                                             <input type="file"
                                                 class="form-control @error('logo') is-invalid @enderror" id="logo"
-                                                name="logo" accept="image/*"   onchange="previewLogo(this)">
+                                                name="logo" accept="image/*" onchange="previewLogo(this)">
                                             <div id="logoPreview" class="mt-2 hidden">
                                                 <img id="preview" class="w-32 h-32 object-cover rounded-lg">
                                             </div>
@@ -325,59 +341,64 @@
                             </div>
                         </div>
 
-                        @if(session('empresa_guardada'))
-                        <script>
-                            window.onload = function () {
-                                const modal = document.getElementById('felicitacionesModal');
-                                modal.classList.remove('hidden');
-                                modal.classList.add('flex');
-                            };
-                        </script>
-                    @endif
-                    
-                    <!-- Modal de Felicitaciones -->
-                    <div id="felicitacionesModal" class="fixed inset-0 bg-black bg-opacity-60 items-center justify-center z-50 hidden transition-opacity duration-300 ease-in-out">
-                        <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center animate-fade-in-down relative">
-                            <!-- Ícono de éxito -->
-                            <div class="mb-4">
-                                <svg class="mx-auto w-16 h-16 text-green-500 animate-bounce" fill="none" stroke="currentColor" stroke-width="2"
-                                     viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                          d="M9 12l2 2l4-4m5 2a9 9 0 11-18 0a9 9 0 0118 0z"/>
-                                </svg>
+                        @if (session('empresa_guardada'))
+                            <script>
+                                window.onload = function() {
+                                    const modal = document.getElementById('felicitacionesModal');
+                                    modal.classList.remove('hidden');
+                                    modal.classList.add('flex');
+                                };
+                            </script>
+                        @endif
+
+                        <!-- Modal de Felicitaciones -->
+                        <div id="felicitacionesModal"
+                            class="fixed inset-0 bg-black bg-opacity-60 items-center justify-center z-50 hidden transition-opacity duration-300 ease-in-out">
+                            <div
+                                class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center animate-fade-in-down relative">
+                                <!-- Ícono de éxito -->
+                                <div class="mb-4">
+                                    <svg class="mx-auto w-16 h-16 text-green-500 animate-bounce" fill="none"
+                                        stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M9 12l2 2l4-4m5 2a9 9 0 11-18 0a9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+
+                                <h2 class="text-3xl font-bold text-gray-800 mb-3">¡Registro de Empresa Exitoso!</h2>
+                                <p class="text-gray-600 text-base mb-6 leading-relaxed">
+                                    La información de la empresa ha sido registrada correctamente. <br><br>
+                                    Ahora te reidirigiremos al <strong>espacio de Personal</strong> para continuar
+                                    configurando tu entorno de trabajo. <br><br>
+                                    Recuerda que mantener los datos actualizados ayuda a ofrecer una experiencia más
+                                    profesional y eficiente.
+                                </p>
+
+                                <button onclick="window.location.href='{{ route('Personal.index') }}'"
+                                    class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md">
+                                    Ir al panel de Personal
+                                </button>
                             </div>
-                    
-                            <h2 class="text-3xl font-bold text-gray-800 mb-3">¡Registro de Empresa Exitoso!</h2>
-                            <p class="text-gray-600 text-base mb-6 leading-relaxed">
-                                La información de la empresa ha sido registrada correctamente. <br><br>
-                                Ahora te reidirigiremos al <strong>espacio de Personal</strong> para continuar configurando tu entorno de trabajo. <br><br>
-                                Recuerda que mantener los datos actualizados ayuda a ofrecer una experiencia más profesional y eficiente.
-                            </p>
-                    
-                            <button onclick="window.location.href='{{ route('Personal.index') }}'" 
-                            class="bg-indigo-600 text-white px-6 py-2 rounded-full hover:bg-indigo-700 transition duration-300 shadow-md">
-                            Ir al panel de Personal
-                        </button>
                         </div>
-                    </div>
-                    
-                    <style>
-                        @keyframes fade-in-down {
-                            from {
-                                opacity: 0;
-                                transform: translateY(-20px);
+
+                        <style>
+                            @keyframes fade-in-down {
+                                from {
+                                    opacity: 0;
+                                    transform: translateY(-20px);
+                                }
+
+                                to {
+                                    opacity: 1;
+                                    transform: translateY(0);
+                                }
                             }
-                            to {
-                                opacity: 1;
-                                transform: translateY(0);
+
+                            .animate-fade-in-down {
+                                animation: fade-in-down 0.5s ease-out both;
                             }
-                        }
-                    
-                        .animate-fade-in-down {
-                            animation: fade-in-down 0.5s ease-out both;
-                        }
-                    </style>
-                    
+                        </style>
+
 
                     </div>
                 @endif
@@ -689,5 +710,5 @@
             }
         }
     </script>
-  
+
 </x-app-layout>
